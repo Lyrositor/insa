@@ -1,0 +1,53 @@
+- Collection de quel type ? int
+- Unique ? Doublons ? Doublons autorisés
+- Tableau ? À réallouer
+
+Premier constructeur :
+	Paramètres : taille initiale
+	Conditions : taille initiale >= 0
+	Allouer un tableau de ints de la taille spécifiée, stocker taille tableau, initialiser nombre éléments à 0.
+	Test 1 : vérifier que la construction fonctionne (aucune erreur lancée)
+	Test 2 : vérifier que l'on ne peut pas construire avec une taille négative
+	Test 3 : vérifier que Afficher ne renvoie rien
+
+Second constructeur :
+	Paramètres : nombre d'éléments, tableau d'entiers
+	Conditions : nombre >= 0
+	Ajuster le tableau, insérer les entiers, ajuster les compteurs.
+	Test 4 : vérifier que la construction fonctionne (aucune erreur lancée)
+	Test 5 : vérifier que l'on ne peut pas construire avec un nombre négatif
+	Test 6 : vérifier que Afficher renvoie la représentation attendue
+
+Afficher :
+	Paramètres : (aucun)
+	Itérer sur le tableau et afficher les éléments.
+
+Ajouter :
+	Paramètres : entier
+	Vérifier s'il y a assez de place allouée (ajuster sinon), insertion en fin de tableau, incrémentation compteur
+	Test 7 : vérifier bon fonctionnement sans réallocation avec Afficher
+	Test 8 : vérifier bon fonctionnement avec réallocation avec Afficher
+
+Retirer :
+	Paramètres : nombre d'éléments, tableau d'entiers
+	Conditions : tableau non vide
+	Supprime chaque entier dans le tableau fourni de la collection
+	Test 9 : vérifier que Afficher renvoie la représentation attendue
+	Test 10 : vérifier que cela fonctionne avec une collection vide
+	Test 11 : vérifier que cela ne fonctionne pas avec un tableau d'entiers à retirer vide
+
+Ajuster :
+	Paramètres : nouvelle taille
+	Conditions : taille >= 0
+	Alloue un nouveau tableau de la taille spécifiée (plus petite ou plus grande)
+	Test 12 : vérifier que cela ne fonctionne pas avec une taille négative
+	Test 13 : vérifier que cela fonctionne quand on augmente la taille, avec Afficher
+	Test 14 : vérifier que cela fonctionne quand on diminue la taille, avec Afficher
+
+Reunir :
+	Paramètres : autre collection
+	Modifier la collection actuelle, ré-allocation si nécessaire
+	Test 15 : vérifier que cela fonctionne pour différentes collections
+
+Destructeur :
+	Libère la mémoire
