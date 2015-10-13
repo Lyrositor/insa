@@ -7,7 +7,7 @@ Premier constructeur :
 	Conditions : taille initiale >= 0
 	Allouer un tableau de ints de la taille spécifiée, stocker taille tableau, initialiser nombre éléments à 0.
 	Test 1 : vérifier que la construction fonctionne (aucune erreur lancée)
-	Test 2 : vérifier que l'on ne peut pas construire avec une taille négative
+	Test 2 : vérifier que l'on peut construire avec une taille vide
 	Test 3 : vérifier que Afficher ne renvoie rien
 
 Second constructeur :
@@ -15,7 +15,7 @@ Second constructeur :
 	Conditions : nombre >= 0
 	Ajuster le tableau, insérer les entiers, ajuster les compteurs.
 	Test 4 : vérifier que la construction fonctionne (aucune erreur lancée)
-	Test 5 : vérifier que l'on ne peut pas construire avec un nombre négatif
+	Test 5 : vérifier que l'on peut construire avec une taille vide
 	Test 6 : vérifier que Afficher renvoie la représentation attendue
 
 Afficher :

@@ -1,21 +1,25 @@
 /*************************************************************************
-                           Collection  - Collection dynamique d'entiers
+               Collection  - Collection dynamique d'entiers
                              -------------------
     début                : 06/10/2015
     copyright            : (C) 2015 par B3309
 *************************************************************************/
 
-//---------- Interface de la classe Collection (fichier collection.cpp) ------
+//------------- Interface de la classe <Collection> (fichier Collection.h)
 #if ! defined ( COLLECTION_H )
 #define COLLECTION_H
 
+//--------------------------------------------------- Interfaces utilisées
+
 //------------------------------------------------------------- Constantes
 
+//------------------------------------------------------------------ Types
+
 //------------------------------------------------------------------------
-// La classe Collection permet de gérer des collections d'entiers de taille
-// quelconque fixée à la création avec réajustement automatique ou à la demande
-//
-//
+// Rôle de la classe <Collection>
+// La classe Collection permet de gérer des collections d'entiers de
+// taille quelconque fixée à la création avec réajustement automatique ou
+// à la demande.
 //------------------------------------------------------------------------
 
 class Collection
@@ -30,13 +34,13 @@ public:
     // Contrat :
     //
 
-    void Ajouter (int jeton);
+    void Ajouter (int valeur);
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    void Retirer (int n, int items[]);
+    void Retirer (unsigned int n, int retirer[]);
     // Mode d'emploi :
     //
     // Contrat :
@@ -48,21 +52,23 @@ public:
     // Contrat :
     //
 
-    void Ajuster (int n);
+    void Ajuster (unsigned int n);
     // Mode d'emploi :
     //
     // Contrat :
     //
+
+//------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
 
-    Collection (int n);
+    Collection (unsigned int n);
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    Collection (int n, int items[]);
+    Collection (unsigned int n, int items[]);
     // Mode d'emploi :
     //
     // Contrat :
@@ -79,13 +85,27 @@ public:
 protected:
 //----------------------------------------------------- Méthodes protégées
 
-    void Init(int n);
+    void Init(unsigned int n);
 
+private:
+//------------------------------------------------------- Méthodes privées
+
+protected:
 //----------------------------------------------------- Attributs protégés
-    int alloue;
-    int elements;
-    int* collection;
+    unsigned int alloue;
+    unsigned int elements;
+    int* tableau;
 
+private:
+//------------------------------------------------------- Attributs privés
+
+//---------------------------------------------------------- Classes amies
+
+//-------------------------------------------------------- Classes privées
+
+//----------------------------------------------------------- Types privés
 };
+
+//--------------------------------------- Types dépendants de <Collection>
 
 #endif // COLLECTION_H

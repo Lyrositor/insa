@@ -1,11 +1,11 @@
 /*************************************************************************
-                           Collection  -   Collection dynamique d'entiers
+               Collection  - Collection dynamique d'entiers
                              -------------------
     début                : 06/10/2015
     copyright            : (C) 2015 par B3309
 *************************************************************************/
 
-//---------- Réalisation de la classe Collection (fichier Collection) --
+//---------- Réalisation de la classe <Collection> (fichier Collection.cpp)
 
 //---------------------------------------------------------------- INCLUDE
 
@@ -14,77 +14,110 @@ using namespace std;
 #include <iostream>
 
 //------------------------------------------------------ Include personnel
-#include "collection.h"
+#include "Collection.h"
 
 //------------------------------------------------------------- Constantes
 
+//---------------------------------------------------- Variables de classe
+
+//----------------------------------------------------------- Types privés
+
+
 //----------------------------------------------------------------- PUBLIC
+//-------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------- Méthodes publiques
 
 void Collection::Afficher ()
 // Algorithme :
 {
-    for (int i=0; i<elements; i++)
-        cout << collection[i] << ' ';
+    for (unsigned int i = 0; i < elements; i++)
+    {
+        cout << tableau[i] << ' ';
+    }
     cout << endl;
 } //----- Fin de Méthode
 
-void Collection::Ajouter (int jeton)
+void Collection::Ajouter (int valeur)
 // Algorithme :
 {
     if (elements >= alloue)
-        Ajuster(elements+1);
-    collection[elements] = jeton;
+    {
+        Ajuster(elements + 1);
+    }
+    tableau[elements] = valeur;
     elements++;
 
 } //----- Fin de Méthode
 
-void Collection::Retirer (int n, int items[])
+void Collection::Retirer (unsigned int n, int retirer[])
 // Algorithme :
 {
-    bool delete;
-    int* tmp = collection;
-    collection = new int[n];
-    int k = 0;
-    for (int i = 0; i < elements; i++) {
-        delete = false;
-        for (int j = 0; j < n; j++) {
-            if (items[j] == elements[i]) {
-                delete = true;
+    if (n == 0)
+    {
+        return;
+    }
+
+    int* tmp = tableau;
+    tableau = new int[elements];
+    unsigned int k = 0;
+    for (unsigned int i = 0; i < elements; i++)
+    {
+        bool conserver = true;
+        for (unsigned int j = 0; j < n; j++)
+        {
+            if (retirer[j] == tmp[i])
+            {
+                conserver = false;
                 break;
             }
         }
-        if (!delete) {
-            collection[k] = elements[i];
+        if (conserver)
+        {
+            tableau[k] = tmp[i];
             k++;
         }
     }
     elements = k;
     Ajuster(elements);
-    delete tmp;
+    delete[] tmp;
 } //----- Fin de Méthode
 
-void Collection::Ajuster (int n)
+void Collection::Ajuster (unsigned int n)
 // Algorithme :
 {
     alloue = n;
-    int* tmp = collection;
-    collection = new int[n];
-    for (int i=0; i < elements && i < alloue; i++)
-        collection[i] = tmp[i];
-    delete tmp;
+    elements = (elements > alloue) ? alloue: elements;
+    int* tmp = tableau;
+    tableau = new int[n];
+    for (unsigned int i = 0; i < elements && i < alloue; i++)
+    {
+        tableau[i] = tmp[i];
+    }
+    delete[] tmp;
 } //----- Fin de Méthode
 
 void Collection::Reunir (Collection* collection)
 // Algorithme :
 {
+    if (collection->elements + elements > alloue)
+    {
+        Ajuster(collection->elements + elements);
+    }
+    for (unsigned int i = 0; i < collection->elements; i++)
+    {
+        tableau[elements + i] = collection->tableau[i];
+    }
+    elements += collection->elements;
 } //----- Fin de Méthode
 
+
+//------------------------------------------------- Surcharge d'opérateurs
+
+
 //-------------------------------------------- Constructeurs - destructeur
-Collection::Collection (int n)
+Collection::Collection (unsigned int n)
 // Algorithme :
-
 {
 #ifdef MAP
     cout << "Appel au constructeur de Collection" << endl;
@@ -92,18 +125,18 @@ Collection::Collection (int n)
     Init(n);
 } //----- Fin de Collection
 
-Collection::Collection (int n, int items[])
+Collection::Collection (unsigned int n, int items[])
 // Algorithme :
-
 {
 #ifdef MAP
     cout << "Appel au constructeur de Collection" << endl;
 #endif
     Init(n);
-    for (int i=0; i<n; i++)
+    for (unsigned int i = 0; i < n; i++)
+    {
         Ajouter(items[i]);
+    }
 } //----- Fin de Collection
-
 
 Collection::~Collection ( )
 // Algorithme :
@@ -112,7 +145,7 @@ Collection::~Collection ( )
 #ifdef MAP
     cout << "Appel au destructeur de Collection" << endl;
 #endif
-    delete collection;
+    delete[] tableau;
 } //----- Fin de ~Collection
 
 
@@ -120,10 +153,12 @@ Collection::~Collection ( )
 
 //----------------------------------------------------- Méthodes protégées
 
-void Collection::Init (int n)
+void Collection::Init (unsigned int n)
 // Algorithme :
 {
     alloue = n;
     elements = 0;
-    collection = new int[n];
+    tableau = new int[n];
 } //----- Fin de Méthode
+
+//------------------------------------------------------- Méthodes privées
