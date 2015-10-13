@@ -76,8 +76,8 @@ bool test_3_construction_2 ()
 // puis essaie de la supprimer.
 {
     unsigned int taille = 5;
-    int items[] = {1, 2, 3, 4, 5};
-    CollectionEntiers * c = new CollectionEntiers(taille, items);
+    int valeurs[] = {1, 2, 3, 4, 5};
+    CollectionEntiers * c = new CollectionEntiers(taille, valeurs);
     delete c;
     return true;
 }
@@ -87,8 +87,8 @@ bool test_4_construction_2_vide ()
 // constructeur 2, puis essaie de la supprimer.
 {
     unsigned int taille = 0;
-    int items[] = {};
-    CollectionEntiers * c = new CollectionEntiers(taille, items);
+    int valeurs[] = {};
+    CollectionEntiers * c = new CollectionEntiers(taille, valeurs);
     delete c;
     return true;
 }
@@ -100,8 +100,8 @@ bool test_5_construction_2_affichage ()
     cout << "\tAffichage attendu :\t1 2 3 4 5 6 7 8 9 10 " << endl;
     cout << "\tAffichage obtenu :\t";
     unsigned int taille = 10;
-    int items[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    CollectionEntiers * c = new CollectionEntiers(taille, items);
+    int valeurs[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    CollectionEntiers * c = new CollectionEntiers(taille, valeurs);
     c->Afficher();
     delete c;
     return true;
@@ -153,10 +153,10 @@ bool test_8_retirer ()
     cout << "\tAffichage attendu :\t1 3 4 " << endl;
     cout << "\tAffichage obtenu :\t";
     unsigned int taille = 5;
-    int items[] = {1, 2, 3, 4, 5};
+    int valeurs[] = {1, 2, 3, 4, 5};
     unsigned int n = 3;
-    int retirer[] = {5, 2, 5};
-    CollectionEntiers * c = new CollectionEntiers(taille, items);
+    int retirer[] = {5, 2, 5, 6};
+    CollectionEntiers * c = new CollectionEntiers(taille, valeurs);
     c->Retirer(n, retirer);
     c->Afficher();
     delete c;
@@ -187,10 +187,10 @@ bool test_10_retirer_aucun ()
     cout << "\tAffichage attendu :\t1 2 3 4 5 " << endl;
     cout << "\tAffichage obtenu :\t";
     unsigned int taille = 5;
-    int items[] = {1, 2, 3, 4, 5};
+    int valeurs[] = {1, 2, 3, 4, 5};
     unsigned int n = 0;
     int retirer[] = {};
-    CollectionEntiers * c = new CollectionEntiers(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, valeurs);
     c->Retirer(n, retirer);
     c->Afficher();
     delete c;
@@ -205,9 +205,9 @@ bool test_11_ajuster_augmenter ()
     cout << "\tAffichage attendu :\t1 2 3 4 5 " << endl;
     cout << "\tAffichage obtenu :\t";
     unsigned int taille = 5;
-    int items[] = {1, 2, 3, 4, 5};
+    int valeurs[] = {1, 2, 3, 4, 5};
     unsigned int taille_augmentee = 10;
-    CollectionEntiers * c = new CollectionEntiers(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, valeurs);
     c->Ajuster(taille_augmentee);
     c->Afficher();
     delete c;
@@ -222,9 +222,9 @@ bool test_12_ajuster_diminuer ()
     cout << "\tAffichage attendu :\t1 2 " << endl;
     cout << "\tAffichage obtenu :\t";
     unsigned int taille = 5;
-    int items[] = {1, 2, 3, 4, 5};
+    int valeurs[] = {1, 2, 3, 4, 5};
     unsigned int taille_reduite = 2;
-    CollectionEntiers * c = new CollectionEntiers(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, valeurs);
     c->Ajuster(taille_reduite);
     c->Afficher();
     delete c;
@@ -239,9 +239,9 @@ bool test_13_ajuster_nul ()
     cout << "\tAffichage attendu :\t " << endl;
     cout << "\tAffichage obtenu :\t";
     unsigned int taille = 5;
-    int items[] = {1, 2, 3, 4, 5};
+    int valeurs[] = {1, 2, 3, 4, 5};
     unsigned int taille_reduite = 0;
-    CollectionEntiers * c = new CollectionEntiers(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, valeurs);
     c->Ajuster(taille_reduite);
     c->Afficher();
     delete c;
@@ -256,12 +256,12 @@ bool test_14_reunir_sans_reallocation ()
     cout << "\tAffichage attendu :\t1 2 3 4 5 6 7 8 " << endl;
     cout << "\tAffichage obtenu :\t";
     unsigned int taille1 = 5;
-    int items1[] = {1, 2, 3, 4, 5};
+    int valeurs1[] = {1, 2, 3, 4, 5};
     unsigned int taille2 = 3;
-    int items2[] = {6, 7, 8};
-    CollectionEntiers * c1 = new CollectionEntiers(taille1, items1);
+    int valeurs2[] = {6, 7, 8};
+    CollectionEntiers * c1 = new CollectionEntiers(taille1, valeurs1);
     c1->Ajuster(taille1 + taille2);
-    CollectionEntiers * c2 = new CollectionEntiers(taille2, items2);
+    CollectionEntiers * c2 = new CollectionEntiers(taille2, valeurs2);
     c1->Reunir(c2);
     c1->Afficher();
     return true;
@@ -276,11 +276,11 @@ bool test_15_reunir_avec_reallocation ()
     cout << "\tAffichage attendu :\t1 2 3 4 5 6 7 8 " << endl;
     cout << "\tAffichage obtenu :\t";
     unsigned int taille1 = 5;
-    int items1[] = {1, 2, 3, 4, 5};
+    int valeurs1[] = {1, 2, 3, 4, 5};
     unsigned int taille2 = 3;
-    int items2[] = {6, 7, 8};
-    CollectionEntiers * c1 = new CollectionEntiers(taille1, items1);
-    CollectionEntiers * c2 = new CollectionEntiers(taille2, items2);
+    int valeurs2[] = {6, 7, 8};
+    CollectionEntiers * c1 = new CollectionEntiers(taille1, valeurs1);
+    CollectionEntiers * c2 = new CollectionEntiers(taille2, valeurs2);
     c1->Reunir(c2);
     c1->Afficher();
     return true;

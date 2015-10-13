@@ -65,11 +65,11 @@ public:
     // de départ (allocation seule).
     // Contrat : 'n' doit être un entier positif.
 
-    CollectionEntiers(unsigned int n, int items[]);
+    CollectionEntiers(unsigned int n, int valeurs[]);
     // Mode d'emploi : Construit une collection de taille 'n' avec les
-    // valeurs de départ du tableau 'items'.
-    // Contrat : 'n' doit spécifier la taille de 'items' ; 'items' doit
-    // être un tableau d'entiers.
+    // valeurs de départ du tableau 'valeurs'.
+    // Contrat : 'n' doit spécifier la taille de 'valeurs' ; 'valeurs'
+    // doit être un tableau d'entiers.
 
     virtual ~CollectionEntiers();
     // Mode d'emploi : Supprime le tableau de valeurs que contient la

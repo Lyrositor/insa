@@ -149,9 +149,9 @@ CollectionEntiers::CollectionEntiers(unsigned int n)
     Init(n);
 } //----- Fin de CollectionEntiers
 
-CollectionEntiers::CollectionEntiers(unsigned int n, int items[])
+CollectionEntiers::CollectionEntiers(unsigned int n, int valeurs[])
 // Algorithme : Initialise les attributs grâce à Init, puis ajoute toutes
-// les valeurs de 'items' au tableau.
+// les 'valeurs' au tableau.
 {
 #ifdef MAP
     cout << "Appel au constructeur de CollectionEntiers" << endl;
@@ -159,7 +159,7 @@ CollectionEntiers::CollectionEntiers(unsigned int n, int items[])
     Init(n);
     for (unsigned int i = 0; i < n; i++)
     {
-        Ajouter(items[i]);
+        Ajouter(valeurs[i]);
     }
 } //----- Fin de CollectionEntiers
 
