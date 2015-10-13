@@ -39,7 +39,7 @@ const char* TESTS_NOMS[] = {
 //-------------------------------------------------------------- FONCTIONS
 
 bool test_0_construction_1 ()
-// Algorithme : construit une nouvelle collection avec le constructeur 1,
+// Algorithme : Construit une nouvelle collection avec le constructeur 1,
 // puis essaie de la supprimer.
 {
     unsigned int taille = 5;
@@ -49,7 +49,7 @@ bool test_0_construction_1 ()
 }
 
 bool test_1_construction_1_vide ()
-// Algorithme : construit une nouvelle collection vide avec le
+// Algorithme : Construit une nouvelle collection vide avec le
 // constructeur 1, puis essaie de la supprimer.
 {
     unsigned int taille = 0;
@@ -59,7 +59,7 @@ bool test_1_construction_1_vide ()
 }
 
 bool test_2_construction_1_affichage ()
-// Algorithme : construit une nouvelle collection avec le constructeur 1,
+// Algorithme : Construit une nouvelle collection avec le constructeur 1,
 // puis affiche son contenu.
 {
     cout << "\tAffichage attendu :\t" << endl;
@@ -72,7 +72,7 @@ bool test_2_construction_1_affichage ()
 }
 
 bool test_3_construction_2 ()
-// Algorithme : construit une nouvelle collection avec le constructeur 2,
+// Algorithme : Construit une nouvelle collection avec le constructeur 2,
 // puis essaie de la supprimer.
 {
     unsigned int taille = 5;
@@ -83,7 +83,7 @@ bool test_3_construction_2 ()
 }
 
 bool test_4_construction_2_vide ()
-// Algorithme : construit une nouvelle collection vide avec le
+// Algorithme : Construit une nouvelle collection vide avec le
 // constructeur 2, puis essaie de la supprimer.
 {
     unsigned int taille = 0;
@@ -94,7 +94,7 @@ bool test_4_construction_2_vide ()
 }
 
 bool test_5_construction_2_affichage ()
-// Algorithme : construit une nouvelle collection avec le constructeur 2,
+// Algorithme : Construit une nouvelle collection avec le constructeur 2,
 // puis affiche son contenu.
 {
     cout << "\tAffichage attendu :\t1 2 3 4 5 6 7 8 9 10 " << endl;
@@ -108,7 +108,7 @@ bool test_5_construction_2_affichage ()
 }
 
 bool test_6_ajouter_sans_reallocation ()
-// Algorithme : construit une nouvelle collection, y ajoute plusieurs
+// Algorithme : Construit une nouvelle collection, y ajoute plusieurs
 // valeurs avec la méthode Ajouter, puis affiche son contenu. La
 // collection est initialisée avec assez de mémoire allouée pour toutes
 // les valeurs.
@@ -127,7 +127,7 @@ bool test_6_ajouter_sans_reallocation ()
 }
 
 bool test_7_ajouter_avec_reallocation ()
-// Algorithme : construit une nouvelle collection, y ajoute plusieurs
+// Algorithme : Construit une nouvelle collection, y ajoute plusieurs
 // valeurs avec la méthode Ajouter, puis affiche son contenu. La
 // collection est initialisée sans aucune mémoire allouée ; Ajouter doit
 // ré-allouer de la place à chaque appel.
@@ -146,7 +146,7 @@ bool test_7_ajouter_avec_reallocation ()
 }
 
 bool test_8_retirer ()
-// Algorithme : construit une nouvelle collection avec des valeurs
+// Algorithme : Construit une nouvelle collection avec des valeurs
 // initiales, puis essaie d'en retirer certaines avant d'afficher le
 // résultat.
 {
@@ -164,7 +164,7 @@ bool test_8_retirer ()
 }
 
 bool test_9_retirer_vide ()
-// Algorithme : construit une nouvelle collection de taille nulle, puis
+// Algorithme : Construit une nouvelle collection de taille nulle, puis
 // essaie d'en retirer certaines valeurs avant d'afficher le résultat.
 {
     cout << "\tAffichage attendu :\t " << endl;
@@ -180,7 +180,9 @@ bool test_9_retirer_vide ()
 }
 
 bool test_10_retirer_aucun ()
-// Algorithme :
+// Algorithme : Construit une nouvelle collection avec des valeurs
+// initiales, puis essaie de retirer 0 valeurs de la collection avant
+// d'afficher le résultat.
 {
     cout << "\tAffichage attendu :\t1 2 3 4 5 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -196,7 +198,9 @@ bool test_10_retirer_aucun ()
 }
 
 bool test_11_ajuster_augmenter ()
-// Algorithme :
+// Algorithme : Construit une nouvelle collection avec des valeurs
+// initiales, puis essaie d'augmenter la taille allouée avant d'afficher
+// le résultat.
 {
     cout << "\tAffichage attendu :\t1 2 3 4 5 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -211,7 +215,9 @@ bool test_11_ajuster_augmenter ()
 }
 
 bool test_12_ajuster_diminuer ()
-// Algorithme :
+// Algorithme : Construit une nouvelle collection avec des valeurs
+// initiales, puis essaie de diminuer la taille allouée avant d'afficher
+// le résultat.
 {
     cout << "\tAffichage attendu :\t1 2 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -226,7 +232,9 @@ bool test_12_ajuster_diminuer ()
 }
 
 bool test_13_ajuster_nul ()
-// Algorithme :
+// Algorithme : Construit une nouvelle collection avec des valeurs
+// initiales, puis essaie de réduire la mémoire allouée à 0 avant
+// d'afficher le résultat.
 {
     cout << "\tAffichage attendu :\t " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -241,7 +249,9 @@ bool test_13_ajuster_nul ()
 }
 
 bool test_14_reunir_sans_reallocation ()
-// Algorithme :
+// Algorithme : Construit deux nouvelles collections avec des valeurs
+// initiales, puis essaie de réunir les deux en une seule, sans qu'il soit
+// nécessaire de ré-allouer lors de l'opération de réunion.
 {
     cout << "\tAffichage attendu :\t1 2 3 4 5 6 7 8 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -258,7 +268,10 @@ bool test_14_reunir_sans_reallocation ()
 }
 
 bool test_15_reunir_avec_reallocation ()
-// Algorithme :
+// Algorithme : Construit deux nouvelles collections avec des valeurs
+// initiales, puis essaie de réunir les deux en une seule, sachant que
+// l'espace alloué à la collection qui sera modifiée sera insuffisant lors
+// de la réunion, imposant une réallocation lors de la réunion.
 {
     cout << "\tAffichage attendu :\t1 2 3 4 5 6 7 8 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -274,7 +287,11 @@ bool test_15_reunir_avec_reallocation ()
 }
 
 int main ()
-// Algorithme : lance chaque test et vérifie qu'ils fonctionnent tous.
+// Algorithme : Lance chaque test et vérifie qu'ils fonctionnent tous.
+// Note : Aucun test ne renverra une condition d'échec actuellement, par
+// manque d'outils pour vérifier le contenu d'une Collection, mais il est
+// envisageable qu'une telle fonctionnalité pourrait être rajoutée par la
+// suite.
 {
     bool (*TESTS[]) () = {
         test_0_construction_1,
