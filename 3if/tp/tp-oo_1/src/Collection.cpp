@@ -29,17 +29,20 @@ using namespace std;
 //----------------------------------------------------- Méthodes publiques
 
 void Collection::Afficher ()
-// Algorithme :
+// Algorithme : Parcourt tous les éléments de 'tableau' et affiche chaque
+// valeur, séparées par un espace (note : il y aura un espace à la suite
+// du dernier élément, si 'tableau' est non-vide).
 {
     for (unsigned int i = 0; i < elements; i++)
     {
         cout << tableau[i] << ' ';
     }
     cout << endl;
-} //----- Fin de Méthode
+} //----- Fin de Afficher
 
 void Collection::Ajouter (int valeur)
-// Algorithme :
+// Algorithme : Ajuste la mémoire allouée si une quantité insuffisante a
+// été allouée, puis ajoute 'valeur' au tableau de valeurs 'tableau'.
 {
     if (elements >= alloue)
     {
@@ -48,10 +51,21 @@ void Collection::Ajouter (int valeur)
     tableau[elements] = valeur;
     elements++;
 
-} //----- Fin de Méthode
+} //----- Fin de Ajouter
 
 void Collection::Retirer (unsigned int n, int retirer[])
-// Algorithme :
+// Algorithme : Si la liste est non-vide :
+// 1.  Le pointeur du tableau des anciennes valeurs est copié dans un
+//     pointeur temporaire 'tmp' et 'tableau' est réinitialisé avec la
+//     même taille.
+// 2.  Une boucle itère sur chaque ancienne valeur (à partir de 'tmp') :
+//     i.  Si la valeur n'est pas dans le tableau de valeurs à retirer,
+//         elle est copiée dans le nouveau 'tableau'.
+//     ii. Sinon, la valeur n'est pas recopiée (ce qui revient à la
+//         supprimer).
+// 3.  Le nouveau 'tableau' est ré-ajusté pour avoir une taille mémoire au
+// plus juste.
+// 4. L'ancien 'tableau' (pointé par 'tmp') est supprimé.
 {
     if (n == 0)
     {
@@ -81,10 +95,15 @@ void Collection::Retirer (unsigned int n, int retirer[])
     elements = k;
     Ajuster(elements);
     delete[] tmp;
-} //----- Fin de Méthode
+} //----- Fin de Retirer
 
 void Collection::Ajuster (unsigned int n)
-// Algorithme :
+// Algorithme : Le pointeur du tableau est copié dans un pointeur
+// temporaire 'tmp' et 'tableau' est ré-initialisé pour devenir un
+// tableau d'entiers de taille 'n'. Chaque élément de l'ancien tableau
+// y est recopié, puis l'ancien tableau est supprimé. Si le nouveau
+// tableau est plus petit, on garde tous les éléments, dans l'ordre dans
+// lequel ils sont stockés, qui peuvent rentrer dans le nouveau tableau.
 {
     alloue = n;
     elements = (elements > alloue) ? alloue: elements;
@@ -95,10 +114,14 @@ void Collection::Ajuster (unsigned int n)
         tableau[i] = tmp[i];
     }
     delete[] tmp;
-} //----- Fin de Méthode
+} //----- Fin de Ajuster
 
 void Collection::Reunir (Collection* collection)
-// Algorithme :
+// Algorithme : S'il n'y a pas assez de mémoire allouée pour contenir les
+// éléments de cette collection ainsi que ceux de 'collection', la taille
+// de cette collection est augmentée ; sinon elle demeure inchangée.
+// Ensuite, chaque élément de 'collection' est copié dans cette
+// collection, et le nombre d'éléments de cette collection est ajusté.
 {
     if (collection->elements + elements > alloue)
     {
@@ -109,7 +132,7 @@ void Collection::Reunir (Collection* collection)
         tableau[elements + i] = collection->tableau[i];
     }
     elements += collection->elements;
-} //----- Fin de Méthode
+} //----- Fin de Reunir
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -117,7 +140,8 @@ void Collection::Reunir (Collection* collection)
 
 //-------------------------------------------- Constructeurs - destructeur
 Collection::Collection (unsigned int n)
-// Algorithme :
+// Algorithme : Initialise les attributs grâce à Init, sans opérations
+// supplémentaires.
 {
 #ifdef MAP
     cout << "Appel au constructeur de Collection" << endl;
@@ -126,7 +150,8 @@ Collection::Collection (unsigned int n)
 } //----- Fin de Collection
 
 Collection::Collection (unsigned int n, int items[])
-// Algorithme :
+// Algorithme : Initialise les attributs grâce à Init, puis ajoute toutes
+// les valeurs de 'items' au tableau.
 {
 #ifdef MAP
     cout << "Appel au constructeur de Collection" << endl;
@@ -139,8 +164,8 @@ Collection::Collection (unsigned int n, int items[])
 } //----- Fin de Collection
 
 Collection::~Collection ( )
-// Algorithme :
-//
+// Algorithme : Libère la mémoire allouée au tableau de valeurs lors de
+// l'initialisation.
 {
 #ifdef MAP
     cout << "Appel au destructeur de Collection" << endl;
@@ -154,11 +179,12 @@ Collection::~Collection ( )
 //----------------------------------------------------- Méthodes protégées
 
 void Collection::Init (unsigned int n)
-// Algorithme :
+// Algorithme : Initialise les attributs avec leurs valeurs initiales ;
+// une collection de taille 'n', contenant 0 éléments, est créée.
 {
     alloue = n;
     elements = 0;
     tableau = new int[n];
-} //----- Fin de Méthode
+} //----- Fin de Init
 
 //------------------------------------------------------- Méthodes privées

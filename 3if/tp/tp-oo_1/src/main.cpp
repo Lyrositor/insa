@@ -84,7 +84,7 @@ bool test_3_construction_2 ()
 
 bool test_4_construction_2_vide ()
 // Algorithme : construit une nouvelle collection vide avec le
-// constructeur 1, puis essaie de la supprimer.
+// constructeur 2, puis essaie de la supprimer.
 {
     unsigned int taille = 0;
     int items[] = {};
