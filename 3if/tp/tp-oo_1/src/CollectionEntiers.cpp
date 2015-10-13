@@ -1,11 +1,11 @@
 /*************************************************************************
-               Collection  - Collection dynamique d'entiers
+            CollectionEntiers  - Collection dynamique d'entiers
                              -------------------
     début                : 06/10/2015
     copyright            : (C) 2015 par B3309
 *************************************************************************/
 
-//---------- Réalisation de la classe <Collection> (fichier Collection.cpp)
+// Réalisation de la classe <CollectionEntiers> (fichier CollectionEntiers.cpp)
 
 //---------------------------------------------------------------- INCLUDE
 
@@ -14,7 +14,7 @@ using namespace std;
 #include <iostream>
 
 //------------------------------------------------------ Include personnel
-#include "Collection.h"
+#include "CollectionEntiers.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -28,7 +28,7 @@ using namespace std;
 
 //----------------------------------------------------- Méthodes publiques
 
-void Collection::Afficher ()
+void CollectionEntiers::Afficher ()
 // Algorithme : Parcourt tous les éléments de 'tableau' et affiche chaque
 // valeur, séparées par un espace (note : il y aura un espace à la suite
 // du dernier élément, si 'tableau' est non-vide).
@@ -40,7 +40,7 @@ void Collection::Afficher ()
     cout << endl;
 } //----- Fin de Afficher
 
-void Collection::Ajouter (int valeur)
+void CollectionEntiers::Ajouter (int valeur)
 // Algorithme : Ajuste la mémoire allouée si une quantité insuffisante a
 // été allouée, puis ajoute 'valeur' au tableau de valeurs 'tableau'.
 {
@@ -53,7 +53,7 @@ void Collection::Ajouter (int valeur)
 
 } //----- Fin de Ajouter
 
-void Collection::Retirer (unsigned int n, int retirer[])
+void CollectionEntiers::Retirer (unsigned int n, int retirer[])
 // Algorithme : Si la liste est non-vide :
 // 1.  Le pointeur du tableau des anciennes valeurs est copié dans un
 //     pointeur temporaire 'tmp' et 'tableau' est réinitialisé avec la
@@ -72,7 +72,7 @@ void Collection::Retirer (unsigned int n, int retirer[])
         return;
     }
 
-    int* tmp = tableau;
+    int * tmp = tableau;
     tableau = new int[elements];
     unsigned int k = 0;
     for (unsigned int i = 0; i < elements; i++)
@@ -97,7 +97,7 @@ void Collection::Retirer (unsigned int n, int retirer[])
     delete[] tmp;
 } //----- Fin de Retirer
 
-void Collection::Ajuster (unsigned int n)
+void CollectionEntiers::Ajuster (unsigned int n)
 // Algorithme : Le pointeur du tableau est copié dans un pointeur
 // temporaire 'tmp' et 'tableau' est ré-initialisé pour devenir un
 // tableau d'entiers de taille 'n'. Chaque élément de l'ancien tableau
@@ -107,7 +107,7 @@ void Collection::Ajuster (unsigned int n)
 {
     alloue = n;
     elements = (elements > alloue) ? alloue: elements;
-    int* tmp = tableau;
+    int * tmp = tableau;
     tableau = new int[n];
     for (unsigned int i = 0; i < elements && i < alloue; i++)
     {
@@ -116,7 +116,7 @@ void Collection::Ajuster (unsigned int n)
     delete[] tmp;
 } //----- Fin de Ajuster
 
-void Collection::Reunir (Collection* collection)
+void CollectionEntiers::Reunir (CollectionEntiers * collection)
 // Algorithme : S'il n'y a pas assez de mémoire allouée pour contenir les
 // éléments de cette collection ainsi que ceux de 'collection', la taille
 // de cette collection est augmentée ; sinon elle demeure inchangée.
@@ -139,46 +139,46 @@ void Collection::Reunir (Collection* collection)
 
 
 //-------------------------------------------- Constructeurs - destructeur
-Collection::Collection (unsigned int n)
+CollectionEntiers::CollectionEntiers(unsigned int n)
 // Algorithme : Initialise les attributs grâce à Init, sans opérations
 // supplémentaires.
 {
 #ifdef MAP
-    cout << "Appel au constructeur de Collection" << endl;
+    cout << "Appel au constructeur de CollectionEntiers" << endl;
 #endif
     Init(n);
-} //----- Fin de Collection
+} //----- Fin de CollectionEntiers
 
-Collection::Collection (unsigned int n, int items[])
+CollectionEntiers::CollectionEntiers(unsigned int n, int items[])
 // Algorithme : Initialise les attributs grâce à Init, puis ajoute toutes
 // les valeurs de 'items' au tableau.
 {
 #ifdef MAP
-    cout << "Appel au constructeur de Collection" << endl;
+    cout << "Appel au constructeur de CollectionEntiers" << endl;
 #endif
     Init(n);
     for (unsigned int i = 0; i < n; i++)
     {
         Ajouter(items[i]);
     }
-} //----- Fin de Collection
+} //----- Fin de CollectionEntiers
 
-Collection::~Collection ( )
+CollectionEntiers::~CollectionEntiers( )
 // Algorithme : Libère la mémoire allouée au tableau de valeurs lors de
 // l'initialisation.
 {
 #ifdef MAP
-    cout << "Appel au destructeur de Collection" << endl;
+    cout << "Appel au destructeur de CollectionEntiers" << endl;
 #endif
     delete[] tableau;
-} //----- Fin de ~Collection
+} //----- Fin de CollectionEntiers
 
 
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
 
-void Collection::Init (unsigned int n)
+void CollectionEntiers::Init (unsigned int n)
 // Algorithme : Initialise les attributs avec leurs valeurs initiales ;
 // une collection de taille 'n', contenant 0 éléments, est créée.
 {

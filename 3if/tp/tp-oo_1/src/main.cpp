@@ -1,5 +1,5 @@
 /*************************************************************************
-                 main - Ensemble de tests pour Collection
+              main - Ensemble de tests pour CollectionEntiers
                              -------------------
     début                : 06/10/2015
     copyright            : (C) 2015 par B3309
@@ -12,12 +12,12 @@ using namespace std;
 #include <iostream>
 
 //------------------------------------------------------ Include personnel
-#include "collection.h"
+#include "CollectionEntiers.h"
 
 //------------------------------------------------------------- Constantes
 const unsigned int NUM_TESTS = 16;
 
-const char* TESTS_NOMS[] = {
+const char * TESTS_NOMS[] = {
         "Construction (1)",
         "Construction de collection vide (1)",
         "Construction et affichage (1)",
@@ -43,7 +43,7 @@ bool test_0_construction_1 ()
 // puis essaie de la supprimer.
 {
     unsigned int taille = 5;
-    Collection* c = new Collection(taille);
+    CollectionEntiers * c = new CollectionEntiers(taille);
     delete c;
     return true;
 }
@@ -53,7 +53,7 @@ bool test_1_construction_1_vide ()
 // constructeur 1, puis essaie de la supprimer.
 {
     unsigned int taille = 0;
-    Collection* c = new Collection(taille);
+    CollectionEntiers * c = new CollectionEntiers(taille);
     delete c;
     return true;
 }
@@ -65,7 +65,7 @@ bool test_2_construction_1_affichage ()
     cout << "\tAffichage attendu :\t" << endl;
     cout << "\tAffichage obtenu :\t";
     unsigned int taille = 10;
-    Collection* c = new Collection(taille);
+    CollectionEntiers * c = new CollectionEntiers(taille);
     c->Afficher();
     delete c;
     return true;
@@ -77,7 +77,7 @@ bool test_3_construction_2 ()
 {
     unsigned int taille = 5;
     int items[] = {1, 2, 3, 4, 5};
-    Collection* c = new Collection(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, items);
     delete c;
     return true;
 }
@@ -88,7 +88,7 @@ bool test_4_construction_2_vide ()
 {
     unsigned int taille = 0;
     int items[] = {};
-    Collection* c = new Collection(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, items);
     delete c;
     return true;
 }
@@ -101,7 +101,7 @@ bool test_5_construction_2_affichage ()
     cout << "\tAffichage obtenu :\t";
     unsigned int taille = 10;
     int items[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    Collection* c = new Collection(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, items);
     c->Afficher();
     delete c;
     return true;
@@ -116,7 +116,7 @@ bool test_6_ajouter_sans_reallocation ()
     cout << "\tAffichage attendu :\t1 2 3 4 5 " << endl;
     cout << "\tAffichage obtenu :\t";
     unsigned int taille = 5;
-    Collection* c = new Collection(taille);
+    CollectionEntiers * c = new CollectionEntiers(taille);
     for (int i = 1; i <= 5; i++)
     {
         c->Ajouter(i);
@@ -135,7 +135,7 @@ bool test_7_ajouter_avec_reallocation ()
     cout << "\tAffichage attendu :\t1 2 3 4 5 " << endl;
     cout << "\tAffichage obtenu :\t";
     unsigned int taille = 0;
-    Collection* c = new Collection(taille);
+    CollectionEntiers * c = new CollectionEntiers(taille);
     for (int i = 1; i <= 5; i++)
     {
         c->Ajouter(i);
@@ -156,7 +156,7 @@ bool test_8_retirer ()
     int items[] = {1, 2, 3, 4, 5};
     unsigned int n = 3;
     int retirer[] = {5, 2, 5};
-    Collection* c = new Collection(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, items);
     c->Retirer(n, retirer);
     c->Afficher();
     delete c;
@@ -172,7 +172,7 @@ bool test_9_retirer_vide ()
     unsigned int taille = 0;
     unsigned int n = 3;
     int retirer[] = {5, 2, 5};
-    Collection* c = new Collection(taille);
+    CollectionEntiers * c = new CollectionEntiers(taille);
     c->Retirer(n, retirer);
     c->Afficher();
     delete c;
@@ -190,7 +190,7 @@ bool test_10_retirer_aucun ()
     int items[] = {1, 2, 3, 4, 5};
     unsigned int n = 0;
     int retirer[] = {};
-    Collection* c = new Collection(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, items);
     c->Retirer(n, retirer);
     c->Afficher();
     delete c;
@@ -207,7 +207,7 @@ bool test_11_ajuster_augmenter ()
     unsigned int taille = 5;
     int items[] = {1, 2, 3, 4, 5};
     unsigned int taille_augmentee = 10;
-    Collection* c = new Collection(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, items);
     c->Ajuster(taille_augmentee);
     c->Afficher();
     delete c;
@@ -224,7 +224,7 @@ bool test_12_ajuster_diminuer ()
     unsigned int taille = 5;
     int items[] = {1, 2, 3, 4, 5};
     unsigned int taille_reduite = 2;
-    Collection* c = new Collection(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, items);
     c->Ajuster(taille_reduite);
     c->Afficher();
     delete c;
@@ -241,7 +241,7 @@ bool test_13_ajuster_nul ()
     unsigned int taille = 5;
     int items[] = {1, 2, 3, 4, 5};
     unsigned int taille_reduite = 0;
-    Collection* c = new Collection(taille, items);
+    CollectionEntiers * c = new CollectionEntiers(taille, items);
     c->Ajuster(taille_reduite);
     c->Afficher();
     delete c;
@@ -259,9 +259,9 @@ bool test_14_reunir_sans_reallocation ()
     int items1[] = {1, 2, 3, 4, 5};
     unsigned int taille2 = 3;
     int items2[] = {6, 7, 8};
-    Collection* c1 = new Collection(taille1, items1);
+    CollectionEntiers * c1 = new CollectionEntiers(taille1, items1);
     c1->Ajuster(taille1 + taille2);
-    Collection* c2 = new Collection(taille2, items2);
+    CollectionEntiers * c2 = new CollectionEntiers(taille2, items2);
     c1->Reunir(c2);
     c1->Afficher();
     return true;
@@ -279,8 +279,8 @@ bool test_15_reunir_avec_reallocation ()
     int items1[] = {1, 2, 3, 4, 5};
     unsigned int taille2 = 3;
     int items2[] = {6, 7, 8};
-    Collection* c1 = new Collection(taille1, items1);
-    Collection* c2 = new Collection(taille2, items2);
+    CollectionEntiers * c1 = new CollectionEntiers(taille1, items1);
+    CollectionEntiers * c2 = new CollectionEntiers(taille2, items2);
     c1->Reunir(c2);
     c1->Afficher();
     return true;
@@ -289,9 +289,9 @@ bool test_15_reunir_avec_reallocation ()
 int main ()
 // Algorithme : Lance chaque test et vérifie qu'ils fonctionnent tous.
 // Note : Aucun test ne renverra une condition d'échec actuellement, par
-// manque d'outils pour vérifier le contenu d'une Collection, mais il est
-// envisageable qu'une telle fonctionnalité pourrait être rajoutée par la
-// suite.
+// manque d'outils pour vérifier le contenu d'une CollectionEntiers, mais
+// il est envisageable qu'une telle fonctionnalité pourrait être rajoutée
+// par la suite.
 {
     bool (*TESTS[]) () = {
         test_0_construction_1,
