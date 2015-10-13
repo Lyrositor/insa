@@ -34,10 +34,13 @@ public:
     // Contrat : 'std::cout' doit exister et être accessible.
 
     void Ajouter (int valeur);
+    // <valeur> : valeur à ajouter dans CollectionEntiers
     // Mode d'emploi : Ajoute la valeur en paramètre à la collection.
     // Contrat : 'valeur' doit être un entier.
 
     void Retirer (unsigned int n, int retirer[]);
+    // <n> : taille de retirer
+    //<retirer[]> : tableau d'entiers à retirer de la collection
     // Mode d'emploi : Retire la liste de valeurs passée en paramètre de
     // la collection.
     // Contrat : 'n' doit spécifier la taille de 'retirer' ; 'retirer'
@@ -50,6 +53,7 @@ public:
     // construite et initialisée.
 
     void Ajuster (unsigned int n);
+    // <n> : nouvelle taille de la collection
     // Mode d'emploi : Modifie la taille de la collection pour qu'elle
     // prenne la taille 'n'. 'n' peut être supérieur ou inférieur à la
     // taille actulle (auquel cas la collection sera tronguée à partir de
@@ -61,11 +65,14 @@ public:
 //-------------------------------------------- Constructeurs - destructeur
 
     CollectionEntiers(unsigned int n);
+    // <n> : taille de la collection
     // Mode d'emploi : Construit une collection de taille 'n' sans valeurs
     // de départ (allocation seule).
     // Contrat : 'n' doit être un entier positif.
 
     CollectionEntiers(unsigned int n, int valeurs[]);
+    // <n> : taille du tableau de valeurs
+    // <valeurs[]> : tableau d'entiers
     // Mode d'emploi : Construit une collection de taille 'n' avec les
     // valeurs de départ du tableau 'valeurs'.
     // Contrat : 'n' doit spécifier la taille de 'valeurs' ; 'valeurs'
@@ -82,6 +89,7 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
     void Init(unsigned int n);
+    // <n> : taille initiale à allouer
     // Mode d'emploi : Initialise les valeurs de tous les attributs.
     // Contract : 'n' doit être un entier positif.
 
