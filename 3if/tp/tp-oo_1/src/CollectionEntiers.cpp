@@ -28,7 +28,7 @@ using namespace std;
 
 //----------------------------------------------------- Méthodes publiques
 
-void CollectionEntiers::Afficher ()
+void CollectionEntiers::Afficher () const
 // Algorithme : Parcourt tous les éléments de 'tableau' et affiche chaque
 // valeur, séparées par un espace (note : il y aura un espace à la suite
 // du dernier élément, si 'tableau' est non-vide).

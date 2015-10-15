@@ -28,7 +28,7 @@ class CollectionEntiers
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    void Afficher ();
+    void Afficher () const;
     // Mode d'emploi : Affiche le contenu de la collection.
     // Les valeurs sont séparées par des espaces.
     // Contrat : 'std::cout' doit exister et être accessible.
