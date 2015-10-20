@@ -264,6 +264,8 @@ bool test_14_reunir_sans_reallocation ()
     CollectionEntiers * c2 = new CollectionEntiers(taille2, valeurs2);
     c1->Reunir(c2);
     c1->Afficher();
+    delete c1;
+    delete c2;
     return true;
 }
 
@@ -283,6 +285,8 @@ bool test_15_reunir_avec_reallocation ()
     CollectionEntiers * c2 = new CollectionEntiers(taille2, valeurs2);
     c1->Reunir(c2);
     c1->Afficher();
+    delete c1;
+    delete c2;
     return true;
 }
 
