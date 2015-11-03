@@ -59,7 +59,7 @@ function [] = probleme_chauffage_plaque()
         X = expm(A*1)*X;
         surf(reshape(X, 15, 30));
         hold on
-        axis([0 30 0 15 150 300])
+        axis([0 30 0 15 0 300])
         hold off
         pause(0.1);
         
@@ -67,11 +67,6 @@ function [] = probleme_chauffage_plaque()
         for j=16:18
             X(c(8, j)) = 300;
         end
-        surf(reshape(X, 15, 30));
-        hold on
-        axis([0 30 0 15 150 300])
-        hold off
-        pause(0.1);
     end
 end
 
