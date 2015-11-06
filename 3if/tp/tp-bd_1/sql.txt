@@ -1,0 +1,60 @@
+alter table "MGAGNE"."COUNTRY" add constraint COUNTRY_CAPITALKEY foreign key("CODE", "CAPITAL", "PROVINCE") references "CITY"("COUNTRY", "NAME", "PROVINCE");
+alter table "MGAGNE"."CITY" add constraint CITY_PROVINCEKEY foreign key("COUNTRY", "PROVINCE") references "PROVINCE"("COUNTRY", "NAME");
+alter table "MGAGNE"."PROVINCE" add constraint PROVINCE_COUNTRYKEY foreign key("COUNTRY") references "COUNTRY"("CODE");
+alter table "MGAGNE"."BORDERS" add constraint BORDERS_LENGTHPOSITIVE check(LENGTH > 0) ENABLE;
+
+ALTER TABLE "COUNTRY" MODIFY ("NAME" NOT NULL);
+ALTER TABLE COUNTRY ADD CONSTRAINT COUNTRY_UNIQUENAME UNIQUE (NAME);
+alter table "MGAGNE"."ECONOMY" add constraint ECONOMY_PERCENTAGE
+check(AGRICULTURE >= 0 AND AGRICULTURE <= 100 AND SERVICE >= 0 AND SERVICE <= 100 AND INDUSTRY >= 0 AND INDUSTRY <= 100) ENABLE;
+
+INSERT INTO Country (Name, Code, Area, Population) VALUES ('Atlan', 'AT', 400, 180000);
+INSERT INTO Country (Name, Code, Area, Population) VALUES ('Tis', 'TIS', 100, 20000);
+INSERT INTO Province (Name, Country, Population, Area) VALUES ('Atlan', 'AT', 400, 180000);
+INSERT INTO Province (Name, Country, Population, Area) VALUES ('Tis', 'TIS', 100, 20000);
+UPDATE Country SET Capital=NULL, Province=NULL WHERE Code='ATL';
+UPDATE Province SET Capital=NULL WHERE Name='Atlantis' AND Country='ATL';
+UPDATE City SET Country='AT', Province='Atlan' WHERE Name='Atlantis City' AND Country='ATL' AND Province='Atlantis';
+DELETE FROM Province WHERE Name='Atlantis' AND Country='ATL';
+DELETE FROM Country WHERE Code='ATL';
+
+alter table "MGAGNE"."PROVINCE" add constraint PROVINCE_CAPITALKEY foreign key("NAME", "COUNTRY", "CAPPROV") references "CITY"("PROVINCE", "COUNTRY", "NAME");
+
+/* 2.3.1 */
+SELECT * FROM Country ORDER BY Name ASC;
+
+/* 2.3.2 */
+SELECT Organization, COUNT(*) AS Members FROM Is_Member
+  WHERE Type='member'
+  GROUP BY Organization
+  HAVING COUNT(*)=(
+    SELECT MAX(COUNT(*)) FROM Is_Member
+      WHERE Type='member' GROUP BY Organization
+  );
+  
+/* 2.3.3 */
+SELECT c1.Code, c1.Name, SUM(c2.Population/c1.Population) CityPopulation
+  FROM Country c1, City c2
+  WHERE c2.COUNTRY = c1.Code
+  GROUP BY c1.Code, c1.Name
+  ORDER BY CityPopulation DESC;
+
+/* 2.3.4 */
+SELECT Continent, SUM(c.Population*e.PERCENTAGE/100) Population
+  FROM Encompasses e, Country c
+  WHERE e.Country = c.Code
+  GROUP BY Continent
+  ORDER BY Population ASC;
+  
+/* 2.3.5 */
+CREATE OR REPLACE VIEW v_235(
+  SELECT Country1 Country, SUM(Length) Length
+  FROM Borders
+  GROUP BY Country1
+);
+INSERT INTO v_235
+  SELECT Country2 Country, SUM(length) Length
+  FROM Borders
+  GROUP BY Country2;
+SELECT Country, Length
+  FROM v_235;
