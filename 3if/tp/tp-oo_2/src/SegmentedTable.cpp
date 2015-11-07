@@ -42,7 +42,7 @@ template<typename E>
 unsigned int SegmentedTable<E>::length() const {
     unsigned int l = 0;
     if (numSegments > 0) {
-        l += (numSegments - 1) * segmentSize;
+        l += static_cast<unsigned int>(numSegments - 1) * segmentSize;
         l += numSegmentEntries;
     }
     return l;

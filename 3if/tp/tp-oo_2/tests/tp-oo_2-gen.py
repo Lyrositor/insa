@@ -1,5 +1,6 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
+from __future__ import division
 import argparse
 import random
 
@@ -34,6 +35,8 @@ parser.add_argument(
 parser.add_argument(
         "output_file", metavar="OUTPUT", default=OUTPUT_FILE, nargs="?",
         help="the output file to create")
+parser.add_argument("-r", "--random", action="store_true",
+        help="randomize timestamps, instead of generating events sequentially")
 args = parser.parse_args()
 
 stats = {
@@ -42,15 +45,13 @@ stats = {
         "counts": [0] * 4
     },
     "jam_dh": {
-        "day": random.randint(1, 7),
+        "day": 1,
         "counts": [0] * 24,
         "totals": [0] * 24
     },
     "stats_d7": {
-        "day": random.randint(1, 7),
+        "day": 1,
         "counts": [0] * 4
-    },
-    "opt": {
     }
 }
 
@@ -59,6 +60,8 @@ progress = 0
 timestamp = 0
 i = 0
 while i < args.events:
+    if args.random:
+        timestamp = random.randrange((31+30+31+31+30)*24*60)
     minute = int(timestamp % 60)
     hour = int(((timestamp - minute)/60) % 24)
     days = int((timestamp - minute - hour*60)/(24 * 60))
@@ -92,7 +95,8 @@ while i < args.events:
     if i/args.events * 100 - progress >= 1:
         progress = int(i/args.events * 100)
         print("{}%".format(progress))
-    timestamp += 1
+    if not args.random:
+        timestamp += 1
 
 f.write(END.format(stats["stats_c"]["id"], stats["jam_dh"]["day"], stats["stats_d7"]["day"]))
 f.close()
