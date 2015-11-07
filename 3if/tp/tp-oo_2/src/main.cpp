@@ -1,11 +1,11 @@
 #include <iostream>
 #include <string>
 #include "City.h"
-#include "Event.h"
 
 int main () {
     City* city = new City();
     std::string command;
+    std::ios::sync_with_stdio(false);
     for (;;) {
         if (std::cin.eof())
             break;
@@ -25,21 +25,25 @@ int main () {
             // Check for errors.
             if (year != YEAR || month < START_MONTH || month > END_MONTH
                     || day < 1 || day > MONTH_DAYS[month - START_MONTH]
-                    || hour > 23 || minute > 59 || day7 < 1 || day7 > 7)
-                continue;
+                    || hour > 23 || minute > 59 || day7 < 1 || day7 > 7) {
+                delete city;
+                return 1;
+            }
             unsigned short stateNum = 4;
             for (unsigned short i = 0; i < 4; i++)
                 if (STATES[i] == state) {
                     stateNum = i;
                     break;
                 }
-            if (stateNum == 4)
-                continue;
+            if (stateNum == 4) {
+                delete city;
+                return 1;
+            }
 
             // Save the event.
             city->addEvent(
                     sensorId, stateNum, month, day, hour, minute,
-                    (unsigned short) (day7 - 1));
+                    static_cast<unsigned short>(day7 - 1));
 
         // STATS_C <idCaptor>
         // Displays the statistics for a specific sensor.
@@ -53,18 +57,23 @@ int main () {
         } else if (command == "JAM_DH") {
             unsigned short day7;
             std::cin >> day7;
-            if (day7 < 1 || day7 > 7)
-                continue;
-            city->displayDayTrafficJamStats((unsigned short) (day7 - 1));
+            if (day7 < 1 || day7 > 7) {
+                delete city;
+                return 1;
+            }
+            city->displayDayTrafficJamStats(
+                    static_cast<unsigned short>(day7 - 1));
 
         // STATS_D7 <D7>
         // Displays the statistics for a day of the week.
         } else if (command == "STATS_D7") {
             unsigned short day7;
             std::cin >> day7;
-            if (day7 < 1 || day7 > 7)
-                continue;
-            city->displayDayStateStats((unsigned short) (day7 - 1));
+            if (day7 < 1 || day7 > 7) {
+                delete city;
+                return 1;
+            }
+            city->displayDayStateStats(static_cast<unsigned short>(day7 - 1));
 
         // OPT <D7> <H_start> <H_end> <seg_count> <seg_1> ... <seg_n>
         // Displays the optimal departure time for a journey.
@@ -75,11 +84,13 @@ int main () {
             unsigned int* segments = new unsigned int[segCount];
             for (unsigned int i = 0; i < segCount; i++)
                 std::cin >> segments[i];
-            if (day7 < 1 || day7 > 7 || hStart > 23 || hEnd > 23)
-                continue;
+            if (day7 < 1 || day7 > 7 || hStart > 24 || hEnd > 24) {
+                delete city;
+                return 1;
+            }
             city->displayOptimalDepartureTime(
-                    (unsigned short) (day7 - 1), hStart, hEnd, segCount,
-                    segments);
+                    static_cast<unsigned short>(day7 - 1), hStart, hEnd,
+                    segCount, segments);
             delete[] segments;
 
         // EXIT
@@ -90,4 +101,3 @@ int main () {
     delete city;
     return 0;
 }
-

@@ -26,6 +26,7 @@
    <div id="projectname">TP C++ 2
    &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">Utility for managing a city&#39;s traffic statistics.</div>
   </td>
  </tr>
  </tbody>
@@ -91,21 +92,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">SegmentedTable&lt; E &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A table which can adjust its size in large chunks and works as an array.  
+ <a href="class_segmented_table.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_segmented_table_8h_source.html">SegmentedTable.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afd8294915917a475e8ff93161b092604"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd8294915917a475e8ff93161b092604"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SegmentedTable</b> (unsigned int segmentSize, unsigned int maxSegments)</td></tr>
-<tr class="separator:afd8294915917a475e8ff93161b092604"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52f440b8a496f2e1d2ab8803e9924383"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52f440b8a496f2e1d2ab8803e9924383"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SegmentedTable</b> (unsigned int size, unsigned int maxSegments)</td></tr>
+<tr class="separator:a52f440b8a496f2e1d2ab8803e9924383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a680bdc05599596d5a710b0f4c7cf3ab9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a680bdc05599596d5a710b0f4c7cf3ab9"></a>
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> (E element)</td></tr>
 <tr class="separator:a680bdc05599596d5a710b0f4c7cf3ab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2432ab71e053f677d9c13b5e594c471f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2432ab71e053f677d9c13b5e594c471f"></a>
 const E&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (unsigned int index) const </td></tr>
 <tr class="separator:a2432ab71e053f677d9c13b5e594c471f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa542abf97267fb84faf0bbde3ef7fe50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa542abf97267fb84faf0bbde3ef7fe50"></a>
-const unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>length</b> () const </td></tr>
-<tr class="separator:aa542abf97267fb84faf0bbde3ef7fe50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50b735404ec03c7de75ed14afe0d4b1c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50b735404ec03c7de75ed14afe0d4b1c"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>length</b> () const </td></tr>
+<tr class="separator:a50b735404ec03c7de75ed14afe0d4b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -128,9 +134,16 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>numSegmentEnt
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>segmentSize</b></td></tr>
 <tr class="separator:ae8c3c314960daeb5382f04a5212c1e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_segmented_table_8h_source.html">SegmentedTable.h</a></li>
-<li>src/<a class="el" href="_segmented_table__impl_8h_source.html">SegmentedTable_impl.h</a></li>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename E&gt;<br />
+class SegmentedTable&lt; E &gt;</h3>
+
+<p>A table which can adjust its size in large chunks and works as an array. </p>
+<p>The table is made up of multiple segments of a preset size. When a segment runs out of size to store data, a new segment is allocated. Accessing elements works like an array, since the segments are stored in order. </p>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
+<li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/<a class="el" href="_city_8h_source.html">City.h</a></li>
+<li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/<a class="el" href="_segmented_table_8h_source.html">SegmentedTable.h</a></li>
+<li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/SegmentedTable.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

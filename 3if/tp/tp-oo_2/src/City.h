@@ -2,8 +2,11 @@
 #define CITY_H
 
 #include "config.h"
-#include "HashTable.h"
-#include "Sensor.h"
+
+class Event;
+class HashTable;
+class Sensor;
+template <typename E> class SegmentedTable;
 
 /** Manages the city's sensors and associated events.
  *
@@ -63,7 +66,12 @@ public:
 
     /** Displays the optimal time to leave on a certain journey.
      *
-     * NOT IMPLEMENTED
+     * Given a set number of segments (corresponding to a sensor's area), this
+     * method finds the best time to leave on a journey comprised of those
+     * segments, in the order in which they were provided. To calculate the best
+     * time, it looks up the state of traffic at each segment at the time of
+     * arrival; a 'V' traffic state leads to a shorter journey than a 'J' state,
+     * for example.
      * @param day7 the day of the week (from 0 to 6)
      * @param hStart the starting hour of the time range (from 0 to 23)
      * @param hEnd the ending hour of the time range (from hStart to 23)
@@ -109,13 +117,5 @@ protected:
      */
     Sensor* getSensor(unsigned int sensorId) const;
 };
-
-/** Rounds a floating-point number to the nearest integer.
- *
- * Half-way values (those ending in .5) are rounded down.
- * @param n the floating-point number to round
- * @return the rounded value
- */
-unsigned int round(float n);
 
 #endif // CITY_H

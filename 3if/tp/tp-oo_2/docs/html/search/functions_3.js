@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_7ecity',['~City',['../class_city.html#ae95feee8a1d4e1f14ea41ec89b47304f',1,'City']]]
+  ['getsensor',['getSensor',['../class_city.html#ad16ed9f15139b7fbad67557d8b7089d6',1,'City']]]
 ];

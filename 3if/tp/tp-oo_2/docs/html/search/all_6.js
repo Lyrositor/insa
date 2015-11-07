@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['num_5fdays',['NUM_DAYS',['../config_8h.html#a7780285633ba315a821a72ae797e422e',1,'config.h']]],
-  ['num_5fmonths',['NUM_MONTHS',['../config_8h.html#aa60a77d1b5b77dedfb528dbceb178451',1,'config.h']]],
-  ['numsensors',['numSensors',['../class_city.html#a2b51b4ba827af8b46f9f3842e7c5c712',1,'City']]]
+  ['max_5fevents',['MAX_EVENTS',['../config_8h.html#a031e649e9ca06aeb4391b7a97c107bfc',1,'config.h']]],
+  ['max_5fsensors',['MAX_SENSORS',['../config_8h.html#aeb314256fac035649e7b7df9e17ef655',1,'config.h']]],
+  ['month_5fdays',['MONTH_DAYS',['../config_8h.html#a236019a56016ea29eb265f6e61df7700',1,'config.h']]]
 ];

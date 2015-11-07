@@ -13,13 +13,18 @@ const unsigned short MAX_SENSORS = 1500;
 const unsigned short NUM_DAYS = 7;
 
 /** The size of a segment of events (for the segmented table). */
-const unsigned int EVENT_SEGMENT_SIZE = (int) (MAX_EVENTS/NUM_DAYS) + 1;
+const unsigned int EVENT_SEGMENT_SIZE =
+        static_cast<int> (MAX_EVENTS/NUM_DAYS) + 1;
 
 /** The size of a segment of event links (for the segmented table). */
-const unsigned int EVENT_LINK_SEGMENT_SIZE = (int) (MAX_EVENTS/MAX_SENSORS) + 1;
+const unsigned int EVENT_LINK_SEGMENT_SIZE =
+        static_cast<int> (MAX_EVENTS/MAX_SENSORS) + 1;
 
 /** The list of possible states. */
 const unsigned char STATES[] = {'V', 'J', 'R', 'N'};
+
+/** The list of times spent waiting for each state. */
+const unsigned short STATE_TIMES[] = {1, 2, 4, 10};
 
 /** The only authorized year for events. */
 const unsigned short YEAR = 2015;

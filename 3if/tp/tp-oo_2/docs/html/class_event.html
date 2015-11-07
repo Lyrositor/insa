@@ -26,6 +26,7 @@
    <div id="projectname">TP C++ 2
    &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">Utility for managing a city&#39;s traffic statistics.</div>
   </td>
  </tr>
  </tbody>
@@ -91,15 +92,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Event Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Represents a sensor's events.  
+ <a href="class_event.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_event_8h_source.html">Event.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a90856e33d5a09f7e5c450fb8e57e99c0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90856e33d5a09f7e5c450fb8e57e99c0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Event</b> (unsigned short sensorIndex, unsigned short state, unsigned short month, unsigned short day, unsigned short hour, unsigned short minute)</td></tr>
-<tr class="separator:a90856e33d5a09f7e5c450fb8e57e99c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71211f207cb7b0eaf6b24fa01d2671d5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71211f207cb7b0eaf6b24fa01d2671d5"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>sensorIndex</b> () const </td></tr>
-<tr class="separator:a71211f207cb7b0eaf6b24fa01d2671d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80d608e3910cc35dd206b189ab2cadf8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80d608e3910cc35dd206b189ab2cadf8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Event</b> (unsigned short trafficState, unsigned short month, unsigned short day, unsigned short hour, unsigned short minute)</td></tr>
+<tr class="separator:a80d608e3910cc35dd206b189ab2cadf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8997b8a13e81d0d53405ef589726933"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8997b8a13e81d0d53405ef589726933"></a>
 unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>state</b> () const </td></tr>
 <tr class="separator:ae8997b8a13e81d0d53405ef589726933"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,13 +130,13 @@ unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>byte2</b></t
 <tr class="memitem:a620aa4a34714b9d2a50e9181daceeb6f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a620aa4a34714b9d2a50e9181daceeb6f"></a>
 unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>byte3</b></td></tr>
 <tr class="separator:a620aa4a34714b9d2a50e9181daceeb6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70d1340a405cdf5e2f77fc256630cb29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70d1340a405cdf5e2f77fc256630cb29"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>byte4</b></td></tr>
-<tr class="separator:a70d1340a405cdf5e2f77fc256630cb29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_event_8h_source.html">Event.h</a></li>
-<li>src/Event.cpp</li>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Represents a sensor's events. </p>
+<p>An event is comprised of the state of traffic at that time and the timestamp in minutes of the time it occurred at. </p>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
+<li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/<a class="el" href="_event_8h_source.html">Event.h</a></li>
+<li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/Event.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

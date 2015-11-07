@@ -26,6 +26,7 @@
    <div id="projectname">TP C++ 2
    &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">Utility for managing a city&#39;s traffic statistics.</div>
   </td>
  </tr>
  </tbody>
@@ -127,6 +128,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a58c4141414ef9073be9fbc60889c7822"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_city.html#a58c4141414ef9073be9fbc60889c7822">addSensor</a> (unsigned int sensorId)</td></tr>
 <tr class="memdesc:a58c4141414ef9073be9fbc60889c7822"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new sensor to the array of sensors and returns its new index.  <a href="#a58c4141414ef9073be9fbc60889c7822">More...</a><br /></td></tr>
 <tr class="separator:a58c4141414ef9073be9fbc60889c7822"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad16ed9f15139b7fbad67557d8b7089d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_sensor.html">Sensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_city.html#ad16ed9f15139b7fbad67557d8b7089d6">getSensor</a> (unsigned int sensorId) const </td></tr>
+<tr class="memdesc:ad16ed9f15139b7fbad67557d8b7089d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a sensor by its ID.  <a href="#ad16ed9f15139b7fbad67557d8b7089d6">More...</a><br /></td></tr>
+<tr class="separator:ad16ed9f15139b7fbad67557d8b7089d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -360,7 +364,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Displays the optimal time to leave on a certain journey. </p>
-<p>NOT IMPLEMENTED </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Given a set number of segments (corresponding to a sensor's area), this method finds the best time to leave on a journey comprised of those segments, in the order in which they were provided. To calculate the best time, it looks up the state of traffic at each segment at the time of arrival; a 'V' traffic state leads to a shorter journey than a 'J' state, for example. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">day7</td><td>the day of the week (from 0 to 6) </td></tr>
     <tr><td class="paramname">hStart</td><td>the starting hour of the time range (from 0 to 23) </td></tr>
@@ -394,6 +398,39 @@ Protected Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="ad16ed9f15139b7fbad67557d8b7089d6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_sensor.html">Sensor</a> * City::getSensor </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>sensorId</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets a sensor by its ID. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sensorId</td><td>the ID of the sensor to retrieve </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the sensor with a matching ID (or null if not found) </dd></dl>
 
 </div>
 </div>
@@ -489,8 +526,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_city_8h_source.html">City.h</a></li>
-<li>src/City.cpp</li>
+<li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/<a class="el" href="_city_8h_source.html">City.h</a></li>
+<li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/City.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

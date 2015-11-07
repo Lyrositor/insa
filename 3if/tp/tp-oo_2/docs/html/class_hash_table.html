@@ -26,6 +26,7 @@
    <div id="projectname">TP C++ 2
    &#160;<span id="projectnumber">1.0</span>
    </div>
+   <div id="projectbrief">Utility for managing a city&#39;s traffic statistics.</div>
   </td>
  </tr>
  </tbody>
@@ -91,12 +92,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">HashTable Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A hash table for storing shorts.  
+ <a href="class_hash_table.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_hash_table_8h_source.html">HashTable.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1f10b397f70824693bbb6579c0b3fc4b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f10b397f70824693bbb6579c0b3fc4b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>HashTable</b> (unsigned short modulo, unsigned short bucketSize)</td></tr>
-<tr class="separator:a1f10b397f70824693bbb6579c0b3fc4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a906a6787ffb228b6c65b39c7b40c4758"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a906a6787ffb228b6c65b39c7b40c4758"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>HashTable</b> (unsigned short mod, unsigned short size)</td></tr>
+<tr class="separator:a906a6787ffb228b6c65b39c7b40c4758"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af79c390da997046b564d452ff3a965eb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af79c390da997046b564d452ff3a965eb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (unsigned int key, unsigned short value)</td></tr>
 <tr class="separator:af79c390da997046b564d452ff3a965eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,9 +134,12 @@ unsigned short **&#160;</td><td class="memItemRight" valign="bottom"><b>buckets<
 unsigned short *&#160;</td><td class="memItemRight" valign="bottom"><b>bucketsNumElements</b></td></tr>
 <tr class="separator:a69d5a612d5ccd12898aa45d4804da95f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_hash_table_8h_source.html">HashTable.h</a></li>
-<li>src/HashTable.cpp</li>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A hash table for storing shorts. </p>
+<p>Provides an associative array between an integer and a short. In the case of a collision, the returned values must be iterated over to find the desired one. </p>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
+<li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/<a class="el" href="_hash_table_8h_source.html">HashTable.h</a></li>
+<li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/HashTable.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

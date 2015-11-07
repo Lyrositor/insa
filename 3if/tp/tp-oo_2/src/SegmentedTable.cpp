@@ -1,7 +1,11 @@
+#include "Event.h"
+#include "EventLink.h"
+#include "SegmentedTable.h"
+
 template <typename E>
 SegmentedTable<E>::SegmentedTable(
-        unsigned int segmentSize, unsigned int maxSegments) :
-        numSegments(0), numSegmentEntries(0), segmentSize(segmentSize) {
+        unsigned int size, unsigned int maxSegments) :
+        numSegments(0), numSegmentEntries(0), segmentSize(size) {
     segments = new E*[maxSegments];
 }
 
@@ -23,7 +27,7 @@ unsigned int SegmentedTable<E>::append(E element) {
 
 template <typename E>
 const E SegmentedTable<E>::get(unsigned int index) const {
-    unsigned short segmentIndex = (unsigned short) (index/segmentSize);
+    unsigned short segmentIndex = static_cast<unsigned short>(index/segmentSize);
     return segments[segmentIndex][index % segmentSize];
 }
 
@@ -35,11 +39,15 @@ void SegmentedTable<E>::appendSegment() {
 }
 
 template<typename E>
-const unsigned int SegmentedTable<E>::length() const {
-    unsigned int length = 0;
+unsigned int SegmentedTable<E>::length() const {
+    unsigned int l = 0;
     if (numSegments > 0) {
-        length += (numSegments - 1)*segmentSize;
-        length += numSegmentEntries;
+        l += (numSegments - 1) * segmentSize;
+        l += numSegmentEntries;
     }
-    return length;
+    return l;
 }
+
+/* List all possible implementations. */
+template class SegmentedTable<Event>;
+template class SegmentedTable<EventLink>;

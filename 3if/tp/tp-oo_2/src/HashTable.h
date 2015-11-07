@@ -1,9 +1,16 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
+/**
+ * A hash table for storing shorts.
+ *
+ * Provides an associative array between an integer and a short. In the case of
+ * a collision, the returned values must be iterated over to find the desired
+ * one.
+ */
 class HashTable {
 public:
-    HashTable(unsigned short modulo, unsigned short bucketSize);
+    HashTable(unsigned short mod, unsigned short size);
     virtual ~HashTable();
 
     void add(unsigned int key, unsigned short value);

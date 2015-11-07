@@ -1,8 +1,10 @@
+#include "Event.h"
+#include "SegmentedTable.h"
 #include "Sensor.h"
 
 Sensor::Sensor(
-        unsigned int id, unsigned int segmentSize, unsigned int maxSegments) :
-        id(id) {
+        unsigned int sensorId, unsigned int segmentSize,
+        unsigned int maxSegments) : id(sensorId) {
     eventLinks = new SegmentedTable<EventLink>(segmentSize, maxSegments);
 }
 
@@ -28,6 +30,6 @@ unsigned int Sensor::getId() const {
     return id;
 }
 
-const unsigned int Sensor::getNumEvents() const {
+unsigned int Sensor::getNumEvents() const {
     return eventLinks->length();
 }

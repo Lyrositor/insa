@@ -1,11 +1,11 @@
 #include "HashTable.h"
 
-HashTable::HashTable(unsigned short modulo, unsigned short bucketSize) :
-        modulo(modulo), bucketSize(bucketSize) {
-    buckets = new unsigned short*[modulo];
-    bucketsNumElements = new unsigned short[modulo];
-    for (unsigned short i = 0; i < modulo; i++) {
-        buckets[i] = new unsigned short[bucketSize];
+HashTable::HashTable(unsigned short mod, unsigned short size) :
+        modulo(mod), bucketSize(size) {
+    buckets = new unsigned short*[mod];
+    bucketsNumElements = new unsigned short[mod];
+    for (unsigned short i = 0; i < mod; i++) {
+        buckets[i] = new unsigned short[size];
         bucketsNumElements[i] = 0;
     }
 }
@@ -34,5 +34,5 @@ unsigned short HashTable::get(unsigned int key, unsigned short j) const {
 }
 
 unsigned short HashTable::hash(unsigned int value) const {
-    return (unsigned short) (value % modulo);
+    return static_cast<unsigned short>(value % modulo);
 }

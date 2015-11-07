@@ -1,17 +1,21 @@
 set(TP-OO_2_SOURCES
         City.cpp
         Event.cpp
+        EventLink.cpp
         HashTable.cpp
         Sensor.cpp
-        SegmentedTable_impl.h EventLink.cpp EventLink.h)
+        SegmentedTable.cpp
+)
 
 set(TP-OO_2_HEADERS
         config.h
         City.h
         Event.h
+        EventLink.h
         HashTable.h
         Sensor.h
-        SegmentedTable.h EventLink.cpp EventLink.h)
+        SegmentedTable.h
+)
 
 set(TP-OO_2_MAIN main.cpp)
 
