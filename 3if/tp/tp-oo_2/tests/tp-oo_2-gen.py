@@ -41,7 +41,7 @@ args = parser.parse_args()
 
 stats = {
     "stats_c": {
-        "id": random.randrange(0, MAX_SENSORS),
+        "id": 0,
         "counts": [0] * 4
     },
     "jam_dh": {

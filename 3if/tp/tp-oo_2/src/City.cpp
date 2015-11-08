@@ -16,7 +16,7 @@
  */
 City::City() : numSensors(0) {
     for (unsigned short i = 0; i < NUM_DAYS; i++)
-        events[i] = new SegmentedTable<Event>(EVENT_SEGMENT_SIZE, MAX_EVENTS);
+        events[i] = new SegmentedTable<Event>(EVENT_SEGMENT_SIZE, NUM_DAYS);
     sensorIndices = new HashTable(MAX_SENSORS*10, MAX_SENSORS);
 }
 
@@ -239,7 +239,7 @@ void City::displayOptimalDepartureTime(
 
     // Calculate the best times for the generated average day.
     // By default, no valid journey has been found.
-    unsigned short bestJourneyTime = 0, bestDepartureTime = 0;
+    int bestJourneyTime = 0, bestDepartureTime = 0;
     bool noValidJourney = true;
     for (int j = 0; j < (hEnd - hStart)*60; j++) {
         // By default, assume the journey is valid.
@@ -249,6 +249,11 @@ void City::displayOptimalDepartureTime(
         // For every segment, get its state at the current time, which gets
         // incremented at each segment, in accordance with the state's value.
         for (unsigned int i = 0; i < segCount; i++) {
+            // Ensure that we do not go over into the next day.
+            if (j + journeyTime >= maxMinutes) {
+                invalidJourney = true;
+                break;
+            }
             // Assume the current state is V initially, with no counts.
             unsigned short state = 0;
             unsigned int stateCount = 0;
@@ -297,7 +302,7 @@ void City::displayOptimalDepartureTime(
         // If the time is the number of segments, this means this is the best
         // possible time, since that means that for every segment the state was
         // V (segCount * 1 = segCount).
-        if (bestDepartureTime == segCount)
+        if (static_cast<unsigned int>(bestDepartureTime) == segCount)
             break;
     }
 

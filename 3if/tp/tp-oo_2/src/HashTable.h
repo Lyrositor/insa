@@ -15,7 +15,7 @@ public:
 
     void add(unsigned int key, unsigned short value);
     unsigned short entries(unsigned int key) const;
-    unsigned short get(unsigned int key, unsigned short j) const;
+    unsigned short get(unsigned int key, unsigned short index) const;
 
 protected:
     unsigned short modulo;

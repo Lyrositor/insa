@@ -28,9 +28,9 @@ unsigned short HashTable::entries(unsigned int key) const {
     return bucketsNumElements[i];
 }
 
-unsigned short HashTable::get(unsigned int key, unsigned short j) const {
+unsigned short HashTable::get(unsigned int key, unsigned short index) const {
     unsigned short i = hash(key);
-    return buckets[i][j];
+    return buckets[i][index];
 }
 
 unsigned short HashTable::hash(unsigned int value) const {
