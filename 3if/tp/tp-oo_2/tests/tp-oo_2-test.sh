@@ -14,15 +14,15 @@ function run_test {
 	grep -v '^#' temp1.txt > temp2.txt
 	diff -wB $4 temp2.txt
 	if [ $? -eq 0 ]; then
-        echo PASSED
-        let "nSuccesfulTests=$nSuccesfulTests+1"
-        nStrResult=$nStrResult" 1"
-    else
-        echo FAILED
-        nStrResult=$nStrResult" 0"
+		echo PASSED
+		let "nSuccesfulTests=$nSuccesfulTests+1"
+		nStrResult=$nStrResult" 1"
+	else
+		echo FAILED
+		nStrResult=$nStrResult" 0"
 	fi
-    
-    rm -f temp1.txt temp2.txt
+
+	rm -f temp1.txt temp2.txt
 }
 
 run_test $1 ADD.1 add.1.in add.1.out
@@ -32,7 +32,7 @@ run_test $1 STATS_D7.4 stats_d7.4.in stats_d7.4.out
 run_test $1 OPT.5 opt.5.in opt.5.out
 if [ -f max.6.in ]
 then
-    run_test $1 MAX.6 max.6.in max.6.out
+	run_test $1 MAX.6 max.6.in max.6.out
 fi
 
 echo -----------------------------------------------------------

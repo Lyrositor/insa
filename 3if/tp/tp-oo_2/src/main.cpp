@@ -3,9 +3,12 @@
 #include "City.h"
 
 int main () {
+    // Disable synchronization with the C IO library to speed up input and
+    // output.
+    std::ios::sync_with_stdio(false);
+
     City* city = new City();
     std::string command;
-    std::ios::sync_with_stdio(false);
     for (;;) {
         if (std::cin.eof())
             break;

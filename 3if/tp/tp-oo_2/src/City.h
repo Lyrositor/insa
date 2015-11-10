@@ -3,6 +3,7 @@
 
 #include "config.h"
 
+/* Forward declarations */
 class Event;
 class HashTable;
 class Sensor;
@@ -17,8 +18,8 @@ public:
     /** Initializes the city to a default state.
      *
      * A city can hold up to 20,000,000 events and 1,500 sensors; events must
-     * be added in chronological order and take place between may and
-     * september 2015.
+     * be added in chronological order and take place between May and
+     * September 2015.
      */
     City();
 
@@ -34,7 +35,7 @@ public:
      * @param sensorId the ID of the sensor which generated the event
      * @param state the event's associated state (from 0 to 3)
      * @param month the month of the year (from 0 to 4)
-     * @param day the day of the month (from 0 to 30)
+     * @param day the day of the month (from 1 to 30/31)
      * @param hour the hour of the day (from 0 to 23)
      * @param minute the minute of the hour (from 0 to 59)
      * @param day7 the day of the week (from 0 to 6)

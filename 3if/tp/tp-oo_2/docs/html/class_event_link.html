@@ -99,35 +99,133 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a02240f81c3a118e3a3619bb066cff7c5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02240f81c3a118e3a3619bb066cff7c5"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>EventLink</b> (unsigned short d7, unsigned int idx)</td></tr>
+<tr class="memitem:ac3bd48daa711deffcae1a8085faf3020"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_event_link.html#ac3bd48daa711deffcae1a8085faf3020">EventLink</a> ()</td></tr>
+<tr class="memdesc:ac3bd48daa711deffcae1a8085faf3020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a void link to an event.  <a href="#ac3bd48daa711deffcae1a8085faf3020">More...</a><br /></td></tr>
+<tr class="separator:ac3bd48daa711deffcae1a8085faf3020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02240f81c3a118e3a3619bb066cff7c5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_event_link.html#a02240f81c3a118e3a3619bb066cff7c5">EventLink</a> (unsigned short d7, unsigned int idx)</td></tr>
+<tr class="memdesc:a02240f81c3a118e3a3619bb066cff7c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a link to a certain event on a certain day.  <a href="#a02240f81c3a118e3a3619bb066cff7c5">More...</a><br /></td></tr>
 <tr class="separator:a02240f81c3a118e3a3619bb066cff7c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3ae448d4dc315fc32872910f122b50d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3ae448d4dc315fc32872910f122b50d"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>day7</b> () const </td></tr>
+<tr class="memitem:ae3ae448d4dc315fc32872910f122b50d"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_event_link.html#ae3ae448d4dc315fc32872910f122b50d">day7</a> () const </td></tr>
+<tr class="memdesc:ae3ae448d4dc315fc32872910f122b50d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the linked event's day of the week.  <a href="#ae3ae448d4dc315fc32872910f122b50d">More...</a><br /></td></tr>
 <tr class="separator:ae3ae448d4dc315fc32872910f122b50d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57e967cd92edf923f846beb4b8a59f3d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57e967cd92edf923f846beb4b8a59f3d"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>index</b> () const </td></tr>
+<tr class="memitem:a57e967cd92edf923f846beb4b8a59f3d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_event_link.html#a57e967cd92edf923f846beb4b8a59f3d">index</a> () const </td></tr>
+<tr class="memdesc:a57e967cd92edf923f846beb4b8a59f3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the linked event's index in the day's table.  <a href="#a57e967cd92edf923f846beb4b8a59f3d">More...</a><br /></td></tr>
 <tr class="separator:a57e967cd92edf923f846beb4b8a59f3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:acb420b117d99f48b7394dd98ac6c4914"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb420b117d99f48b7394dd98ac6c4914"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>byte1</b></td></tr>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_event_link.html#acb420b117d99f48b7394dd98ac6c4914">byte1</a></td></tr>
+<tr class="memdesc:acb420b117d99f48b7394dd98ac6c4914"><td class="mdescLeft">&#160;</td><td class="mdescRight">The highest order byte (stores the day and part of the index). <br /></td></tr>
 <tr class="separator:acb420b117d99f48b7394dd98ac6c4914"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ca91cb35cdc9078f1d501fd204879d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ca91cb35cdc9078f1d501fd204879d7"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>byte2</b></td></tr>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_event_link.html#a9ca91cb35cdc9078f1d501fd204879d7">byte2</a></td></tr>
+<tr class="memdesc:a9ca91cb35cdc9078f1d501fd204879d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The second-highest order byte (stores part of the index). <br /></td></tr>
 <tr class="separator:a9ca91cb35cdc9078f1d501fd204879d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8dd2d7a5e1202bdfe726be5263d6900"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8dd2d7a5e1202bdfe726be5263d6900"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>byte3</b></td></tr>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_event_link.html#ad8dd2d7a5e1202bdfe726be5263d6900">byte3</a></td></tr>
+<tr class="memdesc:ad8dd2d7a5e1202bdfe726be5263d6900"><td class="mdescLeft">&#160;</td><td class="mdescRight">The third-highest order byte (stores part of the index). <br /></td></tr>
 <tr class="separator:ad8dd2d7a5e1202bdfe726be5263d6900"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3854d0a6149d5b005ab39b75cb9fda09"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3854d0a6149d5b005ab39b75cb9fda09"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>byte4</b></td></tr>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_event_link.html#a3854d0a6149d5b005ab39b75cb9fda09">byte4</a></td></tr>
+<tr class="memdesc:a3854d0a6149d5b005ab39b75cb9fda09"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fourth-highest order byte (stores part of the index). <br /></td></tr>
 <tr class="separator:a3854d0a6149d5b005ab39b75cb9fda09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a link to a stored event. </p>
 <p>A link consists of a day of the week (0 - 6) and the event's index within the day's event table. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="ac3bd48daa711deffcae1a8085faf3020"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">EventLink::EventLink </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializes a void link to an event. </p>
+<p>By default, this links to the first element of the first day, but such a link should be explicitly initialized instead. </p>
+
+</div>
+</div>
+<a class="anchor" id="a02240f81c3a118e3a3619bb066cff7c5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">EventLink::EventLink </td>
+          <td>(</td>
+          <td class="paramtype">unsigned short&#160;</td>
+          <td class="paramname"><em>d7</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>idx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializes a link to a certain event on a certain day. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">d7</td><td>the event's day of the week (from 0 to 6) </td></tr>
+    <tr><td class="paramname">idx</td><td>the event's index in the day's table </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ae3ae448d4dc315fc32872910f122b50d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short EventLink::day7 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the linked event's day of the week. </p>
+<dl class="section return"><dt>Returns</dt><dd>the linked event's day of the week </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a57e967cd92edf923f846beb4b8a59f3d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int EventLink::index </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the linked event's index in the day's table. </p>
+<dl class="section return"><dt>Returns</dt><dd>the linked event's index in the day's table </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/<a class="el" href="_event_link_8h_source.html">EventLink.h</a></li>
 <li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/EventLink.cpp</li>
 </ul>

@@ -1,0 +1,7 @@
+# Tests
+tests/max.6.in
+tests/max.6.out
+tests/temp*.txt
+tests/results.txt
+tests/tp-oo_2-test.in
+tests/tp-oo_2-test.out

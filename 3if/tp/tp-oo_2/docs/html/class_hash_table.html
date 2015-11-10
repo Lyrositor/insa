@@ -100,44 +100,285 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a906a6787ffb228b6c65b39c7b40c4758"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a906a6787ffb228b6c65b39c7b40c4758"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>HashTable</b> (unsigned short mod, unsigned short size)</td></tr>
+<tr class="memitem:a906a6787ffb228b6c65b39c7b40c4758"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hash_table.html#a906a6787ffb228b6c65b39c7b40c4758">HashTable</a> (unsigned short mod, unsigned short size)</td></tr>
+<tr class="memdesc:a906a6787ffb228b6c65b39c7b40c4758"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the hash table with its hashing parameters and bucket size.  <a href="#a906a6787ffb228b6c65b39c7b40c4758">More...</a><br /></td></tr>
 <tr class="separator:a906a6787ffb228b6c65b39c7b40c4758"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af79c390da997046b564d452ff3a965eb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af79c390da997046b564d452ff3a965eb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (unsigned int key, unsigned short value)</td></tr>
+<tr class="memitem:a9ce5569bb945880cacb29aaba6f3e3f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ce5569bb945880cacb29aaba6f3e3f9"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hash_table.html#a9ce5569bb945880cacb29aaba6f3e3f9">~HashTable</a> ()</td></tr>
+<tr class="memdesc:a9ce5569bb945880cacb29aaba6f3e3f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructs the hash table and all its buckets. <br /></td></tr>
+<tr class="separator:a9ce5569bb945880cacb29aaba6f3e3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af79c390da997046b564d452ff3a965eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hash_table.html#af79c390da997046b564d452ff3a965eb">add</a> (unsigned int key, unsigned short value)</td></tr>
+<tr class="memdesc:af79c390da997046b564d452ff3a965eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new key-value association to the hash table.  <a href="#af79c390da997046b564d452ff3a965eb">More...</a><br /></td></tr>
 <tr class="separator:af79c390da997046b564d452ff3a965eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf2d225037c8aca0450e56e6ff49923c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf2d225037c8aca0450e56e6ff49923c"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>entries</b> (unsigned int key) const </td></tr>
+<tr class="memitem:acf2d225037c8aca0450e56e6ff49923c"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hash_table.html#acf2d225037c8aca0450e56e6ff49923c">entries</a> (unsigned int key) const </td></tr>
+<tr class="memdesc:acf2d225037c8aca0450e56e6ff49923c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of values stored for a certain key.  <a href="#acf2d225037c8aca0450e56e6ff49923c">More...</a><br /></td></tr>
 <tr class="separator:acf2d225037c8aca0450e56e6ff49923c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1daaf482cfb826b05b0fa2d9da504381"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1daaf482cfb826b05b0fa2d9da504381"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (unsigned int key, unsigned short index) const </td></tr>
+<tr class="memitem:a1daaf482cfb826b05b0fa2d9da504381"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hash_table.html#a1daaf482cfb826b05b0fa2d9da504381">get</a> (unsigned int key, unsigned short index) const </td></tr>
+<tr class="memdesc:a1daaf482cfb826b05b0fa2d9da504381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value corresponding to the specified key, at the specified index in the bucket.  <a href="#a1daaf482cfb826b05b0fa2d9da504381">More...</a><br /></td></tr>
 <tr class="separator:a1daaf482cfb826b05b0fa2d9da504381"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a6ac9f7350e7e41abf531f476b694e48e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ac9f7350e7e41abf531f476b694e48e"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>hash</b> (unsigned int value) const </td></tr>
+<tr class="memitem:a6ac9f7350e7e41abf531f476b694e48e"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hash_table.html#a6ac9f7350e7e41abf531f476b694e48e">hash</a> (unsigned int value) const </td></tr>
+<tr class="memdesc:a6ac9f7350e7e41abf531f476b694e48e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hashes the provided value and returns its hash.  <a href="#a6ac9f7350e7e41abf531f476b694e48e">More...</a><br /></td></tr>
 <tr class="separator:a6ac9f7350e7e41abf531f476b694e48e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a149432410c2675ea94111eef31d118d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a149432410c2675ea94111eef31d118d7"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>modulo</b></td></tr>
+unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hash_table.html#a149432410c2675ea94111eef31d118d7">modulo</a></td></tr>
+<tr class="memdesc:a149432410c2675ea94111eef31d118d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The modulo value used by the hash function. <br /></td></tr>
 <tr class="separator:a149432410c2675ea94111eef31d118d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cb1bb31cc46ee7451580a7bac802a6f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1cb1bb31cc46ee7451580a7bac802a6f"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>bucketSize</b></td></tr>
+<tr class="memitem:a1cb1bb31cc46ee7451580a7bac802a6f"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hash_table.html#a1cb1bb31cc46ee7451580a7bac802a6f">bucketSize</a></td></tr>
+<tr class="memdesc:a1cb1bb31cc46ee7451580a7bac802a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size to allocate for each key's bucket.  <a href="#a1cb1bb31cc46ee7451580a7bac802a6f">More...</a><br /></td></tr>
 <tr class="separator:a1cb1bb31cc46ee7451580a7bac802a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bd0b003513563ae2a61a19d0ab2d2ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9bd0b003513563ae2a61a19d0ab2d2ec"></a>
-unsigned short **&#160;</td><td class="memItemRight" valign="bottom"><b>buckets</b></td></tr>
+<tr class="memitem:a9bd0b003513563ae2a61a19d0ab2d2ec"><td class="memItemLeft" align="right" valign="top">unsigned short **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hash_table.html#a9bd0b003513563ae2a61a19d0ab2d2ec">buckets</a></td></tr>
+<tr class="memdesc:a9bd0b003513563ae2a61a19d0ab2d2ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">The array of key buckets.  <a href="#a9bd0b003513563ae2a61a19d0ab2d2ec">More...</a><br /></td></tr>
 <tr class="separator:a9bd0b003513563ae2a61a19d0ab2d2ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69d5a612d5ccd12898aa45d4804da95f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69d5a612d5ccd12898aa45d4804da95f"></a>
-unsigned short *&#160;</td><td class="memItemRight" valign="bottom"><b>bucketsNumElements</b></td></tr>
+<tr class="memitem:a69d5a612d5ccd12898aa45d4804da95f"><td class="memItemLeft" align="right" valign="top">unsigned short *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hash_table.html#a69d5a612d5ccd12898aa45d4804da95f">bucketsNumElements</a></td></tr>
+<tr class="memdesc:a69d5a612d5ccd12898aa45d4804da95f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of elements in each bucket.  <a href="#a69d5a612d5ccd12898aa45d4804da95f">More...</a><br /></td></tr>
 <tr class="separator:a69d5a612d5ccd12898aa45d4804da95f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A hash table for storing shorts. </p>
 <p>Provides an associative array between an integer and a short. In the case of a collision, the returned values must be iterated over to find the desired one. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a906a6787ffb228b6c65b39c7b40c4758"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HashTable::HashTable </td>
+          <td>(</td>
+          <td class="paramtype">unsigned short&#160;</td>
+          <td class="paramname"><em>mod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned short&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializes the hash table with its hashing parameters and bucket size. </p>
+<p>The modulo value also specifies how many buckets will be created to hold all possible key-value pairs. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mod</td><td>the value of the modulo used to hash keys </td></tr>
+    <tr><td class="paramname">size</td><td>the maximum size of a bucket </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="af79c390da997046b564d452ff3a965eb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HashTable::add </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned short&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a new key-value association to the hash table. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the ID used to look up the value </td></tr>
+    <tr><td class="paramname">value</td><td>the value to store under the specified key </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="acf2d225037c8aca0450e56e6ff49923c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short HashTable::entries </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the number of values stored for a certain key. </p>
+<p>Usually equal to 1 in good situations; any value superior to 1 indicates a hash collision. The entries must be iterated over to find the correct one. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the ID to look up </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of entries in the specified key's bucket </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a1daaf482cfb826b05b0fa2d9da504381"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short HashTable::get </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned short&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the value corresponding to the specified key, at the specified index in the bucket. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the ID to look up </td></tr>
+    <tr><td class="paramname">index</td><td>the index of the value in the key's bucket </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the value stored at that index in the key's bucket </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6ac9f7350e7e41abf531f476b694e48e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short HashTable::hash </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Hashes the provided value and returns its hash. </p>
+<p>The hash function performs a simple modulo operation on the value and returns the result. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>the value to hash </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the hashed value </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a9bd0b003513563ae2a61a19d0ab2d2ec"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short** HashTable::buckets</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The array of key buckets. </p>
+<p>The number of buckets corresponds to the modulo value. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1cb1bb31cc46ee7451580a7bac802a6f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short HashTable::bucketSize</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The size to allocate for each key's bucket. </p>
+<p>The size should be sufficient to handle a worst-case scenario where every key creates a collision in the same bucket. </p>
+
+</div>
+</div>
+<a class="anchor" id="a69d5a612d5ccd12898aa45d4804da95f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short* HashTable::bucketsNumElements</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The number of elements in each bucket. </p>
+<p>Incremented every time a value is added to a bucket until it is full. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/<a class="el" href="_hash_table_8h_source.html">HashTable.h</a></li>
 <li>C:/Users/Marc/Documents/academia/insa/3if/tp/tp-oo_2/src/HashTable.cpp</li>
 </ul>
