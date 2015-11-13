@@ -47,7 +47,7 @@ SELECT Continent, SUM(c.Population*e.PERCENTAGE/100) Population
   ORDER BY Population ASC;
   
 /* 2.3.5 */
-CREATE OR REPLACE VIEW v_235(
+CREATE OR REPLACE VIEW v_235 AS(
   SELECT Country1 Country, SUM(Length) Length
   FROM Borders
   GROUP BY Country1
@@ -57,4 +57,109 @@ INSERT INTO v_235
   FROM Borders
   GROUP BY Country2;
 SELECT Country, Length
-  FROM v_235;
+  FROM v_235
+  ORDER BY Length DESC;
+  
+/* 2.3.6 */
+SELECT Name, COUNT(*)
+  FROM City
+  GROUP BY Name
+  HAVING COUNT(DISTINCT Country) > 1;
+  
+/* 2.3.7 */
+SELECT Name, COUNT(*)
+  FROM City
+  GROUP BY Name
+  HAVING COUNT(DISTINCT Country) > 1
+  ORDER BY COUNT(*) DESC, Name;
+  
+/* 2.3.8 */
+SELECT Code, Name
+  FROM Country c, Politics p
+  WHERE c.Code = p.Country AND p.Independence IS NULL;
+
+/* 2.3.9 */
+SELECT Code, Name
+  FROM Country
+  WHERE Code NOT IN (
+    SELECT DISTINCT Country
+      FROM Is_Member
+      WHERE Country IS NOT NULL
+  );
+
+/* 2.3.10 */
+SELECT c.Code, c.Name, m.Organization
+  FROM Country c, Is_Member m
+  WHERE c.Code = m.Country(+)
+  ORDER BY c.Code;
+
+/* 2.3.17 */
+CREATE OR REPLACE PROCEDURE p_2317(
+  p$code IN Country.Code%TYPE,
+  p$name OUT country.name%TYPE,
+  p$nbFront OUT NUMBER
+)
+IS
+BEGIN
+ -- rechercher le nom du pays dont le code est passé en paramètre
+  SELECT Name
+    INTO p$name
+    FROM Country
+    WHERE Code = p$code;
+ 
+ -- nombre de pays frontaliers
+  SELECT COUNT(*)
+    INTO p$nbFront
+    FROM Borders
+    WHERE Country1 = p$code
+    OR Country2 = p$code;
+
+END;
+
+-----------
+
+CREATE OR REPLACE 
+PROCEDURE TEST_p_2317(
+  p$code IN Country.Code%TYPE
+)
+IS
+  v$name Country.Name%TYPE;
+  v$nbFront NUMBER;
+BEGIN
+  p_2317(p$code, v$name, v$nbFront);
+  
+  -- affichage des résultats
+  dbms_output.put_line('Le pays de code '||p$code||' a pour nom '||v$name||' et pour nombre de frontieres '||v$nbFront);
+END;
+/
+show errors;
+
+-----------
+
+execute TEST_p_2317('F');
+
+/* 2.4 */
+SELECT TABLE_NAME FROM user_tables;
+
+/* 2.5.1 */
+CREATE OR REPLACE TRIGGER TRG_Politics_CheckIndependence
+  BEFORE INSERT OR UPDATE ON Politics
+  FOR EACH ROW
+BEGIN
+  IF(:new.Independence > SYSDATE())
+  THEN
+    RAISE_APPLICATION_ERROR(-20000, 'Invalid Independence Day.');
+  END IF;
+END;
+
+/* 2.5.2 */
+CREATE OR REPLACE TRIGGER TRG_Country_Code
+  BEFORE INSERT OR UPDATE ON Country
+  FOR EACH ROW
+BEGIN
+  IF(NOT REGEXP_LIKE(:NEW.Code, '^[A-Za-z]+$'))
+  THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Invalid Code.');
+  END IF;
+  :NEW.Code := UPPER(:NEW.Code);
+END;
