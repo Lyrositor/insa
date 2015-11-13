@@ -1,6 +1,5 @@
 function X = gauss_seidel(A, B, max_iterations)
     [A_i, A_j] = size(A);
-    M = tril(A) ;
     X = ones(A_j, 1);
     Xm = X;
     

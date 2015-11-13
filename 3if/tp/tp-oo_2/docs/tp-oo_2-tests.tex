@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[frenchb]{babel}
+\usepackage[autolanguage]{numprint}
+\usepackage[margin=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{listings}
+
+\begin{document}
+
+\title{
+	Compte-rendu du TP C++ 2\\
+	Tests
+}
+\author{
+	Marc Gagné\\
+	\and
+	Selma Nemmaoui
+}
+\date{Novembre 2015}
+\maketitle
+
+\section*{Préambule}
+
+Afin de vérifier la qualité de notre code, nous avons mis en place une procédure de non-régression dans le répertoire \texttt{/tests/}. Elle comprend trois parties :
+\begin{itemize}
+  \item des fichiers texte \texttt{.in} et \texttt{.out} qui fournissent des entrées pour le programme ainsi que la sortie attendue - si la sortie obtenue correspond au contenu du fichier \texttt{.out}, le test est validé (ces tests sont détaillés par la suite),
+  \item un script Python \texttt{tp-oo\_2-gen.py} qui permet de générer des fichiers \texttt{.in} et \texttt{.out} de grande taille, ce qui permet de vérifier que notre programme peut gérer de grandes quantités de données,
+  \item et un script bash \texttt{tp-oo\_2-test.sh} qui vérifie automatiquement plusieurs tests avec une seule commande ; le chemin de l'exécutable doit lui être passé en paramètre.
+\end{itemize}
+
+Le script Python peut être utilisé pour générer une infinité de tests, soit en mode normal où chaque capteur, chaque minute a un événement (utile pour tester la commande \texttt{OPT}), ou en mode \texttt{-{}-random} (pour tester les autres commandes). Le script bash permet de tester tous les tests décrits ci-dessous ; si le fichier d'entrée pour le test \nameref{sec:MAX.6} n'est pas trouvé, le test n'est pas exécuté.
+
+\underline{Note :} la commande \texttt{EXIT} n'a pas de test associé, car son fonctionnement est extrêmement simple et elle est utilisée dans chaque test.
+
+\section*{ADD.1}
+\label{sec:ADD.1}
+
+\underline{Fichiers :} \texttt{add.1.in}, \texttt{add.1.out}
+
+Le but de ce test est de vérifier que la commande \texttt{ADD} fonctionne correctement. Elle suppose que \texttt{STATS\_C} fonctionne correctement pour des valeurs ordinaires (le test suivant vérifie plus strictement que cette commande fonctionne bien).
+
+\begin{itemize}
+  \item Le test vérifie que chaque fois que la commande est appelée, le bon événement est rajouté. Pour cela, il vérifie d'abord qu'il n'y a aucun événement associé au capteur 42 en vérifiant que la commande \texttt{STATS\_C} ne renvoie rien.
+  \item Ensuite, le test ajoute un événement au capteur 42, puis vérifie que la commande \texttt{STATS\_C} reflète l'ajout de cet événement.
+  \item Le test essaie ensuite de voir si l'ajout d'un événement au capteur 41 ne modifie pas les statistiques du capteur 42.
+  \item Finalement, un autre événement est ajouté au capteur 42, et le test vérifie si les statistiques de ce capteur ont bien été modifiées.
+\end{itemize}
+
+Pour tous les tests subséquents, il est supposé que cette commande fonctionne correctement.
+
+\section*{STATS\_C.2}
+\label{sec:STATS_C.2}
+
+\underline{Fichiers :} \texttt{stats\_c.2.in}, \texttt{stats\_c.2.out}
+
+Le but de ce test est de vérifier que la commande \texttt{STATS\_C} fonctionne correctement.
+
+\begin{itemize}
+  \item Le test vérifie d'abord que la commande ne renvoie rien sans ajout d'événements.
+  \item Plusieurs événements d'un même capteur sont ensuite ajoutés, et le test vérifie que les statistiques affichées reflètent bien la répartition des états.
+  \item D'autres événements d'un autre capteur sont ajoutés, et le test vérifie que les statistiques de chaque capteur sont indépendantes l'une de l'autre.
+  \item Finalement, d'autres statistiques sont rajoutées au capteur initial et le test vérifie que les statistiques sont modifiées correctement.
+\end{itemize}
+
+\section*{JAM\_DH.3}
+\label{sec:JAM_DH.3}
+
+\underline{Fichiers :} \texttt{jam\_dh.3.in}, \texttt{jam\_dh.3.out}
+
+Le but de ce test est de vérifier que la commande \texttt{JAM\_DH} fonctionne correctement. Pour ce faire, il ajoute 4 événements à plusieurs capteurs le même jour de la semaine, vérifiant que les statistiques d'embouteillage reflètent chaque ajout correctement, puis il ajoute un événement d'un autre jour de la semaine pour s'assurer que les statistiques pour le jour initial ne sont pas perturbées.
+
+\section*{STATS\_D7.4}
+\label{sec:STATS_D7.4}
+
+\underline{Fichiers :} \texttt{stats\_d7.4.in}, \texttt{stats\_d7.4.out}
+
+Le but de ce test est de vérifier que la commande \texttt{STATS\_D7} fonctionne correctement. Le test marche comme le test \nameref{sec:JAM_DH.3} : il ajoute sept événements sur le même jour de la semaine, vérifie que les statistiques de trafic sont correctes, puis ajoute sept autres événements à un autre jour de la semaine et vérifie que les statistiques de chaque jour sont indépendantes l'une de l'autre.
+
+\section*{OPT.5}
+\label{sec:OPT.5}
+
+\underline{Fichiers :} \texttt{opt.5.in}, \texttt{opt.5.out}
+
+Le but de ce test est de vérifier que la commande \texttt{OPT} fonctionne correctement.
+
+\begin{itemize}
+  \item Il ajoute d'abord beaucoup d'événements pour trois capteurs le même jour de la semaine, la majorité des événements ayant lieu directement l'un après l'autre pour assurer la continuité temporelle.
+  \item Un premier essai de la commande \texttt{OPT} vérifie qu'il est impossible de trouver un chemin valable avant la séquence continue d'événements.
+  \item Les deux essais subséquents essaient de trouver deux chemin valables sur deux parties de la plage horaire continue.
+  \item Le dernier essai vérifie qu'il est impossible de trouver un chemin après la séquence continue d'événements.
+\end{itemize}
+
+\section*{MAX.6}
+\label{sec:MAX.6}
+
+\underline{Fichiers :} \texttt{max.6.in}, \texttt{max.6.out}
+
+Le but de ce test est de vérifier que le programme fonctionne bien avec \nombre{20000000} d'événements générés par \nombre{1500} capteurs. Les fichiers d'entrée et de sortie peuvent être générés par le script Python détaillé dans le préambule. Il ajoute \nombre{20000000} d'événements, puis vérifie que les commandes \texttt{STATS\_C}, \texttt{JAM\_DH} et \texttt{STATS\_D7} renvoient les résultats attendus.
+
+\underline{Avertissement :} Le fichier d'entrée peut avoir une taille d'environ 500 Mo si \nombre{20000000} d'événements sont générés.
+
+\end{document}
