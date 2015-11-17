@@ -1,0 +1,70 @@
+function [] = application_3(f1, f2)
+    N = 32768;
+    a = -5;
+    b = 5;
+    Te = (b-a)/N;
+    Fe = 1/Te;
+    t=a:Te:b-Te;
+    f = -Fe/2:Fe/N:Fe/2-Fe/N;
+
+    % Calcul de s1 échantillonnée
+    s1 = zeros(N, 1);
+    for k=1:N
+        s1(k) = calc_s1(t(k));
+    end
+    S1 = tfour(transpose(s1));
+ 
+    % Calcul de s2 échantillonnée
+    s2 = zeros(N, 1);
+    for k=1:N
+        s2(k) = calc_s2(t(k));
+    end
+    S2 = tfour(transpose(s2));
+
+    % Calcul de c échantillonnée (modulation)
+    c = zeros(N, 1);
+    for k=1:N
+        c(k) = s1(k)*cos(2*pi*f1*t(k)) + s2(k)*cos(2*pi*f2*t(k));
+    end
+    C = tfour(transpose(c));
+    
+    % Affichage de S1, S2 et C
+    figure(1)
+    plot(f, real(S1));
+    figure(2)
+    plot(f, real(S2));
+    figure(3)
+    plot(f, real(C));
+    
+    d1 = zeros(N, 1);
+    for k=1:N
+        d1(k) = c(k) * cos(2*pi*f1*t(k));
+    end
+    D1 = tfour(transpose(d1));
+
+    d2 = zeros(N, 1);
+    for k=1:N
+        d2(k) = c(k) * cos(2*pi*f2*t(k));
+    end
+    D2 = tfour(transpose(d2));
+    
+    % Affichage de D1 et D2
+    figure(4)
+    plot(f, real(D1));
+    figure(5)
+    plot(f, real(D2));
+end
+
+function v = calc_s1(t)
+    v = 0;
+    for n=1:5
+        v = v + n*cos(2*pi*20*n*t);
+    end
+end
+
+function v = calc_s2(t)
+    v = 0;
+    for n=1:5
+        v = v + (6-n)*cos(2*pi*20*n*t);
+    end
+end
