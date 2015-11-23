@@ -163,3 +163,70 @@ BEGIN
   END IF;
   :NEW.Code := UPPER(:NEW.Code);
 END;
+
+/* *********************** TP 2 ************************** */
+
+/* Problème 1 */
+
+-- 1.1
+CREATE OR REPLACE VIEW Countries_100M AS
+  SELECT * FROM Country
+  WHERE Population > 100000000;
+  
+-- 1.2
+INSERT INTO Countries_100M
+  (Name, Code, Area, Population)
+  VALUES ('Selmana', 'SMA', 780000000, 1000000000);
+
+SELECT * FROM Countries_100M;
+SELECT * FROM Country;
+
+-- 1.3
+INSERT INTO Countries_100M
+  (Name, Code, Area, Population)
+  VALUES ('Thibautie', 'TBT', 2, 20);
+
+SELECT * FROM Countries_100M;
+SELECT * FROM Country;
+
+-- 1.4
+CREATE OR REPLACE VIEW Countries_Europe AS
+  SELECT Name, Code, Capital, Province, Area, Population, Percentage
+    FROM Country JOIN Encompasses
+    ON Country.Code = Encompasses.Country
+    WHERE Continent = 'Europe';
+
+INSERT INTO Countries_Europe
+  (Name, Code, Area, Population, Percentage)
+  VALUES ('Fictivia', 'FIC', 1000, 1000, 100);
+
+-- 1.5
+CREATE OR REPLACE VIEW CountryOrganization AS
+  SELECT m.Country AS Country,
+         o.Abbreviation AS Organization,
+         o.Name AS OrganizationName,
+         o.City AS OrganizationCity,
+         o.Country AS OrganizationCountry,
+         o.Province AS OrganizationProvince,
+         m.Type AS MembershipType
+    FROM Is_Member m, Organization o
+    WHERE m.Organization = o.abbreviation;
+    
+CREATE OR REPLACE TRIGGER TRG_CountryOrganization_Insert
+  INSTEAD OF INSERT ON CountryOrganization
+  REFERENCING NEW AS n
+  FOR EACH ROW
+BEGIN
+  INSERT INTO Organization
+    (Abbreviation, Name, City, Country, Province)
+    VALUES (:n.Organization, :n.OrganizationName, :n.OrganizationCity, :n.OrganizationCountry, :n.OrganizationProvince);
+  INSERT INTO Is_Member
+    (Country, Organization, Type)
+    VALUES (:n.Country, :n.Organization, :n.MembershipType);
+END;
+
+INSERT INTO CountryOrganization
+  (Country, Organization, OrganizationName, OrganizationCity, OrganizationCountry, OrganizationProvince, MembershipType)
+  VALUES ('F', 'B3309', 'Binome B3309', 'Montreal', 'CDN', 'Quebec', 'founder');
+  
+/* Problème 2 */

@@ -1,0 +1,392 @@
+======================================================================
+
+                                  Module 3IF SGBD 
+                                  Année 2014-2015
+                                Rendu Validation TP
+                            semaine 47 - Novembre 2014 
+
+GROUPE : 3
+
+Jour : vendredi
+
+Numéro de binôme : B3309
+
+Personne 1
+   Nom    : Gagné
+   Prénom : Marc
+
+Personne 2
+   Nom    : Nemmaoui
+   Prénom : Selma
+
+Personne 3
+   Nom    : Colard
+   Prénom : Thibaut
+
+======================================================================
+======================================================================
+                                  Problème 1
+======================================================================
+======================================================================
+
+Question 1.1
+----------------------------------------------------------------------
+Rappel succinct du sujet, de la question (reformulation en vos termes
+- optionnel) :Donnez le code permettant de créer les tables correspondant aux éléments Personne, Participe, Repas,
+Menu et Plats sous Oracle
+----------------------------------------------------------------------
+
+Réponse
+----------------------------------------------------------------------
+-- table personne
+CREATE TABLE Personne
+(Nom VARCHAR2(32),
+Prenom VARCHAR2(32),
+DateNaissance DATE,
+ ID_Personne NUMBER CONSTRAINT pkPersonne PRIMARY KEY
+ );
+ 
+-- table repas
+CREATE TABLE Repas
+(DateRepas DATE,
+Lieu VARCHAR2(32),
+NombrePersonnes NUMBER,
+ ID_Repas NUMBER CONSTRAINT pkRepas PRIMARY KEY
+ );
+ 
+-- table Plats
+CREATE TABLE Plats
+(NomPlat VARCHAR2(32),
+Type VARCHAR2(32),
+NomRecette VARCHAR2(32),
+AuteurRecette VARCHAR2(32),
+Difficulté VARCHAR2(15),
+TempsNecessaire NUMBER,
+CaloriesParPart NUMBER,
+Explications VARCHAR2(32),
+ ID_Plat NUMBER CONSTRAINT pkPlat PRIMARY KEY
+ );
+ 
+-- table participe
+CREATE TABLE Participe
+(ID_Repas NUMBER,
+ID_Personne NUMBER,
+CONSTRAINT pkParticipe PRIMARY KEY (ID_Repas, ID_Personne)
+ );
+ 
+-- table menu 
+CREATE TABLE Menu
+(ID_Repas NUMBER,
+ID_Plat NUMBER,
+ );
+ 
+-- contrainte table participe
+alter table Participe add constraint PERSONNE_PARTICIPEKEY foreign key(ID_Personne) references Participe(ID_Personne);
+ 
+alter table Participe add constraint REPAS_PARTICIPEKEY foreign key(ID_Repas) references Repas(ID_Repas);
+
+-- contrainte table menu
+alter table Menu add constraint PLATS_MENUKEY foreign key(ID_Plat) references Plats(ID_Plat);
+ 
+alter table Menu add constraint REPAS_MENUKEY foreign key(ID_Repas) references Repas(ID_Repas);
+
+
+ Question 1.2
+----------------------------------------------------------------------
+Rappel succinct du sujet, de la question (reformulation en vos termes
+- optionnel) : Faire en sorte que pour tout plat, le nombre de calories par part soit connu.
+
+----------------------------------------------------------------------
+
+Réponse
+----------------------------------------------------------------------
+ALTER TABLE PLATS MODIFY (CaloriesParPart NOT NULL);
+
+ 
+ Question 1.3
+----------------------------------------------------------------------
+Rappel succinct du sujet, de la question (reformulation en vos termes
+- optionnel) : Donnez le code nécessaire pour faire en sorte que le type d’un plat soit dans l’une des valeurs suivantes
+’Entree’, ’Salade’, ’Poisson’, ’Viande’, ’Fromage’, ’Dessert’.
+----------------------------------------------------------------------
+
+Réponse
+----------------------------------------------------------------------
+alter table PLATS add constraint Verification_TypePlat
+check(Type = 'Entree' OR Type = 'Salade' OR Type = 'Poisson' OR Type = 'Viande' OR Type = 'Fromage' OR Type = 'Dessert') ENABLE;
+
+
+ Question 1.4
+----------------------------------------------------------------------
+Rappel succinct du sujet, de la question (reformulation en vos termes
+- optionnel) : Donnez le code nécessaire pour supprimer les tables créées. Expliquez et détaillez votre démarche
+----------------------------------------------------------------------
+
+Réponse
+----------------------------------------------------------------------
+DROP TABLE Personne, Repas, Plats
+CASCADE CONSTRAINTS
+
+-- Explications : Les tables Personne, Plats et Repas sont des tables primaires qui ne peuvent pas être supprimés car il existe des tables secondaires (Menu et Participe) qui les référencent. CASCADE CONSTRAINTS permet de supprimer en cascade les tables secondaires.
+
+
+ Question 1.5
+----------------------------------------------------------------------
+Rappel succinct du sujet, de la question (reformulation en vos termes
+- optionnel) : On souhaite éviter qu’une personne participe à un repas où l’un des ingrédients qui lui est interdit est
+présent dans la recette d’un des plats au menu. La réponse doit être donnée en deux parties.
+
+----------------------------------------------------------------------
+
+Réponse
+----------------------------------------------------------------------
+-- Partie 1 
+Lister tous les plats présents dans le repas et les ingrédients correspondants aux plats du repas. Afficher les Personnes participant au repas, ainsi que les ingrédients qui lui sont interdits. Verifier qu'aucun ingrédient de la liste d'ingrédients interdits n'appartient à la liste des ingrédients présents dans le repas.
+
+-- Partie 2
+create or replace trigger Menu_CheckPlats
+BEFORE INSERT OR UPDATE ON Menu
+  FOR EACH ROW
+--BEGIN
+
+======================================================================
+======================================================================
+                                  Problème 2
+======================================================================
+======================================================================
+
+Question 2.1.1
+----------------------------------------------------------------------
+
+Rappel succinct du sujet, de la question :
+----------------------------------------------------------------------
+Il faut trouver toutes les îles de Geo_Island dont la Province
+correspond à la Province d'un désert de Geo_Desert.
+
+Réponse
+----------------------------------------------------------------------
+SELECT gi.Island AS IslandName,
+       gd.Desert As DesertName,
+       p.Name AS ProvinceName,
+       p.Country AS ProvinceCountry,
+       p.Population AS ProvincePopulation,
+       p.Area AS ProvinceArea,
+       p.Capital AS ProvinceCapital,
+       p.Capprov AS ProvinceCapprov
+  FROM Geo_Island gi, Province p, Geo_Desert gd
+  WHERE
+    gi.Island IS NOT NULL AND
+    gi.Province IS NOT NULL AND
+    gi.Province = p.Name AND
+    gi.Province = gd.Province
+  ORDER BY gi.Island ASC, gd.Desert ASC;
+
+Résultats d'exécution et de test
+----------------------------------------------------------------------
+10 premiers tuples : 
+---------------------
+Cangaroo Island	Grand Victoria Desert   South Australia     AUS	1474000	984377	Adelaide	South Australia
+Cangaroo Island	Simpson Desert          South Australia     AUS	1474000	984377	Adelaide	South Australia
+Melville Island	Grand Sand Desert       Northern Territory  AUS	173878	1346200	Darwin	    Northern Territory
+Melville Island	Simpson Desert	        Northern Territory  AUS	173878	1346200	Darwin	    Northern Territory
+Melville Island	Tanami                  Northern Territory  AUS	173878	1346200	Darwin	    Northern Territory
+
+Nombre total de tuples : 5
+------------------------
+
+Question 2.1.2
+----------------------------------------------------------------------
+
+Rappel succinct du sujet, de la question :
+----------------------------------------------------------------------
+Il faut sélectionner toutes les îles de Island qui ont une propriété
+Islands non-nulle, regroupper ces îles selon Islands, compter la
+taille de ces groupes, puis trier selon cette taille.
+
+Réponse
+----------------------------------------------------------------------
+SELECT Islands AS Archipelago, COUNT(*) AS NumIslands
+  FROM Island
+  WHERE Islands IS NOT NULL
+  GROUP BY Islands
+  HAVING COUNT(*) >= 6
+  ORDER BY COUNT(*) DESC;
+
+Résultats d'exécution et de test
+----------------------------------------------------------------------
+10 premiers tuples : 
+---------------------
+Kleine Antillen	11
+Inner Hebrides	10
+Philippines	    9
+Canares	        7
+Lipari Islands	6
+Hawaii Islands	6
+Outer Hebrides	6
+Sporades	    6
+
+Nombre total de tuples : 8
+------------------------
+
+Question 2.1.3
+----------------------------------------------------------------------
+
+Rappel succinct du sujet, de la question :
+----------------------------------------------------------------------
+Il faut sélectionner l'archipel pour lequel la somme des aires des
+îles de Island est la plus grande. Pour cela, on regroupe les
+archipels avec leurs aires totales, on les trie par ordre décroissant
+et on choisit le premier de la liste triée.
+
+Réponse
+----------------------------------------------------------------------
+SELECT Archipelago, TotalArea
+  FROM (
+    SELECT Islands AS Archipelago, SUM(Area) As TotalArea
+      FROM Island
+      WHERE Islands IS NOT NULL AND AREA IS NOT NULL
+      GROUP BY Islands
+      ORDER BY TotalArea DESC
+  )
+  WHERE ROWNUM = 1;
+
+Résultats d'exécution et de test
+----------------------------------------------------------------------
+10 premiers tuples : 
+---------------------
+Madagaskar	587041
+
+Nombre total de tuples : 1
+------------------------
+
+Discussions éventuelles 
+----------------------------------------------------------------------
+Il est sans doute également possible de répondre à cette question en
+utilisant la fonction MAX, ce qui serait plus rapide car elle
+éviterait d'avoir à trier tous les tuples de la réponse.
+
+Question 2.1.4
+----------------------------------------------------------------------
+
+Rappel succinct du sujet, de la question :
+----------------------------------------------------------------------
+Il fault sélectionner tous les pays de Country qui ont une Area
+supérieure à 2 000 000 de km^2 et dont le Code ne peut être trouvé
+dans la table des îles Geo_Island.
+
+Réponse
+----------------------------------------------------------------------
+SELECT c.Code, c.Name, c.Area
+  FROM Country c
+  WHERE c.Area > 2000000 AND c.Code NOT IN (
+    SELECT gi.Country
+      FROM Geo_Island gi
+      WHERE gi.Country IS NOT NULL
+  )
+  ORDER BY c.Area DESC;
+
+Résultats d'exécution et de test
+----------------------------------------------------------------------
+10 premiers tuples : 
+---------------------
+TJ	China	9596960
+BR	Brazil	8511965
+IND	India	3287590
+RA	Argentina	2766890
+KAZ	Kazakstan	2717300
+SUD	Sudan	2505810
+DZ	Algeria	2381740
+ZRE	Zaire	2345410
+
+Nombre total de tuples : 8
+------------------------
+
+Question 2.1.5
+----------------------------------------------------------------------
+
+Rappel succinct du sujet, de la question :
+----------------------------------------------------------------------
+Il faut compter le nombre d'îles de Geo_Island pour lesquelles la
+Province ne se trouve pas Geo_Sea (ce qui indique qu'il n'y a pas de
+mers associées à cette province).
+
+Réponse
+----------------------------------------------------------------------
+SELECT COUNT(*) NumIslands
+  FROM Geo_Island
+  WHERE Province IS NOT NULL AND Province NOT IN (
+    SELECT Province
+    FROM Geo_Sea
+  );
+
+Résultats d'exécution et de test
+----------------------------------------------------------------------
+10 premiers tuples : 
+---------------------
+29
+
+Nombre total de tuples : 1
+------------------------
+
+Question 2.1.6
+----------------------------------------------------------------------
+
+Rappel succinct du sujet, de la question :
+----------------------------------------------------------------------
+Il faut trouver tous les archipels de Island pour lesquels on peut
+trouver au moins deux îles de Geo_Island qui n'ont pas le même pays.
+
+Réponse
+----------------------------------------------------------------------
+SELECT DISTINCT i.Islands AS Archipelago
+  FROM Island i, Geo_Island gi, Geo_Island gi2
+  WHERE i.Islands IS NOT NULL AND
+        i.Name = gi.Island AND
+        i.Name = gi2.Island AND 
+        gi.Country != gi2.Country;
+
+Résultats d'exécution et de test
+----------------------------------------------------------------------
+10 premiers tuples : 
+---------------------
+Grosse Antillen
+
+Nombre total de tuples : 1
+------------------------
+
+Discussions éventuelles 
+----------------------------------------------------------------------
+Il y a probablement un moyen de le faire autrement avec des GROUP BY,
+mais ceci paraissait plus simple.
+
+Question 2.1.7
+----------------------------------------------------------------------
+
+Rappel succinct du sujet, de la question :
+----------------------------------------------------------------------
+Il faut trouver les archipels où plusieurs pays ont des îles, puis
+pour chacun de ces pays on compte le nombre d'îles associées.
+
+Réponse
+----------------------------------------------------------------------
+SELECT gi.Country AS Country, COUNT(*)
+  FROM Island i, Geo_Island gi, Geo_Island gi2
+  WHERE i.Islands IS NOT NULL AND
+        i.Name = gi.Island AND
+        i.Name = gi2.Island AND 
+        gi.Country != gi2.Country
+  GROUP BY gi.Country;
+
+Résultats d'exécution et de test
+----------------------------------------------------------------------
+10 premiers tuples : 
+---------------------
+DOM	1
+RH	1
+
+Nombre total de tuples : 2
+------------------------
+
+Discussions éventuelles 
+----------------------------------------------------------------------
+Ce code n'a pas été rigoureusement testé par manque de temps, et peut être faux.
