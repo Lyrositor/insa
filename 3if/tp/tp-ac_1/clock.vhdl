@@ -15,9 +15,9 @@ architecture behaviorial of clock_generator is
    clock_process :process
    begin
      clk <= '0';
-     wait for clk_period/2;  --for 0.5 ns signal is '0'.
+     wait for clock_period/2;  --for 0.5 ns signal is '0'.
      clk <= '1';
-     wait for clk_period/2;  --for next 0.5 ns signal is '1'.
+     wait for clock_period/2;  --for next 0.5 ns signal is '1'.
    end process;
 
 end;

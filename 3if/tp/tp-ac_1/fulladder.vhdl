@@ -15,6 +15,6 @@ end fulladder;
 
 architecture rtl of fulladder is
 begin
-    sum <= x xor y xor cin;
-    cout <= (x and y) or (cin and x) or (cin and y);
+    sum <= x xor y xor cin after 15 ps;
+    cout <= (x and y) or (cin and x) or (cin and y) after 10 ps;
 end rtl;
