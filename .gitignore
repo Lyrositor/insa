@@ -28,3 +28,6 @@
 
 # IDE
 .idea
+
+# VHDL
+*.cf
