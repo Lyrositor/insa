@@ -1,0 +1,949 @@
+$date
+  Sat Nov 28 18:37:51 2015
+$end
+$version
+  GHDL v0
+$end
+$timescale
+  1 fs
+$end
+$var reg 1 ! clk $end
+$var reg 1 " reset $end
+$var reg 8 # count[7:0] $end
+$scope module uut $end
+$var reg 1 $ clk $end
+$var reg 1 % reset $end
+$var reg 8 & count[7:0] $end
+$var reg 8 ' adder_to_register[7:0] $end
+$var reg 1 ( cout $end
+$var reg 1 ) enable $end
+$var reg 8 * temp_count[7:0] $end
+$var reg 8 + zero[7:0] $end
+$var reg 8 , one[7:0] $end
+$scope module adder_instance $end
+$var reg 8 - x[7:0] $end
+$var reg 8 . y[7:0] $end
+$var reg 1 / cin $end
+$var reg 8 0 s[7:0] $end
+$var reg 1 1 cout $end
+$var reg 9 2 c[8:0] $end
+$scope module (0) $end
+$scope module fulladder_instance $end
+$var reg 1 3 x $end
+$var reg 1 4 y $end
+$var reg 1 5 cin $end
+$var reg 1 6 cout $end
+$var reg 1 7 sum $end
+$upscope $end
+$upscope $end
+$scope module (1) $end
+$scope module fulladder_instance $end
+$var reg 1 8 x $end
+$var reg 1 9 y $end
+$var reg 1 : cin $end
+$var reg 1 ; cout $end
+$var reg 1 < sum $end
+$upscope $end
+$upscope $end
+$scope module (2) $end
+$scope module fulladder_instance $end
+$var reg 1 = x $end
+$var reg 1 > y $end
+$var reg 1 ? cin $end
+$var reg 1 @ cout $end
+$var reg 1 A sum $end
+$upscope $end
+$upscope $end
+$scope module (3) $end
+$scope module fulladder_instance $end
+$var reg 1 B x $end
+$var reg 1 C y $end
+$var reg 1 D cin $end
+$var reg 1 E cout $end
+$var reg 1 F sum $end
+$upscope $end
+$upscope $end
+$scope module (4) $end
+$scope module fulladder_instance $end
+$var reg 1 G x $end
+$var reg 1 H y $end
+$var reg 1 I cin $end
+$var reg 1 J cout $end
+$var reg 1 K sum $end
+$upscope $end
+$upscope $end
+$scope module (5) $end
+$scope module fulladder_instance $end
+$var reg 1 L x $end
+$var reg 1 M y $end
+$var reg 1 N cin $end
+$var reg 1 O cout $end
+$var reg 1 P sum $end
+$upscope $end
+$upscope $end
+$scope module (6) $end
+$scope module fulladder_instance $end
+$var reg 1 Q x $end
+$var reg 1 R y $end
+$var reg 1 S cin $end
+$var reg 1 T cout $end
+$var reg 1 U sum $end
+$upscope $end
+$upscope $end
+$scope module (7) $end
+$scope module fulladder_instance $end
+$var reg 1 V x $end
+$var reg 1 W y $end
+$var reg 1 X cin $end
+$var reg 1 Y cout $end
+$var reg 1 Z sum $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope module register_bits_instance $end
+$var reg 1 [ clk $end
+$var reg 1 \ enable $end
+$var reg 8 ] d[7:0] $end
+$var reg 8 ^ q[7:0] $end
+$scope module (0) $end
+$scope module register_1_instance $end
+$var reg 1 _ enable $end
+$var reg 1 ` clk $end
+$var reg 1 a d $end
+$var reg 1 b q $end
+$upscope $end
+$upscope $end
+$scope module (1) $end
+$scope module register_1_instance $end
+$var reg 1 c enable $end
+$var reg 1 d clk $end
+$var reg 1 e d $end
+$var reg 1 f q $end
+$upscope $end
+$upscope $end
+$scope module (2) $end
+$scope module register_1_instance $end
+$var reg 1 g enable $end
+$var reg 1 h clk $end
+$var reg 1 i d $end
+$var reg 1 j q $end
+$upscope $end
+$upscope $end
+$scope module (3) $end
+$scope module register_1_instance $end
+$var reg 1 k enable $end
+$var reg 1 l clk $end
+$var reg 1 m d $end
+$var reg 1 n q $end
+$upscope $end
+$upscope $end
+$scope module (4) $end
+$scope module register_1_instance $end
+$var reg 1 o enable $end
+$var reg 1 p clk $end
+$var reg 1 q d $end
+$var reg 1 r q $end
+$upscope $end
+$upscope $end
+$scope module (5) $end
+$scope module register_1_instance $end
+$var reg 1 s enable $end
+$var reg 1 t clk $end
+$var reg 1 u d $end
+$var reg 1 v q $end
+$upscope $end
+$upscope $end
+$scope module (6) $end
+$scope module register_1_instance $end
+$var reg 1 w enable $end
+$var reg 1 x clk $end
+$var reg 1 y d $end
+$var reg 1 z q $end
+$upscope $end
+$upscope $end
+$scope module (7) $end
+$scope module register_1_instance $end
+$var reg 1 { enable $end
+$var reg 1 | clk $end
+$var reg 1 } d $end
+$var reg 1 !" q $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+0!
+0"
+bUUUUUUUU #
+0$
+0%
+bUUUUUUUU &
+bUUUUUUUU '
+U(
+U)
+bUUUUUUUU *
+b00000000 +
+b0000000X ,
+bUUUUUUUU -
+b0000000X .
+0/
+bUUUUUUUU 0
+U1
+bUUUUUUUU0 2
+U3
+X4
+05
+U6
+U7
+U8
+09
+U:
+U;
+U<
+U=
+0>
+U?
+U@
+UA
+UB
+0C
+UD
+UE
+UF
+UG
+0H
+UI
+UJ
+UK
+UL
+0M
+UN
+UO
+UP
+UQ
+0R
+US
+UT
+UU
+UV
+0W
+UX
+UY
+UZ
+0[
+U\
+bUUUUUUUU ]
+bUUUUUUUU ^
+U_
+0`
+Ua
+Ub
+Uc
+0d
+Ue
+Uf
+Ug
+0h
+Ui
+Uj
+Uk
+0l
+Um
+Un
+Uo
+0p
+Uq
+Ur
+Us
+0t
+Uu
+Uv
+Uw
+0x
+Uy
+Uz
+U{
+0|
+U}
+U!"
+#10000
+U6
+U;
+U@
+UE
+UJ
+UO
+UT
+UY
+#15000
+bUUUUUUUU 0
+U7
+U<
+UA
+UF
+UK
+UP
+UU
+UZ
+#500000
+1!
+1$
+1)
+1[
+1\
+1_
+1`
+1c
+1d
+1g
+1h
+1k
+1l
+1o
+1p
+1s
+1t
+1w
+1x
+1{
+1|
+#1000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#1500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#2000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#2500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#3000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#3500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#4000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#4500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#5000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#5500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#6000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#6500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#7000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#7500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#8000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#8500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#9000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#9500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#10000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#10500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#11000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#11500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#12000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#12500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#13000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#13500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#14000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#14500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#15000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#15500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#16000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#16500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#17000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#17500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#18000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#18500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#19000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|
+#19500000
+1!
+1$
+1[
+bUUUUUUUU ^
+1`
+Ub
+1d
+Uf
+1h
+Uj
+1l
+Un
+1p
+Ur
+1t
+Uv
+1x
+Uz
+1|
+U!"
+#20000000
+0!
+0$
+0[
+0`
+0d
+0h
+0l
+0p
+0t
+0x
+0|

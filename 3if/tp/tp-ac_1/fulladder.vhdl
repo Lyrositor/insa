@@ -1,4 +1,5 @@
----------  A full adder ------------------
+-- fulladder
+-- A 1-bit full adder.
 
 library ieee; 
 use ieee.std_logic_1164.all;
