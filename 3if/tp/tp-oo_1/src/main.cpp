@@ -1,13 +1,13 @@
 /*************************************************************************
               main - Ensemble de tests pour CollectionEntiers
                              -------------------
-    début                : 06/10/2015
+    dÃ©but                : 06/10/2015
     copyright            : (C) 2015 par B3309
 *************************************************************************/
 
 //---------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------- Include système
+//-------------------------------------------------------- Include systÃ¨me
 using namespace std;
 #include <iostream>
 
@@ -109,8 +109,8 @@ bool test_5_construction_2_affichage ()
 
 bool test_6_ajouter_sans_reallocation ()
 // Algorithme : Construit une nouvelle collection, y ajoute plusieurs
-// valeurs avec la méthode Ajouter, puis affiche son contenu. La
-// collection est initialisée avec assez de mémoire allouée pour toutes
+// valeurs avec la mÃ©thode Ajouter, puis affiche son contenu. La
+// collection est initialisÃ©e avec assez de mÃ©moire allouÃ©e pour toutes
 // les valeurs.
 {
     cout << "\tAffichage attendu :\t1 2 3 4 5 " << endl;
@@ -128,9 +128,9 @@ bool test_6_ajouter_sans_reallocation ()
 
 bool test_7_ajouter_avec_reallocation ()
 // Algorithme : Construit une nouvelle collection, y ajoute plusieurs
-// valeurs avec la méthode Ajouter, puis affiche son contenu. La
-// collection est initialisée sans aucune mémoire allouée ; Ajouter doit
-// ré-allouer de la place à chaque appel.
+// valeurs avec la mÃ©thode Ajouter, puis affiche son contenu. La
+// collection est initialisÃ©e sans aucune mÃ©moire allouÃ©e ; Ajouter doit
+// rÃ©-allouer de la place Ã  chaque appel.
 {
     cout << "\tAffichage attendu :\t1 2 3 4 5 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -148,7 +148,7 @@ bool test_7_ajouter_avec_reallocation ()
 bool test_8_retirer ()
 // Algorithme : Construit une nouvelle collection avec des valeurs
 // initiales, puis essaie d'en retirer certaines avant d'afficher le
-// résultat.
+// rÃ©sultat.
 {
     cout << "\tAffichage attendu :\t1 3 4 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -165,7 +165,7 @@ bool test_8_retirer ()
 
 bool test_9_retirer_vide ()
 // Algorithme : Construit une nouvelle collection de taille nulle, puis
-// essaie d'en retirer certaines valeurs avant d'afficher le résultat.
+// essaie d'en retirer certaines valeurs avant d'afficher le rÃ©sultat.
 {
     cout << "\tAffichage attendu :\t " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -182,7 +182,7 @@ bool test_9_retirer_vide ()
 bool test_10_retirer_aucun ()
 // Algorithme : Construit une nouvelle collection avec des valeurs
 // initiales, puis essaie de retirer 0 valeurs de la collection avant
-// d'afficher le résultat.
+// d'afficher le rÃ©sultat.
 {
     cout << "\tAffichage attendu :\t1 2 3 4 5 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -199,8 +199,8 @@ bool test_10_retirer_aucun ()
 
 bool test_11_ajuster_augmenter ()
 // Algorithme : Construit une nouvelle collection avec des valeurs
-// initiales, puis essaie d'augmenter la taille allouée avant d'afficher
-// le résultat.
+// initiales, puis essaie d'augmenter la taille allouÃ©e avant d'afficher
+// le rÃ©sultat.
 {
     cout << "\tAffichage attendu :\t1 2 3 4 5 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -216,8 +216,8 @@ bool test_11_ajuster_augmenter ()
 
 bool test_12_ajuster_diminuer ()
 // Algorithme : Construit une nouvelle collection avec des valeurs
-// initiales, puis essaie de diminuer la taille allouée avant d'afficher
-// le résultat.
+// initiales, puis essaie de diminuer la taille allouÃ©e avant d'afficher
+// le rÃ©sultat.
 {
     cout << "\tAffichage attendu :\t1 2 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -233,8 +233,8 @@ bool test_12_ajuster_diminuer ()
 
 bool test_13_ajuster_nul ()
 // Algorithme : Construit une nouvelle collection avec des valeurs
-// initiales, puis essaie de réduire la mémoire allouée à 0 avant
-// d'afficher le résultat.
+// initiales, puis essaie de rÃ©duire la mÃ©moire allouÃ©e Ã  0 avant
+// d'afficher le rÃ©sultat.
 {
     cout << "\tAffichage attendu :\t " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -250,8 +250,8 @@ bool test_13_ajuster_nul ()
 
 bool test_14_reunir_sans_reallocation ()
 // Algorithme : Construit deux nouvelles collections avec des valeurs
-// initiales, puis essaie de réunir les deux en une seule, sans qu'il soit
-// nécessaire de ré-allouer lors de l'opération de réunion.
+// initiales, puis essaie de rÃ©unir les deux en une seule, sans qu'il soit
+// nÃ©cessaire de rÃ©-allouer lors de l'opÃ©ration de rÃ©union.
 {
     cout << "\tAffichage attendu :\t1 2 3 4 5 6 7 8 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -271,9 +271,9 @@ bool test_14_reunir_sans_reallocation ()
 
 bool test_15_reunir_avec_reallocation ()
 // Algorithme : Construit deux nouvelles collections avec des valeurs
-// initiales, puis essaie de réunir les deux en une seule, sachant que
-// l'espace alloué à la collection qui sera modifiée sera insuffisant lors
-// de la réunion, imposant une réallocation lors de la réunion.
+// initiales, puis essaie de rÃ©unir les deux en une seule, sachant que
+// l'espace allouÃ© Ã  la collection qui sera modifiÃ©e sera insuffisant lors
+// de la rÃ©union, imposant une rÃ©allocation lors de la rÃ©union.
 {
     cout << "\tAffichage attendu :\t1 2 3 4 5 6 7 8 " << endl;
     cout << "\tAffichage obtenu :\t";
@@ -291,29 +291,29 @@ bool test_15_reunir_avec_reallocation ()
 }
 
 int main ()
-// Algorithme : Lance chaque test et vérifie qu'ils fonctionnent tous.
-// Note : Aucun test ne renverra une condition d'échec actuellement, par
-// manque d'outils pour vérifier le contenu d'une CollectionEntiers, mais
-// il est envisageable qu'une telle fonctionnalité pourrait être rajoutée
+// Algorithme : Lance chaque test et vÃ©rifie qu'ils fonctionnent tous.
+// Note : Aucun test ne renverra une condition d'Ã©chec actuellement, par
+// manque d'outils pour vÃ©rifier le contenu d'une CollectionEntiers, mais
+// il est envisageable qu'une telle fonctionnalitÃ© pourrait Ãªtre rajoutÃ©e
 // par la suite.
 {
     bool (*TESTS[]) () = {
-        test_0_construction_1,
-        test_1_construction_1_vide,
-        test_2_construction_1_affichage,
-        test_3_construction_2,
-        test_4_construction_2_vide,
-        test_5_construction_2_affichage,
-        test_6_ajouter_sans_reallocation,
-        test_7_ajouter_avec_reallocation,
-        test_8_retirer,
-        test_9_retirer_vide,
-        test_10_retirer_aucun,
-        test_11_ajuster_augmenter,
-        test_12_ajuster_diminuer,
-        test_13_ajuster_nul,
-        test_14_reunir_sans_reallocation,
-        test_15_reunir_avec_reallocation
+            test_0_construction_1,
+            test_1_construction_1_vide,
+            test_2_construction_1_affichage,
+            test_3_construction_2,
+            test_4_construction_2_vide,
+            test_5_construction_2_affichage,
+            test_6_ajouter_sans_reallocation,
+            test_7_ajouter_avec_reallocation,
+            test_8_retirer,
+            test_9_retirer_vide,
+            test_10_retirer_aucun,
+            test_11_ajuster_augmenter,
+            test_12_ajuster_diminuer,
+            test_13_ajuster_nul,
+            test_14_reunir_sans_reallocation,
+            test_15_reunir_avec_reallocation
     };
 
     for (unsigned int i = 0; i < NUM_TESTS; i++) {

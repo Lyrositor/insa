@@ -8,10 +8,16 @@ RMFLAGS = -rf
 
 CLEAN = clean
 
-RUNTEST = ./$< --stop-time=20ns --vcd=$<.vcd && $(GTKWAVE) $<.vcd
-RUNTEST_W = $(GHDL) -r $< --stop-time=20ns --vcd=$<.vcd && $(GTKWAVE) $<.vcd
+ifeq ($(OS),Windows_NT)
+	RUNTEST = $(GHDL) -r $< --stop-time=20ns --vcd=$<.vcd && $(GTKWAVE) $<.vcd
+else
+	RUNTEST = ./$< --stop-time=20ns --vcd=$<.vcd && $(GTKWAVE) $<.vcd
+endif
 
-.PHONY: fulladder testbench_fulladder adder testbench_adder clock_generator register_1 register_n testbench_register_8 counter testbench_counter test_fulladder test_fulladder_w test_adder_8 test_adder_8_w test_clock test_clock_w test_register_8 test_register_8_w test_counter test_counter_w $(CLEAN)
+.PHONY: fulladder testbench_fulladder adder testbench_adder clock_generator register_1 register_n testbench_register_8 counter testbench_counter test_fulladder test_adder_8 test_clock test_register_8 test_counter $(CLEAN)
+
+$(CLEAN):
+	$(RM) $(RMFLAGS) *.o work-obj93.cf *.vcd
 
 # Modules
 fulladder: fulladder.vhdl
@@ -53,32 +59,14 @@ testbench_counter: counter testbench_counter.vhdl
 test_fulladder: testbench_fulladder
 	$(RUNTEST)
 
-test_fulladder_w: testbench_fulladder
-	$(RUNTEST_W)
-
 test_adder_8: testbench_adder
 	$(RUNTEST)
-
-test_adder_8_w: testbench_adder
-	$(RUNTEST_W)
 
 test_clock: clock_generator
 	$(RUNTEST)
 
-test_clock_w: clock_generator
-	$(RUNTEST_W)
-
 test_register_8: testbench_register_8
 	$(RUNTEST)
 
-test_register_8_w: testbench_register_8
-	$(RUNTEST_W)
-
 test_counter: testbench_counter
 	$(RUNTEST)
-
-test_counter_w: testbench_counter
-	$(RUNTEST_W)
-
-$(CLEAN):
-	$(RM) $(RMFLAGS) *.o work-obj93.cf *.vcd
