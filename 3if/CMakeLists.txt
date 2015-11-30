@@ -1,2 +1,2 @@
-add_subdirectory(td)
-add_subdirectory(tp)
+add_subdirectory(alg)
+add_subdirectory(oo)
