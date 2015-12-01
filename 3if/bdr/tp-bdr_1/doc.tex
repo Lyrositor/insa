@@ -1,24 +1,91 @@
-alter table "MGAGNE"."COUNTRY" add constraint COUNTRY_CAPITALKEY foreign key("CODE", "CAPITAL", "PROVINCE") references "CITY"("COUNTRY", "NAME", "PROVINCE");
-alter table "MGAGNE"."CITY" add constraint CITY_PROVINCEKEY foreign key("COUNTRY", "PROVINCE") references "PROVINCE"("COUNTRY", "NAME");
-alter table "MGAGNE"."PROVINCE" add constraint PROVINCE_COUNTRYKEY foreign key("COUNTRY") references "COUNTRY"("CODE");
-alter table "MGAGNE"."BORDERS" add constraint BORDERS_LENGTHPOSITIVE check(LENGTH > 0) ENABLE;
+\documentclass[11pt,a4paper]{article}
 
-ALTER TABLE "COUNTRY" MODIFY ("NAME" NOT NULL);
-ALTER TABLE COUNTRY ADD CONSTRAINT COUNTRY_UNIQUENAME UNIQUE (NAME);
-alter table "MGAGNE"."ECONOMY" add constraint ECONOMY_PERCENTAGE
-check(AGRICULTURE >= 0 AND AGRICULTURE <= 100 AND SERVICE >= 0 AND SERVICE <= 100 AND INDUSTRY >= 0 AND INDUSTRY <= 100) ENABLE;
+\usepackage[frenchb]{babel}
+\usepackage[autolanguage]{numprint}
+\usepackage[margin=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{listings}
 
-INSERT INTO Country (Name, Code, Area, Population) VALUES ('Atlan', 'AT', 400, 180000);
-INSERT INTO Country (Name, Code, Area, Population) VALUES ('Tis', 'TIS', 100, 20000);
-INSERT INTO Province (Name, Country, Population, Area) VALUES ('Atlan', 'AT', 400, 180000);
-INSERT INTO Province (Name, Country, Population, Area) VALUES ('Tis', 'TIS', 100, 20000);
-UPDATE Country SET Capital=NULL, Province=NULL WHERE Code='ATL';
-UPDATE Province SET Capital=NULL WHERE Name='Atlantis' AND Country='ATL';
-UPDATE City SET Country='AT', Province='Atlan' WHERE Name='Atlantis City' AND Country='ATL' AND Province='Atlantis';
+\begin{document}
+\lstset{language=SQL}
+
+\title{
+	TP BD 1
+}
+\author{
+	Marc GagnÃ©
+}
+\maketitle
+
+Ci-dessous se trouve une collection de commandes utilisÃ©es lors du TP BDR 1. Elles ne sont pas toutes de la plus grande qualitÃ©, mais devraient toutes Ãªtre syntaxiquement correctes.
+
+\section{Historique des commandes}
+
+\begin{lstlisting}
+ALTER TABLE Country
+  ADD CONSTRAINT COUNTRY_CAPITALKEY
+    FOREIGN KEY (Code, Capital, Province)
+    REFERENCES City (Country, Name, Province);
+ALTER TABLE City
+  ADD CONSTRAINT CITY_PROVINCEKEY
+    FOREIGN KEY (Country, Province)
+    REFERENCES Province (Country, Name);
+ALTER TABLE Province
+  ADD CONSTRAINT PROVINCE_COUNTRYKEY
+    FOREIGN KEY (Country)
+    REFERENCES Country (Code);
+ALTER TABLE Borders
+  ADD CONSTRAINT BORDERS_LENGTHPOSITIVE
+    CHECK (LENGTH > 0) ENABLE;
+
+ALTER TABLE Country
+  MODIFY (Name NOT NULL);
+ALTER TABLE Country
+  ADD CONSTRAINT COUNTRY_UNIQUENAME
+    UNIQUE (NAME);
+ALTER TABLE Economy
+  ADD CONSTRAINT ECONOMY_PERCENTAGE
+    CHECK (
+      AGRICULTURE >= 0 AND
+      AGRICULTURE <= 100 AND
+      SERVICE >= 0 AND
+      SERVICE <= 100 AND
+      INDUSTRY >= 0 AND
+      INDUSTRY <= 100
+    ) ENABLE;
+
+INSERT INTO Country
+  (Name, Code, Area, Population)
+  VALUES ('Atlan', 'AT', 400, 180000);
+INSERT INTO Country
+  (Name, Code, Area, Population)
+  VALUES ('Tis', 'TIS', 100, 20000);
+INSERT INTO Province
+  (Name, Country, Population, Area)
+  VALUES ('Atlan', 'AT', 400, 180000);
+INSERT INTO Province
+  (Name, Country, Population, Area)
+  VALUES ('Tis', 'TIS', 100, 20000);
+
+UPDATE Country
+  SET Capital=NULL, Province=NULL
+  WHERE Code='ATL';
+UPDATE Province
+  SET Capital=NULL
+  WHERE Name='Atlantis' AND Country='ATL';
+UPDATE City
+  SET Country='AT', Province='Atlan'
+  WHERE Name='Atlantis City' AND Country='ATL' AND Province='Atlantis';
+
 DELETE FROM Province WHERE Name='Atlantis' AND Country='ATL';
 DELETE FROM Country WHERE Code='ATL';
 
-alter table "MGAGNE"."PROVINCE" add constraint PROVINCE_CAPITALKEY foreign key("NAME", "COUNTRY", "CAPPROV") references "CITY"("PROVINCE", "COUNTRY", "NAME");
+ALTER TABLE PROVINCE
+  ADD CONSTRAINT PROVINCE_CAPITALKEY
+    FOREIGN KEY (Name, Country, CapProv)
+    REFERENCES City (Province, Country, Name);
 
 /* 2.3.1 */
 SELECT * FROM Country ORDER BY Name ASC;
@@ -101,13 +168,11 @@ CREATE OR REPLACE PROCEDURE p_2317(
 )
 IS
 BEGIN
- -- rechercher le nom du pays dont le code est passé en paramètre
   SELECT Name
     INTO p$name
     FROM Country
     WHERE Code = p$code;
- 
- -- nombre de pays frontaliers
+
   SELECT COUNT(*)
     INTO p$nbFront
     FROM Borders
@@ -118,8 +183,7 @@ END;
 
 -----------
 
-CREATE OR REPLACE 
-PROCEDURE TEST_p_2317(
+CREATE OR REPLACE PROCEDURE TEST_p_2317(
   p$code IN Country.Code%TYPE
 )
 IS
@@ -128,8 +192,14 @@ IS
 BEGIN
   p_2317(p$code, v$name, v$nbFront);
   
-  -- affichage des résultats
-  dbms_output.put_line('Le pays de code '||p$code||' a pour nom '||v$name||' et pour nombre de frontieres '||v$nbFront);
+  dbms_output.put_line(
+    'Le pays de code ' ||
+    p$code ||
+    ' a pour nom ' ||
+    v$name ||
+    ' et pour nombre de frontieres ' ||
+    v$nbFront
+  );
 END;
 /
 show errors;
@@ -165,8 +235,6 @@ BEGIN
 END;
 
 /* *********************** TP 2 ************************** */
-
-/* Problème 1 */
 
 -- 1.1
 CREATE OR REPLACE VIEW Countries_100M AS
@@ -219,14 +287,47 @@ CREATE OR REPLACE TRIGGER TRG_CountryOrganization_Insert
 BEGIN
   INSERT INTO Organization
     (Abbreviation, Name, City, Country, Province)
-    VALUES (:n.Organization, :n.OrganizationName, :n.OrganizationCity, :n.OrganizationCountry, :n.OrganizationProvince);
+    VALUES (
+      :n.Organization,
+      :n.OrganizationName,
+      :n.OrganizationCity,
+      :n.OrganizationCountry,
+      :n.OrganizationProvince
+    );
   INSERT INTO Is_Member
     (Country, Organization, Type)
     VALUES (:n.Country, :n.Organization, :n.MembershipType);
 END;
 
 INSERT INTO CountryOrganization
-  (Country, Organization, OrganizationName, OrganizationCity, OrganizationCountry, OrganizationProvince, MembershipType)
+  (
+    Country,
+    Organization,
+    OrganizationName,
+    OrganizationCity,
+    OrganizationCountry,
+    OrganizationProvince,
+    MembershipType
+  )
   VALUES ('F', 'B3309', 'Binome B3309', 'Montreal', 'CDN', 'Quebec', 'founder');
-  
-/* Problème 2 */
+\end{lstlisting}
+
+\section{Script de gÃ©nÃ©ration des GRANT}
+
+\begin{lstlisting}
+SET HEADING OFF
+SET ECHO OFF
+SET FEEDBACK OFF
+SPOOL '\\servif-home\binomes\IF-B3309\insa\3if\tp\tp-bd_1\grant.sql'
+
+SELECT
+'GRANT SELECT ON ' || Table_Name || ' TO snemmaoui,tcolard;\n' ||
+'GRANT UPDATE ON ' || Table_Name || ' TO snemmaoui,tcolard;' AS Commands
+FROM User_Tables;
+
+SPOOL OUT
+
+@\\servif-home\binomes\IF-B3309\insa\3if\tp\tp-bd_1\grant.sql
+\end{lstlisting}
+
+\end{document}

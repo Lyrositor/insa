@@ -32,3 +32,11 @@
 # VHDL
 *.cf
 *.vcd
+
+# LaTeX
+*.aux
+*.out
+*.synctex.gz
+
+# Logs
+*.log
