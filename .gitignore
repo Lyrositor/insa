@@ -27,8 +27,7 @@
 *.app
 
 # IDE
-**/.idea/tasks.xml
-**/.idea/workspace.xml
+**/.idea/
 
 # VHDL
 *.cf
