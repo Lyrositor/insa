@@ -27,6 +27,8 @@
       <sourceFolder url="file://$MODULE_DIR$/3if/oo/tp-oo_2/src/Sensor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/3if/oo/tp-oo_2/src/Sensor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/3if/oo/tp-oo_3/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/3if/oo/tp-oo_3/src/ArgumentParser.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/3if/oo/tp-oo_3/src/ArgumentParser.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/3if/oo/tp-oo_3/src/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
     </content>

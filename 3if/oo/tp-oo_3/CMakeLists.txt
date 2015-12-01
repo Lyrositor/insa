@@ -1,7 +1,9 @@
 set(TP-OO_3_SOURCES
+        src/ArgumentParser.cpp
 )
 
 set(TP-OO_3_HEADERS
+        src/ArgumentParser.h
 )
 
 set(TP-OO_3_MAIN src/main.cpp)
