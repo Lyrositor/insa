@@ -9,9 +9,9 @@ RMFLAGS = -rf
 CLEAN = clean
 
 ifeq ($(OS),Windows_NT)
-	RUNTEST = $(GHDL) -r $< --stop-time=20ns --vcd=$<.vcd && $(GTKWAVE) $<.vcd
+	RUNTEST = $(GHDL) -r $< --stop-time=256ns --vcd=$<.vcd && $(GTKWAVE) $<.vcd
 else
-	RUNTEST = ./$< --stop-time=20ns --vcd=$<.vcd && $(GTKWAVE) $<.vcd
+	RUNTEST = ./$< --stop-time=256ns --vcd=$<.vcd && $(GTKWAVE) $<.vcd
 endif
 
 .PHONY: fulladder testbench_fulladder adder testbench_adder clock_generator register_1 register_n testbench_register_8 counter testbench_counter test_fulladder test_adder_8 test_clock test_register_8 test_counter $(CLEAN)
@@ -51,7 +51,7 @@ testbench_register_8: register_n testbench_register_8.vhdl
 counter: adder register_n counter.vhdl
 	$(GHDL) -a counter.vhdl
 
-testbench_counter: counter testbench_counter.vhdl
+testbench_counter: counter clock_generator testbench_counter.vhdl
 	$(GHDL) -a testbench_counter.vhdl
 	$(GHDL) -e testbench_counter
 

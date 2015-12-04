@@ -1,0 +1,5 @@
+clock_generator
+testbench_adder
+testbench_counter
+testbench_fulladder
+testbench_register_8

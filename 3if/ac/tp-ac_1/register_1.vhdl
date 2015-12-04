@@ -8,7 +8,7 @@ library work;
 
 entity register_1 is
     port(
-        enable, clk, d: in std_logic;
+        enable, clk, d, reset: in std_logic;
         q: out std_logic
     );
 end entity;
@@ -19,7 +19,9 @@ begin
     clock_process: process(clk)
     begin
         if rising_edge(clk) then
-            if enable = '1' then
+            if reset = '1' then
+                q <= '0';
+            elsif enable = '1' then
                 q <= d;
             end if;
         end if;
