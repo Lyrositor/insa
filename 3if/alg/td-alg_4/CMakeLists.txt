@@ -1,2 +1,22 @@
-set(TD-ALG_4_MAIN src/main.c)
-add_executable(td-alg_4 ${TD-ALG_4_MAIN})
+cmake_minimum_required(VERSION 2.8.4)
+project(td-alg_4 C)
+
+# Set project properties
+set(TD-ALG4_BIN td-alg_4)
+set(TD-ALG4_BIN_DIR bin)
+set(TD-ALG4_FLAGS)
+set(TD-ALG4_MAIN src/main.c)
+set(TD-ALG4_SOURCES)
+
+# Configure the executable's compilation
+add_executable(${TD-ALG4_BIN} ${TD-ALG4_MAIN} ${TD-ALG4_SOURCES})
+set(TD-ALG4_BIN_DIR_FULL ${CMAKE_CURRENT_SOURCE_DIR}/${TD-ALG4_BIN_DIR})
+set_target_properties(${TD-ALG4_BIN} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${TD-ALG4_BIN_DIR_FULL}
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE ${TD-ALG4_BIN_DIR_FULL}
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG ${TD-ALG4_BIN_DIR_FULL}
+        RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${TD-ALG4_BIN_DIR_FULL}
+        RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${TD-ALG4_BIN_DIR_FULL})
+if (TD-ALG4_FLAGS)
+    target_compile_options(${TD-ALG4_BIN} PRIVATE ${TD-ALG4_FLAGS})
+endif (TD-ALG4_FLAGS)

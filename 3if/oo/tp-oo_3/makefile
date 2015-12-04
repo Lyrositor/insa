@@ -5,27 +5,27 @@ LN = g++
 RM = @rm
 ECHO = @echo
 
-CXXFLAGS = -O3 -std=gnu++11 -Wall -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -Wno-unused
-LNFLAGS =
+CXXFLAGS = -O3 -Wall -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wextra -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wno-unused -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -std=gnu++11
+LNFLAGS = 
 COMPILEFLAG = -c
 INCFLAG = -I
 OUTPUT = -o
 RMFLAGS = -rf
 
-DFLAGS = -DCOLORS
+DEFINITIONS = -DCOLORS
 
-S = src
-B = build
-SRC = ConfigReader.cpp Document.cpp DotFileWriter.cpp HistoryManager.cpp Logger.cpp LogReader.cpp
-OBJ = $(SRC:%.cpp=$(B)/%.o)
-MAIN = $(S)/main.cpp
+BUILD = bin
+SRC = src/ConfigReader.cpp src/Document.cpp src/DotFileWriter.cpp src/HistoryManager.cpp src/Logger.cpp src/LogEntry.cpp src/LogReader.cpp
+OBJ = $(SRC:%.cpp=$(BUILD)/%.o)
+MAIN = src/main.cpp
 
 LIBS =
 LIBPATH =
-INCPATH = include/
+INCPATH = include
 
-BIN = $(B)/tp-oo_3
+BIN = $(BUILD)/tp-oo_3
 MK_D = @mkdir -p $(@D)
+MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@
 
 ALL = all
 CLEAN = clean
@@ -34,13 +34,37 @@ CLEAN = clean
 
 $(ALL): $(BIN)
 
+$(CLEAN):
+	$(RM) $(RMFLAGS) $(BUILD) *.o
+
 $(BIN): $(OBJ) $(MAIN)
 	$(MK_D)
-	$(CXX) $(CXXFLAGS) $^ $(OUTPUT) $@ $(INCFLAG)$(INCPATH) $(DFLAGS)
+	$(CXX) $(CXXFLAGS) $^ $(OUTPUT) $@ $(INCFLAG)$(INCPATH) $(DEFINITIONS)
 
-$(B)/%.o: $(S)/%.cpp $(S)/%.h
+$(BUILD)/src/ConfigReader.o: src/ConfigReader.cpp src/ConfigReader.h
 	$(MK_D)
-	$(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@ $(INCFLAG)$(INCPATH) $(DFLAGS)
-	
-$(CLEAN):
-	$(RM) $(RMFLAGS) $(B)
+	$(MK_MODULE)
+
+$(BUILD)/src/Document.o: src/Document.cpp src/Document.h
+	$(MK_D)
+	$(MK_MODULE)
+
+$(BUILD)/src/DotFileWriter.o: src/DotFileWriter.cpp src/DotFileWriter.h
+	$(MK_D)
+	$(MK_MODULE)
+
+$(BUILD)/src/HistoryManager.o: src/HistoryManager.cpp src/HistoryManager.h
+	$(MK_D)
+	$(MK_MODULE)
+
+$(BUILD)/src/Logger.o: src/Logger.cpp src/Logger.h
+	$(MK_D)
+	$(MK_MODULE)
+
+$(BUILD)/src/LogEntry.o: src/LogEntry.cpp src/LogEntry.h
+	$(MK_D)
+	$(MK_MODULE)
+
+$(BUILD)/src/LogReader.o: src/LogReader.cpp src/LogReader.h
+	$(MK_D)
+	$(MK_MODULE)

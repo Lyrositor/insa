@@ -5,7 +5,7 @@ void DotFileWriter::close ()
 
 }
 
-bool DotFileWriter::open (std::string fileName)
+bool DotFileWriter::open (std::string filename)
 {
     return false;
 }

@@ -26,7 +26,7 @@ public:
 
 protected:
     static void log (
-            std::string message, std::ostream& out, TerminalColor color = NONE
+            std::string message, std::ostream & out, TerminalColor color = NONE
     );
 };
 

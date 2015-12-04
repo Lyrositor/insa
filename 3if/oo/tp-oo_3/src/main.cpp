@@ -51,11 +51,14 @@ int main (int argc, const char * const * argv)
 // Algorithme :
 {
     string logFilename;
-    LogReader* logFile;
+    LogReader* logFile = nullptr;
     string dotFilename;
-    DotFileWriter* dotFile;
+    DotFileWriter* dotFile = nullptr;
     unordered_set<string> excludedExtensions;
     unsigned int startHour = 0, endHour = 24;
+
+    // Désactiver la synchronization avec la bibliothèque IO de C.
+    std::cout.sync_with_stdio(false);
 
     // Initialiser le parseur d'arguments.
     TCLAP::CmdLine cmd(DESCRIPTION, ' ', VERSION);
@@ -100,8 +103,8 @@ int main (int argc, const char * const * argv)
         logFile = new LogReader();
         if (!logFile->open(logFilename))
         {
-            delete logFile;
             Logger::error(ERROR_LOG_FILE_LOAD);
+            delete logFile;
             return 1;
         }
 
@@ -112,8 +115,9 @@ int main (int argc, const char * const * argv)
             dotFile = new DotFileWriter();
             if (!dotFile->open(dotFilename))
             {
-                delete dotFile;
                 Logger::error(ERROR_LOG_FILE_LOAD);
+                delete dotFile;
+                delete logFile;
                 return 1;
             }
         }
@@ -131,7 +135,7 @@ int main (int argc, const char * const * argv)
             endHour = startHour + 1;
         }
     }
-    catch (TCLAP::ArgException &e)
+    catch (TCLAP::ArgException & e)
     {
         return 1;
     }
@@ -146,6 +150,7 @@ int main (int argc, const char * const * argv)
     if (!loaded)
     {
         Logger::error(ERROR_LOG_FILE_PARSE);
+        delete logFile;
         return 1;
     }
 

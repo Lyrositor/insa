@@ -29,6 +29,10 @@
 # IDE
 **/.idea/
 
+# MSVC
+*.ilk
+*.pdb
+
 # VHDL
 *.cf
 *.vcd
@@ -41,4 +45,8 @@
 # Logs
 *.log
 
+# Build directories
+**/build
+
+# Backup files
 *~

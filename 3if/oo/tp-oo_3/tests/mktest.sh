@@ -1,9 +1,12 @@
+#!/usr/bin/env bash
+
 echo "Test ID;Return code validation;Out result;StdErr result;File creation result;Global result" >results.csv
 nOk=0
 nKo=0
 nTotal=0
 nMis=0
 
+export PATH=$PATH:../bin/:../../bin
 for i in test_*
 do
   ./test.sh $i results.csv

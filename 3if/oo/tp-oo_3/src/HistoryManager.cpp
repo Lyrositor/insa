@@ -1,4 +1,6 @@
 #include "HistoryManager.h"
+#include "LogEntry.h"
+#include "LogReader.h"
 
 bool HistoryManager::fromFile(
         LogReader * logFile,
@@ -6,6 +8,11 @@ bool HistoryManager::fromFile(
         unsigned int startHour,
         unsigned int endHour)
 {
+    while (!logFile->eof())
+    {
+        LogEntry entry;
+        entry = logFile->readLine();
+    }
     return false;
 }
 

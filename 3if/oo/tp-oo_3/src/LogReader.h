@@ -4,15 +4,15 @@
 #include <fstream>
 #include <string>
 
-typedef struct LogEntry LogEntry;
-struct LogEntry {
 
-};
+class LogEntry;
+
 
 class LogReader {
 public:
     void close ();
-    bool open (std::string fileName);
+    bool eof ();
+    bool open (std::string filename);
     LogEntry readLine ();
 
     LogReader ();
@@ -21,5 +21,6 @@ public:
 protected:
     std::ifstream logFile;
 };
+
 
 #endif // LOG_READER_H

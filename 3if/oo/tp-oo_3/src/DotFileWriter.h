@@ -7,13 +7,12 @@
 class DotFileWriter {
 public:
     void close ();
-    bool open (std::string fileName);
+    bool open (std::string filename);
 
     DotFileWriter ();
     virtual ~DotFileWriter ();
 protected:
-    std::ifstream logFile;
+    std::ofstream logFile;
 };
-
 
 #endif // DOT_FILE_WRITER_H

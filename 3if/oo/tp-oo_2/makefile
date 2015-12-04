@@ -12,7 +12,7 @@ OUTPUT = -o
 RMFLAGS = -rf
 
 S = src
-B = build
+B = bin
 SRC = City.cpp Event.cpp EventLink.cpp HashTable.cpp Sensor.cpp SegmentedTable.cpp
 OBJ = $(SRC:%.cpp=$(B)/%.o)
 MAIN = $(S)/main.cpp

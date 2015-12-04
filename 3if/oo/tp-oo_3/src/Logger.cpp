@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "Logger.h"
 
 void Logger::error (std::string message)
@@ -17,18 +15,19 @@ void Logger::warning (std::string message)
     log("Warning: " + message, std::cerr, YELLOW);
 }
 
-void Logger::log (std::string message, std::ostream& out, TerminalColor color)
+void Logger::log (std::string message, std::ostream & out, TerminalColor color)
 {
 #ifdef COLORS
     if (color == NONE)
     {
 #endif // COLORS
-        printf("%s\n", message.c_str());
+        std::cout << message << std::endl;
 #ifdef COLORS
     }
     else
     {
-        printf("\033[%dm%s\033[0m\n", 29 + color, message.c_str());
+        std::string p = "\033[";
+        std::cout << p << 29+color << "m" << message << p << "0m" << std::endl;
     }
 #endif // COLORS
 }

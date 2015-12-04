@@ -1,21 +1,35 @@
+#include "LogEntry.h"
 #include "LogReader.h"
 
-void LogReader::close() {
+void LogReader::close ()
+{
 
 }
 
-bool LogReader::open(std::string fileName) {
- return false;
+bool LogReader::eof ()
+{
+    return logFile.eof();
 }
 
-LogEntry LogReader::readLine() {
- return LogEntry();
+bool LogReader::open (std::string filename)
+{
+    logFile.open(filename);
+    return logFile.is_open();
 }
 
-LogReader::LogReader() {
+LogEntry LogReader::readLine ()
+{
+    LogEntry entry;
+    logFile >> entry;
+    return entry;
+}
+
+LogReader::LogReader ()
+{
 
 }
 
-LogReader::~LogReader() {
+LogReader::~LogReader ()
+{
 
 }

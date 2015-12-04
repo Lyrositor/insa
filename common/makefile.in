@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+CXX = g++
+LN = g++
+RM = @rm
+ECHO = @echo
+
+CXXFLAGS = @CXXFLAGS@
+LNFLAGS = @LNFLAGS@
+COMPILEFLAG = -c
+INCFLAG = -I
+OUTPUT = -o
+RMFLAGS = -rf
+
+DEFINITIONS = @DEFINITIONS@
+
+BUILD = @BUILD@
+SRC = @SRC@
+OBJ = $(SRC:%.cpp=$(BUILD)/%.o)
+MAIN = @MAIN@
+
+LIBS =
+LIBPATH =
+INCPATH = @INCLUDE@
+
+BIN = $(BUILD)/@BIN@
+MK_D = @mkdir -p $(@D)
+MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@
+
+ALL = all
+CLEAN = clean
+
+.PHONY: $(ALL) $(CLEAN)
+
+$(ALL): $(BIN)
+
+$(CLEAN):
+	$(RM) $(RMFLAGS) $(BUILD) *.o
+
+$(BIN): $(OBJ) $(MAIN)
+	$(MK_D)
+	$(CXX) $(CXXFLAGS) $^ $(OUTPUT) $@ $(INCFLAG)$(INCPATH) $(DEFINITIONS)

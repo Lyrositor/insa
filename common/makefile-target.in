@@ -1,0 +1,4 @@
+
+$(BUILD)/@OBJ@: @CPP@ @H@
+	$(MK_D)
+	$(MK_MODULE)

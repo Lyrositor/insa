@@ -13,13 +13,13 @@ class LogReader;
 class HistoryManager {
 public:
     bool fromFile (
-            LogReader *logFile,
+            LogReader * logFile,
             std::unordered_set<std::string> excludedExtensions,
             unsigned int startHour,
             unsigned int endHour
     );
     void listDocuments (unsigned int max);
-    bool toDotFile (DotFileWriter *dotFile);
+    bool toDotFile (DotFileWriter * dotFile);
 
     HistoryManager ();
     virtual ~HistoryManager ();
