@@ -96,7 +96,7 @@ int main (int argc, const char * const * argv)
         // Essayer de lire le fichier de log.
         logFilename = logFilenameArg.getValue();
         logFile = new LogReader();
-        if (!logFile->open(logFilename))
+        if (!logFile->Open(logFilename))
         {
             Logger::Error("Failed to open log file for reading");
             delete logFile;
@@ -137,6 +137,8 @@ int main (int argc, const char * const * argv)
     catch (TCLAP::ArgException & e)
     {
         Logger::Error(e.what());
+        delete logFile;
+        delete dotFile;
         return 1;
     }
 
@@ -145,30 +147,22 @@ int main (int argc, const char * const * argv)
     bool loaded = historyMgr.FromFile(
             logFile, excludedExtensions, startHour, endHour
     );
-    logFile->close();
+    logFile->Close();
     delete logFile;
     if (!loaded)
     {
         Logger::Error("Failed to parse log file");
-        delete logFile;
+        delete dotFile;
         return 1;
     }
 
     // Générer le dot-file, si demandé.
     if (dotFilenameArg.isSet())
     {
-        bool generated = historyMgr.ToDotFile(dotFile);
+        historyMgr.ToDotFile(dotFile);
         dotFile->Close();
         delete dotFile;
-        if (generated)
-        {
-            Logger::Info("Dot-file ", dotFilename, " generated");
-        }
-        else
-        {
-            Logger::Error("Failed to generate dot-file ", dotFilename);
-            return 1;
-        }
+        Logger::Info("Dot-file ", dotFilename, " generated");
     }
 
     // Afficher les documents les plus populaires.

@@ -7,7 +7,7 @@
 
 const char * ERROR_PARSE_LINE = "Failed to parse line ";
 
-void LogReader::close ()
+void LogReader::Close ()
 {
     if (logFile.is_open())
     {
@@ -15,19 +15,20 @@ void LogReader::close ()
     }
 }
 
-bool LogReader::eof ()
+bool LogReader::Eof ()
 {
     return logFile.eof();
 }
 
-bool LogReader::open (std::string filename)
+bool LogReader::Open (std::string filename)
 {
+    Close();
     currentLine = 0;
     logFile.open(filename);
     return logFile.is_open();
 }
 
-void LogReader::readLine (LogEntry & entry)
+void LogReader::ReadLine (LogEntry & entry)
 {
     currentLine++;
     try
@@ -50,5 +51,5 @@ LogReader::LogReader () : currentLine(0)
 
 LogReader::~LogReader ()
 {
-
+    Close();
 }

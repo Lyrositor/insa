@@ -10,10 +10,10 @@ class LogEntry;
 
 class LogReader {
 public:
-    void close ();
-    bool eof ();
-    bool open (std::string filename);
-    void readLine (LogEntry & entry);
+    void Close ();
+    bool Eof ();
+    bool Open (std::string filename);
+    void ReadLine (LogEntry & entry);
 
     LogReader ();
     virtual ~LogReader ();

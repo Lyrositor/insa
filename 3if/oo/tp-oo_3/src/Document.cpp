@@ -5,13 +5,18 @@ void Document::AddLocalHit ()
     localHits++;
 }
 
-void Document::AddRemoteHit (const std::string & documentUri)
+void Document::AddRemoteHit (unsigned long documentId)
 {
-    if (!remoteHits.count(documentUri))
+    if (!remoteHits.count(documentId))
     {
-        remoteHits[documentUri] = 0;
+        remoteHits[documentId] = 0;
     }
-    remoteHits[documentUri]++;
+    remoteHits[documentId]++;
+}
+
+unsigned long Document::GetId () const
+{
+    return id;
 }
 
 unsigned int Document::GetLocalHits () const
@@ -19,12 +24,19 @@ unsigned int Document::GetLocalHits () const
     return localHits;
 }
 
-unsigned int Document::GetRemoteHits (const std::string & documentUri) const
+const std::unordered_map<unsigned long, unsigned int> & Document::GetRemoteHits
+        () const
 {
-    return remoteHits.at(documentUri);
+    return remoteHits;
 }
 
-Document::Document() : localHits(0)
+const std::string & Document::GetUri () const
+{
+    return uri;
+}
+
+Document::Document (unsigned long documentId, const std::string & documentUri) :
+        id(documentId), localHits(0), uri(documentUri)
 {
 }
 

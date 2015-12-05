@@ -19,13 +19,14 @@ public:
             unsigned int endHour
     );
     void ListDocuments (unsigned int max) const;
-    bool ToDotFile (DotFileWriter * dotFile) const;
+    void ToDotFile (DotFileWriter * dotFile) const;
 
     HistoryManager (const std::string & serverUrl);
     virtual ~HistoryManager ();
 
 protected:
-    std::map<std::string, Document *> documents;
+    std::map<unsigned long, Document *> documentsById;
+    std::map<std::string, Document *> documentsByName;
     std::string localServerUrl;
 
     void addEntry(const LogEntry & entry);

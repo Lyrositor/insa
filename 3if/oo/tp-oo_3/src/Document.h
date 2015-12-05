@@ -7,16 +7,21 @@
 class Document {
 public:
     void AddLocalHit ();
-    void AddRemoteHit (const std::string & documentUri);
+    void AddRemoteHit (unsigned long documentId);
+    unsigned long GetId () const;
     unsigned int GetLocalHits () const;
-    unsigned int GetRemoteHits (const std::string & documentUri) const;
+    const std::unordered_map<unsigned long, unsigned int> & GetRemoteHits ()
+            const;
+    const std::string & GetUri() const;
 
-    Document();
-    virtual ~Document();
+    Document (unsigned long documentId, const std::string & documentUri);
+    virtual ~Document ();
 
 protected:
+    unsigned long id;
     unsigned int localHits;
-    std::unordered_map<std::string, unsigned int> remoteHits;
+    std::unordered_map<unsigned long, unsigned int> remoteHits;
+    std::string uri;
 };
 
 #endif // DOCUMENT_H

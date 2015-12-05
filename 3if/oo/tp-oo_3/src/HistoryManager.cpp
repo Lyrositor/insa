@@ -1,6 +1,8 @@
+#include <sstream>
 #include <stdexcept>
 
 #include "Document.h"
+#include "DotFileWriter.h"
 #include "HistoryManager.h"
 #include "LogEntry.h"
 #include "Logger.h"
@@ -13,12 +15,12 @@ bool HistoryManager::FromFile (
         unsigned int endHour
 )
 {
-    while (!logFile->eof())
+    while (!logFile->Eof())
     {
         LogEntry entry;
         try
         {
-            logFile->readLine(entry);
+            logFile->ReadLine(entry);
         }
         catch (std::runtime_error & e)
         {
@@ -36,17 +38,28 @@ bool HistoryManager::FromFile (
 
 void HistoryManager::ListDocuments (unsigned int max) const
 {
-    auto it = documents.cbegin();
-    for (unsigned int i = 0; i < max && it != documents.cend(); i++, it++)
+    auto it = documentsById.cbegin();
+    for (unsigned int i = 0; i < max && it != documentsById.cend(); i++, ++it)
     {
-        std::cout << it->first << " (" << it->second->GetLocalHits() <<
-        " hits)" << std::endl;
+        std::cout << it->second->GetUri() << " (" <<
+                it->second->GetLocalHits() << " hits)" << std::endl;
     }
 }
 
-bool HistoryManager::ToDotFile (DotFileWriter * dotFile) const
+void HistoryManager::ToDotFile (DotFileWriter * dotFile) const
 {
-    return false;
+    dotFile->InitGraph(documentsById.size());
+    for (auto const & doc : documentsById)
+    {
+        dotFile->AddNode(doc.second->GetId(), doc.second->GetUri());
+        for (auto const & hit : doc.second->GetRemoteHits())
+        {
+            std::ostringstream ss;
+            ss << hit.second;
+            dotFile->AddLink(doc.second->GetId(), hit.first, ss.str());
+        }
+    }
+    dotFile->Write();
 }
 
 HistoryManager::HistoryManager(const std::string & serverUrl) :
@@ -56,7 +69,7 @@ HistoryManager::HistoryManager(const std::string & serverUrl) :
 
 HistoryManager::~HistoryManager()
 {
-    for (auto & pair : documents)
+    for (auto & pair : documentsById)
     {
         delete pair.second;
     }
@@ -65,12 +78,15 @@ HistoryManager::~HistoryManager()
 void HistoryManager::addEntry (const LogEntry & entry)
 {
     // Incrémenter le nombre d'accès au document demandé.
-    auto it = documents.find(entry.GetRequestUri());
+    auto it = documentsByName.find(entry.GetRequestUri());
     Document * requestDocument;
-    if (it == documents.end())
+    if (it == documentsByName.end())
     {
-        requestDocument = new Document();
-        documents[entry.GetRequestUri()] = requestDocument;
+        requestDocument = new Document(
+                documentsById.size(), entry.GetRequestUri()
+        );
+        documentsById[requestDocument->GetId()] = requestDocument;
+        documentsByName[requestDocument->GetUri()] = requestDocument;
     }
     else
     {
@@ -79,17 +95,20 @@ void HistoryManager::addEntry (const LogEntry & entry)
     requestDocument->AddLocalHit();
 
     // Incrémenter le nombre d'accès à ce document au document référent.
-    it = documents.find(entry.GetRefererUrlConverted(localServerUrl));
+    it = documentsByName.find(entry.GetRefererUrlConverted(localServerUrl));
     Document * refererDocument;
-    if (it == documents.end())
+    if (it == documentsByName.end())
     {
-        refererDocument = new Document();
-        documents[entry.GetRefererUrlConverted(localServerUrl)] =
-            refererDocument;
+        refererDocument = new Document(
+                documentsById.size(),
+                entry.GetRefererUrlConverted(localServerUrl)
+        );
+        documentsById[refererDocument->GetId()] = refererDocument;
+        documentsByName[refererDocument->GetUri()] = refererDocument;
     }
     else
     {
         refererDocument = it->second;
     }
-    refererDocument->AddRemoteHit(entry.GetRequestUri());
+    refererDocument->AddRemoteHit(refererDocument->GetId());
 }
