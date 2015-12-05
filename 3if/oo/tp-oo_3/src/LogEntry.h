@@ -2,41 +2,46 @@
 #define LOG_ENTRY_H
 
 #include <iostream>
+#include <string>
 
 class LogEntry
 {
 public:
-    const char * getClientIp () const;
-    const std::string & getLoginName () const;
-    const std::string & getRemoteUser () const;
-    short getDay () const;
-    short getMonth () const;
-    short getYear () const;
-    short getHour () const;
-    short getMinute () const;
-    short getSecond () const;
-    short getHourOffset () const;
-    short getMinuteOffset () const;
-    const std::string & getRequestMethod () const;
-    const std::string & getRequestUri () const;
-    float getHttpVersion () const;
-    short getStatusCode () const;
-    int getDataSize () const;
-    const std::string & getRefererUrl () const;
-    const std::string & getBrowser () const;
+    const unsigned char * GetClientIp () const;
+    const std::string & GetLoginName () const;
+    const std::string & GetRemoteUser () const;
+    unsigned short GetDay () const;
+    unsigned short GetMonth () const;
+    unsigned short GetYear () const;
+    unsigned short GetHour () const;
+    unsigned short GetMinute () const;
+    unsigned short GetSecond () const;
+    unsigned short GetHourOffset () const;
+    unsigned short GetMinuteOffset () const;
+    const std::string & GetRequestMethod () const;
+    const std::string & GetRequestUri () const;
+    const std::string GetRequestUriExtension () const;
+    float GetHttpVersion () const;
+    unsigned short GetStatusCode () const;
+    unsigned int GetDataSize () const;
+    const std::string & GetRefererUrl () const;
+    const std::string GetRefererUrlConverted (const std::string & local)
+            const;
+    const std::string & GetBrowser () const;
 
     friend std::istream &operator>> (std::istream & input, LogEntry & logEntry);
 
 protected:
-    char clientIp[4];
+    unsigned char clientIp[4];
     std::string loginName, remoteUser;
-    short day, month, year, hour, minute, second, hourOffset, minuteOffset;
+    unsigned short day, month, year, hour, minute, second, hourOffset,
+            minuteOffset;
     std::string requestMethod, requestUri;
     float httpVersion;
-    short statusCode;
-    int dataSize;
+    unsigned short statusCode;
+    unsigned int dataSize;
     std::string refererUrl, browser;
 };
 
 
-#endif //I LOG_ENTRY_H
+#endif // LOG_ENTRY_H

@@ -45,7 +45,7 @@ endif (TP-OO3_INCLUDES)
 
 # Generate a simple makefile for non-CMake compilation
 if (COMMAND create_makefile)
-    create_makefile(${CMAKE_CURRENT_SOURCE_DIR}/makefile
+    create_makefile(${CMAKE_CURRENT_SOURCE_DIR}/Makefile
             ${TP-OO3_BIN}
             ${TP-OO3_BIN_DIR}
             "${TP-OO3_SOURCES}"

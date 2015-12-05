@@ -1,11 +1,11 @@
 #include "DotFileWriter.h"
 
-void DotFileWriter::close ()
+void DotFileWriter::Close ()
 {
 
 }
 
-bool DotFileWriter::open (std::string filename)
+bool DotFileWriter::Open (std::string filename)
 {
     return false;
 }

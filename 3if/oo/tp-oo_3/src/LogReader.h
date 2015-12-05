@@ -13,13 +13,14 @@ public:
     void close ();
     bool eof ();
     bool open (std::string filename);
-    LogEntry readLine ();
+    void readLine (LogEntry & entry);
 
     LogReader ();
     virtual ~LogReader ();
 
 protected:
     std::ifstream logFile;
+    int currentLine;
 };
 
 

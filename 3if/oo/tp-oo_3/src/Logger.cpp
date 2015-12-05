@@ -1,33 +1,50 @@
+#ifndef LOGGER_CPP
+#define LOGGER_CPP
+
 #include "Logger.h"
 
-void Logger::error (std::string message)
+template<typename ... ARGS> void Logger::Error (ARGS ... args)
 {
-    log("Error: " + message, std::cerr, RED);
+    log(std::cerr, RED, "Error: ", args...);
 }
 
-void Logger::info (std::string message)
+template<typename ... ARGS> void Logger::Info (ARGS ... args)
 {
-    log(message, std::cout);
+    log(std::cout, NONE, args...);
 }
 
-void Logger::warning (std::string message)
+template<typename ... ARGS> void Logger::Warning (ARGS ... args)
 {
-    log("Warning: " + message, std::cerr, YELLOW);
+    log(std::cerr, YELLOW, "Warning: ", args...);
 }
 
-void Logger::log (std::string message, std::ostream & out, TerminalColor color)
+template<typename ... ARGS>
+void Logger::log (std::ostream & out, TerminalColor color, ARGS ... args)
 {
 #ifdef COLORS
     if (color == NONE)
     {
 #endif // COLORS
-        std::cout << message << std::endl;
+        print(out, args...);
 #ifdef COLORS
     }
     else
     {
-        std::string p = "\033[";
-        std::cout << p << 29+color << "m" << message << p << "0m" << std::endl;
+        print(out, P, 29 + color, "m", args..., P, "0m");
     }
 #endif // COLORS
 }
+
+void Logger::print (std::ostream & out)
+{
+    out << std::endl;
+}
+
+template<typename FIRST, typename ... ARGS>
+void Logger::print (std::ostream & out, FIRST arg1, ARGS ... args)
+{
+    out << arg1;
+    print(out, args...);
+};
+
+#endif // LOGGER_CPP

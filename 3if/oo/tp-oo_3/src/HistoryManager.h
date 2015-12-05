@@ -5,27 +5,30 @@
 #include <map>
 #include <unordered_set>
 
-#include "Document.h"
-
+class Document;
 class DotFileWriter;
+class LogEntry;
 class LogReader;
 
 class HistoryManager {
 public:
-    bool fromFile (
+    bool FromFile (
             LogReader * logFile,
             std::unordered_set<std::string> excludedExtensions,
             unsigned int startHour,
             unsigned int endHour
     );
-    void listDocuments (unsigned int max);
-    bool toDotFile (DotFileWriter * dotFile);
+    void ListDocuments (unsigned int max) const;
+    bool ToDotFile (DotFileWriter * dotFile) const;
 
-    HistoryManager ();
+    HistoryManager (const std::string & serverUrl);
     virtual ~HistoryManager ();
 
 protected:
-    std::map<std::string, Document> documents;
+    std::map<std::string, Document *> documents;
+    std::string localServerUrl;
+
+    void addEntry(const LogEntry & entry);
 };
 
 #endif // HISTORY_MANAGER_H

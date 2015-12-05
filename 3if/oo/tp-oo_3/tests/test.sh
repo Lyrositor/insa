@@ -6,10 +6,10 @@ if [ "$1" = "" ]
 then
   echo "No directory given, default to current"
   Directory="."
-else  
+else
   echo "| Test id : $1"
   if [ -d "$1" ]
-  then 
+  then
      Directory="$1"
   else
      echo "$1 is not a directory. Exiting."
@@ -20,7 +20,7 @@ fi
 cd $Directory
 
 if [ -r "description" ]
-then 
+then
   echo "-----------------------------------------------------------"
   echo "Description :"
   fold description -w 60 -s
@@ -41,19 +41,19 @@ fi
 
 # stdin has been specified
 if [ -r "std.in" ]
-then 
+then
   sRun="$sRun <std.in"
 fi
 
 # stdout has been specified
 if [ -r "std.out" ]
-then 
+then
   sRun="$sRun >temp.txt"
 fi
 
 # stderr has been specified
 if [ -r "stderr.out" ]
-then 
+then
   sRun="$sRun 2>temperr.txt"
 fi
 
@@ -67,7 +67,7 @@ resultGlobal=1
 # compare return code if concerned
 resultRC=2
 if [ -r "returncode" ]
-then 
+then
   if [ "$returnCode" = `cat returncode` ]
   then
     echo "                                       Return Code : PASSED"
@@ -82,7 +82,7 @@ fi
 # compare stdout if concerned
 resultOut=2
 if [ -r "std.out" ]
-then 
+then
   diff -wB temp.txt std.out >/dev/null
   if [ $? -eq 0 ]
   then
@@ -100,8 +100,8 @@ fi
 # compare stderr if concerned
 resultErr=2
 if [ -r "stderr.out" ]
-then 
-  diff -wB temperr.txt stderr.out >/dev/null
+then
+  diff -wB <(sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" temperr.txt) <(sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" stderr.out) >/dev/null
   if [ $? -eq 0 ]
   then
     echo "                                       Stderr      : PASSED"
@@ -133,9 +133,9 @@ then
         echo "                                       File #$number     : FAILED"
         resultFiles=0
         resultGlobal=0
-      fi  
+      fi
       rm $fileName
-    else  
+    else
       echo "                                       File #$number     : FAILED"
       resultFiles=0
       resultGlobal=0
@@ -156,7 +156,7 @@ else
   echo "                                       Global      : PASSED"
 fi
 echo "-----------------------------------------------------------"
-echo 
+echo
 
 cd $execDir
 

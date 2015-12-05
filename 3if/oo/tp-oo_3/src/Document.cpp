@@ -1,17 +1,33 @@
 #include "Document.h"
 
-void Document::addLocalHit() {
-
+void Document::AddLocalHit ()
+{
+    localHits++;
 }
 
-void Document::addRemoteHit(std::string) {
-
+void Document::AddRemoteHit (const std::string & documentUri)
+{
+    if (!remoteHits.count(documentUri))
+    {
+        remoteHits[documentUri] = 0;
+    }
+    remoteHits[documentUri]++;
 }
 
-Document::Document() {
-
+unsigned int Document::GetLocalHits () const
+{
+    return localHits;
 }
 
-Document::~Document() {
+unsigned int Document::GetRemoteHits (const std::string & documentUri) const
+{
+    return remoteHits.at(documentUri);
+}
 
+Document::Document() : localHits(0)
+{
+}
+
+Document::~Document()
+{
 }

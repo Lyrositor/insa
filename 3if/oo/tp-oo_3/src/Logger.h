@@ -20,15 +20,23 @@ enum TerminalColor
 class Logger
 {
 public:
-    static void error (std::string message);
-    static void info (std::string message);
-    static void warning (std::string message);
+    template<typename ... ARGS> static void Error (ARGS ... args);
+    template<typename ... ARGS> static void Info (ARGS ... args);
+    template<typename ... ARGS> static void Warning (ARGS ... args);
 
 protected:
-    static void log (
-            std::string message, std::ostream & out, TerminalColor color = NONE
+    static constexpr char const * P = "\033[";
+
+    template<typename ... ARGS> static void log (
+            std::ostream & out, TerminalColor color,
+            ARGS ... args
+    );
+    inline static void print (std::ostream & out);
+    template<typename FIRST, typename ... ARGS> static void print (
+            std::ostream & out, FIRST arg1, ARGS ... args
     );
 };
 
+#include "Logger.cpp"
 
 #endif // LOGGER_H

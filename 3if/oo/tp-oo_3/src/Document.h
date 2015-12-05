@@ -6,16 +6,17 @@
 
 class Document {
 public:
-    void addLocalHit();
-    void addRemoteHit(std::string);
+    void AddLocalHit ();
+    void AddRemoteHit (const std::string & documentUri);
+    unsigned int GetLocalHits () const;
+    unsigned int GetRemoteHits (const std::string & documentUri) const;
 
     Document();
     virtual ~Document();
 
 protected:
-    std::string type;
-    int localHits;
-    std::unordered_map<std::string, int> remoteHits;
+    unsigned int localHits;
+    std::unordered_map<std::string, unsigned int> remoteHits;
 };
 
 #endif // DOCUMENT_H

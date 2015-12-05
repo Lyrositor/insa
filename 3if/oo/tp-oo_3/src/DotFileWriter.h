@@ -6,8 +6,9 @@
 
 class DotFileWriter {
 public:
-    void close ();
-    bool open (std::string filename);
+
+    void Close ();
+    bool Open (std::string filename);
 
     DotFileWriter ();
     virtual ~DotFileWriter ();

@@ -38,13 +38,8 @@ const unordered_set<string> DEFAULT_EXCLUDED_EXTENSIONS = {
         "js"
 };
 
+const string DEFAULT_LOCAL_URL = "http://intranet-if.insa-lyon.fr";
 const unsigned int DEFAULT_MAX_DOCUMENTS = 10;
-
-const string ERROR_LOG_FILE_LOAD = "Failed to load log file";
-const string ERROR_LOG_FILE_PARSE = "Failed to parse log file";
-
-const string INFO_DOT_FILE_GENERATE = "Dot-file %s generated";
-const string ERROR_DOT_FILE_GENERATE = "Failed to generate dot-file %s";
 
 //-------------------------------------------------------------- FONCTIONS
 int main (int argc, const char * const * argv)
@@ -58,20 +53,20 @@ int main (int argc, const char * const * argv)
     unsigned int startHour = 0, endHour = 24;
 
     // Désactiver la synchronization avec la bibliothèque IO de C.
-    std::cout.sync_with_stdio(false);
+    cout.sync_with_stdio(false);
 
     // Initialiser le parseur d'arguments.
     TCLAP::CmdLine cmd(DESCRIPTION, ' ', VERSION);
 
     // Configurer l'argument du chemin de fichier log.
-    TCLAP::UnlabeledValueArg<std::string> logFilenameArg(
+    TCLAP::UnlabeledValueArg<string> logFilenameArg(
             "log", "path to the Apache log file to parse", true, "", "FILE",
             cmd
     );
 
     // Configurer l'argument (optionnel) du chemin de fichier dot-file, pour
     // la génération d'un graphe Graphviz.
-    TCLAP::ValueArg<std::string> dotFilenameArg(
+    TCLAP::ValueArg<string> dotFilenameArg(
             "g", "graphviz", "path to a Graphviz file to generate", false, "",
             "FILE", cmd
     );
@@ -103,7 +98,7 @@ int main (int argc, const char * const * argv)
         logFile = new LogReader();
         if (!logFile->open(logFilename))
         {
-            Logger::error(ERROR_LOG_FILE_LOAD);
+            Logger::Error("Failed to open log file for reading");
             delete logFile;
             return 1;
         }
@@ -113,9 +108,9 @@ int main (int argc, const char * const * argv)
         {
             dotFilename = dotFilenameArg.getValue();
             dotFile = new DotFileWriter();
-            if (!dotFile->open(dotFilename))
+            if (!dotFile->Open(dotFilename))
             {
-                Logger::error(ERROR_LOG_FILE_LOAD);
+                Logger::Error("Failed to open DOT file for writing");
                 delete dotFile;
                 delete logFile;
                 return 1;
@@ -133,23 +128,28 @@ int main (int argc, const char * const * argv)
         {
             startHour = timeArg.getValue();
             endHour = startHour + 1;
+            Logger::Warning(
+                    "Only hits between ", startHour, "h and ", endHour,
+                    "h have been taken into account."
+            );
         }
     }
     catch (TCLAP::ArgException & e)
     {
+        Logger::Error(e.what());
         return 1;
     }
 
     // Peupler l'historique de documents à partir du fichier log.
-    HistoryManager historyMgr;
-    bool loaded = historyMgr.fromFile(
+    HistoryManager historyMgr(DEFAULT_LOCAL_URL);
+    bool loaded = historyMgr.FromFile(
             logFile, excludedExtensions, startHour, endHour
     );
     logFile->close();
     delete logFile;
     if (!loaded)
     {
-        Logger::error(ERROR_LOG_FILE_PARSE);
+        Logger::Error("Failed to parse log file");
         delete logFile;
         return 1;
     }
@@ -157,22 +157,22 @@ int main (int argc, const char * const * argv)
     // Générer le dot-file, si demandé.
     if (dotFilenameArg.isSet())
     {
-        bool generated = historyMgr.toDotFile(dotFile);
-        dotFile->close();
+        bool generated = historyMgr.ToDotFile(dotFile);
+        dotFile->Close();
         delete dotFile;
         if (generated)
         {
-            Logger::info(INFO_DOT_FILE_GENERATE);
+            Logger::Info("Dot-file ", dotFilename, " generated");
         }
         else
         {
-            Logger::error(ERROR_DOT_FILE_GENERATE);
+            Logger::Error("Failed to generate dot-file ", dotFilename);
             return 1;
         }
     }
 
     // Afficher les documents les plus populaires.
-    historyMgr.listDocuments(DEFAULT_MAX_DOCUMENTS);
+    historyMgr.ListDocuments(DEFAULT_MAX_DOCUMENTS);
 
     return 0;
 }
