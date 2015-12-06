@@ -20,7 +20,7 @@
 const std::string LogEntry::EXTERNAL_DOCUMENT = "*";
 const boost::regex LogEntry::REQUEST_URI(
         R"(^(?:\:\d+)?((?:\/(?:[^\/?]+\/)*)?([^.\/?][^\/?]+?)?(?:\.(\w*))?))"
-        R"((?:[\?;].*)?$)"
+        R"((?:((\?.*)|(;.+)))?$)"
 );
 const boost::regex LogEntry::APACHE_LOG_ENTRY(
         R"(^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}) (\S+) (\S+) )"
