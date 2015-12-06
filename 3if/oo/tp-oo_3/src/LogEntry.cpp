@@ -2,14 +2,13 @@
 
 #include "LogEntry.h"
 
-
 const std::string LogEntry::EXTERNAL_DOCUMENT = "*";
 
-const std::regex LogEntry::REQUEST_URI(
+const boost::regex LogEntry::REQUEST_URI(
         R"(^(?:\:\d+)?((?:\/(?:[^\/?]+\/)*)?([^.\/?][^\/?]+?)?(?:\.(\w*))?))"
         R"((?:[\?;].*)?$)"
 );
-const std::regex LogEntry::APACHE_LOG_ENTRY(
+const boost::regex LogEntry::APACHE_LOG_ENTRY(
         R"(^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}) (\S+) (\S+) )"
         R"(\[(\d{2})\/(\w{3})\/(\d{4})\:(\d{2})\:(\d{2})\:(\d{2}) )"
         R"(\+(\d{2})(\d{2})] \"([A-Z]+) ([^\"]*?)\s+HTTP\/(\d\.\d)\" (\d+) )"
@@ -83,7 +82,7 @@ const std::string & LogEntry::GetRequestUri () const
 
 const std::string LogEntry::GetRequestUriConverted () const
 {
-    std::smatch match;
+    boost::smatch match;
     if (!parseUri(requestUri, match))
     {
         return requestUri;
@@ -93,7 +92,7 @@ const std::string LogEntry::GetRequestUriConverted () const
 
 const std::string LogEntry::GetRequestUriExtension () const
 {
-    std::smatch match;
+    boost::smatch match;
     if (!parseUri(requestUri, match))
     {
         return "";
@@ -127,7 +126,7 @@ const std::string LogEntry::GetRefererUrlConverted (const std::string & local)
     if (!refererUrl.compare(0, local.size(), local))
     {
         std::string convertedUrl = refererUrl.substr(local.size());
-        std::smatch match;
+        boost::smatch match;
         if (!parseUri(convertedUrl, match))
         {
             return convertedUrl;
@@ -150,8 +149,8 @@ std::istream & operator>> (std::istream & input, LogEntry & logEntry)
     {
         return input;
     }
-    std::smatch match;
-    if (!std::regex_match(line, match, LogEntry::APACHE_LOG_ENTRY))
+    boost::smatch match;
+    if (!boost::regex_match(line, match, LogEntry::APACHE_LOG_ENTRY))
     {
         throw std::runtime_error("Invalid log entry");
     }
@@ -179,7 +178,7 @@ std::istream & operator>> (std::istream & input, LogEntry & logEntry)
     return input;
 }
 
-bool LogEntry::parseUri (const std::string & uri, std::smatch & match) const
+bool LogEntry::parseUri (const std::string & uri, boost::smatch & match) const
 {
-    return std::regex_match(uri, match, REQUEST_URI);
+    return boost::regex_match(uri, match, REQUEST_URI);
 }

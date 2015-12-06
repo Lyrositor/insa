@@ -12,20 +12,20 @@ INCFLAG = -I
 OUTPUT = -o
 RMFLAGS = -rf
 
-DEFINITIONS = -DCOLORS
+DEFINITIONS = -DCOLORS -DNDEBUG
 
 BUILD = bin
 SRC = src/ConfigReader.cpp src/Document.cpp src/DotFileWriter.cpp src/HistoryManager.cpp src/Logger.cpp src/LogEntry.cpp src/LogReader.cpp
 OBJ = $(SRC:%.cpp=$(BUILD)/%.o)
 MAIN = src/main.cpp
 
-LIBS =
+LIBS = -lboost_regex
 LIBPATH =
 INCPATH = include
 
 BIN = $(BUILD)/tp-oo_3
 MK_D = @mkdir -p $(@D)
-MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@ $(DEFINITIONS)
+MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@ $(INCFLAG)$(INCPATH) $(DEFINITIONS) $(LIBS)
 
 ALL = all
 CLEAN = clean
@@ -39,7 +39,7 @@ $(CLEAN):
 
 $(BIN): $(OBJ) $(MAIN)
 	$(MK_D)
-	$(CXX) $(CXXFLAGS) $^ $(OUTPUT) $@ $(INCFLAG)$(INCPATH) $(DEFINITIONS)
+	$(CXX) $(CXXFLAGS) $^ $(OUTPUT) $@ $(INCFLAG)$(INCPATH) $(DEFINITIONS) $(LIBS)
 
 $(BUILD)/src/ConfigReader.o: src/ConfigReader.cpp src/ConfigReader.h
 	$(MK_D)

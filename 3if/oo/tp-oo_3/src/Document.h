@@ -1,4 +1,4 @@
-#ifndef DOCUMENT_H
+#if ! defined ( DOCUMENT_H )
 #define DOCUMENT_H
 
 #include <string>

@@ -1,6 +1,5 @@
 #include <functional>
 #include <sstream>
-#include <stdexcept>
 
 #include "Document.h"
 #include "DotFileWriter.h"

@@ -1,10 +1,67 @@
-#ifndef CONFIG_READER_H
+/*******************************************************************************
+               ConfigReader - Lecteur de fichier de configuration
+                              --------------------
+    début                : 01/12/2015
+    copyright            : (C) 2015 par B3309
+*******************************************************************************/
+
+// Interface de la classe <ConfigReader> (fichier ConfigReader.h)
+#if ! defined ( CONFIG_READER_H )
 #define CONFIG_READER_H
 
+//--------------------------------------------------------- Interfaces utilisées
 
-class ConfigReader {
+//------------------------------------------------------------------- Constantes
 
+//------------------------------------------------------------------------ Types
+
+//------------------------------------------------------------------------------
+// Rôle de la classe <ConfigReader>
+//
+//------------------------------------------------------------------------------
+
+class ConfigReader
+{
+//----------------------------------------------------------------------- PUBLIC
+public:
+//----------------------------------------------------------- Méthodes publiques
+
+//------------------------------------------------------- Surcharge d'opérateurs
+    ConfigReader & operator = (const ConfigReader & reader);
+    // Mode d'emploi :
+
+//-------------------------------------------------- Constructeurs - destructeur
+
+    ConfigReader ();
+    // Mode d'emploi :
+
+    ConfigReader (const ConfigReader * reader);
+    // Mode d'emploi :
+
+    virtual ~ConfigReader ();
+    // Mode d'emploi :
+
+
+//------------------------------------------------------------------------ PRIVE
+protected:
+//----------------------------------------------------------- Méthodes protégées
+
+private:
+//------------------------------------------------------------- Méthodes privées
+
+protected:
+//----------------------------------------------------------- Attributs protégés
+
+private:
+//------------------------------------------------------------- Attributs privés
+
+//---------------------------------------------------------------- Classes amies
+
+//-------------------------------------------------------------- Classes privées
+
+//----------------------------------------------------------------- Types privés
 };
 
+//------------------------------------------- Types dépendants de <ConfigReader>
 
 #endif // CONFIG_READER_H

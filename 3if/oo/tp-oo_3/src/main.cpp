@@ -1,26 +1,26 @@
-/*************************************************************************
-                main - Interpréteur à la ligne de commande
-                             -------------------
+/*******************************************************************************
+                   main - Interpréteur à la ligne de commande
+                              --------------------
     début                : 01/12/2015
     copyright            : (C) 2015 par B3309
-*************************************************************************/
+*******************************************************************************/
 
-//---------------------------------------------------------------- INCLUDE
+//---------------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------- Include système
+//-------------------------------------------------------------- Include système
 using namespace std;
 #include <list>
 #include <string>
 #include <tclap/CmdLine.h>
 #include <unordered_set>
 
-//------------------------------------------------------ Include personnel
+//------------------------------------------------------------ Include personnel
+#include "DotFileWriter.h"
+#include "HistoryManager.h"
 #include "Logger.h"
 #include "LogReader.h"
-#include "HistoryManager.h"
-#include "DotFileWriter.h"
 
-//------------------------------------------------------------- Constantes
+//------------------------------------------------------------------- Constantes
 const string DESCRIPTION = "Parser for Apache logs";
 const string VERSION = "1.0";
 
@@ -37,11 +37,10 @@ const unordered_set<string> DEFAULT_EXCLUDED_EXTENSIONS = {
         // JavaScript
         "js"
 };
-
 const string DEFAULT_LOCAL_URL = "http://intranet-if.insa-lyon.fr";
 const unsigned int DEFAULT_MAX_DOCUMENTS = 10;
 
-//-------------------------------------------------------------- FONCTIONS
+//-------------------------------------------------------------------- FONCTIONS
 int main (int argc, const char * const * argv)
 // Algorithme :
 {

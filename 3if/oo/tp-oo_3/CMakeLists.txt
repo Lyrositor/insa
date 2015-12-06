@@ -43,6 +43,16 @@ if (TP-OO3_INCLUDES)
     include_directories(${TP-OO3_INCLUDES})
 endif (TP-OO3_INCLUDES)
 
+# Find the Boost.Regex library and link it
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost 1.50.0 REQUIRED COMPONENTS regex)
+if (Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+    target_link_libraries(${TP-OO3_BIN} ${Boost_LIBRARIES})
+endif(Boost_FOUND)
+
 # Generate a simple makefile for non-CMake compilation
 if (COMMAND create_makefile)
     create_makefile(${CMAKE_CURRENT_SOURCE_DIR}/Makefile
@@ -53,6 +63,7 @@ if (COMMAND create_makefile)
             "-std=gnu++11;-O3;${TP-OO3_FLAGS}"
             "${TP-OO3_DEFINITIONS}"
             "${TP-OO3_INCLUDES}"
+            "-lboost_regex"
             ${CMAKE_CURRENT_SOURCE_DIR})
 endif (COMMAND create_makefile)
 

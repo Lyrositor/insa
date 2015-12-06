@@ -2,7 +2,7 @@
 #define LOG_ENTRY_H
 
 #include <iostream>
-#include <regex>
+#include <boost/regex.hpp>
 #include <set>
 #include <string>
 
@@ -37,8 +37,8 @@ public:
 protected:
     static const std::string EXTERNAL_DOCUMENT;
 
-    static const std::regex APACHE_LOG_ENTRY;
-    static const std::regex REQUEST_URI;
+    static const boost::regex APACHE_LOG_ENTRY;
+    static const boost::regex REQUEST_URI;
 
     unsigned char clientIp[4];
     std::string loginName, remoteUser;
@@ -51,7 +51,7 @@ protected:
     int dataSize;
     std::string refererUrl, browser;
 
-    bool parseUri(const std::string & uri, std::smatch & match) const;
+    bool parseUri(const std::string & uri, boost::smatch & match) const;
 };
 
 

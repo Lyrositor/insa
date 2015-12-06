@@ -51,18 +51,25 @@ endif (CMAKE_COMPILER_IS_GNUCXX)
 
 # Define a function for automatic generation of a simpler makefile
 function (create_makefile
-        FILENAME BIN BUILD SRC_ MAIN CXXFLAGS_ DEFINITIONS INCLUDE WORKING_DIR)
+        FILENAME BIN BUILD SRC_ MAIN CXXFLAGS_ DEFINITIONS_ INCLUDE LIBS
+        WORKING_DIR)
     MESSAGE(STATUS "Creating makefile for ${BIN}")
 
     file(READ ${CMAKE_SOURCE_DIR}/common/makefile.in MAKEFILE)
     file(READ ${CMAKE_SOURCE_DIR}/common/makefile-target.in TARGET_TEMPLATE)
 
     string(REPLACE ";" " " SRC "${SRC_}")
+
     list(APPEND CXXFLAGS_ ${GNUCC_COMMON_FLAGS})
     list(APPEND CXXFLAGS_ ${GNUCXX_COMMON_FLAGS})
     list(REMOVE_DUPLICATES CXXFLAGS_)
     list(SORT CXXFLAGS_)
     string(REPLACE ";" " " CXXFLAGS "${CXXFLAGS_}")
+
+    list(APPEND DEFINITIONS_ "-DNDEBUG")
+    list(REMOVE_DUPLICATES DEFINITIONS_)
+    list(SORT DEFINITIONS_)
+    string(REPLACE ";" " " DEFINITIONS "${DEFINITIONS_}")
 
     string(CONFIGURE ${MAKEFILE} MAKEFILE @ONLY)
 
