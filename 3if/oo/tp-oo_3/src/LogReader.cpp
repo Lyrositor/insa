@@ -1,4 +1,3 @@
-#include <limits>
 #include <stdexcept>
 #include <sstream>
 
@@ -37,7 +36,6 @@ void LogReader::ReadLine (LogEntry & entry)
     }
     catch (std::runtime_error & e)
     {
-        logFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::stringstream ss;
         ss << ERROR_PARSE_LINE << currentLine << " (" << e.what() << ")";
         throw std::runtime_error(ss.str());

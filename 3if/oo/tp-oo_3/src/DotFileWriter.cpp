@@ -42,14 +42,16 @@ void DotFileWriter::Write ()
     dotFile << HEADER;
     for (unsigned int i = 0; i < numNodes; i++)
     {
-        dotFile << "node" << i << "[label=\"" << writeEscaped(nodes[i]) <<
-                "\"]\n";
+        dotFile << "node" << i << " [label=\"";
+        writeEscaped(nodes[i]);
+        dotFile << "\"];\n";
     }
     for (Link & link : links)
     {
         dotFile << "node" << link.sourceNodeId << " -> node" <<
-                link.destinationNodeId << " [label=\"" <<
-                writeEscaped(link.label) << "\"]\n";
+                link.destinationNodeId << " [label=\"";
+        writeEscaped(link.label);
+        dotFile << "\"];\n";
     }
     dotFile << FOOTER;
 }
@@ -68,20 +70,19 @@ DotFileWriter::~DotFileWriter ()
     Close();
 }
 
-std::ofstream & DotFileWriter::writeEscaped (const std::string & s)
+void DotFileWriter::writeEscaped (const std::string & s)
 {
-    for (const char & c : s)
+    for (unsigned int i = 0; i < s.length(); i++)
     {
-        switch (c)
+        switch (s[i])
         {
             case '"': // Aucun break car les " et les \ doivent tous deux être
                       // echappés.
             case '\\':
                 dotFile << '\\';
             default:
-                dotFile << c;
+                dotFile << s[i];
                 break;
         }
     }
-    return dotFile;
 }

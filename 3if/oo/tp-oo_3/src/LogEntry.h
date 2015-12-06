@@ -2,6 +2,8 @@
 #define LOG_ENTRY_H
 
 #include <iostream>
+#include <regex>
+#include <set>
 #include <string>
 
 class LogEntry
@@ -11,7 +13,7 @@ public:
     const std::string & GetLoginName () const;
     const std::string & GetRemoteUser () const;
     unsigned short GetDay () const;
-    unsigned short GetMonth () const;
+    const std::string & GetMonth () const;
     unsigned short GetYear () const;
     unsigned short GetHour () const;
     unsigned short GetMinute () const;
@@ -20,10 +22,11 @@ public:
     unsigned short GetMinuteOffset () const;
     const std::string & GetRequestMethod () const;
     const std::string & GetRequestUri () const;
+    const std::string GetRequestUriConverted () const;
     const std::string GetRequestUriExtension () const;
-    float GetHttpVersion () const;
+    double GetHttpVersion () const;
     unsigned short GetStatusCode () const;
-    unsigned int GetDataSize () const;
+    int GetDataSize () const;
     const std::string & GetRefererUrl () const;
     const std::string GetRefererUrlConverted (const std::string & local)
             const;
@@ -32,15 +35,23 @@ public:
     friend std::istream &operator>> (std::istream & input, LogEntry & logEntry);
 
 protected:
+    static const std::string EXTERNAL_DOCUMENT;
+
+    static const std::regex APACHE_LOG_ENTRY;
+    static const std::regex REQUEST_URI;
+
     unsigned char clientIp[4];
     std::string loginName, remoteUser;
-    unsigned short day, month, year, hour, minute, second, hourOffset,
-            minuteOffset;
+    unsigned short day;
+    std::string month;
+    unsigned short year, hour, minute, second, hourOffset, minuteOffset;
     std::string requestMethod, requestUri;
-    float httpVersion;
+    double httpVersion;
     unsigned short statusCode;
-    unsigned int dataSize;
+    int dataSize;
     std::string refererUrl, browser;
+
+    bool parseUri(const std::string & uri, std::smatch & match) const;
 };
 
 

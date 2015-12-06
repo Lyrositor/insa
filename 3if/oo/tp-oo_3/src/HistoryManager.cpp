@@ -1,3 +1,4 @@
+#include <functional>
 #include <sstream>
 #include <stdexcept>
 
@@ -8,9 +9,11 @@
 #include "Logger.h"
 #include "LogReader.h"
 
+const std::unordered_set<std::string> VALID_REQUEST_METHODS = {"GET", "POST"};
+
 bool HistoryManager::FromFile (
         LogReader * logFile,
-        std::unordered_set<std::string> excludedExtensions,
+        const std::unordered_set<std::string> & excludedExtensions,
         unsigned int startHour,
         unsigned int endHour
 )
@@ -28,7 +31,8 @@ bool HistoryManager::FromFile (
             continue;
         }
         if (entry.GetHour() >= startHour && entry.GetHour() < endHour &&
-            !excludedExtensions.count(entry.GetRequestUriExtension()))
+            !excludedExtensions.count(entry.GetRequestUriExtension()) &&
+            VALID_REQUEST_METHODS.count(entry.GetRequestMethod()))
         {
             addEntry(entry);
         }
@@ -38,25 +42,27 @@ bool HistoryManager::FromFile (
 
 void HistoryManager::ListDocuments (unsigned int max) const
 {
-    auto it = documentsById.cbegin();
-    for (unsigned int i = 0; i < max && it != documentsById.cend(); i++, ++it)
+    Documents sortedDocuments = documents;
+    std::sort(sortedDocuments.begin(), sortedDocuments.end(), std::greater<Document>());
+    for (Documents::size_type i=0, e=sortedDocuments.size(); i!=e && i<max; ++i)
     {
-        std::cout << it->second->GetUri() << " (" <<
-                it->second->GetLocalHits() << " hits)" << std::endl;
+        std::cout << sortedDocuments[i].GetUri() << " (" <<
+                sortedDocuments[i].GetLocalHits() << " hits)\n";
     }
+    std::cout << std::flush;
 }
 
 void HistoryManager::ToDotFile (DotFileWriter * dotFile) const
 {
-    dotFile->InitGraph(documentsById.size());
-    for (auto const & doc : documentsById)
+    dotFile->InitGraph(documents.size());
+    for (Documents::size_type i = 0, e = documents.size(); i < e; ++i)
     {
-        dotFile->AddNode(doc.second->GetId(), doc.second->GetUri());
-        for (auto const & hit : doc.second->GetRemoteHits())
+        dotFile->AddNode(i, documents[i].GetUri());
+        for (auto const & hit : documents[i].GetRemoteHits())
         {
             std::ostringstream ss;
             ss << hit.second;
-            dotFile->AddLink(doc.second->GetId(), hit.first, ss.str());
+            dotFile->AddLink(i, hit.first, ss.str());
         }
     }
     dotFile->Write();
@@ -69,46 +75,39 @@ HistoryManager::HistoryManager(const std::string & serverUrl) :
 
 HistoryManager::~HistoryManager()
 {
-    for (auto & pair : documentsById)
-    {
-        delete pair.second;
-    }
 }
 
 void HistoryManager::addEntry (const LogEntry & entry)
 {
     // Incrémenter le nombre d'accès au document demandé.
-    auto it = documentsByName.find(entry.GetRequestUri());
-    Document * requestDocument;
+    std::string requestUri = entry.GetRequestUriConverted();
+    Documents::size_type requestIndex;
+    auto it = documentsByName.find(requestUri);
     if (it == documentsByName.end())
     {
-        requestDocument = new Document(
-                documentsById.size(), entry.GetRequestUri()
-        );
-        documentsById[requestDocument->GetId()] = requestDocument;
-        documentsByName[requestDocument->GetUri()] = requestDocument;
+        requestIndex = documents.size();
+        documents.emplace_back(requestUri);
+        documentsByName[documents[requestIndex].GetUri()] = requestIndex;
     }
     else
     {
-        requestDocument = it->second;
+        requestIndex = it->second;
     }
-    requestDocument->AddLocalHit();
+    documents[requestIndex].AddLocalHit();
 
     // Incrémenter le nombre d'accès à ce document au document référent.
-    it = documentsByName.find(entry.GetRefererUrlConverted(localServerUrl));
-    Document * refererDocument;
+    std::string refererUri = entry.GetRefererUrlConverted(localServerUrl);
+    Documents::size_type refererIndex;
+    it = documentsByName.find(refererUri);
     if (it == documentsByName.end())
     {
-        refererDocument = new Document(
-                documentsById.size(),
-                entry.GetRefererUrlConverted(localServerUrl)
-        );
-        documentsById[refererDocument->GetId()] = refererDocument;
-        documentsByName[refererDocument->GetUri()] = refererDocument;
+        refererIndex = documents.size();
+        documents.emplace_back(refererUri);
+        documentsByName[documents[refererIndex].GetUri()] = refererIndex;
     }
     else
     {
-        refererDocument = it->second;
+        refererIndex = it->second;
     }
-    refererDocument->AddRemoteHit(refererDocument->GetId());
+    documents[refererIndex].AddRemoteHit(requestIndex);
 }

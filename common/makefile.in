@@ -25,7 +25,7 @@ INCPATH = @INCLUDE@
 
 BIN = $(BUILD)/@BIN@
 MK_D = @mkdir -p $(@D)
-MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@
+MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@ $(DEFINITIONS)
 
 ALL = all
 CLEAN = clean

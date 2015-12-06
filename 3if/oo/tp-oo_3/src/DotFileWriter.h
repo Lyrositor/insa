@@ -36,7 +36,7 @@ protected:
     std::string * nodes;
     unsigned long numNodes;
 
-    std::ofstream & writeEscaped(const std::string & s);
+    void writeEscaped(const std::string & s);
 };
 
 #endif // DOT_FILE_WRITER_H

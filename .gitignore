@@ -44,6 +44,7 @@
 
 # Logs
 *.log
+*.stackdump
 
 # Build directories
 **/build

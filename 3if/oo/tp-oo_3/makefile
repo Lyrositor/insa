@@ -25,7 +25,7 @@ INCPATH = include
 
 BIN = $(BUILD)/tp-oo_3
 MK_D = @mkdir -p $(@D)
-MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@
+MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@ $(DEFINITIONS)
 
 ALL = all
 CLEAN = clean

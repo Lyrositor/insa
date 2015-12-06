@@ -2,7 +2,8 @@
 #define HISTORY_MANAGER_H
 
 #include <string>
-#include <map>
+#include <vector>
+#include <unordered_map>
 #include <unordered_set>
 
 class Document;
@@ -10,11 +11,14 @@ class DotFileWriter;
 class LogEntry;
 class LogReader;
 
-class HistoryManager {
+typedef std::vector<Document> Documents;
+
+class HistoryManager
+{
 public:
     bool FromFile (
             LogReader * logFile,
-            std::unordered_set<std::string> excludedExtensions,
+            const std::unordered_set<std::string> & excludedExtensions,
             unsigned int startHour,
             unsigned int endHour
     );
@@ -25,9 +29,9 @@ public:
     virtual ~HistoryManager ();
 
 protected:
-    std::map<unsigned long, Document *> documentsById;
-    std::map<std::string, Document *> documentsByName;
-    std::string localServerUrl;
+    Documents documents;
+    std::unordered_map<std::string, Documents::size_type> documentsByName;
+    const std::string localServerUrl;
 
     void addEntry(const LogEntry & entry);
 };

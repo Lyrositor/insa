@@ -14,11 +14,6 @@ void Document::AddRemoteHit (unsigned long documentId)
     remoteHits[documentId]++;
 }
 
-unsigned long Document::GetId () const
-{
-    return id;
-}
-
 unsigned int Document::GetLocalHits () const
 {
     return localHits;
@@ -35,9 +30,15 @@ const std::string & Document::GetUri () const
     return uri;
 }
 
-Document::Document (unsigned long documentId, const std::string & documentUri) :
-        id(documentId), localHits(0), uri(documentUri)
+bool Document::operator> (const Document & otherDoc) const
 {
+    return localHits > otherDoc.localHits;
+}
+
+Document::Document (const std::string & documentUri) :
+        localHits(0), uri(documentUri)
+{
+
 }
 
 Document::~Document()
