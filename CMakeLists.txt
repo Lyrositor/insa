@@ -53,7 +53,7 @@ endif (CMAKE_COMPILER_IS_GNUCXX)
 function (create_makefile
         FILENAME BIN BUILD SRC_ MAIN CXXFLAGS_ DEFINITIONS_ INCLUDE LIBS
         WORKING_DIR)
-    MESSAGE(STATUS "Creating makefile for ${BIN}")
+    message(STATUS "Creating makefile for ${BIN}")
 
     file(READ ${CMAKE_SOURCE_DIR}/common/makefile.in MAKEFILE)
     file(READ ${CMAKE_SOURCE_DIR}/common/makefile-target.in TARGET_TEMPLATE)

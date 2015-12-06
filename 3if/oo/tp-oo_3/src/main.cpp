@@ -168,4 +168,4 @@ int main (int argc, const char * const * argv)
     historyMgr.ListDocuments(DEFAULT_MAX_DOCUMENTS);
 
     return 0;
-}
+} //----- Fin de main

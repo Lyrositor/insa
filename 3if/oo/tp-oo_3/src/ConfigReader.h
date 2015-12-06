@@ -31,16 +31,14 @@ public:
     // Mode d'emploi :
 
 //-------------------------------------------------- Constructeurs - destructeur
-
     ConfigReader ();
     // Mode d'emploi :
 
-    ConfigReader (const ConfigReader * reader);
+    ConfigReader (const ConfigReader & reader);
     // Mode d'emploi :
 
     virtual ~ConfigReader ();
     // Mode d'emploi :
-
 
 //------------------------------------------------------------------------ PRIVE
 protected:

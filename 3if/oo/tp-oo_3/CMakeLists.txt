@@ -22,6 +22,9 @@ option(TP-OO3_COLORS "Use colors in output" ON)
 if (TP-OO3_COLORS)
     list(APPEND TP-OO3_DEFINITIONS -DCOLORS)
 endif (TP-OO3_COLORS)
+if (TP-OO_MAP)
+    list(APPEND TP-OO3_DEFINITIONS -DMAP)
+endif (TP-OO_MAP)
 
 # Configure the executable's compilation
 add_executable(${TP-OO3_BIN} ${TP-OO3_MAIN} ${TP-OO3_SOURCES})

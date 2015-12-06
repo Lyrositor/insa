@@ -12,7 +12,7 @@ INCFLAG = -I
 OUTPUT = -o
 RMFLAGS = -rf
 
-DEFINITIONS = -DCOLORS -DNDEBUG
+DEFINITIONS = -DCOLORS -DMAP -DNDEBUG
 
 BUILD = bin
 SRC = src/ConfigReader.cpp src/Document.cpp src/DotFileWriter.cpp src/HistoryManager.cpp src/Logger.cpp src/LogEntry.cpp src/LogReader.cpp

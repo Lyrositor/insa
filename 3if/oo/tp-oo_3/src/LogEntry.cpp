@@ -1,9 +1,23 @@
+/*******************************************************************************
+                LogEntry - Représente une ligne du fichier de log
+                              --------------------
+    début                : 01/12/2015
+    copyright            : (C) 2015 par B3309
+*******************************************************************************/
+
+// Réalisation de la classe <LogEntry> (fichier LogEntry.cpp)
+
+//---------------------------------------------------------------------- INCLUDE
+
+//-------------------------------------------------------------- Include système
 #include <stdexcept>
 
+//------------------------------------------------------------ Include personnel
 #include "LogEntry.h"
+#include "Logger.h"
 
+//------------------------------------------------------------------- Constantes
 const std::string LogEntry::EXTERNAL_DOCUMENT = "*";
-
 const boost::regex LogEntry::REQUEST_URI(
         R"(^(?:\:\d+)?((?:\/(?:[^\/?]+\/)*)?([^.\/?][^\/?]+?)?(?:\.(\w*))?))"
         R"((?:[\?;].*)?$)"
@@ -15,114 +29,65 @@ const boost::regex LogEntry::APACHE_LOG_ENTRY(
         R"((\d+|\-) \"([^\"]*)\" \"([^\"]*)\"$)"
 );
 
-const unsigned char * LogEntry::GetClientIp () const
-{
-    return clientIp;
-}
+//---------------------------------------------------------- Variables de classe
 
-const std::string & LogEntry::GetLoginName () const
-{
-    return loginName;
-}
+//----------------------------------------------------------------- Types privés
 
-const std::string & LogEntry::GetRemoteUser () const
-{
-    return remoteUser;
-}
+//----------------------------------------------------------------------- PUBLIC
 
-unsigned short LogEntry::GetDay () const
-{
-    return day;
-}
+//-------------------------------------------------------------- Fonctions amies
 
-const std::string & LogEntry::GetMonth () const
-{
-    return month;
-}
-
-unsigned short LogEntry::GetYear () const
-{
-    return year;
-}
-
+//----------------------------------------------------------- Méthodes publiques
 unsigned short LogEntry::GetHour () const
+// Algorithme :
 {
+    Logger::Debug("Appel à LogEntry::GetHour");
     return hour;
-}
-
-unsigned short LogEntry::GetMinute () const
-{
-    return minute;
-}
-
-unsigned short LogEntry::GetSecond () const
-{
-    return second;
-}
-
-unsigned short LogEntry::GetHourOffset () const
-{
-    return hourOffset;
-}
-
-unsigned short LogEntry::GetMinuteOffset () const
-{
-    return minuteOffset;
-}
+} //----- Fin de GetHour
 
 const std::string & LogEntry::GetRequestMethod () const
+// Algorithme :
 {
+    Logger::Debug("Appel à LogEntry::GetRequestMethod");
     return requestMethod;
-}
-
-const std::string & LogEntry::GetRequestUri () const
-{
-    return requestUri;
-}
+} //----- Fin de GetRequestMethod
 
 const std::string LogEntry::GetRequestUriConverted () const
+// Algorithme :
 {
+    Logger::Debug("Appel à LogEntry::GetRequestUriConverted");
     boost::smatch match;
     if (!parseUri(requestUri, match))
     {
         return requestUri;
     }
     return match[1];
-}
+} //----- Fin de GetRequestUriConverted
 
 const std::string LogEntry::GetRequestUriExtension () const
+// Algorithme :
 {
+    Logger::Debug("Appel à LogEntry::GetRequestUriExtension");
     boost::smatch match;
     if (!parseUri(requestUri, match))
     {
         return "";
     }
     return match[3];
-}
-
-double LogEntry::GetHttpVersion () const
-{
-    return httpVersion;
-}
+} //----- Fin de GetRequestUriExtension
 
 unsigned short LogEntry::GetStatusCode () const
+// Algorithme :
 {
+    Logger::Debug("Appel à LogEntry::GetStatusCode");
     return statusCode;
-}
-
-int LogEntry::GetDataSize () const
-{
-    return dataSize;
-}
-
-const std::string & LogEntry::GetRefererUrl () const
-{
-    return refererUrl;
-}
+} //----- Fin de GetStatusCode
 
 const std::string LogEntry::GetRefererUrlConverted (const std::string & local)
     const
+// Algorithme :
 {
+    Logger::Debug("Appel à LogEntry::GetRefererUrlConverted");
     if (!refererUrl.compare(0, local.size(), local))
     {
         std::string convertedUrl = refererUrl.substr(local.size());
@@ -134,15 +99,40 @@ const std::string LogEntry::GetRefererUrlConverted (const std::string & local)
         return match[1];
     }
     return EXTERNAL_DOCUMENT;
-}
+} //----- Fin de GetRefererUrlConverted
 
-const std::string & LogEntry::GetBrowser () const
-{
-    return browser;
-}
+//------------------------------------------------------- Surcharge d'opérateurs
 
-std::istream & operator>> (std::istream & input, LogEntry & logEntry)
+//-------------------------------------------------- Constructeurs - destructeur
+LogEntry::LogEntry () :
+        hour(0), requestMethod(""), requestUri(""), statusCode(0),
+        refererUrl("")
+// Algorithme :
 {
+    Logger::Debug("Appel au constructeur de LogEntry");
+} //----- Fin du constructeur
+
+LogEntry::~LogEntry ()
+// Algorithme :
+{
+    Logger::Debug("Appel au destructeur de LogEntry");
+} //----- Fin du destructeur
+
+//------------------------------------------------------------------------ PRIVE
+
+//----------------------------------------------------------- Méthodes protégées
+bool LogEntry::parseUri (const std::string & uri, boost::smatch & match) const
+// Algorithme :
+{
+    Logger::Debug("Appel à LogEntry::parseUri");
+    return boost::regex_match(uri, match, REQUEST_URI);
+} //----- Fin de parseUri
+
+//------------------------------------------------------------- Méthodes privées
+std::istream & operator >> (std::istream & input, LogEntry & logEntry)
+// Algorithme :
+{
+    Logger::Debug("Appel à LogEntry::operator >>");
     std::string line;
     std::getline(input, line);
     if (line.empty())
@@ -154,31 +144,10 @@ std::istream & operator>> (std::istream & input, LogEntry & logEntry)
     {
         throw std::runtime_error("Invalid log entry");
     }
-    logEntry.clientIp[0] = atoi(match[1].str().c_str());
-    logEntry.clientIp[1] = atoi(match[2].str().c_str());
-    logEntry.clientIp[2] = atoi(match[3].str().c_str());
-    logEntry.clientIp[3] = atoi(match[4].str().c_str());
-    logEntry.loginName = match[5];
-    logEntry.remoteUser = match[6];
-    logEntry.day = atoi(match[7].str().c_str());
-    logEntry.month = match[8];
-    logEntry.year = atoi(match[9].str().c_str());
     logEntry.hour = atoi(match[10].str().c_str());
-    logEntry.minute = atoi(match[11].str().c_str());
-    logEntry.second = atoi(match[12].str().c_str());
-    logEntry.hourOffset = atoi(match[13].str().c_str());
-    logEntry.minuteOffset = atoi(match[14].str().c_str());
     logEntry.requestMethod = match[15];
     logEntry.requestUri = match[16];
-    logEntry.httpVersion = atof(match[17].str().c_str());
     logEntry.statusCode = atoi(match[18].str().c_str());
-    logEntry.dataSize = atoi(match[19].str().c_str());
     logEntry.refererUrl = match[20];
-    logEntry.browser = match[21];
     return input;
-}
-
-bool LogEntry::parseUri (const std::string & uri, boost::smatch & match) const
-{
-    return boost::regex_match(uri, match, REQUEST_URI);
-}
+} //----- Fin de operator >>

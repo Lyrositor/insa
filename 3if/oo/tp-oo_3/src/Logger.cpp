@@ -1,50 +1,44 @@
-#ifndef LOGGER_CPP
-#define LOGGER_CPP
+/*******************************************************************************
+                  Logger - Gère l'affichage de messages de log
+                              --------------------
+    début                : 01/12/2015
+    copyright            : (C) 2015 par B3309
+*******************************************************************************/
+
+// Réalisation de la classe <Logger> (fichier Logger.cpp)
+
+//---------------------------------------------------------------------- INCLUDE
+
+//-------------------------------------------------------------- Include système
+
+//------------------------------------------------------------ Include personnel
 
 #include "Logger.h"
 
-template<typename ... ARGS> void Logger::Error (ARGS ... args)
-{
-    log(std::cerr, RED, "Error: ", args...);
-}
+//------------------------------------------------------------------- Constantes
+const std::string Logger::P = "\033[";
 
-template<typename ... ARGS> void Logger::Info (ARGS ... args)
-{
-    log(std::cout, NONE, args...);
-}
+//---------------------------------------------------------- Variables de classe
 
-template<typename ... ARGS> void Logger::Warning (ARGS ... args)
-{
-    log(std::cerr, YELLOW, "Warning: ", args...);
-}
+//----------------------------------------------------------------- Types privés
 
-template<typename ... ARGS>
-void Logger::log (std::ostream & out, TerminalColor color, ARGS ... args)
-{
-#ifdef COLORS
-    if (color == NONE)
-    {
-#endif // COLORS
-        print(out, args...);
-#ifdef COLORS
-    }
-    else
-    {
-        print(out, P, 29 + color, "m", args..., P, "0m");
-    }
-#endif // COLORS
-}
 
+//----------------------------------------------------------------------- PUBLIC
+
+//-------------------------------------------------------------- Fonctions amies
+
+//----------------------------------------------------------- Méthodes publiques
 void Logger::print (std::ostream & out)
 {
     out << std::endl;
 }
 
-template<typename FIRST, typename ... ARGS>
-void Logger::print (std::ostream & out, FIRST arg1, ARGS ... args)
-{
-    out << arg1;
-    print(out, args...);
-};
+//------------------------------------------------------- Surcharge d'opérateurs
 
-#endif // LOGGER_CPP
+//-------------------------------------------------- Constructeurs - destructeur
+
+//------------------------------------------------------------------------ PRIVE
+
+//----------------------------------------------------------- Méthodes protégées
+
+//------------------------------------------------------------- Méthodes privées
