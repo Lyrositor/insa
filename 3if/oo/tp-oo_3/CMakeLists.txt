@@ -36,6 +36,19 @@ set_target_properties(${TP-OO3_BIN} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${TP-OO3_BIN_DIR_FULL}
         RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${TP-OO3_BIN_DIR_FULL}
         CXX_STANDARD 11)
+
+# Find the Boost.Regex library and link it
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost 1.50.0 REQUIRED COMPONENTS regex)
+if (Boost_FOUND)
+    list(APPEND TP-OO3_DEFINITIONS -DUSE_BOOST)
+    include_directories(${Boost_INCLUDE_DIRS})
+    target_link_libraries(${TP-OO3_BIN} ${Boost_LIBRARIES})
+endif(Boost_FOUND)
+
+# Add flags and definitions
 if (TP-OO3_DEFINITIONS)
     target_compile_definitions(${TP-OO3_BIN} PRIVATE ${TP-OO3_DEFINITIONS})
 endif (TP-OO3_DEFINITIONS)
@@ -45,16 +58,6 @@ endif (TP-OO3_FLAGS)
 if (TP-OO3_INCLUDES)
     include_directories(${TP-OO3_INCLUDES})
 endif (TP-OO3_INCLUDES)
-
-# Find the Boost.Regex library and link it
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost 1.50.0 REQUIRED COMPONENTS regex)
-if (Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    target_link_libraries(${TP-OO3_BIN} ${Boost_LIBRARIES})
-endif(Boost_FOUND)
 
 # Generate a simple makefile for non-CMake compilation
 if (COMMAND create_makefile)

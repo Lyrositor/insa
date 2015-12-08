@@ -83,7 +83,7 @@ fi
 resultOut=2
 if [ -r "std.out" ]
 then
-  diff -wB temp.txt std.out >/dev/null
+  diff -wB <(sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" temp.txt) std.out >/dev/null
   if [ $? -eq 0 ]
   then
     echo "                                       Stdout      : PASSED"
@@ -101,7 +101,7 @@ fi
 resultErr=2
 if [ -r "stderr.out" ]
 then
-  diff -wB <(sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" temperr.txt) <(sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" stderr.out) >/dev/null
+  diff -wB <(sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" temperr.txt) stderr.out >/dev/null
   if [ $? -eq 0 ]
   then
     echo "                                       Stderr      : PASSED"

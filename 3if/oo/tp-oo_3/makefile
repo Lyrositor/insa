@@ -5,14 +5,14 @@ LN = g++
 RM = @rm
 ECHO = @echo
 
-CXXFLAGS = -O3 -Wall -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wextra -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wno-unused -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -std=gnu++11
+CXXFLAGS = -O3 -Wall -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wextra -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -std=gnu++11
 LNFLAGS = 
 COMPILEFLAG = -c
 INCFLAG = -I
 OUTPUT = -o
 RMFLAGS = -rf
 
-DEFINITIONS = -DCOLORS -DMAP -DNDEBUG
+DEFINITIONS = -DCOLORS -DNDEBUG -DUSE_BOOST
 
 BUILD = bin
 SRC = src/ConfigReader.cpp src/Document.cpp src/DotFileWriter.cpp src/HistoryManager.cpp src/Logger.cpp src/LogEntry.cpp src/LogReader.cpp

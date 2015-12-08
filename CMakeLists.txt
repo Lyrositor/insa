@@ -34,8 +34,7 @@ if (CMAKE_COMPILER_IS_GNUCC)
             -Wstrict-null-sentinel
             -Wstrict-overflow=5
             -Wswitch-default
-            -Wundef
-            -Wno-unused)
+            -Wundef)
 elseif (MSVC)
     set(CC_COMMON_FLAGS /W4)
 endif (CMAKE_COMPILER_IS_GNUCC)

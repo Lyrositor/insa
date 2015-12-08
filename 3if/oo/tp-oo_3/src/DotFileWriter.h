@@ -14,8 +14,6 @@
 #include <fstream>
 #include <string>
 
-//------------------------------------------------------------------- Constantes
-
 //------------------------------------------------------------------------ Types
 struct Link
 {
@@ -56,9 +54,14 @@ public:
     // Mode d'emploi :
 
 //------------------------------------------------------- Surcharge d'opérateurs
+    DotFileWriter & operator = (const DotFileWriter & writer) = delete;
+    // Mode d'emploi :
 
 //-------------------------------------------------- Constructeurs - destructeur
     DotFileWriter ();
+    // Mode d'emploi :
+
+    DotFileWriter (const DotFileWriter & writer) = delete;
     // Mode d'emploi :
 
     virtual ~DotFileWriter ();
@@ -69,29 +72,15 @@ protected:
 //----------------------------------------------------------- Méthodes protégées
     void writeEscaped (const std::string & s);
 
-private:
-//------------------------------------------------------------- Méthodes privées
-
 protected:
 //----------------------------------------------------------- Attributs protégés
-    static const std::string HEADER;
-    static const std::string FOOTER;
-
     std::ofstream dotFile;
     std::forward_list<Link> links;
     std::string * nodes;
     unsigned long numNodes;
 
-private:
-//------------------------------------------------------------- Attributs privés
-
-//---------------------------------------------------------------- Classes amies
-
-//-------------------------------------------------------------- Classes privées
-
-//----------------------------------------------------------------- Types privés
+    static const std::string HEADER;
+    static const std::string FOOTER;
 };
-
-//------------------------------------------ Types dépendants de <DotFileWriter>
 
 #endif // DOT_FILE_WRITER_H

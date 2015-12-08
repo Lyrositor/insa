@@ -23,15 +23,9 @@
 
 //------------------------------------------------------------------- Constantes
 const std::unordered_set<std::string> VALID_REQUEST_METHODS = {"GET", "POST"};
-
-//---------------------------------------------------------- Variables de classe
-
-//----------------------------------------------------------------- Types privés
-
+const unsigned short VALID_STATUS_CODES[2] = {200, 399};
 
 //----------------------------------------------------------------------- PUBLIC
-
-//-------------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------------- Méthodes publiques
 bool HistoryManager::FromFile (
@@ -57,7 +51,9 @@ bool HistoryManager::FromFile (
         }
         if (entry.GetHour() >= startHour && entry.GetHour() < endHour &&
             !excludedExtensions.count(entry.GetRequestUriExtension()) &&
-            VALID_REQUEST_METHODS.count(entry.GetRequestMethod()))
+            VALID_REQUEST_METHODS.count(entry.GetRequestMethod()) &&
+            entry.GetStatusCode() >= VALID_STATUS_CODES[0] &&
+            entry.GetStatusCode() <= VALID_STATUS_CODES[1])
         {
             addEntry(entry);
         }
@@ -96,8 +92,6 @@ void HistoryManager::ToDotFile (DotFileWriter * dotFile) const
     }
     dotFile->Write();
 } //----- Fin de ToDotFile
-
-//------------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------------- Constructeurs - destructeur
 HistoryManager::HistoryManager(const std::string & serverUrl) :
@@ -151,5 +145,3 @@ void HistoryManager::addEntry (const LogEntry & entry)
     }
     documents[refererIndex].AddRemoteHit(requestIndex);
 } //----- Fin de addEntry
-
-//------------------------------------------------------------- Méthodes privées

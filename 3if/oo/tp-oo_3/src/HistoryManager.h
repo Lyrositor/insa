@@ -15,8 +15,6 @@
 #include <unordered_set>
 #include <vector>
 
-//------------------------------------------------------------------- Constantes
-
 //------------------------------------------------------------------------ Types
 class Document;
 class DotFileWriter;
@@ -49,9 +47,6 @@ public:
     void ToDotFile (DotFileWriter * dotFile) const;
     // Mode d'emploi :
 
-
-//------------------------------------------------------- Surcharge d'opérateurs
-
 //-------------------------------------------------- Constructeurs - destructeur
     HistoryManager (const std::string & serverUrl);
     // Mode d'emploi :
@@ -65,25 +60,11 @@ protected:
     void addEntry (const LogEntry & entry);
     // Mode d'emploi :
 
-private:
-//------------------------------------------------------------- Méthodes privées
-
 protected:
 //----------------------------------------------------------- Attributs protégés
     Documents documents;
     std::unordered_map<std::string, Documents::size_type> documentsByName;
     const std::string localServerUrl;
-
-private:
-//------------------------------------------------------------- Attributs privés
-
-//---------------------------------------------------------------- Classes amies
-
-//-------------------------------------------------------------- Classes privées
-
-//----------------------------------------------------------------- Types privés
 };
-
-//----------------------------------------- Types dépendants de <HistoryManager>
 
 #endif // HISTORY_MANAGER_H

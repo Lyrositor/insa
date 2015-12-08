@@ -13,10 +13,6 @@
 #include <string>
 #include <unordered_map>
 
-//------------------------------------------------------------------- Constantes
-
-//------------------------------------------------------------------------ Types
-
 //------------------------------------------------------------------------------
 // Rôle de la classe <Document>
 //
@@ -44,9 +40,6 @@ public:
     // Mode d'emploi :
 
 //------------------------------------------------------- Surcharge d'opérateurs
-    Document & operator = (const Document & document);
-    // Mode d'emploi :
-
     bool operator > (const Document & document) const;
     // Mode d'emploi :
 
@@ -54,36 +47,15 @@ public:
     Document (const std::string & documentUri);
     // Mode d'emploi :
 
-    Document (const Document & document);
-    // Mode d'emploi :
-
     virtual ~Document ();
     // Mode d'emploi :
 
 //------------------------------------------------------------------------ PRIVE
 protected:
-//----------------------------------------------------------- Méthodes protégées
-
-private:
-//------------------------------------------------------------- Méthodes privées
-
-protected:
 //----------------------------------------------------------- Attributs protégés
     unsigned int localHits;
     std::unordered_map<unsigned long, unsigned int> remoteHits;
     std::string uri;
-
-private:
-//------------------------------------------------------------- Attributs privés
-
-//---------------------------------------------------------------- Classes amies
-
-//-------------------------------------------------------------- Classes privées
-
-//----------------------------------------------------------------- Types privés
 };
-
-//----------------------------------------------- Types dépendants de <Document>
-
 
 #endif // DOCUMENT_H

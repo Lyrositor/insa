@@ -13,8 +13,6 @@
 #include <fstream>
 #include <string>
 
-//------------------------------------------------------------------- Constantes
-
 //------------------------------------------------------------------------ Types
 class LogEntry;
 
@@ -31,7 +29,7 @@ public:
     void Close ();
     // Mode d'emploi :
 
-    bool Eof ();
+    bool Eof () const;
     // Mode d'emploi :
 
     bool Open (std::string & filename);
@@ -41,9 +39,14 @@ public:
     // Mode d'emploi :
 
 //------------------------------------------------------- Surcharge d'opérateurs
+    LogReader & operator = (const LogReader & reader) = delete;
+    // Mode d'emploi :
 
 //-------------------------------------------------- Constructeurs - destructeur
     LogReader ();
+    // Mode d'emploi :
+
+    LogReader (const LogReader & reader) = delete;
     // Mode d'emploi :
 
     virtual ~LogReader ();
@@ -51,26 +54,9 @@ public:
 
 //------------------------------------------------------------------------ PRIVE
 protected:
-//----------------------------------------------------------- Méthodes protégées
-
-private:
-//------------------------------------------------------------- Méthodes privées
-
-protected:
 //----------------------------------------------------------- Attributs protégés
     std::ifstream logFile;
     int currentLine;
-
-private:
-//------------------------------------------------------------- Attributs privés
-
-//---------------------------------------------------------------- Classes amies
-
-//-------------------------------------------------------------- Classes privées
-
-//----------------------------------------------------------------- Types privés
 };
-
-//---------------------------------------------- Types dépendants de <LogReader>
 
 #endif // LOG_READER_H

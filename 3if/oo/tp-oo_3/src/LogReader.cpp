@@ -18,16 +18,7 @@
 #include "Logger.h"
 #include "LogReader.h"
 
-//------------------------------------------------------------------- Constantes
-
-//---------------------------------------------------------- Variables de classe
-
-//----------------------------------------------------------------- Types privés
-
-
 //----------------------------------------------------------------------- PUBLIC
-
-//-------------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------------- Méthodes publiques
 void LogReader::Close ()
@@ -40,7 +31,7 @@ void LogReader::Close ()
     }
 } //----- Fin de Close
 
-bool LogReader::Eof ()
+bool LogReader::Eof () const
 // Algorithme :
 {
     Logger::Debug("Appel à LogReader::Eof");
@@ -74,8 +65,6 @@ void LogReader::ReadLine (LogEntry & entry)
     }
 } //----- Fin de ReadLine
 
-//------------------------------------------------------- Surcharge d'opérateurs
-
 //-------------------------------------------------- Constructeurs - destructeur
 LogReader::LogReader () : currentLine(0)
 // Algorithme :
@@ -89,9 +78,3 @@ LogReader::~LogReader ()
     Logger::Debug("Appel au destructeur de LogReader");
     Close();
 } //----- Fin du destructeur
-
-//------------------------------------------------------------------------ PRIVE
-
-//----------------------------------------------------------- Méthodes protégées
-
-//------------------------------------------------------------- Méthodes privées

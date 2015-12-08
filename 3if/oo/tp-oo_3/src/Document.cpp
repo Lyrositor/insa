@@ -9,22 +9,11 @@
 
 //---------------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------------- Include système
-
 //------------------------------------------------------------ Include personnel
 #include "Document.h"
 #include "Logger.h"
 
-//------------------------------------------------------------------- Constantes
-
-//---------------------------------------------------------- Variables de classe
-
-//----------------------------------------------------------------- Types privés
-
-
 //----------------------------------------------------------------------- PUBLIC
-
-//-------------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------------- Méthodes publiques
 void Document::AddLocalHit ()
@@ -68,16 +57,6 @@ const std::string & Document::GetUri () const
 } //----- Fin de GetUri
 
 //------------------------------------------------------- Surcharge d'opérateurs
-Document & Document::operator = (const Document & document)
-// Algorithme :
-{
-    Logger::Debug("Appel à Document::operator =");
-    localHits = document.localHits;
-    remoteHits = document.remoteHits;
-    uri = document.uri;
-    return *this;
-} //----- Fin de la surcharge d'opérateur =
-
 bool Document::operator > (const Document & document) const
 // Algorithme :
 {
@@ -93,23 +72,8 @@ Document::Document (const std::string & documentUri) :
     Logger::Debug("Appel au constructeur de Document");
 } //----- Fin du constructeur
 
-Document::Document (const Document & document)
-// Algorithme :
-{
-    Logger::Debug("Appel au constructeur de copie de Document");
-    localHits = document.localHits;
-    remoteHits = document.remoteHits;
-    uri = document.uri;
-} //----- Fin du constructeur de copie
-
 Document::~Document()
 // Algorithme :
 {
     Logger::Debug("Appel au destructeur de Document");
 } //----- Fin du destructeur
-
-//------------------------------------------------------------------------ PRIVE
-
-//----------------------------------------------------------- Méthodes protégées
-
-//------------------------------------------------------------- Méthodes privées

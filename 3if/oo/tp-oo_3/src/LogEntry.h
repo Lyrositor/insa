@@ -10,14 +10,21 @@
 #define LOG_ENTRY_H
 
 //--------------------------------------------------------- Interfaces utilisées
-#include <boost/regex.hpp>
 #include <iostream>
 #include <set>
 #include <string>
 
-//------------------------------------------------------------------- Constantes
-
-//------------------------------------------------------------------------ Types
+#ifdef USE_BOOST
+#include <boost/regex.hpp>
+using boost::regex;
+using boost::regex_match;
+using boost::smatch;
+#else
+#include <regex>
+using std::regex;
+using std::regex_match;
+using std::smatch;
+#endif
 
 //------------------------------------------------------------------------------
 // Rôle de la classe <LogEntry>
@@ -28,6 +35,11 @@ class LogEntry
 {
 //----------------------------------------------------------------------- PUBLIC
 public:
+//-------------------------------------------------------------- Fonctions amies
+    friend std::istream & operator >> (
+            std::istream & input, LogEntry & logEntry
+    );
+
 //----------------------------------------------------------- Méthodes publiques
     unsigned short GetHour () const;
     // Mode d'emploi :
@@ -48,8 +60,6 @@ public:
             const;
     // Mode d'emploi :
 
-//------------------------------------------------------- Surcharge d'opérateurs
-
 //-------------------------------------------------- Constructeurs - destructeur
     LogEntry ();
     // Mode d'emploi :
@@ -60,36 +70,19 @@ public:
 //------------------------------------------------------------------------ PRIVE
 protected:
 //----------------------------------------------------------- Méthodes protégées
-    bool parseUri (const std::string & uri, boost::smatch & match) const;
-
-private:
-//------------------------------------------------------------- Méthodes privées
+    bool parseUri (const std::string & uri, smatch & match) const;
 
 protected:
 //----------------------------------------------------------- Attributs protégés
-    static const std::string EXTERNAL_DOCUMENT;
-    static const boost::regex APACHE_LOG_ENTRY;
-    static const boost::regex REQUEST_URI;
-
     unsigned short hour;
     std::string requestMethod;
     std::string requestUri;
     unsigned short statusCode;
     std::string refererUrl;
 
-private:
-//------------------------------------------------------------- Attributs privés
-
-//---------------------------------------------------------------- Classes amies
-    friend std::istream & operator >> (
-            std::istream & input, LogEntry & logEntry
-    );
-
-//-------------------------------------------------------------- Classes privées
-
-//----------------------------------------------------------------- Types privés
+    static const std::string EXTERNAL_DOCUMENT;
+    static const regex APACHE_LOG_ENTRY;
+    static const regex REQUEST_URI;
 };
-
-//----------------------------------------------- Types dépendants de <LogEntry>
 
 #endif // LOG_ENTRY_H

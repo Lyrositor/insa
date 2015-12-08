@@ -9,8 +9,6 @@
 
 //---------------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------------- Include système
-
 //------------------------------------------------------------ Include personnel
 #include "DotFileWriter.h"
 #include "Logger.h"
@@ -19,14 +17,7 @@
 const std::string DotFileWriter::HEADER = "digraph {\n";
 const std::string DotFileWriter::FOOTER = "}\n";
 
-//---------------------------------------------------------- Variables de classe
-
-//----------------------------------------------------------------- Types privés
-
-
 //----------------------------------------------------------------------- PUBLIC
-
-//-------------------------------------------------------------- Fonctions amies
 
 //----------------------------------------------------------- Méthodes publiques
 void DotFileWriter::AddLink (
@@ -98,8 +89,6 @@ void DotFileWriter::Write ()
     dotFile << FOOTER;
 } //----- Fin de Write
 
-//------------------------------------------------------- Surcharge d'opérateurs
-
 //-------------------------------------------------- Constructeurs - destructeur
 DotFileWriter::DotFileWriter () : nodes(nullptr), numNodes(0)
 // Algorithme :
@@ -130,7 +119,7 @@ void DotFileWriter::writeEscaped (const std::string & s)
         switch (s[i])
         {
             case '"': // Aucun break car les " et les \ doivent tous deux être
-                // echappés.
+                      // echappés.
             case '\\':
                 dotFile << '\\';
             default:
@@ -139,6 +128,3 @@ void DotFileWriter::writeEscaped (const std::string & s)
         }
     }
 } //----- Fin de writeEscaped
-
-//------------------------------------------------------------- Méthodes privées
-
