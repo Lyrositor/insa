@@ -28,6 +28,7 @@
 
 # IDE
 **/.idea/
+*.iml
 
 # MSVC
 *.ilk

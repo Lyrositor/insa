@@ -1,0 +1,3 @@
+192.168.1.1 - - [01/Dec/2015:00:00:00 +0000] "GET / HTTP/1.1" 200 0 "-" "-"
+192.168.1.1 - - [01/Dec/2015:00:00:00 +0000] "GET /page1.php HTTP/1.1" 200 0 "http://intranet-if.insa-lyon.fr/page2.php" "-"
+192.168.1.1 - - [01/Dec/2015:00:00:00 +0000] "GET /page2.php HTTP/1.1" 200 0 "http://intranet-if.insa-lyon.fr/page1.php" "-"

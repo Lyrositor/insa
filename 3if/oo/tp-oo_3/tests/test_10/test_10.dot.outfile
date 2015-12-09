@@ -1,0 +1,26 @@
+digraph {
+node0 [label="/page0.php"];
+node1 [label="*"];
+node2 [label="/page1.php"];
+node3 [label="/page9.php"];
+node4 [label="/page2.php"];
+node5 [label="/page3.php"];
+node6 [label="/page4.php"];
+node7 [label="/page5.php"];
+node8 [label="/page6.php"];
+node9 [label="/page7.php"];
+node10 [label="/page8.php"];
+node11 [label="/"];
+node11 -> node11 [label="1"];
+node3 -> node2 [label="1"];
+node2 -> node7 [label="1"];
+node1 -> node0 [label="1"];
+node1 -> node4 [label="1"];
+node1 -> node5 [label="1"];
+node1 -> node6 [label="4"];
+node1 -> node7 [label="2"];
+node1 -> node8 [label="1"];
+node1 -> node9 [label="1"];
+node1 -> node10 [label="1"];
+node1 -> node2 [label="1"];
+}

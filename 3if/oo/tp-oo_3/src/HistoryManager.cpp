@@ -69,6 +69,10 @@ void HistoryManager::ListDocuments (unsigned int max) const
     std::sort(sortedDocuments.begin(), sortedDocuments.end(), std::greater<Document>());
     for (Documents::size_type i=0, e=sortedDocuments.size(); i!=e && i<max; ++i)
     {
+        if (sortedDocuments[i].GetLocalHits() == 0)
+        {
+            break;
+        }
         std::cout << sortedDocuments[i].GetUri() << " (" <<
                 sortedDocuments[i].GetLocalHits() << " hits)\n";
     }
