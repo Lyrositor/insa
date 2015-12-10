@@ -38,7 +38,7 @@ std::istream & operator >> (std::istream & input, LogEntry & logEntry)
 // informations sous forme de string, puis convertit les résultats vers une
 // forme appropriée.
 {
-    Logger::Debug("Appel à LogEntry::operator >>");
+    DEBUG("Appel à LogEntry::operator >>");
     std::string line;
     std::getline(input, line);
     if (line.empty())
@@ -61,13 +61,13 @@ std::istream & operator >> (std::istream & input, LogEntry & logEntry)
 //----------------------------------------------------------- Méthodes publiques
 unsigned short LogEntry::GetHour () const
 {
-    Logger::Debug("Appel à LogEntry::GetHour");
+    DEBUG("Appel à LogEntry::GetHour");
     return hour;
 } //----- Fin de GetHour
 
 const std::string & LogEntry::GetRequestMethod () const
 {
-    Logger::Debug("Appel à LogEntry::GetRequestMethod");
+    DEBUG("Appel à LogEntry::GetRequestMethod");
     return requestMethod;
 } //----- Fin de GetRequestMethod
 
@@ -75,7 +75,7 @@ const std::string LogEntry::GetRequestUriConverted () const
 // Algorithme : Essaie de voir si l'URI a une forme spéciale (numéro de port,
 // paramètres...) et ne renvoie que la partie de base si c'est le cas.
 {
-    Logger::Debug("Appel à LogEntry::GetRequestUriConverted");
+    DEBUG("Appel à LogEntry::GetRequestUriConverted");
     smatch match;
     if (!parseUri(requestUri, match))
     {
@@ -88,7 +88,7 @@ const std::string LogEntry::GetRequestUriExtension () const
 // Algorithme : Essaie d'interpréter l'URI avec un regex pour en extraire son
 // extension de fichier.
 {
-    Logger::Debug("Appel à LogEntry::GetRequestUriExtension");
+    DEBUG("Appel à LogEntry::GetRequestUriExtension");
     smatch match;
     if (!parseUri(requestUri, match))
     {
@@ -99,7 +99,7 @@ const std::string LogEntry::GetRequestUriExtension () const
 
 unsigned short LogEntry::GetStatusCode () const
 {
-    Logger::Debug("Appel à LogEntry::GetStatusCode");
+    DEBUG("Appel à LogEntry::GetStatusCode");
     return statusCode;
 } //----- Fin de GetStatusCode
 
@@ -109,7 +109,7 @@ const std::string LogEntry::GetRefererUrlConverted (const std::string & local)
 // paramètres, les numéros de port éventuels, et, pour les URL du serveur local,
 // renvoie seulement l'URI du document, simplifiée.
 {
-    Logger::Debug("Appel à LogEntry::GetRefererUrlConverted");
+    DEBUG("Appel à LogEntry::GetRefererUrlConverted");
     if (!refererUrl.compare(0, local.size(), local))
     {
         std::string convertedUrl = refererUrl.substr(local.size());
@@ -134,12 +134,12 @@ LogEntry::LogEntry () :
         hour(0), requestMethod(""), requestUri(""), statusCode(0),
         refererUrl("")
 {
-    Logger::Debug("Appel au constructeur de LogEntry");
+    DEBUG("Appel au constructeur de LogEntry");
 } //----- Fin du constructeur
 
 LogEntry::~LogEntry ()
 {
-    Logger::Debug("Appel au destructeur de LogEntry");
+    DEBUG("Appel au destructeur de LogEntry");
 } //----- Fin du destructeur
 
 //------------------------------------------------------------------------ PRIVE
@@ -147,6 +147,6 @@ LogEntry::~LogEntry ()
 //----------------------------------------------------------- Méthodes protégées
 bool LogEntry::parseUri (const std::string & uri, smatch & match) const
 {
-    Logger::Debug("Appel à LogEntry::parseUri");
+    DEBUG("Appel à LogEntry::parseUri");
     return regex_match(uri, match, REQUEST_URI);
 } //----- Fin de parseUri

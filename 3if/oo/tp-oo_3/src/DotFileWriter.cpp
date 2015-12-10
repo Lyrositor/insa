@@ -25,19 +25,19 @@ void DotFileWriter::AddLink (
         const std::string & linkLabel
 )
 {
-    Logger::Debug("Appel à DotFileWriter::AddLink");
+    DEBUG("Appel à DotFileWriter::AddLink");
     links.push_front({sourceId, targetId, linkLabel});
 } //----- Fin de AddLink
 
 void DotFileWriter::AddNode (unsigned long id, const std::string & label)
 {
-    Logger::Debug("Appel à DotFileWriter::AddNode");
+    DEBUG("Appel à DotFileWriter::AddNode");
     nodes[id] = label;
 } //----- Fin de AddNode
 
 void DotFileWriter::Close ()
 {
-    Logger::Debug("Appel à DotFileWriter::Close");
+    DEBUG("Appel à DotFileWriter::Close");
     if (dotFile.is_open())
     {
         dotFile.close();
@@ -49,7 +49,7 @@ void DotFileWriter::InitGraph (unsigned long graphNodes)
 // tous ses noeuds et en réinitialisant la liste de liens, puis prépare un
 // nouveau tableau de noeuds.
 {
-    Logger::Debug("Appel à DotFileWriter::InitGraph");
+    DEBUG("Appel à DotFileWriter::InitGraph");
     if (nodes != nullptr)
     {
         links.clear();
@@ -63,7 +63,7 @@ bool DotFileWriter::Open (const std::string & filename)
 // Algorithme : Ferme tout flux déjà ouvert et ouvre un nouveau lié au fichier
 // <filename>.
 {
-    Logger::Debug("Appel à DotFileWriter::Open");
+    DEBUG("Appel à DotFileWriter::Open");
     Close();
     dotFile.open(filename);
     return dotFile.is_open();
@@ -73,7 +73,7 @@ void DotFileWriter::Write ()
 // Algorithme : Génère le fichier DOT en listant tous les noeuds d'abord, suivis
 // de tous les liens.
 {
-    Logger::Debug("Appel à DotFileWriter::Write");
+    DEBUG("Appel à DotFileWriter::Write");
     dotFile << HEADER;
     for (unsigned int i = 0; i < numNodes; i++)
     {
@@ -91,12 +91,12 @@ void DotFileWriter::Write ()
 //-------------------------------------------------- Constructeurs - destructeur
 DotFileWriter::DotFileWriter () : nodes(nullptr), numNodes(0)
 {
-    Logger::Debug("Appel au constructeur de DotFileWriter");
+    DEBUG("Appel au constructeur de DotFileWriter");
 } //----- Fin du constructeur
 
 DotFileWriter::~DotFileWriter ()
 {
-    Logger::Debug("Appel au destructeur de DotFileWriter");
+    DEBUG("Appel au destructeur de DotFileWriter");
     if (nodes != nullptr)
     {
         delete[] nodes;

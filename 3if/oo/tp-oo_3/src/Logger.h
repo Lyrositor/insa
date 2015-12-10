@@ -9,6 +9,16 @@
 #if ! defined ( LOGGER_H )
 #define LOGGER_H
 
+// Définir les macros de niveau de log.
+#ifdef MAP
+#define DEBUG(args ...) Logger::Debug(args)
+#else
+#define DEBUG(args ...)
+#endif // MAP
+#define ERROR(args ...) Logger::Debug(args)
+#define INFO(args ...) Logger::Info(args)
+#define WARNING(args ...) Logger::Warning(args)
+
 //--------------------------------------------------------- Interfaces utilisées
 #include <iostream>
 #include <string>
@@ -97,9 +107,7 @@ protected:
 //-------------------------------------------------- Implémentations de <Logger>
 template<typename ... ARGS> void Logger::Debug (ARGS ... args)
 {
-#ifdef MAP
     log(std::cout, GREEN, "Debug: ", args ...);
-#endif // MAP
 } //----- Fin de Debug
 
 template<typename ... ARGS> void Logger::Error (ARGS ... args)

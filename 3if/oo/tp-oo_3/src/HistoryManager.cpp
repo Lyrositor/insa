@@ -38,7 +38,7 @@ bool HistoryManager::FromFile (
 // les informations sur les documents parcourus, puis ne conserve que les
 // documents satisfaisant les critères de filtre.
 {
-    Logger::Debug("Appel à HistoryManager::FromFile");
+    DEBUG("Appel à HistoryManager::FromFile");
     while (!logFile.Eof())
     {
         LogEntry entry;
@@ -48,7 +48,7 @@ bool HistoryManager::FromFile (
         }
         catch (std::runtime_error & e)
         {
-            Logger::Warning(e.what());
+            WARNING(e.what());
             continue;
         }
         if (entry.GetHour() >= startHour && entry.GetHour() < endHour &&
@@ -68,7 +68,7 @@ void HistoryManager::ListDocuments (unsigned int max) const
 // décroissant) de la liste des documents, puis affiche au plus <max> éléments
 // de cette liste triée.
 {
-    Logger::Debug("Appel à HistoryManager::ListDocuments");
+    DEBUG("Appel à HistoryManager::ListDocuments");
     Documents sortedDocuments = documents;
     std::sort(
             sortedDocuments.begin(), sortedDocuments.end(),
@@ -91,7 +91,7 @@ void HistoryManager::ToDotFile (DotFileWriter & dotFile) const
 // au DOT file, puis y ajoute tous les accès de ce document vers les autres
 // documents comme des liens.
 {
-    Logger::Debug("Appel à HistoryManager::ToDotFile");
+    DEBUG("Appel à HistoryManager::ToDotFile");
     dotFile.InitGraph(documents.size());
     for (Documents::size_type i = 0, e = documents.size(); i < e; ++i)
     {
@@ -110,12 +110,12 @@ void HistoryManager::ToDotFile (DotFileWriter & dotFile) const
 HistoryManager::HistoryManager(const std::string & serverUrl) :
         localServerUrl(serverUrl)
 {
-    Logger::Debug("Appel au constructeur de HistoryManager");
+    DEBUG("Appel au constructeur de HistoryManager");
 } //----- Fin du constructeur
 
 HistoryManager::~HistoryManager()
 {
-    Logger::Debug("Appel au destructeur de HistoryManager");
+    DEBUG("Appel au destructeur de HistoryManager");
 } //----- Fin du destructeur
 
 //------------------------------------------------------------------------ PRIVE
@@ -128,7 +128,7 @@ void HistoryManager::addEntry (const LogEntry & entry)
 // s'il n'est pas trouvé), puis incrémente le nombre d'accès de ce document vers
 // le document demandé.
 {
-    Logger::Debug("Appel à HistoryManager::addEntry");
+    DEBUG("Appel à HistoryManager::addEntry");
     // Incrémenter le nombre d'accès au document demandé.
     std::string requestUri = entry.GetRequestUriConverted();
     Documents::size_type requestIndex;

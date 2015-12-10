@@ -112,7 +112,7 @@ int main (int argc, const char * const * argv)
         logFilename = logFilenameArg.getValue();
         if (!logFile.Open(logFilename))
         {
-            Logger::Error("Failed to open log file for reading");
+            ERROR("Failed to open log file for reading");
             return 1;
         }
 
@@ -122,7 +122,7 @@ int main (int argc, const char * const * argv)
             dotFilename = dotFilenameArg.getValue();
             if (!dotFile.Open(dotFilename))
             {
-                Logger::Error("Failed to open DOT file for writing");
+                ERROR("Failed to open DOT file for writing");
                 return 1;
             }
         }
@@ -140,7 +140,7 @@ int main (int argc, const char * const * argv)
         {
             startHour = timeArg.getValue();
             endHour = startHour + 1;
-            Logger::Warning(
+            WARNING(
                     "Only hits between ", startHour, "h and ", endHour,
                     "h have been taken into account."
             );
@@ -148,7 +148,7 @@ int main (int argc, const char * const * argv)
     }
     catch (TCLAP::ArgException & e)
     {
-        Logger::Error(e.what());
+        ERROR(e.what());
         return 1;
     }
 
@@ -160,7 +160,7 @@ int main (int argc, const char * const * argv)
     logFile.Close();
     if (!loaded)
     {
-        Logger::Error("Failed to parse log file");
+        ERROR("Failed to parse log file");
         return 1;
     }
 
@@ -169,7 +169,7 @@ int main (int argc, const char * const * argv)
     {
         historyMgr.ToDotFile(dotFile);
         dotFile.Close();
-        Logger::Info("Dot-file ", dotFilename, " generated");
+        INFO("Dot-file ", dotFilename, " generated");
     }
 
     // Afficher les documents les plus populaires.

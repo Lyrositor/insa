@@ -18,7 +18,7 @@
 //----------------------------------------------------------- Méthodes publiques
 void Document::AddLocalHit ()
 {
-    Logger::Debug("Appel à Document::AddLocalHit");
+    DEBUG("Appel à Document::AddLocalHit");
     localHits++;
 } //----- Fin de AddLocalHit
 
@@ -26,7 +26,7 @@ void Document::AddRemoteHit (unsigned long documentId)
 // Algorithme : Crée une case pour le document si elle n'existe pas déjà, puis
 // incrémente le compteur dans cette case de 1.
 {
-    Logger::Debug("Appel à Document::AddRemoteHit");
+    DEBUG("Appel à Document::AddRemoteHit");
     if (!remoteHits.count(documentId))
     {
         remoteHits[documentId] = 0;
@@ -36,26 +36,26 @@ void Document::AddRemoteHit (unsigned long documentId)
 
 unsigned int Document::GetLocalHits () const
 {
-    Logger::Debug("Appel à Document::GetLocalHits");
+    DEBUG("Appel à Document::GetLocalHits");
     return localHits;
 } //----- Fin de GetLocalHits
 
 const DocumentHits & Document::GetRemoteHits () const
 {
-    Logger::Debug("Appel à Document::GetRemoteHits");
+    DEBUG("Appel à Document::GetRemoteHits");
     return remoteHits;
 } //----- Fin de GetRemoteHits
 
 const std::string & Document::GetUri () const
 {
-    Logger::Debug("Appel à Document::GetUri");
+    DEBUG("Appel à Document::GetUri");
     return uri;
 } //----- Fin de GetUri
 
 //------------------------------------------------------- Surcharge d'opérateurs
 bool Document::operator > (const Document & document) const
 {
-    Logger::Debug("Appel à Document::operator >");
+    DEBUG("Appel à Document::operator >");
     return localHits > document.localHits;
 } //----- Fin de la surcharge d'opérateur >
 
@@ -63,10 +63,10 @@ bool Document::operator > (const Document & document) const
 Document::Document (const std::string & documentUri) :
         localHits(0), uri(documentUri)
 {
-    Logger::Debug("Appel au constructeur de Document");
+    DEBUG("Appel au constructeur de Document");
 } //----- Fin du constructeur
 
 Document::~Document()
 {
-    Logger::Debug("Appel au destructeur de Document");
+    DEBUG("Appel au destructeur de Document");
 } //----- Fin du destructeur

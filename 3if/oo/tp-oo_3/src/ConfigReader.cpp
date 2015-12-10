@@ -12,6 +12,7 @@
 //-------------------------------------------------------------- Include système
 #include <cstdlib>
 #include <fstream>
+#include <stdexcept>
 #include <sstream>
 
 //------------------------------------------------------------ Include personnel
@@ -78,7 +79,7 @@ ConfigReader::ConfigReader (const std::string & filename)
 // Algorithme : Lit un fichier de configuration ligne par ligne et en extrait
 // la clé et la valeur, puis ferme le flux de fichier.
 {
-    Logger::Debug("Appel au constructeur de ConfigReader");
+    DEBUG("Appel au constructeur de ConfigReader");
     std::ifstream file(filename);
     std::string line;
 
@@ -108,5 +109,5 @@ ConfigReader::ConfigReader (const std::string & filename)
 
 ConfigReader::~ConfigReader ()
 {
-    Logger::Debug("Appel au destructeur de ConfigReader");
+    DEBUG("Appel au destructeur de ConfigReader");
 } //----- Fin du destructeur

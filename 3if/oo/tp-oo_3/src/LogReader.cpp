@@ -23,7 +23,7 @@
 //----------------------------------------------------------- Méthodes publiques
 void LogReader::Close ()
 {
-    Logger::Debug("Appel à LogReader::Close");
+    DEBUG("Appel à LogReader::Close");
     if (logFile.is_open())
     {
         logFile.close();
@@ -32,7 +32,7 @@ void LogReader::Close ()
 
 bool LogReader::Eof () const
 {
-    Logger::Debug("Appel à LogReader::Eof");
+    DEBUG("Appel à LogReader::Eof");
     return logFile.eof();
 } //----- Fin de Eof
 
@@ -40,7 +40,7 @@ bool LogReader::Open (const std::string & filename)
 // Algorithme : Ferme tout flux déjà ouvert et ouvre un nouveau lié au fichier
 // <filename>.
 {
-    Logger::Debug("Appel à LogReader::Open");
+    DEBUG("Appel à LogReader::Open");
     Close();
     currentLine = 0;
     logFile.open(filename);
@@ -51,7 +51,7 @@ void LogReader::ReadLine (LogEntry & entry)
 // Algorithme : Lit une seule ligne du fichier, si encore possible, puis en
 // extrait les informations intéressantes pour les stocker dans <entry>
 {
-    Logger::Debug("Appel à LogReader::ReadLine");
+    DEBUG("Appel à LogReader::ReadLine");
     currentLine++;
     try
     {
@@ -68,11 +68,11 @@ void LogReader::ReadLine (LogEntry & entry)
 //-------------------------------------------------- Constructeurs - destructeur
 LogReader::LogReader () : currentLine(0)
 {
-    Logger::Debug("Appel au constructeur de LogReader");
+    DEBUG("Appel au constructeur de LogReader");
 } //----- Fin du constructeur
 
 LogReader::~LogReader ()
 {
-    Logger::Debug("Appel au destructeur de LogReader");
+    DEBUG("Appel au destructeur de LogReader");
     Close();
 } //----- Fin du destructeur
