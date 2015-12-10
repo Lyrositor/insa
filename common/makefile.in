@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 CXX = g++
 LN = g++
 RM = @rm

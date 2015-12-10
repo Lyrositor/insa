@@ -17,14 +17,14 @@
 
 //----------------------------------------------------------- Méthodes publiques
 void Document::AddLocalHit ()
-// Algorithme :
 {
     Logger::Debug("Appel à Document::AddLocalHit");
     localHits++;
 } //----- Fin de AddLocalHit
 
 void Document::AddRemoteHit (unsigned long documentId)
-// Algorithme :
+// Algorithme : Crée une case pour le document si elle n'existe pas déjà, puis
+// incrémente le compteur dans cette case de 1.
 {
     Logger::Debug("Appel à Document::AddRemoteHit");
     if (!remoteHits.count(documentId))
@@ -35,22 +35,18 @@ void Document::AddRemoteHit (unsigned long documentId)
 } //----- Fin de AddRemoteHit
 
 unsigned int Document::GetLocalHits () const
-// Algorithme :
 {
     Logger::Debug("Appel à Document::GetLocalHits");
     return localHits;
 } //----- Fin de GetLocalHits
 
-const std::unordered_map<unsigned long, unsigned int> & Document::GetRemoteHits
-        () const
-// Algorithme :
+const DocumentHits & Document::GetRemoteHits () const
 {
     Logger::Debug("Appel à Document::GetRemoteHits");
     return remoteHits;
 } //----- Fin de GetRemoteHits
 
 const std::string & Document::GetUri () const
-// Algorithme :
 {
     Logger::Debug("Appel à Document::GetUri");
     return uri;
@@ -58,7 +54,6 @@ const std::string & Document::GetUri () const
 
 //------------------------------------------------------- Surcharge d'opérateurs
 bool Document::operator > (const Document & document) const
-// Algorithme :
 {
     Logger::Debug("Appel à Document::operator >");
     return localHits > document.localHits;
@@ -67,13 +62,11 @@ bool Document::operator > (const Document & document) const
 //-------------------------------------------------- Constructeurs - destructeur
 Document::Document (const std::string & documentUri) :
         localHits(0), uri(documentUri)
-// Algorithme :
 {
     Logger::Debug("Appel au constructeur de Document");
 } //----- Fin du constructeur
 
 Document::~Document()
-// Algorithme :
 {
     Logger::Debug("Appel au destructeur de Document");
 } //----- Fin du destructeur

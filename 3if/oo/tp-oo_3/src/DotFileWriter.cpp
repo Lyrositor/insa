@@ -24,21 +24,18 @@ void DotFileWriter::AddLink (
         unsigned long sourceId, unsigned long targetId,
         const std::string & linkLabel
 )
-// Algorithme :
 {
     Logger::Debug("Appel à DotFileWriter::AddLink");
     links.push_front({sourceId, targetId, linkLabel});
 } //----- Fin de AddLink
 
 void DotFileWriter::AddNode (unsigned long id, const std::string & label)
-// Algorithme :
 {
     Logger::Debug("Appel à DotFileWriter::AddNode");
     nodes[id] = label;
 } //----- Fin de AddNode
 
 void DotFileWriter::Close ()
-// Algorithme :
 {
     Logger::Debug("Appel à DotFileWriter::Close");
     if (dotFile.is_open())
@@ -48,11 +45,14 @@ void DotFileWriter::Close ()
 } //----- Fin de Close
 
 void DotFileWriter::InitGraph (unsigned long graphNodes)
-// Algorithme :
+// Algorithme : Supprime tout ancien graphe qui avait été créé en détruisant
+// tous ses noeuds et en réinitialisant la liste de liens, puis prépare un
+// nouveau tableau de noeuds.
 {
     Logger::Debug("Appel à DotFileWriter::InitGraph");
     if (nodes != nullptr)
     {
+        links.clear();
         delete[] nodes;
     }
     numNodes = graphNodes;
@@ -60,7 +60,8 @@ void DotFileWriter::InitGraph (unsigned long graphNodes)
 } //----- Fin de InitGraph
 
 bool DotFileWriter::Open (const std::string & filename)
-// Algorithme :
+// Algorithme : Ferme tout flux déjà ouvert et ouvre un nouveau lié au fichier
+// <filename>.
 {
     Logger::Debug("Appel à DotFileWriter::Open");
     Close();
@@ -69,35 +70,31 @@ bool DotFileWriter::Open (const std::string & filename)
 } //----- Fin de Open
 
 void DotFileWriter::Write ()
-// Algorithme :
+// Algorithme : Génère le fichier DOT en listant tous les noeuds d'abord, suivis
+// de tous les liens.
 {
     Logger::Debug("Appel à DotFileWriter::Write");
     dotFile << HEADER;
     for (unsigned int i = 0; i < numNodes; i++)
     {
-        dotFile << "node" << i << " [label=\"";
-        writeEscaped(nodes[i]);
-        dotFile << "\"];\n";
+        dotFile << "node" << i << " [label=\"" << nodes[i] << "\"];\n";
     }
     for (Link & link : links)
     {
         dotFile << "node" << link.sourceNodeId << " -> node" <<
-                link.destinationNodeId << " [label=\"";
-        writeEscaped(link.label);
-        dotFile << "\"];\n";
+                link.destinationNodeId << " [label=\"" << link.label <<
+                "\"];\n";
     }
     dotFile << FOOTER;
 } //----- Fin de Write
 
 //-------------------------------------------------- Constructeurs - destructeur
 DotFileWriter::DotFileWriter () : nodes(nullptr), numNodes(0)
-// Algorithme :
 {
     Logger::Debug("Appel au constructeur de DotFileWriter");
 } //----- Fin du constructeur
 
 DotFileWriter::~DotFileWriter ()
-// Algorithme :
 {
     Logger::Debug("Appel au destructeur de DotFileWriter");
     if (nodes != nullptr)
@@ -106,25 +103,3 @@ DotFileWriter::~DotFileWriter ()
     }
     Close();
 } //----- Fin du destructeur
-
-//------------------------------------------------------------------------ PRIVE
-
-//----------------------------------------------------------- Méthodes protégées
-void DotFileWriter::writeEscaped (const std::string & s)
-// Algorithme :
-{
-    Logger::Debug("Appel à DotFileWriter::writeEscaped");
-    for (unsigned int i = 0; i < s.length(); i++)
-    {
-        switch (s[i])
-        {
-            case '"': // Aucun break car les " et les \ doivent tous deux être
-                      // echappés.
-            case '\\':
-                dotFile << '\\';
-            default:
-                dotFile << s[i];
-                break;
-        }
-    }
-} //----- Fin de writeEscaped

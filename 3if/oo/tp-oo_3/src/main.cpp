@@ -42,12 +42,14 @@ const unsigned int DEFAULT_MAX_DOCUMENTS = 10;
 
 //-------------------------------------------------------------------- FONCTIONS
 int main (int argc, const char * const * argv)
-// Algorithme :
+// Algorithme : Construit le lecteur d'arguments, traite l'entrée pour voir
+// quels arguments ont été passés, puis effectue toutes les opérations
+// demandées par l'utilisateur en paramètre.
 {
     string logFilename;
-    LogReader* logFile = nullptr;
     string dotFilename;
-    DotFileWriter* dotFile = nullptr;
+    LogReader logFile;
+    DotFileWriter dotFile;
     unordered_set<string> excludedExtensions;
     unsigned int startHour = 0, endHour = 24;
 
@@ -94,11 +96,9 @@ int main (int argc, const char * const * argv)
 
         // Essayer de lire le fichier de log.
         logFilename = logFilenameArg.getValue();
-        logFile = new LogReader();
-        if (!logFile->Open(logFilename))
+        if (!logFile.Open(logFilename))
         {
             Logger::Error("Failed to open log file for reading");
-            delete logFile;
             return 1;
         }
 
@@ -106,12 +106,9 @@ int main (int argc, const char * const * argv)
         if (dotFilenameArg.isSet())
         {
             dotFilename = dotFilenameArg.getValue();
-            dotFile = new DotFileWriter();
-            if (!dotFile->Open(dotFilename))
+            if (!dotFile.Open(dotFilename))
             {
                 Logger::Error("Failed to open DOT file for writing");
-                delete dotFile;
-                delete logFile;
                 return 1;
             }
         }
@@ -136,8 +133,6 @@ int main (int argc, const char * const * argv)
     catch (TCLAP::ArgException & e)
     {
         Logger::Error(e.what());
-        delete logFile;
-        delete dotFile;
         return 1;
     }
 
@@ -146,12 +141,10 @@ int main (int argc, const char * const * argv)
     bool loaded = historyMgr.FromFile(
             logFile, excludedExtensions, startHour, endHour
     );
-    logFile->Close();
-    delete logFile;
+    logFile.Close();
     if (!loaded)
     {
         Logger::Error("Failed to parse log file");
-        delete dotFile;
         return 1;
     }
 
@@ -159,8 +152,7 @@ int main (int argc, const char * const * argv)
     if (dotFilenameArg.isSet())
     {
         historyMgr.ToDotFile(dotFile);
-        dotFile->Close();
-        delete dotFile;
+        dotFile.Close();
         Logger::Info("Dot-file ", dotFilename, " generated");
     }
 

@@ -29,20 +29,22 @@ const unsigned short VALID_STATUS_CODES[2] = {200, 399};
 
 //----------------------------------------------------------- Méthodes publiques
 bool HistoryManager::FromFile (
-        LogReader * logFile,
+        LogReader & logFile,
         const std::unordered_set<std::string> & excludedExtensions,
         unsigned int startHour,
         unsigned int endHour
 )
-// Algorithme :
+// Algorithme : Lit le fichier de log <logFile> ligne par ligne pour extraire
+// les informations sur les documents parcourus, puis ne conserve que les
+// documents satisfaisant les critères de filtre.
 {
     Logger::Debug("Appel à HistoryManager::FromFile");
-    while (!logFile->Eof())
+    while (!logFile.Eof())
     {
         LogEntry entry;
         try
         {
-            logFile->ReadLine(entry);
+            logFile.ReadLine(entry);
         }
         catch (std::runtime_error & e)
         {
@@ -62,11 +64,16 @@ bool HistoryManager::FromFile (
 } //----- Fin de FromFile
 
 void HistoryManager::ListDocuments (unsigned int max) const
-// Algorithme :
+// Algorithme : Crée une copie triée (selon leur popularité, par ordre
+// décroissant) de la liste des documents, puis affiche au plus <max> éléments
+// de cette liste triée.
 {
     Logger::Debug("Appel à HistoryManager::ListDocuments");
     Documents sortedDocuments = documents;
-    std::sort(sortedDocuments.begin(), sortedDocuments.end(), std::greater<Document>());
+    std::sort(
+            sortedDocuments.begin(), sortedDocuments.end(),
+            std::greater<Document>()
+    );
     for (Documents::size_type i=0, e=sortedDocuments.size(); i!=e && i<max; ++i)
     {
         if (sortedDocuments[i].GetLocalHits() == 0)
@@ -79,34 +86,34 @@ void HistoryManager::ListDocuments (unsigned int max) const
     std::cout << std::flush;
 } //----- Fin de ListDocuments
 
-void HistoryManager::ToDotFile (DotFileWriter * dotFile) const
-// Algorithme :
+void HistoryManager::ToDotFile (DotFileWriter & dotFile) const
+// Algorithme : Pour chaque document dans la liste de document, ajoute un noeud
+// au DOT file, puis y ajoute tous les accès de ce document vers les autres
+// documents comme des liens.
 {
     Logger::Debug("Appel à HistoryManager::ToDotFile");
-    dotFile->InitGraph(documents.size());
+    dotFile.InitGraph(documents.size());
     for (Documents::size_type i = 0, e = documents.size(); i < e; ++i)
     {
-        dotFile->AddNode(i, documents[i].GetUri());
+        dotFile.AddNode(i, documents[i].GetUri());
         for (auto const & hit : documents[i].GetRemoteHits())
         {
             std::ostringstream ss;
             ss << hit.second;
-            dotFile->AddLink(i, hit.first, ss.str());
+            dotFile.AddLink(i, hit.first, ss.str());
         }
     }
-    dotFile->Write();
+    dotFile.Write();
 } //----- Fin de ToDotFile
 
 //-------------------------------------------------- Constructeurs - destructeur
 HistoryManager::HistoryManager(const std::string & serverUrl) :
         localServerUrl(serverUrl)
-// Algorithme :
 {
     Logger::Debug("Appel au constructeur de HistoryManager");
 } //----- Fin du constructeur
 
 HistoryManager::~HistoryManager()
-// Algorithme :
 {
     Logger::Debug("Appel au destructeur de HistoryManager");
 } //----- Fin du destructeur
@@ -115,6 +122,11 @@ HistoryManager::~HistoryManager()
 
 //----------------------------------------------------------- Méthodes protégées
 void HistoryManager::addEntry (const LogEntry & entry)
+// Algorithme : Essaie de trouver le document demandé dans la liste de documents
+// (en le créant s'il n'est pas trouvé), puis incrémente son compteur d'accès
+// locaux de 1. Ensuite, l'algorithme trouve le document référant (en le créant
+// s'il n'est pas trouvé), puis incrémente le nombre d'accès de ce document vers
+// le document demandé.
 {
     Logger::Debug("Appel à HistoryManager::addEntry");
     // Incrémenter le nombre d'accès au document demandé.

@@ -29,7 +29,8 @@ enum TerminalColor
 
 //------------------------------------------------------------------------------
 // Rôle de la classe <Logger>
-//
+// Classe d'utilité pour afficher des messages sur la sortie standard. Permet de
+// choisir des couleurs pour les messages.
 //------------------------------------------------------------------------------
 
 class Logger
@@ -39,16 +40,27 @@ public:
 //----------------------------------------------------------- Méthodes publiques
 
     template<typename ... ARGS> static void Debug (ARGS ... args);
-    // Mode d'emploi :
+    // <args> : un nombre variable d'éléments à afficher
+    // Mode d'emploi : Affiche un message de niveau debug si la définition MAP
+    // est active. Le préfixe "Debug: " est ajouté au message. Si les couleurs
+    // sont actives, le message sera affiché en vert.
 
     template<typename ... ARGS> static void Error (ARGS ... args);
-    // Mode d'emploi :
+    // <args> : un nombre variable d'éléments à afficher
+    // Mode d'emploi : Affiche un message de niveau erreur. Le préfixe "Error :"
+    // est ajouté au message. Si les couleurs sont actives, le message sera
+    // affiché en rouge.
 
     template<typename ... ARGS> static void Info (ARGS ... args);
-    // Mode d'emploi :
+    // <args> : un nombre variable d'éléments à afficher
+    // Mode d'emploi : Affiche un message de niveau information. Le message n'a
+    // aucune couleur spéciale.
 
     template<typename ... ARGS> static void Warning (ARGS ... args);
-    // Mode d'emploi :
+    // <args> : un nombre variable d'éléments à afficher
+    // Mode d'emploi : Affiche un message de niveau avertissement. Le préfixe
+    // "Warning: " est ajouté au message. Si les couleurs sont actives, le
+    // message sera affiché en jaune.
 
 //------------------------------------------------------------------------ PRIVE
 protected:
@@ -57,24 +69,33 @@ protected:
             std::ostream & out, TerminalColor color,
             ARGS ... args
     );
-    // Mode d'emploi :
+    // <out> : le flux de sortie des messages
+    // <color> : la couleur du message
+    // <args> : un nombre variable d'éléments à afficher
+    // Mode d'emploi : Affiche un message sur le flux de sortie <out>, avec la
+    // couleur <color>. Le message est constitué de la somme de tous les <args>.
 
     static void print (std::ostream & out);
-    // Mode d'emploi :
+    // <out> : le flux de sortie des messages
+    // Mode d'emploi : Appelé en fin de message, effectue un retour à la ligne.
 
     template<typename FIRST, typename ... ARGS> static void print (
             std::ostream & out, FIRST arg1, ARGS ... args
     );
-    // Mode d'emploi :
+    // <out> : le flux de sortie des messages
+    // <args1> : l'argument à envoyer dans le flux <out>
+    // <args> : le reste des arguments à afficher par la suite
+    // Mode d'emploi : S'appelle récursivement avec une liste variable
+    // d'arguments. Quand il ne reste plus d'arguments, un retour à la ligne est
+    // effectué.
 
 protected:
 //----------------------------------------------------------- Attributs protégés
-    static const std::string P;
+    static const std::string P;  // Le préfixe des codes couleur
 };
 
 //-------------------------------------------------- Implémentations de <Logger>
 template<typename ... ARGS> void Logger::Debug (ARGS ... args)
-// Algorithme :
 {
 #ifdef MAP
     log(std::cout, GREEN, "Debug: ", args ...);
@@ -82,26 +103,24 @@ template<typename ... ARGS> void Logger::Debug (ARGS ... args)
 } //----- Fin de Debug
 
 template<typename ... ARGS> void Logger::Error (ARGS ... args)
-// Algorithme :
 {
     log(std::cerr, RED, "Error: ", args ...);
 } //----- Fin de Error
 
 template<typename ... ARGS> void Logger::Info (ARGS ... args)
-// Algorithme :
 {
     log(std::cout, NONE, args ...);
 } //----- Fin de Info
 
 template<typename ... ARGS> void Logger::Warning (ARGS ... args)
-// Algorithme :
 {
     log(std::cerr, YELLOW, "Warning: ", args ...);
 } //----- Fin de Warning
 
 template<typename ... ARGS>
 void Logger::log (std::ostream & out, TerminalColor color, ARGS ... args)
-// Algorithme :
+// Algorithme : Insère les codes couleur si COLORS est actif ; sinon, affiche le
+// message sans couleur.
 {
 #ifdef COLORS
     if (color == NONE)
@@ -119,7 +138,8 @@ void Logger::log (std::ostream & out, TerminalColor color, ARGS ... args)
 
 template<typename FIRST, typename ... ARGS>
 void Logger::print (std::ostream & out, FIRST arg1, ARGS ... args)
-// Algorithme :
+// Algorithme : Affiche le premier argument, puis s'appelle récursivement
+// jusqu'à ce qu'il ne reste plus d'arguments.
 {
     out << arg1;
     print(out, args ...);
