@@ -15,15 +15,24 @@ using namespace std;
 #include <unordered_set>
 
 //------------------------------------------------------------ Include personnel
+#include "ConfigReader.h"
 #include "DotFileWriter.h"
 #include "HistoryManager.h"
 #include "Logger.h"
 #include "LogReader.h"
 
 //------------------------------------------------------------------- Constantes
+// La description du programme, affichée à l'appel de --help
 const string DESCRIPTION = "Parser for Apache logs";
+
+// La version en cours du programme, affiché à l'appel de --version
 const string VERSION = "1.0";
 
+// Le nom du fichier de configuration optionnel
+const string CONFIG_FILENAME = "tp-oo_3.cfg";
+
+// La liste des extensions de fichier à exclure par défaut lorsque l'option -e
+// est spécifiée
 const unordered_set<string> DEFAULT_EXCLUDED_EXTENSIONS = {
         // Images
         "art", "bm", "bmp", "dwg", "dxf", "fig", "flo", "fpx", "g3", "gif",
@@ -37,7 +46,11 @@ const unordered_set<string> DEFAULT_EXCLUDED_EXTENSIONS = {
         // JavaScript
         "js"
 };
+
+// La racine de l'URL du serveur de base par défaut
 const string DEFAULT_LOCAL_URL = "http://intranet-if.insa-lyon.fr";
+
+// Le nombre maximal de documents à afficher par défaut
 const unsigned int DEFAULT_MAX_DOCUMENTS = 10;
 
 //-------------------------------------------------------------------- FONCTIONS
@@ -46,10 +59,11 @@ int main (int argc, const char * const * argv)
 // quels arguments ont été passés, puis effectue toutes les opérations
 // demandées par l'utilisateur en paramètre.
 {
-    string logFilename;
+    ConfigReader config(CONFIG_FILENAME);
     string dotFilename;
-    LogReader logFile;
+    string logFilename;
     DotFileWriter dotFile;
+    LogReader logFile;
     unordered_set<string> excludedExtensions;
     unsigned int startHour = 0, endHour = 24;
 
@@ -116,7 +130,9 @@ int main (int argc, const char * const * argv)
         // Enregistrer les extensions à exclure de la lecture du log.
         if (excludeExtensionsArg.getValue())
         {
-            excludedExtensions = DEFAULT_EXCLUDED_EXTENSIONS;
+            excludedExtensions = config.GetSet(
+                    "EXCLUDED_EXTENSIONS", DEFAULT_EXCLUDED_EXTENSIONS
+            );
         }
 
         // Restreindre la plage horaire autorisée, si demandée.
@@ -137,7 +153,7 @@ int main (int argc, const char * const * argv)
     }
 
     // Peupler l'historique de documents à partir du fichier log.
-    HistoryManager historyMgr(DEFAULT_LOCAL_URL);
+    HistoryManager historyMgr(config.GetString("LOCAL_URL", DEFAULT_LOCAL_URL));
     bool loaded = historyMgr.FromFile(
             logFile, excludedExtensions, startHour, endHour
     );
@@ -157,7 +173,11 @@ int main (int argc, const char * const * argv)
     }
 
     // Afficher les documents les plus populaires.
-    historyMgr.ListDocuments(DEFAULT_MAX_DOCUMENTS);
+    historyMgr.ListDocuments(
+            static_cast<unsigned int>(
+                    config.GetInteger("MAX_DOCUMENTS", DEFAULT_MAX_DOCUMENTS)
+            )
+    );
 
     return 0;
 } //----- Fin de main

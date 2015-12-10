@@ -10,53 +10,103 @@
 //---------------------------------------------------------------------- INCLUDE
 
 //-------------------------------------------------------------- Include système
+#include <cstdlib>
+#include <fstream>
+#include <sstream>
 
 //------------------------------------------------------------ Include personnel
 #include "ConfigReader.h"
 #include "Logger.h"
 
-//------------------------------------------------------------------- Constantes
-
-//---------------------------------------------------------- Variables de classe
-
-//----------------------------------------------------------------- Types privés
-
-
 //----------------------------------------------------------------------- PUBLIC
 
-//-------------------------------------------------------------- Fonctions amies
-
 //----------------------------------------------------------- Méthodes publiques
-
-//------------------------------------------------------- Surcharge d'opérateurs
-ConfigReader & ConfigReader::operator= (const ConfigReader & reader)
-// Algorithme :
+int ConfigReader::GetInteger (const std::string & key, int def) const
+// Algorithme : Trouve la valeur désirée si elle existe, puis la convertit en
+// entier.
 {
-    Logger::Debug("Appel à ConfigReader::operator=");
-    return *this;
-} //----- Fin de la surcharge d'opérateur =
+    try
+    {
+        return atoi(config.at(key).c_str());
+
+    }
+    catch (std::out_of_range & e)
+    {
+        return def;
+    }
+}
+
+std::unordered_set<std::string> ConfigReader::GetSet (
+        const std::string & key, const std::unordered_set<std::string> & def
+) const
+// Algorithme : Trouve la valeur désirée si elle existe, puis sépare la valeur
+// stockée selon les virgules.
+{
+    try
+    {
+        std::stringstream ss(config.at(key));
+        std::unordered_set<std::string> elems;
+        std::string item;
+        while (std::getline(ss, item, ','))
+        {
+            elems.insert(item);
+        }
+        return elems;
+    }
+    catch (std::out_of_range & e)
+    {
+        return def;
+    }
+}
+
+std::string ConfigReader::GetString (
+        const std::string & key, const std::string & def
+) const
+{
+    try
+    {
+        return config.at(key);
+    }
+    catch (std::out_of_range & e)
+    {
+        return def;
+    }
+}
 
 //-------------------------------------------------- Constructeurs - destructeur
-ConfigReader::ConfigReader ()
-// Algorithme :
+ConfigReader::ConfigReader (const std::string & filename)
+// Algorithme : Lit un fichier de configuration ligne par ligne et en extrait
+// la clé et la valeur, puis ferme le flux de fichier.
 {
     Logger::Debug("Appel au constructeur de ConfigReader");
+    std::ifstream file(filename);
+    std::string line;
+
+    if (!file.is_open())
+    {
+        return;
+    }
+
+    while (!std::getline(file, line).eof())
+    {
+        if (line.empty())
+        {
+            continue;
+        }
+        std::string param;
+        std::string value;
+
+        unsigned long posEqual = line.find('=');
+        param = line.substr(0, posEqual);
+        value = line.substr(posEqual + 1);
+        config[param] = value;
+    }
+
+    file.close();
+
 } //----- Fin du constructeur
 
-ConfigReader::ConfigReader (const ConfigReader & reader)
-// Algorithme :
-{
-    Logger::Debug("Appel au constructeur de copie de ConfigReader");
-} //----- Fin du constructeur de copie
-
 ConfigReader::~ConfigReader ()
-// Algorithme :
 {
     Logger::Debug("Appel au destructeur de ConfigReader");
 } //----- Fin du destructeur
-
-//------------------------------------------------------------------------ PRIVE
-
-//----------------------------------------------------------- Méthodes protégées
-
-//------------------------------------------------------------- Méthodes privées

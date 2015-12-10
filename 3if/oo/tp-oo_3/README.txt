@@ -8,6 +8,7 @@ Auteurs : Marc Gagné et Selma Nemmaoui
 
 Prérequis
 ---------
+
 tp-oo_3 utilise des expressions régulières pour traiter les fichiers de log.
 Pour ce faire, il faut soit :
 
@@ -24,8 +25,13 @@ include/, et ne nécessite pas de compilation séparée, n'étant constituée qu
 fichiers d'interface. Elle a été légèrement modifiée pour réduire le nombre
 d'avertissements qu'elle produit.
 
+Note : pour des raisons de compatibilité avec Cygwin, les fonctions std::stoi ne
+sont pas utilisées ; les stringstream et la fonction C atoi sont utilisés à la
+place.
+
 Compilation
 -----------
+
 Les définitions suivantes peuvent être utilisées lors de la compilation :
 
 -DCOLORS    : active l'utilisation des couleurs à l'affichage (vert -> debug,
@@ -37,3 +43,21 @@ Les définitions suivantes peuvent être utilisées lors de la compilation :
 
 Pour en ajouter ou en enlever, il suffit de modifier la variable DEFINITIONS de
 Makefile.
+
+Le programme peut ensuite être compilé avec la commande "make".
+
+Exécution
+---------
+
+La documentation des paramètres possibles est disponible en appelant tp-oo_3
+avec l'option --help. Pour configurer d'autres options, il est également
+possible de modifier le fichier optionnel tp-oo_3.cfg.
+
+Les options qui peuvent être modifiées sont :
+
+    - EXCLUDED_EXTENSIONS : la liste, séparée par des virgules, d'extensions à
+      exclure du traitement lorsque l'option -e est spécifiée,
+
+    - LOCAL_URL : l'URL du serveur local,
+
+    - MAX_DOCUMENTS : le nombre de documents à afficher au maximum

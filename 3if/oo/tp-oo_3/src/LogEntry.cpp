@@ -10,6 +10,7 @@
 //---------------------------------------------------------------------- INCLUDE
 
 //-------------------------------------------------------------- Include système
+#include <cstdlib>
 #include <stdexcept>
 
 //------------------------------------------------------------ Include personnel
@@ -112,6 +113,12 @@ const std::string LogEntry::GetRefererUrlConverted (const std::string & local)
     if (!refererUrl.compare(0, local.size(), local))
     {
         std::string convertedUrl = refererUrl.substr(local.size());
+        if (convertedUrl.length() == 0)
+        {
+            return "/";  // insa-lyon.fr est équivalent à insa-lyon.fr/, donc on
+                         // stocke le document avec l'URI / pour éviter les
+                         // conflits.
+        }
         smatch match;
         if (!parseUri(convertedUrl, match))
         {

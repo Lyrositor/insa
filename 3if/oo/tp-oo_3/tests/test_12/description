@@ -1,1 +1,1 @@
-Vérifie que l'application fonctionne pour de très grands fichiers (note : ce test est lent car un gros fichier de log doit être généré au préalable)
+Vérifie que l'application arrive à lire le fichier de configuration correctement

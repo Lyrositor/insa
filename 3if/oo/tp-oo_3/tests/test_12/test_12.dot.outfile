@@ -1,0 +1,19 @@
+digraph {
+node0 [label="/image.png"];
+node1 [label="/"];
+node2 [label="/favicon.ico"];
+node3 [label="/test.gif"];
+node4 [label="/image.jpg"];
+node5 [label="/photo.jpeg"];
+node6 [label="*"];
+node7 [label="/style.css"];
+node8 [label="/script.js"];
+node6 -> node5 [label="1"];
+node6 -> node7 [label="1"];
+node6 -> node8 [label="1"];
+node6 -> node4 [label="1"];
+node1 -> node0 [label="1"];
+node1 -> node2 [label="1"];
+node1 -> node3 [label="1"];
+node1 -> node4 [label="1"];
+}
