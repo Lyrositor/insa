@@ -1,7 +1,7 @@
 /*******************************************************************************
                   LogReader - Lecteur de fichier de log Apache
                               --------------------
-    dÃ©but                : 01/12/2015
+    début                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
@@ -9,7 +9,7 @@
 #if ! defined ( LOG_READER_H )
 #define LOG_READER_H
 
-//--------------------------------------------------------- Interfaces utilisÃ©es
+//--------------------------------------------------------- Interfaces utilisées
 #include <fstream>
 #include <string>
 
@@ -17,8 +17,8 @@
 class LogEntry;
 
 //------------------------------------------------------------------------------
-// RÃ´le de la classe <LogReader>
-// Permet de lire un fichier de log Apache pour en extraire les donnÃ©es sur
+// Rôle de la classe <LogReader>
+// Permet de lire un fichier de log Apache pour en extraire les données sur
 // chaque ligne.
 //------------------------------------------------------------------------------
 
@@ -26,47 +26,47 @@ class LogReader
 {
 //----------------------------------------------------------------------- PUBLIC
 public:
-//----------------------------------------------------------- MÃ©thodes publiques
+//----------------------------------------------------------- Méthodes publiques
     void Close ();
-    // Mode d'emploi : Ferme le flux de fichier associÃ©, s'il a Ã©tÃ© ouvert. Si
-    // aucun flux n'a Ã©tÃ© ouvert, aucune action n'est effectuÃ©e.
+    // Mode d'emploi : Ferme le flux de fichier associé, s'il a été ouvert. Si
+    // aucun flux n'a été ouvert, aucune action n'est effectuée.
 
     bool Eof () const;
-    // Mode d'emploi : Renvoie vrai si la fin de fichier a Ã©tÃ© atteinte.
+    // Mode d'emploi : Renvoie vrai si la fin de fichier a été atteinte.
 
     bool Open (const std::string & filename);
-    // <filename> : le nom de fichier Ã  ouvrir en mode lecture
+    // <filename> : le nom de fichier à ouvrir en mode lecture
     // Mode d'emploi : Ouvre un fichier de log <filename> en mode lecture.
 
     void ReadLine (LogEntry & entry);
-    // <entry> : l'entrÃ©e Ã  remplir d'informations
+    // <entry> : l'entrée à remplir d'informations
     // Mode d'emploi : Lit une ligne du fichier et remplit <entry> des
     // informations extraites de la ligne.
 
-//------------------------------------------------------- Surcharge d'opÃ©rateurs
+//------------------------------------------------------- Surcharge d'opérateurs
     LogReader & operator = (const LogReader & reader) = delete;
-    // <reader> : le lecteur Ã  copier
-    // Mode d'emploi : SupprimÃ©. La copie est interdite pour Ã©viter d'avoir des
-    // conflits liÃ©s aux flux.
+    // <reader> : le lecteur à copier
+    // Mode d'emploi : Supprimé. La copie est interdite pour éviter d'avoir des
+    // conflits liés aux flux.
 
 //-------------------------------------------------- Constructeurs - destructeur
     LogReader ();
     // Mode d'emploi : Initialise un lecteur sans flux ouvert.
 
     LogReader (const LogReader & reader) = delete;
-    // <reader> : le lecteur Ã  copier
-    // Mode d'emploi : SupprimÃ©. La copie est interdite pour Ã©viter d'avoir des
-    // conflits liÃ©s aux flux.
+    // <reader> : le lecteur à copier
+    // Mode d'emploi : Supprimé. La copie est interdite pour éviter d'avoir des
+    // conflits liés aux flux.
 
     virtual ~LogReader ();
     // Mode d'emploi : Supprime le lecteur et ferme tout flux de fichier
-    // associÃ©.
+    // associé.
 
 //------------------------------------------------------------------------ PRIVE
 protected:
-//----------------------------------------------------------- Attributs protÃ©gÃ©s
-    std::ifstream logFile;  // Le flux de fichier d'entrÃ©e associÃ©
-    int currentLine;  // Le numÃ©ro de la ligne actuelle de lecture
+//----------------------------------------------------------- Attributs protégés
+    std::ifstream logFile;  // Le flux de fichier d'entrée associé
+    int currentLine;  // Le numéro de la ligne actuelle de lecture
 };
 
 #endif // LOG_READER_H

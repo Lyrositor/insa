@@ -1,15 +1,15 @@
 /*******************************************************************************
-                LogEntry - ReprÃ©sente une ligne du fichier de log
+                LogEntry - Représente une ligne du fichier de log
                               --------------------
-    dÃ©but                : 01/12/2015
+    début                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
-// RÃ©alisation de la classe <LogEntry> (fichier LogEntry.cpp)
+// Réalisation de la classe <LogEntry> (fichier LogEntry.cpp)
 
 //---------------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------------- Include systÃ¨me
+//-------------------------------------------------------------- Include système
 #include <cstdlib>
 #include <stdexcept>
 
@@ -34,11 +34,11 @@ const regex LogEntry::APACHE_LOG_ENTRY(
 
 //-------------------------------------------------------------- Fonctions amies
 std::istream & operator >> (std::istream & input, LogEntry & logEntry)
-// Algorithme : Passe la ligne Ã  travers un regex pour en extraire les
-// informations sous forme de string, puis convertit les rÃ©sultats vers une
-// forme appropriÃ©e.
+// Algorithme : Passe la ligne à travers un regex pour en extraire les
+// informations sous forme de string, puis convertit les résultats vers une
+// forme appropriée.
 {
-    DEBUG("Appel Ã  LogEntry::operator >>");
+    DEBUG("Appel à LogEntry::operator >>");
     std::string line;
     std::getline(input, line);
     if (line.empty())
@@ -58,24 +58,24 @@ std::istream & operator >> (std::istream & input, LogEntry & logEntry)
     return input;
 } //----- Fin de operator >>
 
-//----------------------------------------------------------- MÃ©thodes publiques
+//----------------------------------------------------------- Méthodes publiques
 unsigned short LogEntry::GetHour () const
 {
-    DEBUG("Appel Ã  LogEntry::GetHour");
+    DEBUG("Appel à LogEntry::GetHour");
     return hour;
 } //----- Fin de GetHour
 
 const std::string & LogEntry::GetRequestMethod () const
 {
-    DEBUG("Appel Ã  LogEntry::GetRequestMethod");
+    DEBUG("Appel à LogEntry::GetRequestMethod");
     return requestMethod;
 } //----- Fin de GetRequestMethod
 
 const std::string LogEntry::GetRequestUriConverted () const
-// Algorithme : Essaie de voir si l'URI a une forme spÃ©ciale (numÃ©ro de port,
-// paramÃ¨tres...) et ne renvoie que la partie de base si c'est le cas.
+// Algorithme : Essaie de voir si l'URI a une forme spéciale (numéro de port,
+// paramètres...) et ne renvoie que la partie de base si c'est le cas.
 {
-    DEBUG("Appel Ã  LogEntry::GetRequestUriConverted");
+    DEBUG("Appel à LogEntry::GetRequestUriConverted");
     smatch match;
     if (!parseUri(requestUri, match))
     {
@@ -85,10 +85,10 @@ const std::string LogEntry::GetRequestUriConverted () const
 } //----- Fin de GetRequestUriConverted
 
 const std::string LogEntry::GetRequestUriExtension () const
-// Algorithme : Essaie d'interprÃ©ter l'URI avec un regex pour en extraire son
+// Algorithme : Essaie d'interpréter l'URI avec un regex pour en extraire son
 // extension de fichier.
 {
-    DEBUG("Appel Ã  LogEntry::GetRequestUriExtension");
+    DEBUG("Appel à LogEntry::GetRequestUriExtension");
     smatch match;
     if (!parseUri(requestUri, match))
     {
@@ -99,24 +99,24 @@ const std::string LogEntry::GetRequestUriExtension () const
 
 unsigned short LogEntry::GetStatusCode () const
 {
-    DEBUG("Appel Ã  LogEntry::GetStatusCode");
+    DEBUG("Appel à LogEntry::GetStatusCode");
     return statusCode;
 } //----- Fin de GetStatusCode
 
 const std::string LogEntry::GetRefererUrlConverted (const std::string & local)
     const
-// Algorithme : Essaie de simplifier l'URL du rÃ©fÃ©rant, en enlevant les
-// paramÃ¨tres, les numÃ©ros de port Ã©ventuels, et, pour les URL du serveur local,
-// renvoie seulement l'URI du document, simplifiÃ©e.
+// Algorithme : Essaie de simplifier l'URL du référant, en enlevant les
+// paramètres, les numéros de port éventuels, et, pour les URL du serveur local,
+// renvoie seulement l'URI du document, simplifiée.
 {
-    DEBUG("Appel Ã  LogEntry::GetRefererUrlConverted");
+    DEBUG("Appel à LogEntry::GetRefererUrlConverted");
     if (!refererUrl.compare(0, local.size(), local))
     {
         std::string convertedUrl = refererUrl.substr(local.size());
         if (convertedUrl.length() == 0)
         {
-            return "/";  // insa-lyon.fr est Ã©quivalent Ã  insa-lyon.fr/, donc on
-                         // stocke le document avec l'URI / pour Ã©viter les
+            return "/";  // insa-lyon.fr est équivalent à insa-lyon.fr/, donc on
+                         // stocke le document avec l'URI / pour éviter les
                          // conflits.
         }
         smatch match;
@@ -144,9 +144,9 @@ LogEntry::~LogEntry ()
 
 //------------------------------------------------------------------------ PRIVE
 
-//----------------------------------------------------------- MÃ©thodes protÃ©gÃ©es
+//----------------------------------------------------------- Méthodes protégées
 bool LogEntry::parseUri (const std::string & uri, smatch & match) const
 {
-    DEBUG("Appel Ã  LogEntry::parseUri");
+    DEBUG("Appel à LogEntry::parseUri");
     return regex_match(uri, match, REQUEST_URI);
 } //----- Fin de parseUri

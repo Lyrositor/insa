@@ -1,15 +1,15 @@
 /*******************************************************************************
                ConfigReader - Lecteur de fichier de configuration
                               --------------------
-    dÃ©but                : 01/12/2015
+    début                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
-// RÃ©alisation de la classe <ConfigReader> (fichier ConfigReader.cpp)
+// Réalisation de la classe <ConfigReader> (fichier ConfigReader.cpp)
 
 //---------------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------------- Include systÃ¨me
+//-------------------------------------------------------------- Include système
 #include <cstdlib>
 #include <fstream>
 #include <stdexcept>
@@ -21,9 +21,9 @@
 
 //----------------------------------------------------------------------- PUBLIC
 
-//----------------------------------------------------------- MÃ©thodes publiques
+//----------------------------------------------------------- Méthodes publiques
 int ConfigReader::GetInteger (const std::string & key, int def) const
-// Algorithme : Trouve la valeur dÃ©sirÃ©e si elle existe, puis la convertit en
+// Algorithme : Trouve la valeur désirée si elle existe, puis la convertit en
 // entier.
 {
     try
@@ -40,8 +40,8 @@ int ConfigReader::GetInteger (const std::string & key, int def) const
 std::unordered_set<std::string> ConfigReader::GetSet (
         const std::string & key, const std::unordered_set<std::string> & def
 ) const
-// Algorithme : Trouve la valeur dÃ©sirÃ©e si elle existe, puis sÃ©pare la valeur
-// stockÃ©e selon les virgules.
+// Algorithme : Trouve la valeur désirée si elle existe, puis sépare la valeur
+// stockée selon les virgules.
 {
     try
     {
@@ -77,7 +77,7 @@ std::string ConfigReader::GetString (
 //-------------------------------------------------- Constructeurs - destructeur
 ConfigReader::ConfigReader (const std::string & filename)
 // Algorithme : Lit un fichier de configuration ligne par ligne et en extrait
-// la clÃ© et la valeur, puis ferme le flux de fichier.
+// la clé et la valeur, puis ferme le flux de fichier.
 {
     DEBUG("Appel au constructeur de ConfigReader");
     std::ifstream file(filename);

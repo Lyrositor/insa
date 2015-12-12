@@ -1,7 +1,7 @@
 /*******************************************************************************
-            HistoryManager - GÃ¨re un graphe de parcours d'un serveur
+            HistoryManager - Gère un graphe de parcours d'un serveur
                               --------------------
-    dÃ©but                : 01/12/2015
+    début                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
@@ -9,7 +9,7 @@
 #if ! defined ( HISTORY_MANAGER_H )
 #define HISTORY_MANAGER_H
 
-//--------------------------------------------------------- Interfaces utilisÃ©es
+//--------------------------------------------------------- Interfaces utilisées
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -25,16 +25,16 @@ typedef std::vector<Document> Documents;
 typedef std::unordered_map<std::string, Documents::size_type> NamedDocuments;
 
 //------------------------------------------------------------------------------
-// RÃ´le de la classe <HistoryManager>
-// GÃ¨re un graphe d'historique de parcours d'un serveur Apache. Peut traiter les
-// fichiers de log d'Apache pour en dÃ©duire les documents qui ont Ã©tÃ© parcourus.
+// Rôle de la classe <HistoryManager>
+// Gère un graphe d'historique de parcours d'un serveur Apache. Peut traiter les
+// fichiers de log d'Apache pour en déduire les documents qui ont été parcourus.
 //------------------------------------------------------------------------------
 
 class HistoryManager
 {
 //----------------------------------------------------------------------- PUBLIC
 public:
-//----------------------------------------------------------- MÃ©thodes publiques
+//----------------------------------------------------------- Méthodes publiques
     bool FromFile (
             LogReader & logFile,
             const std::unordered_set<std::string> & excludedExtensions,
@@ -42,56 +42,56 @@ public:
             unsigned int endHour
     );
     // <logFile> : un lecteur de fichier Apache ouvert
-    // <excludedExtensions> : la liste des extensions Ã  exclure
-    // <startHour> : l'heure de dÃ©but pour la plage horaire (incluse)
+    // <excludedExtensions> : la liste des extensions à exclure
+    // <startHour> : l'heure de début pour la plage horaire (incluse)
     // <endHour> : l'heure de fin pour la plage horaire (exclue)
     // Mode d'emploi : Utilise le lecteur de logs Apache <logFile> pour extraire
     // l'historique de parcours d'un fichier. Seuls les documents avec des
     // extensions qui ne sont pas dans la liste <excludedExtensions> et qui
-    // ont Ã©tÃ© visitÃ©s dans la plage horaire [startHour; endHour[ sont traitÃ©s.
-    // Contrat : <logFile> doit Ãªtre ouvert et disponible pour la lecture.
+    // ont été visités dans la plage horaire [startHour; endHour[ sont traités.
+    // Contrat : <logFile> doit être ouvert et disponible pour la lecture.
 
     void ListDocuments (unsigned int max) const;
-    // <max> : le nombre maximum de documents Ã  lister
+    // <max> : le nombre maximum de documents à lister
     // Mode d'emploi : Affiche la liste des <max> documents les plus populaires
-    // (ceux qui ont Ã©tÃ© le plus visitÃ©). S'il y a moins de documents que max,
-    // tous les documents ayant Ã©tÃ© visitÃ©s au moins une fois sont listÃ©s.
+    // (ceux qui ont été le plus visité). S'il y a moins de documents que max,
+    // tous les documents ayant été visités au moins une fois sont listés.
 
     void ToDotFile (DotFileWriter & dotFile) const;
-    // <dotFile> : un Ã©crivain de fichier DOT ouvert
-    // Mode d'emploi : GÃ©nÃ¨re un fichier DOT Ã  partir de l'historique stockÃ©. Le
-    // fichier gÃ©nÃ©rÃ© peut ensuite Ãªtre passÃ© Ã  Graphviz pour gÃ©nÃ©ration d'une
+    // <dotFile> : un écrivain de fichier DOT ouvert
+    // Mode d'emploi : Génère un fichier DOT à partir de l'historique stocké. Le
+    // fichier généré peut ensuite être passé à Graphviz pour génération d'une
     // image du graphe.
-    // Contrat : <dotFile> doit Ãªtre ouvert et disponible pour l'Ã©criture.
+    // Contrat : <dotFile> doit être ouvert et disponible pour l'écriture.
 
 //-------------------------------------------------- Constructeurs - destructeur
     HistoryManager (const std::string & serverUrl);
-    // <serverUrl> : l'URL du serveur local associÃ© Ã  cet historique
+    // <serverUrl> : l'URL du serveur local associé à cet historique
     // Mode d'emploi : Construit un nouveau gestionnaire d'historique pour le
-    // serveur spÃ©cifiÃ© par <serverUrl>. Si une URL commence par <serverUrl>,
-    // le document associÃ© est considÃ©rÃ© comme faisant partie du serveur local.
+    // serveur spécifié par <serverUrl>. Si une URL commence par <serverUrl>,
+    // le document associé est considéré comme faisant partie du serveur local.
 
     virtual ~HistoryManager ();
-    // Mode d'emploi : DÃ©truit le gestionnaire d'historique.
+    // Mode d'emploi : Détruit le gestionnaire d'historique.
 
 //------------------------------------------------------------------------ PRIVE
 protected:
-//----------------------------------------------------------- MÃ©thodes protÃ©gÃ©es
+//----------------------------------------------------------- Méthodes protégées
     void addEntry (const LogEntry & entry);
-    // <entry> : L'entrÃ©e Ã  ajouter
-    // Mode d'emploi : Ajoute une entrÃ©e d'un fichier de log Ã  l'historique.
-    // Chaque entrÃ©e correspond Ã  un ou deux documents, qui sont ajoutÃ©s Ã  la
-    // liste de documents s'ils n'existent pas dÃ©jÃ  ; sinon, leurs compteurs
-    // respectifs sont incrÃ©mentÃ©s.
+    // <entry> : L'entrée à ajouter
+    // Mode d'emploi : Ajoute une entrée d'un fichier de log à l'historique.
+    // Chaque entrée correspond à un ou deux documents, qui sont ajoutés à la
+    // liste de documents s'ils n'existent pas déjà ; sinon, leurs compteurs
+    // respectifs sont incrémentés.
 
 protected:
-//----------------------------------------------------------- Attributs protÃ©gÃ©s
+//----------------------------------------------------------- Attributs protégés
     Documents documents;  // Le tableau de documents ; leur position correspond
-                          // Ã  leur ID
+                          // à leur ID
     NamedDocuments documentsByName;  // La liste associant l'URI des documents
-                                     // Ã  leur ID, pour faciliter leur recherche
+                                     // à leur ID, pour faciliter leur recherche
                                      // par URI
-    const std::string localServerUrl;  // L'URL du serveur local associÃ© au
+    const std::string localServerUrl;  // L'URL du serveur local associé au
                                        // gestionnaire d'historique
 };
 

@@ -1,7 +1,7 @@
 /*******************************************************************************
                ConfigReader - Lecteur de fichier de configuration
                               --------------------
-    dÃ©but                : 01/12/2015
+    début                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
@@ -9,15 +9,15 @@
 #if ! defined ( CONFIG_READER_H )
 #define CONFIG_READER_H
 
-//--------------------------------------------------------- Interfaces utilisÃ©es
+//--------------------------------------------------------- Interfaces utilisées
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 
 //------------------------------------------------------------------------------
-// RÃ´le de la classe <ConfigReader>
+// Rôle de la classe <ConfigReader>
 // Lit un fichier de configuration et permet d'en extraire les associations
-// clÃ©s -> valeurs. Un fichier de configuration est structurÃ© de la maniÃ¨re
+// clés -> valeurs. Un fichier de configuration est structuré de la manière
 // suivante :
 // cle1=valeur1
 // cle2=valeur2
@@ -27,42 +27,42 @@ class ConfigReader
 {
 //----------------------------------------------------------------------- PUBLIC
 public:
-//----------------------------------------------------------- MÃ©thodes publiques
+//----------------------------------------------------------- Méthodes publiques
     int GetInteger (const std::string & key, int def = 0) const;
-    // <key> : la clÃ© associÃ©e Ã  la valeur dÃ©sirÃ©e
-    // <def> : la valeur par dÃ©faut Ã  utiliser
-    // Mode d'emploi : Essaie de trouver la clÃ© <key>. Si elle existe, renvoie
-    // la valeur associÃ©e convertie en entier ; sinon, renvoie la valeur par
-    // dÃ©faut <def>.
+    // <key> : la clé associée à la valeur désirée
+    // <def> : la valeur par défaut à utiliser
+    // Mode d'emploi : Essaie de trouver la clé <key>. Si elle existe, renvoie
+    // la valeur associée convertie en entier ; sinon, renvoie la valeur par
+    // défaut <def>.
 
     std::unordered_set<std::string> GetSet (
             const std::string & key, const std::unordered_set<std::string> & def
     ) const;
-    // <key> : la clÃ© associÃ©e Ã  la valeur dÃ©sirÃ©e
-    // <def> : la valeur par dÃ©faut Ã  utiliser
-    // Mode d'emploi : Essaie de trouver la clÃ© <key>. Si elle existe, renvoie
-    // la valeur associÃ©e convertie en set ; sinon, renvoie la valeur par dÃ©faut
+    // <key> : la clé associée à la valeur désirée
+    // <def> : la valeur par défaut à utiliser
+    // Mode d'emploi : Essaie de trouver la clé <key>. Si elle existe, renvoie
+    // la valeur associée convertie en set ; sinon, renvoie la valeur par défaut
     // <def>.
 
     std::string GetString (const std::string & key, const std::string & def = ""
     ) const;
-    // <key> : la clÃ© associÃ©e Ã  la valeur dÃ©sirÃ©e
-    // <def> : la valeur par dÃ©faut Ã  utiliser
-    // Mode d'emploi : Essaie de trouver la clÃ© <key>. Si elle existe, renvoie
-    // la valeur associÃ©e ; sinon, renvoie la valeur par dÃ©faut <def>.
+    // <key> : la clé associée à la valeur désirée
+    // <def> : la valeur par défaut à utiliser
+    // Mode d'emploi : Essaie de trouver la clé <key>. Si elle existe, renvoie
+    // la valeur associée ; sinon, renvoie la valeur par défaut <def>.
 
 //-------------------------------------------------- Constructeurs - destructeur
     ConfigReader (const std::string & filename);
-    // <filename> : le nom du fichier de configuration Ã  lire
-    // Mode d'emploi : Initialise le lecteur Ã  partir du fichier de
-    // configuration spÃ©cifiÃ© par <filename>.
+    // <filename> : le nom du fichier de configuration à lire
+    // Mode d'emploi : Initialise le lecteur à partir du fichier de
+    // configuration spécifié par <filename>.
 
     virtual ~ConfigReader ();
-    // Mode d'emploi : DÃ©truit le lecteur.
+    // Mode d'emploi : Détruit le lecteur.
 
 //------------------------------------------------------------------------ PRIVE
 protected:
-//----------------------------------------------------------- Attributs protÃ©gÃ©s
+//----------------------------------------------------------- Attributs protégés
     std::unordered_map<std::string, std::string> config;
 };
 

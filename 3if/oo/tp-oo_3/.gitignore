@@ -1,3 +1,4 @@
 tests/results.csv
 *.dot
 *.png
+docs/*.out
