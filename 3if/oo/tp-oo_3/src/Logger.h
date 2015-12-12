@@ -15,7 +15,7 @@
 #else
 #define DEBUG(args ...)
 #endif // MAP
-#define ERROR(args ...) Logger::Debug(args)
+#define ERROR(args ...) Logger::Error(args)
 #define INFO(args ...) Logger::Info(args)
 #define WARNING(args ...) Logger::Warning(args)
 

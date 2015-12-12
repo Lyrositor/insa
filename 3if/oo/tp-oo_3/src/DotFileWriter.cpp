@@ -74,6 +74,11 @@ void DotFileWriter::Write ()
 // de tous les liens.
 {
     DEBUG("Appel à DotFileWriter::Write");
+    if (!dotFile.is_open() || nodes == nullptr)
+    {
+        ERROR("DOT-file not opened or graph not initialized");
+        return;
+    }
     dotFile << HEADER;
     for (unsigned int i = 0; i < numNodes; i++)
     {
