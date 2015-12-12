@@ -13,7 +13,7 @@ DESCRIPTION
        populaires du serveur (c'est-à-dire les documents les plus visités).
        L'utilisateur peut choisir de filtrer les entrées du logs selon certains
        critères, et peut également choisir de faire générer un fichier DOT,
-       capable d'être interprêté par Graphviz.
+       capable d'être interprété par Graphviz.
 
 OPTIONS
        <FICHIER>
