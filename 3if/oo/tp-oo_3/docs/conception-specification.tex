@@ -12,235 +12,245 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows,backgrounds,matrix,positioning,shapes.multipart} 
 \tikzset{
-    >=stealth',
-    noeud/.style={
-        rectangle,
-        rounded corners,
-        draw=black, very thick,
-        text width=8.5em,
-        minimum height=2em,
-        text centered
-    },
-    lien/.style={
-        ->,
-        thick,
-        shorten >=1pt
-    },
-    array/.style={
-        matrix of nodes,
-        nodes={draw, minimum size=7mm},
-        column sep=-\pgflinewidth,
-        row sep=0.5mm,
-        nodes in empty cells,
-        row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+	>=stealth',
+	noeud/.style={
+		rectangle,
+		rounded corners,
+		draw=black, very thick,
+		text width=8.5em,
+		minimum height=2em,
+		text centered
+	},
+	lien/.style={
+		->,
+		thick,
+		shorten >=1pt
+	},
+	array/.style={
+		matrix of nodes,
+		nodes={draw, minimum size=7mm},
+		column sep=-\pgflinewidth,
+		row sep=0.5mm,
+		nodes in empty cells,
+		row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
 		row 1 column 1/.style={nodes={draw}}
-    },
-    dict/.style={
-        draw,
-        rectangle split,
-        rectangle split draw splits=false,
-        rectangle split part align=left
-    },  
+	},
+	dict/.style={
+		draw,
+		rectangle split,
+		rectangle split draw splits=false,
+		rectangle split part align=left
+	},  
 }
 
 \begin{document}
-
-\title{
-	Compte-rendu du TP C++ 3\\
-	Spécification et conception
-}
-\author{
-	Marc Gagné\\
-	\and
-	Selma Nemmaoui
-}
-\date{Décembre 2015}
-\maketitle
-
-\section*{Préambule}
-Le TP C++ 3 a pour objectif la création d'un programme capable de traiter des fichiers de log générés par Apache pour en extraire l'historique de parcours ; le programme peut ensuite afficher les informations extraites sur la sortie standard, les filtrer selon certains critères ou générer un fichier Graphviz représentant les parcours entre documents.
-
-\section{Spécifications}
-
-Pour répondre au cahier des charges, notre application doit respecter certaines spécifications que nous avons établies et qui sont listées ci-dessous.
-
-\subsection{Définitions}
-Les termes ci-dessous sont utilisés dans le reste du document, et sont donc préalablement définis ci-dessous :
-\begin{itemize}
-    \item \textbf{Document :} une ressource se trouvant sur le serveur local et qui a soit été atteint par un utilisateur dans le fichier de log, soit été la source d'une visite sur un autre document. Un document est identifié par son URI relative à la racine du serveur local. Toutes les ressources venant d'un autre serveur que le serveur local sont considérées comme appartenant à un document virtuel, identifié par la fausse URI \texttt{*}.
-    \item \textbf{Serveur local :} le serveur qui a généré le fichier de log Apache. Doit être associé à une URL pour que tout document référant venant de ce serveur soit correctement identifié.
-    \item \textbf{Popularité :} la popularité d'un document est liée au nombre de fois qu'il a été atteint à partir d'un autre document ; plus ce nombre est grand, plus le document est populaire.
-\end{itemize}
-
-\subsection{Spécifications générales}
-
-\subsection{Spécifications détaillées}
-
-Les spécifications détaillées sont des spécifications qui impliquent des tests (réalisés dans le répertoire \texttt{tests/}) pour vérifier qu'elles sont respectées. Elles sont présentées dans la table de l'annexe 1.
-
-\section{Conception}
-
-\subsection{Classes principales}
-
-L'application fonctionne principalement grâce à une classe centrale, la classe \texttt{HistoryManager}, qui est initialisée par le programme principal (dans la fonction \texttt{main}) et qui utilise toutes les autres classes pour traiter les fichiers de log.
-
-Les présentations détaillés des méthodes sont disponibles dans les commentaires des interfaces de chaque classe.
-
-\begin{figure}
-	\centering
-    \begin{tikzpicture}[node distance=1cm, auto,]
-        \node[noeud] (main) {\textit{Programme principal}};
-        \node[below=of main] (dummy1) {};
-        \node[below=of dummy1] (dummy2) {};
-        \node[noeud, above=of main] (ConfigReader) {\texttt{ConfigReader}};
-        \node[noeud, below=of dummy2] (HistoryManager) {\texttt{HistoryManager}};
-        \node[noeud, below=of HistoryManager] (Document) {\texttt{Document}};
-        \node[noeud, left=3cm of dummy1] (DotFileWriter) {\texttt{DotFileWriter}};
-        \node[noeud, right=3cm of dummy1] (LogReader) {\texttt{LogReader}};
-        \node[noeud, below=of LogReader] (LogEntry) {\texttt{LogEntry}};
-     
-     	\path[lien]
-        	(ConfigReader.south) edge node {lu par} (main.north)
-            (main.west) edge [bend right] node {instantie} (DotFileWriter.north)
-     	    (main.east) edge [bend left] node {instantie} (LogReader.north)
-     	    (main.south) edge [bend right] node {instantie} (HistoryManager.north)
-     	    (HistoryManager.west) edge node {écrit} (DotFileWriter.south)
-     	    (HistoryManager.north) edge [bend right] node {lit} (LogReader.west)
-     	    (LogReader.south) edge node {produit} (LogEntry.north)
-     	    (LogEntry.south) edge [bend left] node {traité par} (HistoryManager.east)
-     	    (HistoryManager.south) edge node {gère} (Document.north)
-     	    (Document) edge [loop below] node {lié à} (Document);
-    \end{tikzpicture}
-    \caption{Intéractions entre les classes principales}
-    \label{fig:classes}
-\end{figure}
-
-\subsubsection{\texttt{ConfigReader}}
-
-\subsubsection{\texttt{Document}}
-
-La classe \texttt{Document} représente un document du fichier de log fourni en entrée. Il permet de compter le nombre de fois qu'il a été atteint à partir d'un autre document (\texttt{AddLocalHit()} et \texttt{GetLocalHits()}), ainsi que le nombre de fois qu'il a été utilisé pour atteindre un autre document (\texttt{AddRemoteHit(documentId)} et \texttt{GetRemoteHits()}. Un document doit être initialisé avec son URI, qui l'identifie de manière unique (\texttt{GetUri()}). Un \texttt{Document} peut également déterminer s'il est "supérieur" à un autre document en comparant leurs popularités respectives.
-
-Un \texttt{Document} est donc essentiellement une structure pour stocker des données sur un document, avec quelques méthodes pour faciliter sa mise à jour.
-
-\subsubsection{\texttt{DotFileWriter}}
-
-La classe \texttt{DotFileWriter} permet de créer un graphe destiné à être écrit dans un fichier DOT, utilisable par Graphviz pour générer des images. La classe ne fait pas de suppositions sur la nature du graphe, et ne le considère que comme un ensemble de nœuds, de liens et d'étiquettes, afin de rendre la classe plus réutilisable. Comme elle manipule des flux de fichiers, cette classe ne peut pas être copiée, ce qui permet d'éviter des conflits d'écriture sur un même fichier.
-
-Un des avantages de cette classe est qu'elle peut être utilisée pour générer un graphe, puis l'écrire dans plusieurs fichiers, et même changer de graphe sans avoir à en créer une nouvelle instance. L'écriture d'un graphe se fait donc en deux étapes, pouvant être réalisé dans l'ordre désiré :
-
-\begin{itemize}
-    \item \textbf{Le fichier DOT doit être ouvert en mode écriture :} si un fichier avait déjà été ouvert (\texttt{Open(filename)}), il est préalablement fermé (\texttt{Close(filename)}) avant d'être ouvert pour écriture subséquente.
-    \item \textbf{Le graphe doit être initialisé :} un nouveau graphe doit être initialisé en spécifiant son nombre de nœuds (\texttt{InitGraph(graphNodes)}). Le programme doit ensuite ajouter tous les nœuds (\texttt{AddNode(id, label)}), identifiés par leur ID et étiquetés avec leur nom, puis ajouter tous les liens entre nœuds (\texttt{AddLink(sourceId, targetId, linkLabel)}), qui ont eux-mêmes une étiquette.
-\end{itemize}
-
-Une fois que les deux étapes ont été réalisées et que le graphe est finalisé, le résultat peut être écrit dans le fichier DOT (\texttt{Write()}), au format de Graphviz.
-
-\textit{Les structures de données utilisées pour stocker les nœuds et liens sont détaillées dans la section suivante.}
-
-\subsubsection{\texttt{HistoryManager}}
-
-La classe \texttt{HistoryManager} est responsable de la gestion de l'historique de parcours du serveur local, obtenu à partir d'un fichier de log Apache au format attendu (\texttt{FromFile(logFile, excludedIntensions, startHour, endHour)}), par le biais d'une instance de \texttt{LogReader} déjà ouverte.. Chaque ligne du fichier de log est lue une par une, le programme décidant à la lecture s'il va conserver cette ligne ou non, selon les critères spécifiés par les options \texttt{-e} et \texttt{-t} : ceci permet d'économiser en mémoire et en temps de recherche par la suite, puisque l'alternative serait de tout conserver et de trier à chaque recherche d'information, une opération coûteuse.
-
-Une fois que toutes les informations ont été extraites (une opération relativement lente, puisqu'il faut lire beaucoup de chaînes de caractères), elles sont stockées sous forme d'un ensemble de \texttt{Document}s et peuvent soit être affichés sous la forme d'une liste des documents les plus populaires (\texttt{ListDocuments(max)}), soit sous la forme d'un fichier Graphviz au format DOT (\texttt{ToDotFile(dotFile)}), par le biais d'une instance de \texttt{DotFileWriter} déjà ouverte.
-
-\textit{Les structures de données utilisées pour stocker les documents sont détaillées dans la section suivante.}
-
-\subsubsection{\texttt{LogEntry}}
-
-La classe \texttt{LogEntry} représente une ligne valable du fichier de log, réduite aux informations qui intéressent le reste du programme, à savoir l'heure (\texttt{GetHour()}), la méthode de la requête HTTP (\texttt{GetRequestMethod()}), l'URI du document demandé, épurée de ses paramètres ou d'un numéro de port éventuels (\texttt{GetRequestUriConverted()}), l'extension du document demandé, si possible (\texttt{GetRequestUriExtension()}), le code de statut de la requête (\texttt{GetStatusCode()}) et l'URL du document demandeur, convertie en URI si le document est local ou en \texttt{*} sinon (\texttt{GetRefererUrlConverted(local)}).
-
-Cette classe sert d'intermédiaire entre la classe \texttt{LogReader} et la classe \texttt{HistoryManager}, puisqu'elle permet d'extraire les informations utiles à la création des \texttt{Document}s. Ses informations peuvent être extraites directement d'un flux de données ; si la ligne n'est pas valable, une exception est lancée.
-
-\subsubsection{\texttt{Logger}}
-
-La classe \texttt{Logger} est une classe utilitaire permettant d'afficher des messages à l'utilisateur. Elle permet d'utiliser des couleurs (définies dans \texttt{TerminalColor}) et d'afficher des messages à plusieurs niveaux (\texttt{Debug(args)}, \texttt{Error(args)}, \texttt{Info(args)} et \texttt{Warning(args)}) avec un nombre variable d'arguments. Ceci simplifie grandement l'écriture de messages de debug, d'erreur ou d'information ailleurs dans le programme.
-
-\subsubsection{\texttt{LogReader}}
-
-La classe \texttt{LogReader} permet de lire des fichiers de log générés par Apache et d'en extraire les informations importantes. Comme elle manipule des flux de fichiers, cette classe ne peut pas être copiée, ce qui permet d'éviter des conflits de lecture sur un même fichier. Pour commencer à lire un fichier, il faut l'ouvrir au préalable (\texttt{Open(filename)}), puis récupérer une instance de \texttt{LogEntry} par ligne (\texttt{ReadLine(entry)}, sachant que si la ligne n'est pas utilisable une exception est lancée), tant que la fin du fichier n'est pas atteinte (\texttt{Eof()}). Le fichier doit ensuite être fermé (\texttt{Close()}), puis le lecture est prêt à traiter un autre fichier de log. Cette classe permet notamment de compter toutes les lignes qui sont lues, ce qui permet de rendre tout message d'erreur plus utile.
-
-\subsection{Structures de données}
-
-Puisque l'application a besoin de gérer des collections d'entités liées entre elles (c'est-à-dire les documents et les passages d'un document à un autre), la structure la plus adaptée pour modéliser ceci est le graphe. Notre programme réalise donc deux implémentations de graphe, de deux manières différentes : une dans \texttt{HistoryManager}, qui doit favoriser une mise à jour fréquente et qui est de taille inconnue, et une autre dans \texttt{DotFileWriter} qui doit permettre un parcours rapide et être de taille connue. Le programme commence par construire la première version, puis l'exporte vers la deuxième si l'utilisateur a demandé de générer un fichier DOT.
-
-Le premier graphe fonctionne grâce à un tableau \texttt{documents} de taille variable contenant les \texttt{Document}s (implémenté avec \texttt{std::vector}) et à un dictionnaire \texttt{documentsByName} associant les URI des documents à leur index dans \texttt{documents} (implémenté avec \texttt{std::unordered\_map}). Comme le tri n'est nécessaire que pour une seule opération réalisée à la toute fin du programme (lors de la liste des documents), ces structures ne sont pas triées, ce qui facilite l'insertion, la modification et la recherche par URI, qui est l'identifiant utilisé dans les fichier de log. L'idée est donc d'utiliser \texttt{documentsByName} pour trouver l'index du document recherché à partir de l'URI (une opération de temps généralement $ \mathcal{O}(1) $, grâce aux tables de hachage, et au pire de temps $ \mathcal{O}(n) $), puis de retrouver ensuite le document dans \texttt{documents} par son index (une opération de temps $ \mathcal{O}(1) $). De plus, pour stocker les visites d'un document à un autre, il est plus efficace d'utiliser les index des documents dans \texttt{documents} que leur URI, d'où l'intérêt de séparer \texttt{documents} et \texttt{documentsByName}.
-
-\begin{figure}[ht]
-	\centering
-    \begin{tikzpicture}[node distance=1cm, auto,]
-        \matrix[array] (array_documents) {
-            0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
-              &   &   &   &   &   &   &   &   &   \\
-        };
-        \node[draw, fill=gray, minimum size=4mm] at (array_documents-2-9) (box) {};
-        \draw (array_documents-1-1.north)--++(90:3mm) node [above] (first) {ID = 0};
-        \draw (array_documents-1-10.east)--++(0:3mm) node [right]{ID des documents};
-        \node [align=center, anchor=south] at (array_documents-2-9.north west|-first.south) (8) {\texttt{Document}\\ (ID = 8)};
-        \draw (8)--(box);
-        \node[anchor=east] at (array_documents.west) {\texttt{documents}};
-        
-        \node[dict, anchor=south west,below=of array_documents] (array_documentsByName) {
-            /index.html\quad 2
-            \nodepart{two}/image.png\quad 9
-            \nodepart{three}/style.css\quad\quad 3
-            \nodepart{four}/script.js\quad\quad 5  
-          }; 
-        \node[anchor=east] at (array_documentsByName.west) {\texttt{documentsByName}};
-        \draw (8)--(box);
-    \end{tikzpicture}
-    \caption{Fonctionnement du graphe de \texttt{HistoryManager}}
-    \label{fig:hm_graph}
-\end{figure}
-
-Le deuxième graphe est plus proche du concept de graphe car il reflète le format du fichier Graphviz, séparé en nœuds et en liens. Il consiste en une liste simplement chaînée \texttt{links} de liens (implémentée avec \texttt{std::forward\_list}) et un tableau fixe \texttt{nodes} (implémenté par un tableau C alloué dynamiquement) qui liste les étiquettes correspondant aux ID de nœuds. Dans ce modèle, chaque document est associé à un nœud, l'ID du nœud étant la position du document dans \texttt{documents} et l'étiquette étant son URI, et les nombres de visites d'autres documents à partir de celui-ci sont associés à des liens dont l'étiquette est le nombre de visites. Ce graphe se construit en temps $ \mathcal{O}(n^2) $ à partir du précédent, puisqu'il faut itérer sur chaque document de \texttt{documents}, puis sur chaque visite réalisée à partir de ce document vers les autres documents. Cependant, une fois construit, il est très rapide d'écrire le fichier DOT correspondant puisqu'il y a une correspondance directe entre le format du fichier et la représentation interne de ce graphe : il n'a qu'à itérer sur tous les documents, puis à itérer sur tous les liens pour construire le fichier.
-
-\begin{figure}[ht]	
-	\centering
-    \begin{tikzpicture}[node distance=1cm, auto,]
-        \matrix[array] (array_nodes) {
-            0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
-              &   &   &   &   &   &   &   &   &   \\
-        };
-        \node[draw, fill=gray, minimum size=4mm] at (array_nodes-2-9) (box) {};
-        \draw (array_nodes-1-1.north)--++(90:3mm) node [above] (first) {ID = 0};
-        \draw (array_nodes-1-10.east)--++(0:3mm) node [right]{ID des noeuds};
-        \node [align=center, anchor=south] at (array_nodes-2-9.north west|-first.south) (8) {\texttt{std::string}\\ (ID = 8)};
-        \node[anchor=east] at (array_nodes.west) {\texttt{nodes}};
-        \draw (8)--(box);
-    \end{tikzpicture}
-    \caption{Fonctionnement du graphe de \texttt{DotFileWriter}}
-    \label{fig:dfw_graph}
-\end{figure}
-
-Puisque nous avons deux graphes pour représenter les mêmes données, il y a simultanément un gaspillage de la mémoire par redondance d'informations et une petite perte de performance lors de la conversion du premier vers la deuxième. Cependant, le premier est optimisé pour sa situation, qui nécessite beaucoup de recherches par URI, tandis que le deuxième, qui n'est utilisé que dans certains cas, est optimisé pour la sienne, qui nécessite de parcourir rapidement la liste de nœuds et de liens. Les gains en performance sur ces aspects compensent donc les désavantages liés au dédoublement des données (sans oublier que ceci permet également à la classe \texttt{DotFileWriter} de fonctionner indépendamment du reste du programme).
-
-\pagebreak
-\section*{Annexe 1 - Liste des spécifications détaillées}
-\label{sec:annexe_1}
-
-\begin{center}
-    \begin{table}[!h]
-        \begin{tabularx}{\textwidth}{ | X | p{1.5cm} | }
-            \hline
-            Spécification & Test \\ \hline
-            L'application doit s'interrompre et afficher un message d'erreur si le nom de fichier de log n'est pas spécifié. & \texttt{test\_01} \\ \hline
-            L'application doit s'interrompre et afficher un message d'erreur si le fichier de log a été spécifié mais n'a pas pu être ouvert. & \texttt{test\_02} \\ \hline
-            Un fichier de log vide ne devrait pas poser de problème particulier pour l'application, qui n'affichera rien en sortie. & \texttt{text\_03} \\ \hline
-            Un fichier de log "normal", avec plus de 10 documents, doit pouvoir être traité sans problèmes ; les 10 documents les plus populaires seront affichés dans l'ordre décroissant de leur popularité. & \texttt{test\_04} \\ \hline
-            Un fichier de log "normal", avec moins de 10 documents, doit pouvoir être traité sans problèmes ; tous les documents atteints plus d'une fois devront être affichés dans l'ordre décroissant de leur popularité. & \texttt{test\_05} \\ \hline
-            Les lignes qui ne sont pas conformes à nos attentes dans un fichier de log doivent être ignorées et un message d'avertissement doit être affiché un l'utilisateur. & \texttt{text\_06} \\ \hline
-            L'option \texttt{-e} doit permettre d'éliminer tous les documents de certains types (par défaut, les images, les scripts et les feuilles de style) ; elle doit fonctionner même s'il y a des paramètres à la suite de l'extension de fichier. & \texttt{test\_07} \\ \hline
-            L'option \texttt{-t} doit permettre d'éliminer toutes les entrées ayant eu lieu à un certaine heure de la journée ; le décalage horaire n'est pas pris en compte. & \texttt{test\_08} \\ \hline
-            Si l'option \texttt{-t} est utilisée avec un paramètre qui n'est pas compris entre 0 et 23, l'application doit s'interrompre avec un message d'erreur. & \texttt{text\_09} \\ \hline
-            L'option \texttt{-g} doit permettre de générer un fichier DOT à partir duquel un graphie Graphviz peut être généré ; tous les documents externes au serveurs doivent être représentées par \texttt{*}. & \texttt{test\_10} \\ \hline
-            L'application doit fonctionner avec toutes les options précédentes activées en même temps. & \texttt{test\_11} \\ \hline
-            L'application doit pouvoir lire le fichier de configuration optionnel \texttt{tp-oo\_3.cfg} et remplacer les valeurs par défaut par les valeurs dans le fichier ; tous les tests précédents vérifient également que l'application peut fonctionner sans le fichier de configuration. & \texttt{text\_12} \\ \hline
-            L'application doit pouvoir lire des fichiers volumineux, de plusieurs dizaines de Mo en taille. & \texttt{test\_13} \\ \hline
-    	\end{tabularx}
-        \caption{Spécifications et tests associés}
-        \label{tab:specifications}
-    \end{table}
-\end{center}
-
+	
+	\title{
+		Compte-rendu du TP C++ 3\\
+		Spécification et conception
+	}
+	\author{
+		Marc Gagné\\
+		\and
+		Selma Nemmaoui
+	}
+	\date{Décembre 2015}
+	\maketitle
+	
+	\section*{Préambule}
+	Le TP C++ 3 a pour objectif la création d'un programme capable de traiter des fichiers de log générés par Apache pour en extraire l'historique de parcours ; le programme peut ensuite afficher les informations extraites sur la sortie standard, les filtrer selon certains critères ou générer un fichier Graphviz représentant les parcours entre documents.
+	
+	\section{Spécifications}
+	
+	Pour répondre au cahier des charges, notre application doit respecter certaines spécifications que nous avons établies et qui sont listées ci-dessous.
+	
+	\subsection{Définitions}
+	Les termes ci-dessous sont utilisés dans le reste du document, et sont donc préalablement définis ci-dessous :
+	\begin{itemize}
+		\item \textbf{Document :} une ressource se trouvant sur le serveur local et qui a soit été atteint par un utilisateur dans le fichier de log, soit été la source d'une visite sur un autre document. Un document est identifié par son URI relative à la racine du serveur local. Toutes les ressources venant d'un autre serveur que le serveur local sont considérées comme appartenant à un document virtuel, identifié par la fausse URI \texttt{*}.
+		\item \textbf{Serveur local :} le serveur qui a généré le fichier de log Apache. Doit être associé à une URL pour que tout document référant venant de ce serveur soit correctement identifié.
+		\item \textbf{Popularité :} la popularité d'un document est liée au nombre de fois qu'il a été atteint à partir d'un autre document ; plus ce nombre est grand, plus le document est populaire.
+	\end{itemize}
+	
+	\subsection{Spécifications générales}
+	
+	L’outil à concevoir prend en paramètre le nom du fichier de log ainsi qu’une série d’options en ligne de commande. Lorsqu’il n’y a aucune option, le programme affiche par défaut sur la console la liste des 10 documents les plus consultés par ordre décroissant de popularité, sous forme textuelle. Selon les options en ligne de commande, le programme pourra produire un fichier au format GraphViz du graphe analysé (option \texttt{-g <FICHIER>}), filtrer les documents par extension en excluant tous les documents qui ont une extension de type image, CSS ou JavaScript (option \texttt{-e}), ou encore s’intéresser à l’heure des documents en ne prenant en compte que les hits qui sont dans le créneau horaire correspondant à l’intervalle [heure, heure+1[ (option \texttt{-t <HEURE>}).
+	
+	Le graphe généré représente le parcours de l’utilisateur : les documents qu’il aura consultés sont modélisés par des nœuds, et le passage d’un document à un autre est représenté par un arc. Les fichiers de log d’un seul serveur web ne pourront transcrire que les informations qui lui sont relatives.
+	
+	\subsection{Spécifications détaillées}
+	
+	Les spécifications détaillées sont des spécifications qui impliquent des tests (réalisés dans le répertoire \texttt{tests/}) pour vérifier qu'elles sont respectées. Elles sont présentées dans la table de l'annexe 1.
+	
+	\section{Conception}
+	
+	\subsection{Classes principales}
+	
+	L'application fonctionne principalement grâce à une classe centrale, la classe \texttt{HistoryManager}, qui est initialisée par le programme principal (dans la fonction \texttt{main}) et qui utilise toutes les autres classes pour traiter les fichiers de log.
+	
+	Les présentations détaillées des méthodes sont disponibles dans les commentaires des interfaces de chaque classe.
+	
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[node distance=1cm, auto,]
+		\node[noeud] (main) {\textit{Programme principal}};
+		\node[below=of main] (dummy1) {};
+		\node[below=of dummy1] (dummy2) {};
+		\node[noeud, above=of main] (ConfigReader) {\texttt{ConfigReader}};
+		\node[noeud, below=of dummy2] (HistoryManager) {\texttt{HistoryManager}};
+		\node[noeud, below=of HistoryManager] (Document) {\texttt{Document}};
+		\node[noeud, left=3cm of dummy1] (DotFileWriter) {\texttt{DotFileWriter}};
+		\node[noeud, right=3cm of dummy1] (LogReader) {\texttt{LogReader}};
+		\node[noeud, below=of LogReader] (LogEntry) {\texttt{LogEntry}};
+		
+		\path[lien]
+		(ConfigReader.south) edge node {lu par} (main.north)
+		(main.west) edge [bend right] node {instantie} (DotFileWriter.north)
+		(main.east) edge [bend left] node {instantie} (LogReader.north)
+		(main.south) edge [bend right] node {instantie} (HistoryManager.north)
+		(HistoryManager.west) edge node {écrit} (DotFileWriter.south)
+		(HistoryManager.north) edge [bend right] node {lit} (LogReader.west)
+		(LogReader.south) edge node {produit} (LogEntry.north)
+		(LogEntry.south) edge [bend left] node {traité par} (HistoryManager.east)
+		(HistoryManager.south) edge node {gère} (Document.north)
+		(Document) edge [loop below] node {lié à} (Document);
+		\end{tikzpicture}
+		\caption{Intéractions entre les classes principales}
+		\label{fig:classes}
+	\end{figure}
+	
+	\subsubsection{\texttt{ConfigReader}}
+	
+	La classe \texttt{ConfigReader} permet de lire un fichier de configuration optionnel \texttt{tp-oo\_3.cfg}, et de stocker les associations clés -> valeurs dans la classe. Les autres classes peuvent ensuite accéder aux valeurs en spécifiant leurs clés ; les valeurs peuvent soit être interprétées comme des chaînes de caractères (\texttt{GetString(key, def)}), des entiers (\texttt{GetInteger(key, def)}) ou des ensembles de valeurs (\texttt{GetSet(key, def)}).
+	
+	Le format du fichier de configuration suit un format très simple, mais peu flexible. Les lignes vides sont ignorées, tandis que les lignes non-vides devraient être au format suivant : \texttt{cle=valeur}, sans espaces. Pour que \texttt{valeur} soit interprétée comme un ensemble, elle devrait être une liste d'items séparés par des virgules (exemple : \texttt{ensemble=valeur1,valeur2,valeur3}).
+	
+	Si une valeur n'est pas trouvée dans le fichier de configuration, la valeur par défaut spécifiée à l'appel est renvoyée à la place.
+	
+	\subsubsection{\texttt{Document}}
+	
+	La classe \texttt{Document} représente un document du fichier de log fourni en entrée. Il permet de compter le nombre de fois qu'il a été atteint à partir d'un autre document (\texttt{AddLocalHit()} et \texttt{GetLocalHits()}), ainsi que le nombre de fois qu'il a été utilisé pour atteindre un autre document (\texttt{AddRemoteHit(documentId)} et \texttt{GetRemoteHits()}. Un document doit être initialisé avec son URI, qui l'identifie de manière unique (\texttt{GetUri()}). Un \texttt{Document} peut également déterminer s'il est "supérieur" à un autre document en comparant leurs popularités respectives.
+	
+	Un \texttt{Document} est donc essentiellement une structure pour stocker des données sur un document, avec quelques méthodes pour faciliter sa mise à jour.
+	
+	\subsubsection{\texttt{DotFileWriter}}
+	
+	La classe \texttt{DotFileWriter} permet de créer un graphe destiné à être écrit dans un fichier DOT, utilisable par Graphviz pour générer des images. La classe ne fait pas de suppositions sur la nature du graphe, et ne le considère que comme un ensemble de nœuds, de liens et d'étiquettes, afin de rendre la classe plus réutilisable. Comme elle manipule des flux de fichiers, cette classe ne peut pas être copiée, ce qui permet d'éviter des conflits d'écriture sur un même fichier.
+	
+	Un des avantages de cette classe est qu'elle peut être utilisée pour générer un graphe, puis l'écrire dans plusieurs fichiers, et même changer de graphe sans avoir à en créer une nouvelle instance. L'écriture d'un graphe se fait donc en deux étapes, pouvant être réalisé dans l'ordre désiré :
+	
+	\begin{itemize}
+		\item \textbf{Le fichier DOT doit être ouvert en mode écriture :} si un fichier avait déjà été ouvert (\texttt{Open(filename)}), il est préalablement fermé (\texttt{Close(filename)}) avant d'être ouvert pour écriture subséquente.
+		\item \textbf{Le graphe doit être initialisé :} un nouveau graphe doit être initialisé en spécifiant son nombre de nœuds (\texttt{InitGraph(graphNodes)}). Le programme doit ensuite ajouter tous les nœuds (\texttt{AddNode(id, label)}), identifiés par leur ID et étiquetés avec leur nom, puis ajouter tous les liens entre nœuds (\texttt{AddLink(sourceId, targetId, linkLabel)}), qui ont eux-mêmes une étiquette.
+	\end{itemize}
+	
+	Une fois que les deux étapes ont été réalisées et que le graphe est finalisé, le résultat peut être écrit dans le fichier DOT (\texttt{Write()}), au format de Graphviz.
+	
+	\textit{Les structures de données utilisées pour stocker les nœuds et liens sont détaillées dans la section suivante.}
+	
+	\subsubsection{\texttt{HistoryManager}}
+	
+	La classe \texttt{HistoryManager} est responsable de la gestion de l'historique de parcours du serveur local, obtenu à partir d'un fichier de log Apache au format attendu (\texttt{FromFile(logFile, excludedIntensions, startHour, endHour)}), par le biais d'une instance de \texttt{LogReader} déjà ouverte.. Chaque ligne du fichier de log est lue une par une, le programme décidant à la lecture s'il va conserver cette ligne ou non, selon les critères spécifiés par les options \texttt{-e} et \texttt{-t} : ceci permet d'économiser en mémoire et en temps de recherche par la suite, puisque l'alternative serait de tout conserver et de trier à chaque recherche d'information, une opération coûteuse.
+	
+	Une fois que toutes les informations ont été extraites (une opération relativement lente, puisqu'il faut lire beaucoup de chaînes de caractères), elles sont stockées sous forme d'un ensemble de \texttt{Document}s et peuvent soit être affichés sous la forme d'une liste des documents les plus populaires (\texttt{ListDocuments(max)}), soit sous la forme d'un fichier Graphviz au format DOT (\texttt{ToDotFile(dotFile)}), par le biais d'une instance de \texttt{DotFileWriter} déjà ouverte.
+	
+	\textit{Les structures de données utilisées pour stocker les documents sont détaillées dans la section suivante.}
+	
+	\subsubsection{\texttt{LogEntry}}
+	
+	La classe \texttt{LogEntry} représente une ligne valable du fichier de log, réduite aux informations qui intéressent le reste du programme, à savoir l'heure (\texttt{GetHour()}), la méthode de la requête HTTP (\texttt{GetRequestMethod()}), l'URI du document demandé, épurée de ses paramètres ou d'un numéro de port éventuels (\texttt{GetRequestUriConverted()}), l'extension du document demandé, si possible (\texttt{GetRequestUriExtension()}), le code de statut de la requête (\texttt{GetStatusCode()}) et l'URL du document demandeur, convertie en URI si le document est local ou en \texttt{*} sinon (\texttt{GetRefererUrlConverted(local)}).
+	
+	Cette classe sert d'intermédiaire entre la classe \texttt{LogReader} et la classe \texttt{HistoryManager}, puisqu'elle permet d'extraire les informations utiles à la création des \texttt{Document}s. Ses informations peuvent être extraites directement d'un flux de données ; si la ligne n'est pas valable, une exception est lancée.
+	
+	\subsubsection{\texttt{Logger}}
+	
+	La classe \texttt{Logger} est une classe utilitaire permettant d'afficher des messages à l'utilisateur. Elle permet d'utiliser des couleurs (définies dans \texttt{TerminalColor}) et d'afficher des messages à plusieurs niveaux (\texttt{Debug(args)}, \texttt{Error(args)}, \texttt{Info(args)} et \texttt{Warning(args)}) avec un nombre variable d'arguments. Ceci simplifie grandement l'écriture de messages de debug, d'erreur ou d'information ailleurs dans le programme.
+	
+	\subsubsection{\texttt{LogReader}}
+	
+	La classe \texttt{LogReader} permet de lire des fichiers de log générés par Apache et d'en extraire les informations importantes. Comme elle manipule des flux de fichiers, cette classe ne peut pas être copiée, ce qui permet d'éviter des conflits de lecture sur un même fichier. Pour commencer à lire un fichier, il faut l'ouvrir au préalable (\texttt{Open(filename)}), puis récupérer une instance de \texttt{LogEntry} par ligne (\texttt{ReadLine(entry)}, sachant que si la ligne n'est pas utilisable une exception est lancée), tant que la fin du fichier n'est pas atteinte (\texttt{Eof()}). Le fichier doit ensuite être fermé (\texttt{Close()}), puis le lecture est prêt à traiter un autre fichier de log. Cette classe permet notamment de compter toutes les lignes qui sont lues, ce qui permet de rendre tout message d'erreur plus utile.
+	
+	\subsection{Structures de données}
+	
+	Puisque l'application a besoin de gérer des collections d'entités liées entre elles (c'est-à-dire les documents et les passages d'un document à un autre), la structure la plus adaptée pour modéliser ceci est le graphe. Notre programme réalise donc deux implémentations de graphe, de deux manières différentes : une dans \texttt{HistoryManager}, qui doit favoriser une mise à jour fréquente et qui est de taille inconnue, et une autre dans \texttt{DotFileWriter} qui doit permettre un parcours rapide et être de taille connue. Le programme commence par construire la première version, puis l'exporte vers la deuxième si l'utilisateur a demandé de générer un fichier DOT.
+	
+	Le premier graphe fonctionne grâce à un tableau \texttt{documents} de taille variable contenant les \texttt{Document}s (implémenté avec \texttt{std::vector}) et à un dictionnaire \texttt{documentsByName} associant les URI des documents à leur index dans \texttt{documents} (implémenté avec \texttt{std::unordered\_map}). Comme le tri n'est nécessaire que pour une seule opération réalisée à la toute fin du programme (lors de la liste des documents), ces structures ne sont pas triées, ce qui facilite l'insertion, la modification et la recherche par URI, qui est l'identifiant utilisé dans les fichier de log. L'idée est donc d'utiliser \texttt{documentsByName} pour trouver l'index du document recherché à partir de l'URI (une opération de temps généralement $ \mathcal{O}(1) $, grâce aux tables de hachage, et au pire de temps $ \mathcal{O}(n) $), puis de retrouver ensuite le document dans \texttt{documents} par son index (une opération de temps $ \mathcal{O}(1) $). De plus, pour stocker les visites d'un document à un autre, il est plus efficace d'utiliser les index des documents dans \texttt{documents} que leur URI, d'où l'intérêt de séparer \texttt{documents} et \texttt{documentsByName}.
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[node distance=1cm, auto,]
+		\matrix[array] (array_documents) {
+			0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+			&   &   &   &   &   &   &   &   &   \\
+		};
+		\node[draw, fill=gray, minimum size=4mm] at (array_documents-2-9) (box) {};
+		\draw (array_documents-1-1.north)--++(90:3mm) node [above] (first) {ID = 0};
+		\draw (array_documents-1-10.east)--++(0:3mm) node [right]{ID des documents};
+		\node [align=center, anchor=south] at (array_documents-2-9.north west|-first.south) (8) {\texttt{Document}\\ (ID = 8)};
+		\draw (8)--(box);
+		\node[anchor=east] at (array_documents.west) {\texttt{documents}};
+		
+		\node[dict, anchor=south west,below=of array_documents] (array_documentsByName) {
+			/index.html\quad 2
+			\nodepart{two}/image.png\quad 9
+			\nodepart{three}/style.css\quad\quad 3
+			\nodepart{four}/script.js\quad\quad 5  
+		}; 
+		\node[anchor=east] at (array_documentsByName.west) {\texttt{documentsByName}};
+		\draw (8)--(box);
+		\end{tikzpicture}
+		\caption{Fonctionnement du graphe de \texttt{HistoryManager}}
+		\label{fig:hm_graph}
+	\end{figure}
+	
+	Le deuxième graphe est plus proche du concept de graphe car il reflète le format du fichier Graphviz, séparé en nœuds et en liens. Il consiste en une liste simplement chaînée \texttt{links} de liens (implémentée avec \texttt{std::forward\_list}) et un tableau fixe \texttt{nodes} (implémenté par un tableau C alloué dynamiquement) qui liste les étiquettes correspondant aux ID de nœuds. Dans ce modèle, chaque document est associé à un nœud, l'ID du nœud étant la position du document dans \texttt{documents} et l'étiquette étant son URI, et les nombres de visites d'autres documents à partir de celui-ci sont associés à des liens dont l'étiquette est le nombre de visites. Ce graphe se construit en temps $ \mathcal{O}(n^2) $ à partir du précédent, puisqu'il faut itérer sur chaque document de \texttt{documents}, puis sur chaque visite réalisée à partir de ce document vers les autres documents. Cependant, une fois construit, il est très rapide d'écrire le fichier DOT correspondant puisqu'il y a une correspondance directe entre le format du fichier et la représentation interne de ce graphe : il n'a qu'à itérer sur tous les documents, puis à itérer sur tous les liens pour construire le fichier.
+	
+	\begin{figure}[ht]	
+		\centering
+		\begin{tikzpicture}[node distance=1cm, auto,]
+		\matrix[array] (array_nodes) {
+			0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+			&   &   &   &   &   &   &   &   &   \\
+		};
+		\node[draw, fill=gray, minimum size=4mm] at (array_nodes-2-9) (box) {};
+		\draw (array_nodes-1-1.north)--++(90:3mm) node [above] (first) {ID = 0};
+		\draw (array_nodes-1-10.east)--++(0:3mm) node [right]{ID des noeuds};
+		\node [align=center, anchor=south] at (array_nodes-2-9.north west|-first.south) (8) {\texttt{std::string}\\ (ID = 8)};
+		\node[anchor=east] at (array_nodes.west) {\texttt{nodes}};
+		\draw (8)--(box);
+		\end{tikzpicture}
+		\caption{Fonctionnement du graphe de \texttt{DotFileWriter}}
+		\label{fig:dfw_graph}
+	\end{figure}
+	
+	Puisque nous avons deux graphes pour représenter les mêmes données, il y a simultanément un gaspillage de la mémoire par redondance d'informations et une petite perte de performance lors de la conversion du premier vers la deuxième. Cependant, le premier est optimisé pour sa situation, qui nécessite beaucoup de recherches par URI, tandis que le deuxième, qui n'est utilisé que dans certains cas, est optimisé pour la sienne, qui nécessite de parcourir rapidement la liste de nœuds et de liens. Les gains en performance sur ces aspects compensent donc les désavantages liés au dédoublement des données (sans oublier que ceci permet également à la classe \texttt{DotFileWriter} de fonctionner indépendamment du reste du programme).
+	
+	\pagebreak
+	\section*{Annexe 1 - Liste des spécifications détaillées}
+	\label{sec:annexe_1}
+	
+	\begin{center}
+		\begin{table}[!h]
+			\begin{tabularx}{\textwidth}{ | X | p{1.5cm} | }
+				\hline
+				Spécification & Test \\ \hline
+				L'application doit s'interrompre et afficher un message d'erreur si le nom de fichier de log n'est pas spécifié. & \texttt{test\_01} \\ \hline
+				L'application doit s'interrompre et afficher un message d'erreur si le fichier de log a été spécifié mais n'a pas pu être ouvert. & \texttt{test\_02} \\ \hline
+				Un fichier de log vide ne devrait pas poser de problème particulier pour l'application, qui n'affichera rien en sortie. & \texttt{text\_03} \\ \hline
+				Un fichier de log "normal", avec plus de 10 documents, doit pouvoir être traité sans problèmes ; les 10 documents les plus populaires seront affichés dans l'ordre décroissant de leur popularité. & \texttt{test\_04} \\ \hline
+				Un fichier de log "normal", avec moins de 10 documents, doit pouvoir être traité sans problèmes ; tous les documents atteints plus d'une fois devront être affichés dans l'ordre décroissant de leur popularité. & \texttt{test\_05} \\ \hline
+				Les lignes qui ne sont pas conformes à nos attentes dans un fichier de log doivent être ignorées et un message d'avertissement doit être affiché un l'utilisateur. & \texttt{text\_06} \\ \hline
+				L'option \texttt{-e} doit permettre d'éliminer tous les documents de certains types (par défaut, les images, les scripts et les feuilles de style) ; elle doit fonctionner même s'il y a des paramètres à la suite de l'extension de fichier. & \texttt{test\_07} \\ \hline
+				L'option \texttt{-t} doit permettre d'éliminer toutes les entrées ayant eu lieu à un certaine heure de la journée ; le décalage horaire n'est pas pris en compte. & \texttt{test\_08} \\ \hline
+				Si l'option \texttt{-t} est utilisée avec un paramètre qui n'est pas compris entre 0 et 23, l'application doit s'interrompre avec un message d'erreur. & \texttt{text\_09} \\ \hline
+				L'option \texttt{-g} doit permettre de générer un fichier DOT à partir duquel un graphie Graphviz peut être généré ; tous les documents externes aux serveurs doivent être représentées par \texttt{*}. & \texttt{test\_10} \\ \hline
+				L'application doit fonctionner avec toutes les options précédentes activées en même temps. & \texttt{test\_11} \\ \hline
+				L'application doit pouvoir lire le fichier de configuration optionnel \texttt{tp-oo\_3.cfg} et remplacer les valeurs par défaut par les valeurs dans le fichier ; tous les tests précédents vérifient également que l'application peut fonctionner sans le fichier de configuration. & \texttt{text\_12} \\ \hline
+				L'application doit pouvoir lire des fichiers volumineux, de plusieurs dizaines de Mo en taille. & \texttt{test\_13} \\ \hline
+			\end{tabularx}
+			\caption{Spécifications et tests associés}
+			\label{tab:specifications}
+		\end{table}
+	\end{center}
+	
 \end{document}

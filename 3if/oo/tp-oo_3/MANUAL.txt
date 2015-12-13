@@ -20,7 +20,7 @@ OPTIONS
               Un log Apache à traiter.
 
        -e, --exclude
-              Exclut certains types de fichier (par défaut, exclue les images,
+              Exclut certains types de fichier (par défaut, exclut les images,
               les feuilles de style et les scripts).
 
        -g <FICHIER>, --graphviz <FICHIER>

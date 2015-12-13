@@ -25,9 +25,9 @@ include/, et ne nécessite pas de compilation séparée, n'étant constituée qu
 fichiers d'interface. Elle a été légèrement modifiée pour réduire le nombre
 d'avertissements qu'elle produit.
 
-Note : pour des raisons de compatibilité avec Cygwin, les fonctions std::stoi ne
-sont pas utilisées ; les stringstream et la fonction C atoi sont utilisés à la
-place.
+Note : pour des raisons de compatibilité avec Cygwin, les fonctions std::stoi et
+std::to_string ne sont pas utilisées ; les stringstream et la fonction C atoi
+sont utilisés à la place.
 
 Compilation
 -----------
