@@ -1,11 +1,11 @@
 /*******************************************************************************
-                      DotFileWriter - √âcrivain de DOT-file
+                      DotFileWriter - …crivain de DOT-file
                               --------------------
-    d√©but                : 01/12/2015
+    dÈbut                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
-// R√©alisation de la classe <DotFileWriter> (fichier DotFileWriter.cpp)
+// RÈalisation de la classe <DotFileWriter> (fichier DotFileWriter.cpp)
 
 //---------------------------------------------------------------------- INCLUDE
 
@@ -19,25 +19,25 @@ const std::string DotFileWriter::FOOTER = "}\n";
 
 //----------------------------------------------------------------------- PUBLIC
 
-//----------------------------------------------------------- M√©thodes publiques
+//----------------------------------------------------------- MÈthodes publiques
 void DotFileWriter::AddLink (
         unsigned long sourceId, unsigned long targetId,
         const std::string & linkLabel
 )
 {
-    DEBUG("Appel √† DotFileWriter::AddLink");
+    DEBUG("Appel ‡ DotFileWriter::AddLink");
     links.push_front({sourceId, targetId, linkLabel});
 } //----- Fin de AddLink
 
 void DotFileWriter::AddNode (unsigned long id, const std::string & label)
 {
-    DEBUG("Appel √† DotFileWriter::AddNode");
+    DEBUG("Appel ‡ DotFileWriter::AddNode");
     nodes[id] = label;
 } //----- Fin de AddNode
 
 void DotFileWriter::Close ()
 {
-    DEBUG("Appel √† DotFileWriter::Close");
+    DEBUG("Appel ‡ DotFileWriter::Close");
     if (dotFile.is_open())
     {
         dotFile.close();
@@ -45,11 +45,11 @@ void DotFileWriter::Close ()
 } //----- Fin de Close
 
 void DotFileWriter::InitGraph (unsigned long graphNodes)
-// Algorithme : Supprime tout ancien graphe qui avait √©t√© cr√©√© en d√©truisant
-// tous ses noeuds et en r√©initialisant la liste de liens, puis pr√©pare un
+// Algorithme : Supprime tout ancien graphe qui avait ÈtÈ crÈÈ en dÈtruisant
+// tous ses noeuds et en rÈinitialisant la liste de liens, puis prÈpare un
 // nouveau tableau de noeuds.
 {
-    DEBUG("Appel √† DotFileWriter::InitGraph");
+    DEBUG("Appel ‡ DotFileWriter::InitGraph");
     if (nodes != nullptr)
     {
         links.clear();
@@ -60,20 +60,25 @@ void DotFileWriter::InitGraph (unsigned long graphNodes)
 } //----- Fin de InitGraph
 
 bool DotFileWriter::Open (const std::string & filename)
-// Algorithme : Ferme tout flux d√©j√† ouvert et ouvre un nouveau li√© au fichier
+// Algorithme : Ferme tout flux dÈj‡ ouvert et ouvre un nouveau liÈ au fichier
 // <filename>.
 {
-    DEBUG("Appel √† DotFileWriter::Open");
+    DEBUG("Appel ‡ DotFileWriter::Open");
     Close();
     dotFile.open(filename);
     return dotFile.is_open();
 } //----- Fin de Open
 
 void DotFileWriter::Write ()
-// Algorithme : G√©n√®re le fichier DOT en listant tous les noeuds d'abord, suivis
+// Algorithme : GÈnËre le fichier DOT en listant tous les noeuds d'abord, suivis
 // de tous les liens.
 {
-    DEBUG("Appel √† DotFileWriter::Write");
+    DEBUG("Appel ‡ DotFileWriter::Write");
+    if (!dotFile.is_open() || nodes == nullptr)
+    {
+        ERROR("DOT-file not opened or graph not initialized");
+        return;
+    }
     dotFile << HEADER;
     for (unsigned int i = 0; i < numNodes; i++)
     {

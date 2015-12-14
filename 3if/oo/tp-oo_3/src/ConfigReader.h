@@ -1,7 +1,7 @@
 /*******************************************************************************
                ConfigReader - Lecteur de fichier de configuration
                               --------------------
-    d√©but                : 01/12/2015
+    dÈbut                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
@@ -9,15 +9,15 @@
 #if ! defined ( CONFIG_READER_H )
 #define CONFIG_READER_H
 
-//--------------------------------------------------------- Interfaces utilis√©es
+//--------------------------------------------------------- Interfaces utilisÈes
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 
 //------------------------------------------------------------------------------
-// R√¥le de la classe <ConfigReader>
+// RÙle de la classe <ConfigReader>
 // Lit un fichier de configuration et permet d'en extraire les associations
-// cl√©s -> valeurs. Un fichier de configuration est structur√© de la mani√®re
+// clÈs -> valeurs. Un fichier de configuration est structurÈ de la maniËre
 // suivante :
 // cle1=valeur1
 // cle2=valeur2
@@ -27,53 +27,42 @@ class ConfigReader
 {
 //----------------------------------------------------------------------- PUBLIC
 public:
-//----------------------------------------------------------- M√©thodes publiques
+//----------------------------------------------------------- MÈthodes publiques
     int GetInteger (const std::string & key, int def = 0) const;
-    // <key> : la cl√© associ√©e √† la valeur d√©sir√©e
-    // <def> : la valeur par d√©faut √† utiliser
-    // Mode d'emploi : Essaie de trouver la cl√© <key>. Si elle existe, renvoie
-    // la valeur associ√©e convertie en entier ; sinon, renvoie la valeur par
-    // d√©faut <def>.
+    // <key> : la clÈ associÈe ‡ la valeur dÈsirÈe
+    // <def> : la valeur par dÈfaut ‡ utiliser
+    // Mode d'emploi : Essaie de trouver la clÈ <key>. Si elle existe, renvoie
+    // la valeur associÈe convertie en entier ; sinon, renvoie la valeur par
+    // dÈfaut <def>.
 
     std::unordered_set<std::string> GetSet (
             const std::string & key, const std::unordered_set<std::string> & def
     ) const;
-    // <key> : la cl√© associ√©e √† la valeur d√©sir√©e
-    // <def> : la valeur par d√©faut √† utiliser
-    // Mode d'emploi : Essaie de trouver la cl√© <key>. Si elle existe, renvoie
-    // la valeur associ√©e convertie en set ; sinon, renvoie la valeur par d√©faut
+    // <key> : la clÈ associÈe ‡ la valeur dÈsirÈe
+    // <def> : la valeur par dÈfaut ‡ utiliser
+    // Mode d'emploi : Essaie de trouver la clÈ <key>. Si elle existe, renvoie
+    // la valeur associÈe convertie en set ; sinon, renvoie la valeur par dÈfaut
     // <def>.
 
     std::string GetString (const std::string & key, const std::string & def = ""
     ) const;
-    // <key> : la cl√© associ√©e √† la valeur d√©sir√©e
-    // <def> : la valeur par d√©faut √† utiliser
-    // Mode d'emploi : Essaie de trouver la cl√© <key>. Si elle existe, renvoie
-    // la valeur associ√©e ; sinon, renvoie la valeur par d√©faut <def>.
-
-//------------------------------------------------------- Surcharge d'op√©rateurs
-    ConfigReader & operator = (const ConfigReader & reader) = delete;
-    // <reader> : le lecteur √† copier
-    // Mode d'emploi : Supprim√©. La copie est interdite pour √©viter d'avoir des
-    // conflits li√©s aux flux.
+    // <key> : la clÈ associÈe ‡ la valeur dÈsirÈe
+    // <def> : la valeur par dÈfaut ‡ utiliser
+    // Mode d'emploi : Essaie de trouver la clÈ <key>. Si elle existe, renvoie
+    // la valeur associÈe ; sinon, renvoie la valeur par dÈfaut <def>.
 
 //-------------------------------------------------- Constructeurs - destructeur
     ConfigReader (const std::string & filename);
-    // <filename> : le nom du fichier de configuration √† lire
-    // Mode d'emploi : Initialise le lecteur √† partir du fichier de
-    // configuration sp√©cifi√© par <filename>.
-
-    ConfigReader (const ConfigReader & reader) = delete;
-    // <reader> : le lecteur √† copier
-    // Mode d'emploi : Supprim√©. La copie est interdite pour √©viter d'avoir des
-    // conflits li√©s aux flux.
+    // <filename> : le nom du fichier de configuration ‡ lire
+    // Mode d'emploi : Initialise le lecteur ‡ partir du fichier de
+    // configuration spÈcifiÈ par <filename>.
 
     virtual ~ConfigReader ();
-    // Mode d'emploi : D√©truit le lecteur.
+    // Mode d'emploi : DÈtruit le lecteur.
 
 //------------------------------------------------------------------------ PRIVE
 protected:
-//----------------------------------------------------------- Attributs prot√©g√©s
+//----------------------------------------------------------- Attributs protÈgÈs
     std::unordered_map<std::string, std::string> config;
 };
 

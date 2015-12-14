@@ -1,15 +1,15 @@
 /*******************************************************************************
-            HistoryManager - GÃ¨re un graphe de parcours d'un serveur
+            HistoryManager - Gère un graphe de parcours d'un serveur
                               --------------------
-    dÃ©but                : 01/12/2015
+    début                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
-// RÃ©alisation de la classe <HistoryManager> (fichier HistoryManager.cpp)
+// Réalisation de la classe <HistoryManager> (fichier HistoryManager.cpp)
 
 //---------------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------------- Include systÃ¨me
+//-------------------------------------------------------------- Include système
 #include <functional>
 #include <sstream>
 
@@ -27,7 +27,7 @@ const unsigned short VALID_STATUS_CODES[2] = {200, 399};
 
 //----------------------------------------------------------------------- PUBLIC
 
-//----------------------------------------------------------- MÃ©thodes publiques
+//----------------------------------------------------------- Méthodes publiques
 bool HistoryManager::FromFile (
         LogReader & logFile,
         const std::unordered_set<std::string> & excludedExtensions,
@@ -36,9 +36,9 @@ bool HistoryManager::FromFile (
 )
 // Algorithme : Lit le fichier de log <logFile> ligne par ligne pour extraire
 // les informations sur les documents parcourus, puis ne conserve que les
-// documents satisfaisant les critÃ¨res de filtre.
+// documents satisfaisant les critères de filtre.
 {
-    DEBUG("Appel Ã  HistoryManager::FromFile");
+    DEBUG("Appel à HistoryManager::FromFile");
     while (!logFile.Eof())
     {
         LogEntry entry;
@@ -64,11 +64,11 @@ bool HistoryManager::FromFile (
 } //----- Fin de FromFile
 
 void HistoryManager::ListDocuments (unsigned int max) const
-// Algorithme : CrÃ©e une copie triÃ©e (selon leur popularitÃ©, par ordre
-// dÃ©croissant) de la liste des documents, puis affiche au plus <max> Ã©lÃ©ments
-// de cette liste triÃ©e.
+// Algorithme : Crée une copie triée (selon leur popularité, par ordre
+// décroissant) de la liste des documents, puis affiche au plus <max> éléments
+// de cette liste triée.
 {
-    DEBUG("Appel Ã  HistoryManager::ListDocuments");
+    DEBUG("Appel à HistoryManager::ListDocuments");
     Documents sortedDocuments = documents;
     std::sort(
             sortedDocuments.begin(), sortedDocuments.end(),
@@ -88,10 +88,10 @@ void HistoryManager::ListDocuments (unsigned int max) const
 
 void HistoryManager::ToDotFile (DotFileWriter & dotFile) const
 // Algorithme : Pour chaque document dans la liste de document, ajoute un noeud
-// au DOT file, puis y ajoute tous les accÃ¨s de ce document vers les autres
+// au DOT file, puis y ajoute tous les accès de ce document vers les autres
 // documents comme des liens.
 {
-    DEBUG("Appel Ã  HistoryManager::ToDotFile");
+    DEBUG("Appel à HistoryManager::ToDotFile");
     dotFile.InitGraph(documents.size());
     for (Documents::size_type i = 0, e = documents.size(); i < e; ++i)
     {
@@ -120,16 +120,16 @@ HistoryManager::~HistoryManager()
 
 //------------------------------------------------------------------------ PRIVE
 
-//----------------------------------------------------------- MÃ©thodes protÃ©gÃ©es
+//----------------------------------------------------------- Méthodes protégées
 void HistoryManager::addEntry (const LogEntry & entry)
-// Algorithme : Essaie de trouver le document demandÃ© dans la liste de documents
-// (en le crÃ©ant s'il n'est pas trouvÃ©), puis incrÃ©mente son compteur d'accÃ¨s
-// locaux de 1. Ensuite, l'algorithme trouve le document rÃ©fÃ©rant (en le crÃ©ant
-// s'il n'est pas trouvÃ©), puis incrÃ©mente le nombre d'accÃ¨s de ce document vers
-// le document demandÃ©.
+// Algorithme : Essaie de trouver le document demandé dans la liste de documents
+// (en le créant s'il n'est pas trouvé), puis incrémente son compteur d'accès
+// locaux de 1. Ensuite, l'algorithme trouve le document référant (en le créant
+// s'il n'est pas trouvé), puis incrémente le nombre d'accès de ce document vers
+// le document demandé.
 {
-    DEBUG("Appel Ã  HistoryManager::addEntry");
-    // IncrÃ©menter le nombre d'accÃ¨s au document demandÃ©.
+    DEBUG("Appel à HistoryManager::addEntry");
+    // Incrémenter le nombre d'accès au document demandé.
     std::string requestUri = entry.GetRequestUriConverted();
     Documents::size_type requestIndex;
     auto it = documentsByName.find(requestUri);
@@ -145,7 +145,7 @@ void HistoryManager::addEntry (const LogEntry & entry)
     }
     documents[requestIndex].AddLocalHit();
 
-    // IncrÃ©menter le nombre d'accÃ¨s Ã  ce document au document rÃ©fÃ©rent.
+    // Incrémenter le nombre d'accès à ce document au document référent.
     std::string refererUri = entry.GetRefererUrlConverted(localServerUrl);
     Documents::size_type refererIndex;
     it = documentsByName.find(refererUri);

@@ -1,13 +1,13 @@
 /*******************************************************************************
-                   main - InterprÃ©teur Ã  la ligne de commande
+                   main - Interpréteur à la ligne de commande
                               --------------------
-    dÃ©but                : 01/12/2015
+    début                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
 //---------------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------------- Include systÃ¨me
+//-------------------------------------------------------------- Include système
 using namespace std;
 #include <list>
 #include <string>
@@ -22,17 +22,17 @@ using namespace std;
 #include "LogReader.h"
 
 //------------------------------------------------------------------- Constantes
-// La description du programme, affichÃ©e Ã  l'appel de --help
+// La description du programme, affichée à l'appel de --help
 const string DESCRIPTION = "Parser for Apache logs";
 
-// La version en cours du programme, affichÃ© Ã  l'appel de --version
+// La version en cours du programme, affiché à l'appel de --version
 const string VERSION = "1.0";
 
 // Le nom du fichier de configuration optionnel
 const string CONFIG_FILENAME = "tp-oo_3.cfg";
 
-// La liste des extensions de fichier Ã  exclure par dÃ©faut lorsque l'option -e
-// est spÃ©cifiÃ©e
+// La liste des extensions de fichier à exclure par défaut lorsque l'option -e
+// est spécifiée
 const unordered_set<string> DEFAULT_EXCLUDED_EXTENSIONS = {
         // Images
         "art", "bm", "bmp", "dwg", "dxf", "fig", "flo", "fpx", "g3", "gif",
@@ -47,17 +47,17 @@ const unordered_set<string> DEFAULT_EXCLUDED_EXTENSIONS = {
         "js"
 };
 
-// La racine de l'URL du serveur de base par dÃ©faut
+// La racine de l'URL du serveur de base par défaut
 const string DEFAULT_LOCAL_URL = "http://intranet-if.insa-lyon.fr";
 
-// Le nombre maximal de documents Ã  afficher par dÃ©faut
+// Le nombre maximal de documents à afficher par défaut
 const unsigned int DEFAULT_MAX_DOCUMENTS = 10;
 
 //-------------------------------------------------------------------- FONCTIONS
 int main (int argc, const char * const * argv)
-// Algorithme : Construit le lecteur d'arguments, traite l'entrÃ©e pour voir
-// quels arguments ont Ã©tÃ© passÃ©s, puis effectue toutes les opÃ©rations
-// demandÃ©es par l'utilisateur en paramÃ¨tre.
+// Algorithme : Construit le lecteur d'arguments, traite l'entrée pour voir
+// quels arguments ont été passés, puis effectue toutes les opérations
+// demandées par l'utilisateur en paramètre.
 {
     ConfigReader config(CONFIG_FILENAME);
     string dotFilename;
@@ -67,7 +67,7 @@ int main (int argc, const char * const * argv)
     unordered_set<string> excludedExtensions;
     unsigned int startHour = 0, endHour = 24;
 
-    // DÃ©sactiver la synchronization avec la bibliothÃ¨que IO de C.
+    // Désactiver la synchronization avec la bibliothèque IO de C.
     cout.sync_with_stdio(false);
 
     // Initialiser le parseur d'arguments.
@@ -80,7 +80,7 @@ int main (int argc, const char * const * argv)
     );
 
     // Configurer l'argument (optionnel) du chemin de fichier dot-file, pour
-    // la gÃ©nÃ©ration d'un graphe Graphviz.
+    // la génération d'un graphe Graphviz.
     TCLAP::ValueArg<string> dotFilenameArg(
             "g", "graphviz", "path to a Graphviz file to generate", false, "",
             "FILE", cmd
@@ -91,7 +91,7 @@ int main (int argc, const char * const * argv)
     );
 
     // Configurer l'argument (optionnel) de restriction de la plage horaire.
-    // Seules des valeurs comprises entre 0 et 23 (incluses) sont acceptÃ©es.
+    // Seules des valeurs comprises entre 0 et 23 (incluses) sont acceptées.
     vector<unsigned int> allowedHours;
     for (unsigned int i = 0; i < 24; i++)
     {
@@ -103,7 +103,7 @@ int main (int argc, const char * const * argv)
             0, &timeVals, cmd
     );
 
-    // RÃ©cupÃ©rer les valeurs des arguments Ã  la ligne de commande.
+    // Récupérer les valeurs des arguments à la ligne de commande.
     try
     {
         cmd.parse(argc, argv);
@@ -116,7 +116,7 @@ int main (int argc, const char * const * argv)
             return 1;
         }
 
-        // Essayer de lire le DOT-file, si demandÃ©.
+        // Essayer de lire le DOT-file, si demandé.
         if (dotFilenameArg.isSet())
         {
             dotFilename = dotFilenameArg.getValue();
@@ -127,7 +127,7 @@ int main (int argc, const char * const * argv)
             }
         }
 
-        // Enregistrer les extensions Ã  exclure de la lecture du log.
+        // Enregistrer les extensions à exclure de la lecture du log.
         if (excludeExtensionsArg.getValue())
         {
             excludedExtensions = config.GetSet(
@@ -135,7 +135,7 @@ int main (int argc, const char * const * argv)
             );
         }
 
-        // Restreindre la plage horaire autorisÃ©e, si demandÃ©e.
+        // Restreindre la plage horaire autorisée, si demandée.
         if (timeArg.isSet())
         {
             startHour = timeArg.getValue();
@@ -152,7 +152,7 @@ int main (int argc, const char * const * argv)
         return 1;
     }
 
-    // Peupler l'historique de documents Ã  partir du fichier log.
+    // Peupler l'historique de documents à partir du fichier log.
     HistoryManager historyMgr(config.GetString("LOCAL_URL", DEFAULT_LOCAL_URL));
     bool loaded = historyMgr.FromFile(
             logFile, excludedExtensions, startHour, endHour
@@ -164,7 +164,7 @@ int main (int argc, const char * const * argv)
         return 1;
     }
 
-    // GÃ©nÃ©rer le dot-file, si demandÃ©.
+    // Générer le dot-file, si demandé.
     if (dotFilenameArg.isSet())
     {
         historyMgr.ToDotFile(dotFile);

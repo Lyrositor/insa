@@ -1,7 +1,7 @@
 /*******************************************************************************
-                LogEntry - ReprÃ©sente une ligne du fichier de log
+                LogEntry - Représente une ligne du fichier de log
                               --------------------
-    dÃ©but                : 01/12/2015
+    début                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
@@ -9,13 +9,13 @@
 #if ! defined ( LOG_ENTRY_H )
 #define LOG_ENTRY_H
 
-//--------------------------------------------------------- Interfaces utilisÃ©es
+//--------------------------------------------------------- Interfaces utilisées
 #include <iostream>
 #include <set>
 #include <string>
 
 // Utilisation de Boost si disponible, par souci de performance ; sinon, la
-// bibliothÃ¨que regex de la STL est utilisÃ©e, par dÃ©faut.
+// bibliothèque regex de la STL est utilisée, par défaut.
 #ifdef USE_BOOST
 #include <boost/regex.hpp>
 using boost::regex;
@@ -29,8 +29,8 @@ using std::smatch;
 #endif
 
 //------------------------------------------------------------------------------
-// RÃ´le de la classe <LogEntry>
-// ReprÃ©sente une entrÃ©e dans un fichier de log Apache.
+// Rôle de la classe <LogEntry>
+// Représente une entrée dans un fichier de log Apache.
 //------------------------------------------------------------------------------
 
 class LogEntry
@@ -41,59 +41,59 @@ public:
     friend std::istream & operator >> (
             std::istream & input, LogEntry & logEntry
     );
-    // <input> : le flux d'entrÃ©e d'un fichier de log Apache
-    // <logEntry> : l'entrÃ©e de log Ã  remplir
-    // Mode d'emploi : Permet de lire des entrÃ©es de log directement Ã  partir
-    // d'un flux, en extrayant les donnÃ©es importantes d'une ligne du fichier.
+    // <input> : le flux d'entrée d'un fichier de log Apache
+    // <logEntry> : l'entrée de log à remplir
+    // Mode d'emploi : Permet de lire des entrées de log directement à partir
+    // d'un flux, en extrayant les données importantes d'une ligne du fichier.
 
-//----------------------------------------------------------- MÃ©thodes publiques
+//----------------------------------------------------------- Méthodes publiques
     unsigned short GetHour () const;
-    // Mode d'emploi : Renvoie l'heure de gÃ©nÃ©ration de l'entrÃ©e de log.
+    // Mode d'emploi : Renvoie l'heure de génération de l'entrée de log.
 
     const std::string & GetRequestMethod () const;
-    // Mode d'emploi : Renvoie la mÃ©thode HTTP de requÃªte du document.
+    // Mode d'emploi : Renvoie la méthode HTTP de requête du document.
 
     const std::string GetRequestUriConverted () const;
-    // Mode d'emploi : Renvoie l'URI du document demandÃ© par la requÃªte HTTP.
+    // Mode d'emploi : Renvoie l'URI du document demandé par la requête HTTP.
 
     const std::string GetRequestUriExtension () const;
-    // Mode d'emploi : Renvoie l'extension du document demandÃ©. Si l'extension
-    // ne peut Ãªtre dÃ©duite, renvoie une chaÃ®ne vide.
+    // Mode d'emploi : Renvoie l'extension du document demandé. Si l'extension
+    // ne peut être déduite, renvoie une chaîne vide.
 
     unsigned short GetStatusCode () const;
-    // Mode d'emploi : Renvoie le statut de la requÃªte.
+    // Mode d'emploi : Renvoie le statut de la requête.
 
     const std::string GetRefererUrlConverted (const std::string & local) const;
     // <local> : l'URL du serveur local
-    // Mode d'emploi : Renvoie l'URL du rÃ©fÃ©rant de la requÃªte. Si l'URL
-    // commence par <local>, la requÃªte vient du serveur local, et le prÃ©fixe
-    // <local> est enlevÃ© Ã  l'URL.
+    // Mode d'emploi : Renvoie l'URL du référant de la requête. Si l'URL
+    // commence par <local>, la requête vient du serveur local, et le préfixe
+    // <local> est enlevé à l'URL.
 
 //-------------------------------------------------- Constructeurs - destructeur
     LogEntry ();
-    // Mode d'emploi : Construit une nouvelle entrÃ©e vide.
+    // Mode d'emploi : Construit une nouvelle entrée vide.
 
     virtual ~LogEntry ();
-    // Mode d'emploi : DÃ©truit l'entrÃ©e.
+    // Mode d'emploi : Détruit l'entrée.
 
 //------------------------------------------------------------------------ PRIVE
 protected:
-//----------------------------------------------------------- MÃ©thodes protÃ©gÃ©es
+//----------------------------------------------------------- Méthodes protégées
     bool parseUri (const std::string & uri, smatch & match) const;
-    // <uri> : l'URI Ã  analyser
-    // <match> : le rÃ©sultat de l'examination, Ã  modifier
+    // <uri> : l'URI à analyser
+    // <match> : le résultat de l'examination, à modifier
     // Mode d'emploi : Examine une URI pour en extraire les informations
-    // intÃ©ressantes.
+    // intéressantes.
 
 protected:
-//----------------------------------------------------------- Attributs protÃ©gÃ©s
-    unsigned short hour;  // L'heure de gÃ©nÃ©ration de la requÃªte
-    std::string requestMethod;  // La mÃ©thode de requÃªte HTTP
-    std::string requestUri;  // L'URI du document demandÃ©
-    unsigned short statusCode;  // Le statut de la requÃªte
-    std::string refererUrl;  // L'URL du rÃ©fÃ©rant de la requÃªte
+//----------------------------------------------------------- Attributs protégés
+    unsigned short hour;  // L'heure de génération de la requête
+    std::string requestMethod;  // La méthode de requête HTTP
+    std::string requestUri;  // L'URI du document demandé
+    unsigned short statusCode;  // Le statut de la requête
+    std::string refererUrl;  // L'URL du référant de la requête
 
-    static const std::string EXTERNAL_DOCUMENT;  // L'Ã©tiquette spÃ©ciale pour
+    static const std::string EXTERNAL_DOCUMENT;  // L'étiquette spéciale pour
                                                  // les documents externes
     static const regex APACHE_LOG_ENTRY;  // Le regex pour une ligne du log
     static const regex REQUEST_URI;  // Le regex pour traiter une URI

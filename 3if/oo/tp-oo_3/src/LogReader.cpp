@@ -1,15 +1,15 @@
 /*******************************************************************************
                   LogReader - Lecteur de fichier de log Apache
                               --------------------
-    d√©but                : 01/12/2015
+    dÈbut                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
-// R√©alisation de la classe <LogReader> (fichier LogReader.cpp)
+// RÈalisation de la classe <LogReader> (fichier LogReader.cpp)
 
 //---------------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------------- Include syst√®me
+//-------------------------------------------------------------- Include systËme
 #include <stdexcept>
 #include <sstream>
 
@@ -20,10 +20,10 @@
 
 //----------------------------------------------------------------------- PUBLIC
 
-//----------------------------------------------------------- M√©thodes publiques
+//----------------------------------------------------------- MÈthodes publiques
 void LogReader::Close ()
 {
-    DEBUG("Appel √† LogReader::Close");
+    DEBUG("Appel ‡ LogReader::Close");
     if (logFile.is_open())
     {
         logFile.close();
@@ -32,15 +32,15 @@ void LogReader::Close ()
 
 bool LogReader::Eof () const
 {
-    DEBUG("Appel √† LogReader::Eof");
+    DEBUG("Appel ‡ LogReader::Eof");
     return logFile.eof();
 } //----- Fin de Eof
 
 bool LogReader::Open (const std::string & filename)
-// Algorithme : Ferme tout flux d√©j√† ouvert et ouvre un nouveau li√© au fichier
+// Algorithme : Ferme tout flux dÈj‡ ouvert et ouvre un nouveau liÈ au fichier
 // <filename>.
 {
-    DEBUG("Appel √† LogReader::Open");
+    DEBUG("Appel ‡ LogReader::Open");
     Close();
     currentLine = 0;
     logFile.open(filename);
@@ -49,9 +49,9 @@ bool LogReader::Open (const std::string & filename)
 
 void LogReader::ReadLine (LogEntry & entry)
 // Algorithme : Lit une seule ligne du fichier, si encore possible, puis en
-// extrait les informations int√©ressantes pour les stocker dans <entry>
+// extrait les informations intÈressantes pour les stocker dans <entry>
 {
-    DEBUG("Appel √† LogReader::ReadLine");
+    DEBUG("Appel ‡ LogReader::ReadLine");
     currentLine++;
     try
     {

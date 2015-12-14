@@ -1,0 +1,41 @@
+NOM
+       tp-oo_3 - Analyseur de logs Apache
+
+SYNOPSIS
+       tp-oo_3 [OPTION]... <FICHIER>
+
+       Options : [-eh] [-g <FICHIER>] [-t <HEURE>] [--help] [--version] [--]
+
+DESCRIPTION
+       Le programme tp-oo_3 permet d'analyser des fichiers de logs générés par
+       un serveur Apache pour en extraire des informations sur les documents du
+       serveur. Par défaut, le programme affiche les 10 documents les plus
+       populaires du serveur (c'est-à-dire les documents les plus visités).
+       L'utilisateur peut choisir de filtrer les entrées du logs selon certains
+       critères, et peut également choisir de faire générer un fichier DOT,
+       capable d'être interprété par Graphviz.
+
+OPTIONS
+       <FICHIER>
+              Un log Apache à traiter.
+
+       -e, --exclude
+              Exclut certains types de fichier (par défaut, exclut les images,
+              les feuilles de style et les scripts).
+
+       -g <FICHIER>, --graphviz <FICHIER>
+              Génère un fichier DOT à partir des documents analysés par le
+              programme.
+
+       -t <HEURE>, --time <HEURE>
+              Restreint les entrées valables à celles ayant eu lieu dans
+              l'intervalle [HEURE; HEURE+1[.
+
+       -h, --help
+              Affiche un message d'aide et arrête l'exécution.
+
+       --version
+              Affiche la version en cours du programme et arrête l'exécution.
+
+       --, --ignore_rest
+              Terminer la liste des options.

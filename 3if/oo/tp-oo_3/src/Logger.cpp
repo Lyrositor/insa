@@ -1,11 +1,11 @@
 /*******************************************************************************
-                  Logger - GÃ¨re l'affichage de messages de log
+                  Logger - Gère l'affichage de messages de log
                               --------------------
-    dÃ©but                : 01/12/2015
+    début                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
-// RÃ©alisation de la classe <Logger> (fichier Logger.cpp)
+// Réalisation de la classe <Logger> (fichier Logger.cpp)
 
 //---------------------------------------------------------------------- INCLUDE
 
@@ -17,7 +17,7 @@ const std::string Logger::P = "\033[";
 
 //----------------------------------------------------------------------- PUBLIC
 
-//----------------------------------------------------------- MÃ©thodes publiques
+//----------------------------------------------------------- Méthodes publiques
 void Logger::print (std::ostream & out)
 {
     out << std::endl;

@@ -40,7 +40,6 @@
 
 # LaTeX
 *.aux
-*.out
 *.synctex.gz
 
 # Logs

@@ -1,11 +1,11 @@
 /*******************************************************************************
-                Document - ReprÃ©sente un document sur le serveur
+                Document - Représente un document sur le serveur
                               --------------------
-    dÃ©but                : 01/12/2015
+    début                : 01/12/2015
     copyright            : (C) 2015 par B3309
 *******************************************************************************/
 
-// RÃ©alisation de la classe <Document> (fichier Document.cpp)
+// Réalisation de la classe <Document> (fichier Document.cpp)
 
 //---------------------------------------------------------------------- INCLUDE
 
@@ -15,18 +15,18 @@
 
 //----------------------------------------------------------------------- PUBLIC
 
-//----------------------------------------------------------- MÃ©thodes publiques
+//----------------------------------------------------------- Méthodes publiques
 void Document::AddLocalHit ()
 {
-    DEBUG("Appel Ã  Document::AddLocalHit");
+    DEBUG("Appel à Document::AddLocalHit");
     localHits++;
 } //----- Fin de AddLocalHit
 
 void Document::AddRemoteHit (unsigned long documentId)
-// Algorithme : CrÃ©e une case pour le document si elle n'existe pas dÃ©jÃ , puis
-// incrÃ©mente le compteur dans cette case de 1.
+// Algorithme : Crée une case pour le document si elle n'existe pas déjà, puis
+// incrémente le compteur dans cette case de 1.
 {
-    DEBUG("Appel Ã  Document::AddRemoteHit");
+    DEBUG("Appel à Document::AddRemoteHit");
     if (!remoteHits.count(documentId))
     {
         remoteHits[documentId] = 0;
@@ -36,28 +36,28 @@ void Document::AddRemoteHit (unsigned long documentId)
 
 unsigned int Document::GetLocalHits () const
 {
-    DEBUG("Appel Ã  Document::GetLocalHits");
+    DEBUG("Appel à Document::GetLocalHits");
     return localHits;
 } //----- Fin de GetLocalHits
 
 const DocumentHits & Document::GetRemoteHits () const
 {
-    DEBUG("Appel Ã  Document::GetRemoteHits");
+    DEBUG("Appel à Document::GetRemoteHits");
     return remoteHits;
 } //----- Fin de GetRemoteHits
 
 const std::string & Document::GetUri () const
 {
-    DEBUG("Appel Ã  Document::GetUri");
+    DEBUG("Appel à Document::GetUri");
     return uri;
 } //----- Fin de GetUri
 
-//------------------------------------------------------- Surcharge d'opÃ©rateurs
+//------------------------------------------------------- Surcharge d'opérateurs
 bool Document::operator > (const Document & document) const
 {
-    DEBUG("Appel Ã  Document::operator >");
+    DEBUG("Appel à Document::operator >");
     return localHits > document.localHits;
-} //----- Fin de la surcharge d'opÃ©rateur >
+} //----- Fin de la surcharge d'opérateur >
 
 //-------------------------------------------------- Constructeurs - destructeur
 Document::Document (const std::string & documentUri) :
