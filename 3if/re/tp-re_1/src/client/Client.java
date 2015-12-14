@@ -8,22 +8,26 @@ import protocol.ServerRMIInterface;
 
 public class Client implements ClientRMIInterface {
     
-    public String host;
-    public String port;
+    public int idClient = -1;
+    public ServerRMIInterface stub;
     
     public void Connect(String host, String port) throws Exception {
-        this.host = host;
-        this.port = port;
+        System.out.println("Client.Connect(" + host + " : " + port + ")");
         
-        System.out.println("Client.Connect(" + this.host + " : " + this.port + ")");
-        
-        Registry registry = LocateRegistry.getRegistry(this.host, Integer.parseInt(port));
-        ServerRMIInterface stub = (ServerRMIInterface) registry.lookup("ChatMarcArno");
+        Registry registry = LocateRegistry.getRegistry(host, Integer.parseInt(port));
+        this.stub = (ServerRMIInterface) registry.lookup("ChatMarcArno");
+        //stub.Connect(this);
+    }
+    
+    public void Disconnect() throws Exception {
+        stub.Disconnect(this.idClient);
     }
 
     @Override
     public boolean Send(String message) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        stub.Send(this.idClient, message);
+        
+        return true;
     }
 
     @Override

@@ -1,8 +1,9 @@
 package client;
 
 public class ClientGUI extends javax.swing.JFrame {
-    
+        
     public Client client;
+    public boolean isConnected = false;
 
     /**
      * Creates new form ClientGUI
@@ -30,7 +31,6 @@ public class ClientGUI extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Chat MarcArno");
@@ -53,10 +53,6 @@ public class ClientGUI extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem1);
-
-        jMenuItem2.setText("Disconnect");
-        jMenuItem2.setEnabled(false);
-        jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
 
@@ -92,8 +88,27 @@ public class ClientGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        ClientGUIConnect clientGuiConnect = new ClientGUIConnect(this, true);
-        clientGuiConnect.setVisible(true);
+        if (this.isConnected == false) {
+            ClientGUIConnect clientGuiConnect = new ClientGUIConnect(this, true);
+            clientGuiConnect.setVisible(true);
+        } else {
+            try {
+                client.Disconnect();
+                
+                this.isConnected = false;
+            } catch (Exception e) {
+                System.err.println("[Client exception]: " + e.toString());
+                e.printStackTrace();
+            }
+        }
+
+        if (this.isConnected == false) {
+            jMenuItem1.setText("Connect");
+        } else {
+            jMenuItem1.setText("Disconnect");
+        }
+        
+        jButton1.setEnabled(isConnected);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -101,7 +116,6 @@ public class ClientGUI extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;

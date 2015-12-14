@@ -126,11 +126,14 @@ public class ClientGUIConnect extends javax.swing.JDialog {
         
         try {
             parent.client.Connect(jTextField1.getText(), jTextField2.getText());
+            parent.isConnected = true;
             
             this.setVisible(false);
         } catch (Exception e) {
             System.err.println("[Client exception]: " + e.toString());
             e.printStackTrace();
+            
+            parent.isConnected = false;
             
             jLabel4.setVisible(true);
         }
