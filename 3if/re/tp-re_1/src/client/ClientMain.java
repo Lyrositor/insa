@@ -20,14 +20,9 @@ public class ClientMain {
         }
         
         Client myClient = new Client();
-        
-        ClientGUI myClientGUI = new ClientGUI(myClient);
-        myClientGUI.setVisible(true);
 
         try {
             ClientRMIInterface ref = (ClientRMIInterface) UnicastRemoteObject.exportObject(myClient, 0);
-
-            //String response = stub.sayHello();
         } catch (Exception e) {
             System.err.println("[Client exception]: " + e.toString());
             e.printStackTrace();

@@ -8,12 +8,18 @@ import protocol.ServerRMIInterface;
 
 public class Client implements ClientRMIInterface {
     
+    private final ClientGUI myClientGUI;
+    
+    public boolean isConnected = false;
     public int idClient = -1;
     public ServerRMIInterface stub;
     
-    public void Connect(String host, String port) throws Exception {
-        System.out.println("Client.Connect(" + host + " : " + port + ")");
-        
+    public Client() {
+        myClientGUI = new ClientGUI(this);
+        myClientGUI.setVisible(true);
+    }
+    
+    public void Connect(String host, String port) throws Exception {        
         Registry registry = LocateRegistry.getRegistry(host, Integer.parseInt(port));
         this.stub = (ServerRMIInterface) registry.lookup("ChatMarcArno");
         //stub.Connect(this);
@@ -23,11 +29,14 @@ public class Client implements ClientRMIInterface {
         stub.Disconnect(this.idClient);
     }
 
+    public void SendToServer(String message) throws RemoteException {
+        stub.Send(this.idClient, message);
+    }
+    
     @Override
     public boolean Send(String message) throws RemoteException {
-        stub.Send(this.idClient, message);
-        
-        return true;
+       myClientGUI.AddChatText(message);
+       return true;
     }
 
     @Override

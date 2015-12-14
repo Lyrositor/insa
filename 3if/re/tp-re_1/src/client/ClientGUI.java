@@ -3,7 +3,6 @@ package client;
 public class ClientGUI extends javax.swing.JFrame {
         
     public Client client;
-    public boolean isConnected = false;
 
     /**
      * Creates new form ClientGUI
@@ -13,6 +12,10 @@ public class ClientGUI extends javax.swing.JFrame {
         this.client = client;
         
         initComponents();
+    }
+    
+    public void AddChatText(String text) {
+        textAreaChat.setText(textAreaChat.getText() + text + "\n");
     }
 
     /**
@@ -24,39 +27,45 @@ public class ClientGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        buttonSend = new javax.swing.JButton();
+        textFieldMessage = new javax.swing.JTextField();
+        scrollPane = new javax.swing.JScrollPane();
+        textAreaChat = new javax.swing.JTextArea();
+        menuBar = new javax.swing.JMenuBar();
+        menu = new javax.swing.JMenu();
+        menuItemConnection = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Chat MarcArno");
 
-        jButton1.setText("Send");
-        jButton1.setEnabled(false);
-
-        jTextField1.setText("Message");
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jMenu1.setText("File");
-
-        jMenuItem1.setText("Connect");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        buttonSend.setText("Send");
+        buttonSend.setEnabled(false);
+        buttonSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                buttonSendActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
 
-        jMenuBar1.add(jMenu1);
+        textFieldMessage.setText("Message");
 
-        setJMenuBar(jMenuBar1);
+        textAreaChat.setEditable(false);
+        textAreaChat.setColumns(20);
+        textAreaChat.setRows(5);
+        scrollPane.setViewportView(textAreaChat);
+
+        menu.setText("File");
+
+        menuItemConnection.setText("Connect");
+        menuItemConnection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemConnectionActionPerformed(evt);
+            }
+        });
+        menu.add(menuItemConnection);
+
+        menuBar.add(menu);
+
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,60 +74,69 @@ public class ClientGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(buttonSend)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1)))
+                        .addComponent(textFieldMessage)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonSend)
+                    .addComponent(textFieldMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        if (this.isConnected == false) {
+    private void menuItemConnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConnectionActionPerformed
+        if (this.client.isConnected == false) {
             ClientGUIConnect clientGuiConnect = new ClientGUIConnect(this, true);
             clientGuiConnect.setVisible(true);
         } else {
             try {
                 client.Disconnect();
                 
-                this.isConnected = false;
+                this.client.isConnected = false;
             } catch (Exception e) {
                 System.err.println("[Client exception]: " + e.toString());
                 e.printStackTrace();
             }
         }
 
-        if (this.isConnected == false) {
-            jMenuItem1.setText("Connect");
+        if (this.client.isConnected == false) {
+            menuItemConnection.setText("Connect");
         } else {
-            jMenuItem1.setText("Disconnect");
+            menuItemConnection.setText("Disconnect");
         }
         
-        jButton1.setEnabled(isConnected);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        buttonSend.setEnabled(this.client.isConnected);
+    }//GEN-LAST:event_menuItemConnectionActionPerformed
+
+    private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
+        try {
+            this.client.SendToServer(textFieldMessage.getText());
+        } catch (Exception e) {
+            System.err.println("[Client exception]: " + e.toString());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_buttonSendActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton buttonSend;
+    private javax.swing.JMenu menu;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem menuItemConnection;
+    private javax.swing.JScrollPane scrollPane;
+    private javax.swing.JTextArea textAreaChat;
+    private javax.swing.JTextField textFieldMessage;
     // End of variables declaration//GEN-END:variables
 
 }
