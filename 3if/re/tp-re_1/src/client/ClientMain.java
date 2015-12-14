@@ -10,15 +10,32 @@ public class ClientMain {
     
     public static void main(String[] args) {
         
+        /* Nimbus */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ClientGUIConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ClientGUIConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ClientGUIConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ClientGUIConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        
         Client myClient = new Client();
+        
+        ClientGUI myClientGUI = new ClientGUI(myClient);
+        myClientGUI.setVisible(true);
 
-        String host = (args.length < 1) ? null : args[0];
         try {
             ClientRMIInterface ref = (ClientRMIInterface) UnicastRemoteObject.exportObject(myClient, 0);
-            
-            Registry registry = LocateRegistry.getRegistry(host);
-            ServerRMIInterface stub = (ServerRMIInterface) registry.lookup("ChatMarcArno");
-            
+
             //String response = stub.sayHello();
         } catch (Exception e) {
             System.err.println("[Client exception]: " + e.toString());
