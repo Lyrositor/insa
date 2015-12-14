@@ -97,32 +97,32 @@ public class ClientGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuItemConnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConnectionActionPerformed
-        if (this.client.isConnected == false) {
+        if (client.isConnected == false) {
             ClientGUIConnect clientGuiConnect = new ClientGUIConnect(this, true);
             clientGuiConnect.setVisible(true);
         } else {
             try {
                 client.Disconnect();
                 
-                this.client.isConnected = false;
+                client.isConnected = false;
             } catch (Exception e) {
                 System.err.println("[Client exception]: " + e.toString());
                 e.printStackTrace();
             }
         }
 
-        if (this.client.isConnected == false) {
+        if (client.isConnected == false) {
             menuItemConnection.setText("Connect");
         } else {
             menuItemConnection.setText("Disconnect");
         }
         
-        buttonSend.setEnabled(this.client.isConnected);
+        buttonSend.setEnabled(client.isConnected);
     }//GEN-LAST:event_menuItemConnectionActionPerformed
 
     private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
         try {
-            this.client.SendToServer(textFieldMessage.getText());
+            client.SendToServer(textFieldMessage.getText());
         } catch (Exception e) {
             System.err.println("[Client exception]: " + e.toString());
             e.printStackTrace();

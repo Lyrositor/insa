@@ -8,21 +8,21 @@ import protocol.ServerRMIInterface;
 
 public class Client implements ClientRMIInterface {
     
-    private final ClientGUI myClientGUI;
+    private final ClientGUI window;
     
     public boolean isConnected = false;
     public int idClient = -1;
     public ServerRMIInterface stub;
     
     public Client() {
-        myClientGUI = new ClientGUI(this);
-        myClientGUI.setVisible(true);
+        window = new ClientGUI(this);
+        window.setVisible(true);
     }
     
     public void Connect(String host, String port) throws Exception {        
         Registry registry = LocateRegistry.getRegistry(host, Integer.parseInt(port));
-        this.stub = (ServerRMIInterface) registry.lookup("ChatMarcArno");
-        //stub.Connect(this);
+        stub = (ServerRMIInterface) registry.lookup("ChatMarcArno");
+        stub.Connect(this);
     }
     
     public void Disconnect() throws Exception {
@@ -35,13 +35,13 @@ public class Client implements ClientRMIInterface {
     
     @Override
     public boolean Send(String message) throws RemoteException {
-       myClientGUI.AddChatText(message);
+       window.AddChatText(message);
        return true;
     }
 
     @Override
     public boolean SendCompressed(String message) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.Send(message);
     }
     
 }

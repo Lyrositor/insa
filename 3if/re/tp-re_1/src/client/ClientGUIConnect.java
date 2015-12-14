@@ -2,10 +2,12 @@ package client;
 
 public class ClientGUIConnect extends javax.swing.JDialog {
     
-    public ClientGUI parent;
+    private final ClientGUI parent;
 
     /**
      * Creates new form ClientGUIConnect
+     * @param parent
+     * @param modal
      */
     public ClientGUIConnect(ClientGUI parent, boolean modal) {
         super(parent, modal);
