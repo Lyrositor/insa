@@ -77,7 +77,6 @@ public class ClientGUI extends javax.swing.JFrame {
             }
         });
 
-        textFieldMessage.setText("Message");
         textFieldMessage.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 textFieldMessageKeyReleased(evt);
@@ -169,10 +168,12 @@ public class ClientGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_textFieldMessageKeyReleased
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        try {
-            client.Disconnect();
-        } catch (Exception e) {
-            System.err.println("[Client exception]: " + e.getMessage());
+        if(client.isConnected) {
+            try {
+                client.Disconnect();
+            } catch (Exception e) {
+                System.err.println("[Client exception]: " + e.getMessage());
+            }
         }
     }//GEN-LAST:event_formWindowClosing
 
