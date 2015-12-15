@@ -11,6 +11,7 @@ public class Client implements ClientRMIInterface {
     private final ClientGUI window;
 
     public boolean isConnected = false;
+    public String username = "UsernameTest";
     public String sessionId;
     public ServerRMIInterface stub;
 
@@ -23,7 +24,7 @@ public class Client implements ClientRMIInterface {
         Registry registry = LocateRegistry.getRegistry(host, Integer.parseInt(port));
         stub = (ServerRMIInterface) registry.lookup("ChatMarcArno");
         try {
-            this.sessionId = stub.Connect("UsernameTest", this);
+            this.sessionId = stub.Connect(username, this);
         } catch (RemoteException e) {
             // Handle invalid username
         }
@@ -38,8 +39,7 @@ public class Client implements ClientRMIInterface {
     }
 
     @Override
-    public boolean Send(String message)
-            throws RemoteException {
+    public boolean Send(String message) throws RemoteException {
        window.AddChatText(message);
        return true;
     }
