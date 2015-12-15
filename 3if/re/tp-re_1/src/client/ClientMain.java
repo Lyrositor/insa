@@ -1,6 +1,7 @@
 package client;
 
 import java.rmi.server.UnicastRemoteObject;
+import javax.swing.JOptionPane;
 import protocol.ClientRMIInterface;
 
 public class ClientMain {
@@ -19,12 +20,19 @@ public class ClientMain {
             java.util.logging.Logger.getLogger(ClientGUIConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        ClientRMI clientRMI = new ClientRMI();
-
-        try {
-            ClientRMIInterface ref = (ClientRMIInterface) UnicastRemoteObject.exportObject(clientRMI, 0);
-        } catch (Exception e) {
-            System.err.println("[Client exception]: " + e.getMessage());
+        int dialogResult = JOptionPane.showConfirmDialog(null, "RMI connection?\n(Yes = RMI  |  No = Socket)", "Question", 0);
+        if(dialogResult == JOptionPane.YES_OPTION) {
+            // RMI
+            ClientRMI clientRMI = new ClientRMI();
+            
+            try {
+                ClientRMIInterface ref = (ClientRMIInterface) UnicastRemoteObject.exportObject(clientRMI, 0);
+            } catch (Exception e) {
+                System.err.println("[Client exception]: " + e.getMessage());
+            }
+        } else {
+            // Socket
+            ClientSocket clientSocket = new ClientSocket();
         }
     }
     
