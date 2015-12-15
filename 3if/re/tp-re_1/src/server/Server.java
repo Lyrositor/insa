@@ -30,14 +30,12 @@ abstract class Server {
 
     public abstract void run() throws Exception;
 
-    protected void addMessage(String sessionId, String message) throws IOException {
-        if (!checkSession(sessionId))
+    protected void addMessage(String sessionId, String message)
+            throws IOException {
+        if (!checkSessionExists(sessionId))
             throw new RuntimeException("Invalid session ID");
-        Date now = new Date();
         String username = sessions.get(sessionId).getUsername();
-        String line =
-                dateFormatter.format(now) + " <" + username + "> " + message;
-        broadcastMessage(line);
+        broadcastMessage("<" + username + "> " + message);
     }
 
     protected String addUser(Session session) {
@@ -51,16 +49,16 @@ abstract class Server {
     }
 
     protected void removeUser(String sessionId) {
-        if (!checkSession(sessionId))
+        if (!checkSessionExists(sessionId))
             throw new RuntimeException("Invalid session ID");
         String username = sessions.get(sessionId).getUsername();
+        broadcastMessage("* " + username + " has left *");
         sessions.remove(sessionId);
         broadcastUserList();
-        broadcastMessage("* " + username + " has left *");
     }
 
     protected void renameUser(String sessionId, String newUsername) {
-        if (!checkSession(sessionId))
+        if (!checkSessionExists(sessionId))
             throw new RuntimeException("Invalid session ID");
         if (!checkUsername(newUsername))
             throw new RuntimeException("Username already in use");
@@ -74,9 +72,11 @@ abstract class Server {
     }
 
     private void broadcastMessage(String message) {
-        messages.add(message);
+        Date now = new Date();
+        String line = dateFormatter.format(now) + " " + message;
+        messages.add(line);
         try {
-            historyBufferedWriter.write(message);
+            historyBufferedWriter.write(line);
             historyBufferedWriter.newLine();
             historyBufferedWriter.flush();
         } catch (IOException e) {
@@ -86,23 +86,39 @@ abstract class Server {
             );
         }
         for (Session session : sessions.values())
-            session.sendMessage(message);
+            if (checkSessionActive(session))
+                session.sendMessage(line);
     }
 
     private void broadcastUserList() {
         String[] userList = getUserList();
         for (Session session : sessions.values())
-            session.sendUserList(userList);
+            if (checkSessionActive(session))
+                session.sendUserList(userList);
     }
 
-    private boolean checkSession(String sessionId) {
+    private boolean checkSessionActive(Session session) {
+        if (session.isActive())
+            return true;
+        sessions.values().remove(session);
+        broadcastUserList();
+        broadcastMessage(
+                "* " + session.getUsername() + " has been disconnected *"
+        );
+        return false;
+    }
+
+    private boolean checkSessionExists(String sessionId) {
         return sessions.containsKey(sessionId);
     }
 
     private boolean checkUsername(String username) {
-        for (Session value : sessions.values())
-            if ((value).getUsername().equals(username))
+        for (Session session : sessions.values()) {
+            if (!checkSessionActive(session))
+                continue;
+            if (session.getUsername().equals(username))
                 return false;
+        }
         return true;
     }
 
@@ -114,6 +130,8 @@ abstract class Server {
         String[] users = new String[sessions.size()];
         int i = 0;
         for (Session session : sessions.values()) {
+            if (!checkSessionActive(session))
+                continue;
             users[i] = session.getUsername();
             i++;
         }

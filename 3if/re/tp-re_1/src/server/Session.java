@@ -17,6 +17,8 @@ abstract class Session {
         return username;
     }
 
+    public abstract boolean isActive();
+
     public void sendMessages(LinkedList<String> messages) {
         String joinedMessage = String.join("\n", messages);
         try {

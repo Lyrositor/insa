@@ -41,6 +41,10 @@ public class Client implements ClientRMIInterface {
     }
 
     @Override
+    public void Ping() {
+    }
+
+    @Override
     public boolean Send(String message) throws RemoteException {
        window.addChatText(message);
        return true;

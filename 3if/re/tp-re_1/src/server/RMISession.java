@@ -13,6 +13,15 @@ public class RMISession extends Session {
         client = sessionClient;
     }
 
+    public boolean isActive() {
+        try {
+            client.Ping();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     public void sendMessage(String message) {
         try {
             client.Send(message);
