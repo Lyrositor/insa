@@ -38,14 +38,10 @@ public class Client implements ClientRMIInterface {
     }
 
     @Override
-    public boolean Send(String message) throws RemoteException {
+    public boolean Send(String message)
+            throws RemoteException {
        window.AddChatText(message);
        return true;
-    }
-
-    @Override
-    public boolean SendCompressed(String message) throws RemoteException {
-        return this.Send(message);
     }
 
 }

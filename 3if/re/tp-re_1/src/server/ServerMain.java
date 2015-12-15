@@ -9,12 +9,12 @@ public class ServerMain {
         Server chatServer;
 
         boolean useRMI = true;
-        if (useRMI)
-            chatServer = new RMIServer(PORT, HISTORY_FILENAME);
-        else
-            return;
 
         try {
+            if (useRMI)
+                chatServer = new RMIServer(PORT, HISTORY_FILENAME);
+            else
+                return;
             chatServer.run();
         } catch (Exception e) {
             System.err.println("[Server exception]: " + e.toString());

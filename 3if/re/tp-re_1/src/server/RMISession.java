@@ -23,10 +23,6 @@ public class RMISession extends Session {
         }
     }
 
-    public void sendMessages(String[] messages, boolean compressed) {
-
-    }
-
     public void sendUserList(String[] users) {
 
     }

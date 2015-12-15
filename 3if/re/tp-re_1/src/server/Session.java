@@ -1,5 +1,7 @@
 package server;
 
+import java.util.LinkedList;
+
 abstract class Session {
     private String username;
 
@@ -15,7 +17,16 @@ abstract class Session {
         return username;
     }
 
-    public abstract void sendMessages(String[] messages, boolean compressed);
+    public void sendMessages(LinkedList<String> messages) {
+        String joinedMessage = String.join("\n", messages);
+        try {
+            sendMessage(joinedMessage);
+        } catch (Exception e) {
+            System.err.println(
+                    "ERROR: Failed to send message (" + e.getMessage() + ")"
+            );
+        }
+    }
 
     public abstract void sendMessage(String message);
 

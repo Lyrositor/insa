@@ -3,6 +3,7 @@ package server;
 import protocol.ClientRMIInterface;
 import protocol.ServerRMIInterface;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -10,7 +11,8 @@ import java.rmi.server.UnicastRemoteObject;
 
 class RMIServer extends Server implements ServerRMIInterface {
 
-    public RMIServer(int serverPort, String historyFilename) {
+    public RMIServer(int serverPort, String historyFilename)
+            throws IOException {
         super(serverPort, historyFilename);
     }
 
@@ -31,7 +33,7 @@ class RMIServer extends Server implements ServerRMIInterface {
         RMISession session = new RMISession(username, client);
         try {
             return this.addUser(session);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             throw new RemoteException("Username already in use");
         }
     }
@@ -41,7 +43,7 @@ class RMIServer extends Server implements ServerRMIInterface {
             throws RemoteException {
         try {
             this.renameUser(sessionId, newUsername);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -52,7 +54,7 @@ class RMIServer extends Server implements ServerRMIInterface {
             throws RemoteException {
         try {
             this.addMessage(sessionId, message);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -62,7 +64,7 @@ class RMIServer extends Server implements ServerRMIInterface {
     public boolean Disconnect(String sessionId) throws RemoteException {
         try {
             this.removeUser(sessionId);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
