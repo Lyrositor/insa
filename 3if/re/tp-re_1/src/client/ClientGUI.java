@@ -1,5 +1,8 @@
 package client;
 
+import javax.swing.text.DefaultCaret;
+import protocol.Config;
+
 public class ClientGUI extends javax.swing.JFrame {
         
     public Client client;
@@ -12,11 +15,32 @@ public class ClientGUI extends javax.swing.JFrame {
         this.client = client;
         
         initComponents();
+        
+        /* Auto scroll down chat */
+        DefaultCaret caret = (DefaultCaret)textAreaChat.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     }
     
-    public void AddChatText(String text) {
+    public void addChatText(String text) {
         if(!text.isEmpty()) {
-            textAreaChat.setText(textAreaChat.getText() + text + "\n");
+            textAreaChat.setText(textAreaChat.getText() + "\n" +  text);
+        }
+    }
+    
+    private void sendMessage() {
+        try {
+            client.SendToServer(textFieldMessage.getText());
+            textFieldMessage.setText("");
+        } catch (Exception e) {
+            System.err.println("[Client exception]: " + e.getMessage());
+        }
+    }
+    
+    private void updateTitle() {
+        if(client.isConnected && !client.username.isEmpty()) {
+            this.setTitle(Config.GUI_TITLE + " - " + client.username);
+        } else {
+            this.setTitle(Config.GUI_TITLE);
         }
     }
 
@@ -39,6 +63,11 @@ public class ClientGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Chat MarcArno");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         buttonSend.setText("Send");
         buttonSend.setEnabled(false);
@@ -49,6 +78,13 @@ public class ClientGUI extends javax.swing.JFrame {
         });
 
         textFieldMessage.setText("Message");
+        textFieldMessage.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldMessageKeyReleased(evt);
+            }
+        });
+
+        scrollPane.setAutoscrolls(true);
 
         textAreaChat.setEditable(false);
         textAreaChat.setColumns(20);
@@ -108,8 +144,7 @@ public class ClientGUI extends javax.swing.JFrame {
                 
                 client.isConnected = false;
             } catch (Exception e) {
-                System.err.println("[Client exception]: " + e.toString());
-                e.printStackTrace();
+                System.err.println("[Client exception]: " + e.getMessage());
             }
         }
 
@@ -119,17 +154,27 @@ public class ClientGUI extends javax.swing.JFrame {
             menuItemConnection.setText("Disconnect");
         }
         
+        updateTitle();
         buttonSend.setEnabled(client.isConnected);
     }//GEN-LAST:event_menuItemConnectionActionPerformed
 
     private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
-        try {
-            client.SendToServer(textFieldMessage.getText());
-        } catch (Exception e) {
-            System.err.println("[Client exception]: " + e.toString());
-            e.printStackTrace();
-        }
+        sendMessage();
     }//GEN-LAST:event_buttonSendActionPerformed
+
+    private void textFieldMessageKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldMessageKeyReleased
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            sendMessage();
+        }
+    }//GEN-LAST:event_textFieldMessageKeyReleased
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try {
+            client.Disconnect();
+        } catch (Exception e) {
+            System.err.println("[Client exception]: " + e.getMessage());
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonSend;

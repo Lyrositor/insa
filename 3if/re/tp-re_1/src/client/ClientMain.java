@@ -24,8 +24,7 @@ public class ClientMain {
         try {
             ClientRMIInterface ref = (ClientRMIInterface) UnicastRemoteObject.exportObject(myClient, 0);
         } catch (Exception e) {
-            System.err.println("[Client exception]: " + e.toString());
-            e.printStackTrace();
+            System.err.println("[Client exception]: " + e.getMessage());
         }
     }
     

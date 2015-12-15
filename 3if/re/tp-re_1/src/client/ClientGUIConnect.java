@@ -1,5 +1,7 @@
 package client;
 
+import protocol.Config;
+
 public class ClientGUIConnect extends javax.swing.JDialog {
     
     private final ClientGUI parent;
@@ -151,8 +153,7 @@ public class ClientGUIConnect extends javax.swing.JDialog {
             
             this.setVisible(false);
         } catch (Exception e) {
-            System.err.println("[Client exception]: " + e.toString());
-            e.printStackTrace();
+            System.err.println("[Client exception]: " + e.getMessage());
             
             parent.client.isConnected = false;
             

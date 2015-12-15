@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import protocol.Config;
 
 class RMIServer extends Server implements ServerRMIInterface {
 
@@ -22,7 +23,7 @@ class RMIServer extends Server implements ServerRMIInterface {
 
         // Bind the remote object's stub in the registry
         Registry registry = LocateRegistry.createRegistry(port);
-        registry.bind("ChatMarcArno", stub);
+        registry.bind(Config.REGISTRY_NAME, stub);
 
         System.out.println("Server listening on port " + port);
     }
