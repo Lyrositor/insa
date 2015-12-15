@@ -37,17 +37,6 @@ abstract class Server {
         String username = sessions.get(sessionId).getUsername();
         String line =
                 dateFormatter.format(now) + " <" + username + "> " + message;
-        messages.add(line);
-        try {
-            historyBufferedWriter.write(line);
-            historyBufferedWriter.newLine();
-            historyBufferedWriter.flush();
-        } catch (IOException e) {
-            System.err.println(
-                    "ERROR: Failed to write to history file (" + e.getMessage()
-                    + ")"
-            );
-        }
         broadcastMessage(line);
     }
 
@@ -57,14 +46,17 @@ abstract class Server {
         String sessionId = registerSession(session);
         session.sendMessages(messages);
         broadcastUserList();
+        broadcastMessage("* " + session.getUsername() + " has joined *");
         return sessionId;
     }
 
     protected void removeUser(String sessionId) {
         if (!checkSession(sessionId))
             throw new RuntimeException("Invalid session ID");
+        String username = sessions.get(sessionId).getUsername();
         sessions.remove(sessionId);
         broadcastUserList();
+        broadcastMessage("* " + username + " has left *");
     }
 
     protected void renameUser(String sessionId, String newUsername) {
@@ -72,10 +64,27 @@ abstract class Server {
             throw new RuntimeException("Invalid session ID");
         if (!checkUsername(newUsername))
             throw new RuntimeException("Username already in use");
-        sessions.get(sessionId).changeUsername(newUsername);
+        Session session = sessions.get(sessionId);
+        String oldUsername = session.getUsername();
+        session.changeUsername(newUsername);
+        broadcastUserList();
+        broadcastMessage(
+                "* " + oldUsername + " is now known as " + newUsername + " *"
+        );
     }
 
     private void broadcastMessage(String message) {
+        messages.add(message);
+        try {
+            historyBufferedWriter.write(message);
+            historyBufferedWriter.newLine();
+            historyBufferedWriter.flush();
+        } catch (IOException e) {
+            System.err.println(
+                    "ERROR: Failed to write to history file (" + e.getMessage()
+                            + ")"
+            );
+        }
         for (Session session : sessions.values())
             session.sendMessage(message);
     }
