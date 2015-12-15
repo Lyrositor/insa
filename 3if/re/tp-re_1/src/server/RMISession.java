@@ -33,7 +33,13 @@ public class RMISession extends Session {
     }
 
     public void sendUserList(String[] users) {
-
+        try {
+            client.SendListUser(users);
+        } catch (Exception e) {
+            System.err.println(
+                    "ERROR: Failed to send list user (" + e.getMessage() + ")"
+            );
+        }
     }
 
 }

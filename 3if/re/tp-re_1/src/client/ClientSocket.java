@@ -33,6 +33,7 @@ public class ClientSocket extends Client implements Runnable {
 
     @Override
     void SendToServer(String message) throws Exception {
+        String[] elements = message.split(" ");
         socketOut.println("SENDTO all CONTENT " + message + "\n");
     }
 
@@ -60,8 +61,8 @@ public class ClientSocket extends Client implements Runnable {
                 window.addChatText("server > all : " + elements[1] + "signed out...\n");
                 break;
 
-            case "MESSAGE":
-                window.addChatText(elements[2] + " > " + elements[4] + " : " + elements[6] + "\n");
+            case "MSG":
+                window.addChatText(elements[1] + "\n");
                 break;
 
             default:
@@ -69,5 +70,5 @@ public class ClientSocket extends Client implements Runnable {
                 break;
         }
     }
-
+    
 }

@@ -5,7 +5,9 @@ import java.rmi.RemoteException;
 
 public interface ClientRMIInterface extends Remote {
 
-    boolean Send(String message) throws RemoteException;
+    void Send(String message) throws RemoteException;
 
     void Ping() throws RemoteException;
+    
+    void SendListUser(String[] users) throws RemoteException;
 }

@@ -19,6 +19,8 @@ public class ClientGUI extends javax.swing.JFrame {
         
         initComponents();
         
+        updateUsername();
+        
         /* Auto scroll down chat */
         DefaultCaret caret = (DefaultCaret)textAreaChat.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
@@ -46,12 +48,13 @@ public class ClientGUI extends javax.swing.JFrame {
         }
     }
     
-    private void updateTitle() {
+    private void updateUsername() {
         if(client.isConnected && !client.username.isEmpty()) {
             this.setTitle(GUI_TITLE + " - " + client.username);
         } else {
             this.setTitle(GUI_TITLE);
         }
+        labelUsername.setText(client.username);
     }
 
     /**
@@ -65,8 +68,11 @@ public class ClientGUI extends javax.swing.JFrame {
 
         buttonSend = new javax.swing.JButton();
         textFieldMessage = new javax.swing.JTextField();
-        scrollPane = new javax.swing.JScrollPane();
+        scrollPaneChat = new javax.swing.JScrollPane();
         textAreaChat = new javax.swing.JTextArea();
+        labelUsername = new javax.swing.JLabel();
+        scrollPaneListUser = new javax.swing.JScrollPane();
+        listUser = new javax.swing.JList();
         menuBar = new javax.swing.JMenuBar();
         menu = new javax.swing.JMenu();
         menuItemConnection = new javax.swing.JMenuItem();
@@ -93,12 +99,17 @@ public class ClientGUI extends javax.swing.JFrame {
             }
         });
 
-        scrollPane.setAutoscrolls(true);
+        scrollPaneChat.setAutoscrolls(true);
 
         textAreaChat.setEditable(false);
         textAreaChat.setColumns(20);
         textAreaChat.setRows(5);
-        scrollPane.setViewportView(textAreaChat);
+        scrollPaneChat.setViewportView(textAreaChat);
+
+        labelUsername.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelUsername.setText("-");
+
+        scrollPaneListUser.setViewportView(listUser);
 
         menu.setText("File");
 
@@ -121,22 +132,32 @@ public class ClientGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(buttonSend)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textFieldMessage)))
+                        .addComponent(textFieldMessage))
+                    .addComponent(scrollPaneChat, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollPaneListUser, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                    .addComponent(labelUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonSend)
-                    .addComponent(textFieldMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelUsername)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scrollPaneListUser))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(scrollPaneChat, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textFieldMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -167,7 +188,7 @@ public class ClientGUI extends javax.swing.JFrame {
             menuItemConnection.setText("Disconnect");
         }
         
-        updateTitle();
+        updateUsername();
         buttonSend.setEnabled(client.isConnected);
     }//GEN-LAST:event_menuItemConnectionActionPerformed
 
@@ -205,10 +226,13 @@ public class ClientGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonSend;
+    private javax.swing.JLabel labelUsername;
+    public javax.swing.JList listUser;
     private javax.swing.JMenu menu;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuItemConnection;
-    private javax.swing.JScrollPane scrollPane;
+    private javax.swing.JScrollPane scrollPaneChat;
+    private javax.swing.JScrollPane scrollPaneListUser;
     public javax.swing.JTextArea textAreaChat;
     private javax.swing.JTextField textFieldMessage;
     // End of variables declaration//GEN-END:variables
