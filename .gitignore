@@ -28,6 +28,7 @@
 
 # IDE
 **/.idea/
+**/out/    
 *.iml
 
 # MSVC
@@ -41,6 +42,7 @@
 # LaTeX
 *.aux
 *.synctex.gz
+
 
 # Logs
 *.log
