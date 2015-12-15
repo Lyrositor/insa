@@ -1,12 +1,15 @@
 package client;
 
 import javax.swing.text.DefaultCaret;
-import protocol.Config;
 
 public class ClientGUI extends javax.swing.JFrame {
-        
+    
+    /* Config */
+    private final String GUI_TITLE = "Chat MarcArno";
+    /* --- */
+    
     public Client client;
-
+    
     /**
      * Creates new form ClientGUI
      * @param client
@@ -21,12 +24,19 @@ public class ClientGUI extends javax.swing.JFrame {
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     }
     
+    /**
+     * 
+     * @param text 
+     */
     public void addChatText(String text) {
         if(!text.isEmpty()) {
             textAreaChat.setText(textAreaChat.getText() + "\n" +  text);
         }
     }
     
+    /**
+     * 
+     */
     private void sendMessage() {
         try {
             client.SendToServer(textFieldMessage.getText());
@@ -38,9 +48,9 @@ public class ClientGUI extends javax.swing.JFrame {
     
     private void updateTitle() {
         if(client.isConnected && !client.username.isEmpty()) {
-            this.setTitle(Config.GUI_TITLE + " - " + client.username);
+            this.setTitle(GUI_TITLE + " - " + client.username);
         } else {
-            this.setTitle(Config.GUI_TITLE);
+            this.setTitle(GUI_TITLE);
         }
     }
 
@@ -133,6 +143,10 @@ public class ClientGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * 
+     * @param evt 
+     */
     private void menuItemConnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConnectionActionPerformed
         if (client.isConnected == false) {
             ClientGUIConnect clientGuiConnect = new ClientGUIConnect(this, true);
@@ -157,16 +171,28 @@ public class ClientGUI extends javax.swing.JFrame {
         buttonSend.setEnabled(client.isConnected);
     }//GEN-LAST:event_menuItemConnectionActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
         sendMessage();
     }//GEN-LAST:event_buttonSendActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void textFieldMessageKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldMessageKeyReleased
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
             sendMessage();
         }
     }//GEN-LAST:event_textFieldMessageKeyReleased
 
+    /**
+     * 
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         if(client.isConnected) {
             try {

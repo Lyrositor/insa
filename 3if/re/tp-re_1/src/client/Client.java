@@ -1,18 +1,19 @@
 package client;
 
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import protocol.ClientRMIInterface;
-import protocol.Config;
 import protocol.ServerRMIInterface;
 
-public class Client implements ClientRMIInterface {
+abstract class Client implements ClientRMIInterface {
 
-    private final ClientGUI window;
-
+    /* Config */
+    private final String DEFAULT_USERNAME = "UsernameTest";
+    /* --- */
+    
+    protected ClientGUI window;
+    
     public boolean isConnected = false;
-    public String username = Config.DEFAULT_USERNAME;
+    public String username = DEFAULT_USERNAME;
     public String sessionId;
     public ServerRMIInterface stub;
 
@@ -21,24 +22,11 @@ public class Client implements ClientRMIInterface {
         window.setVisible(true);
     }
 
-    public void Connect(String host, String port) throws Exception {
-        Registry registry = LocateRegistry.getRegistry(host, Integer.parseInt(port));
-        stub = (ServerRMIInterface) registry.lookup(Config.REGISTRY_NAME);
-        try {
-            window.textAreaChat.setText("");
-            sessionId = stub.Connect(username, this);
-        } catch (RemoteException e) {
-            // Handle invalid username
-        }
-    }
+    abstract void Connect(String host, String port) throws Exception;
 
-    public void Disconnect() throws Exception {
-        stub.Disconnect(this.sessionId);
-    }
+    abstract void Disconnect() throws Exception;
 
-    public void SendToServer(String message) throws RemoteException {
-        stub.Send(this.sessionId, message);
-    }
+    abstract void SendToServer(String message) throws Exception;
 
     @Override
     public void Ping() {

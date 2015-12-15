@@ -1,7 +1,5 @@
 package client;
 
-import protocol.Config;
-
 public class ClientGUIConnect extends javax.swing.JDialog {
     
     private final ClientGUI parent;
@@ -142,6 +140,10 @@ public class ClientGUIConnect extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * 
+     * @param evt 
+     */
     private void buttonConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConnectActionPerformed
         labelErrorConnection.setVisible(false);
         
@@ -161,6 +163,10 @@ public class ClientGUIConnect extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_buttonConnectActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_buttonCancelActionPerformed

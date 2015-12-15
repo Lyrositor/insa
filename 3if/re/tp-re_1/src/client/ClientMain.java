@@ -19,10 +19,10 @@ public class ClientMain {
             java.util.logging.Logger.getLogger(ClientGUIConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        Client myClient = new Client();
+        ClientRMI clientRMI = new ClientRMI();
 
         try {
-            ClientRMIInterface ref = (ClientRMIInterface) UnicastRemoteObject.exportObject(myClient, 0);
+            ClientRMIInterface ref = (ClientRMIInterface) UnicastRemoteObject.exportObject(clientRMI, 0);
         } catch (Exception e) {
             System.err.println("[Client exception]: " + e.getMessage());
         }
