@@ -24,7 +24,8 @@ public class Client implements ClientRMIInterface {
         Registry registry = LocateRegistry.getRegistry(host, Integer.parseInt(port));
         stub = (ServerRMIInterface) registry.lookup("ChatMarcArno");
         try {
-            this.sessionId = stub.Connect(username, this);
+            window.textAreaChat.setText("");
+            sessionId = stub.Connect(username, this);
         } catch (RemoteException e) {
             // Handle invalid username
         }

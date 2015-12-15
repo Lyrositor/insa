@@ -15,7 +15,9 @@ public class ClientGUI extends javax.swing.JFrame {
     }
     
     public void AddChatText(String text) {
-        textAreaChat.setText(textAreaChat.getText() + text + "\n");
+        if(!text.isEmpty()) {
+            textAreaChat.setText(textAreaChat.getText() + text + "\n");
+        }
     }
 
     /**
@@ -135,7 +137,7 @@ public class ClientGUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuItemConnection;
     private javax.swing.JScrollPane scrollPane;
-    private javax.swing.JTextArea textAreaChat;
+    public javax.swing.JTextArea textAreaChat;
     private javax.swing.JTextField textFieldMessage;
     // End of variables declaration//GEN-END:variables
 
