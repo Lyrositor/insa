@@ -1,55 +1,59 @@
 package client;
 
+import javax.swing.DefaultListModel;
 import javax.swing.text.DefaultCaret;
 
 public class ClientGUI extends javax.swing.JFrame {
-    
+
     /* Config */
     private final String GUI_TITLE = "Chat MarcArno";
     /* --- */
-    
+
     public Client client;
-    
+
     /**
      * Creates new form ClientGUI
+     *
      * @param client
      */
     public ClientGUI(Client client) {
         this.client = client;
-        
+
         initComponents();
-        
+
         updateUsername();
-        
+
         /* Auto scroll down chat */
-        DefaultCaret caret = (DefaultCaret)textAreaChat.getCaret();
+        DefaultCaret caret = (DefaultCaret) textAreaChat.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     }
-    
+
     /**
-     * 
-     * @param text 
+     *
+     * @param text
      */
     public void addChatText(String text) {
-        if(!text.isEmpty()) {
-            textAreaChat.setText(textAreaChat.getText() + "\n" +  text);
+        if (!text.isEmpty()) {
+            textAreaChat.setText(textAreaChat.getText() + "\n" + text);
         }
     }
-    
+
     /**
-     * 
+     *
      */
     private void sendMessage() {
-        try {
-            client.SendToServer(textFieldMessage.getText());
-            textFieldMessage.setText("");
-        } catch (Exception e) {
-            System.err.println("[Client exception]: " + e.getMessage());
+        if (client.isConnected) {
+            try {
+                client.SendToServer(textFieldMessage.getText());
+                textFieldMessage.setText("");
+            } catch (Exception e) {
+                System.err.println("[Client exception]: " + e.getMessage());
+            }
         }
     }
-    
+
     private void updateUsername() {
-        if(client.isConnected && !client.username.isEmpty()) {
+        if (client.isConnected && !client.username.isEmpty()) {
             this.setTitle(GUI_TITLE + " - " + client.username);
         } else {
             this.setTitle(GUI_TITLE);
@@ -156,8 +160,8 @@ public class ClientGUI extends javax.swing.JFrame {
                         .addComponent(scrollPaneChat, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(buttonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textFieldMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(buttonSend)
+                            .addComponent(textFieldMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -165,8 +169,8 @@ public class ClientGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void menuItemConnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConnectionActionPerformed
         if (client.isConnected == false) {
@@ -175,7 +179,7 @@ public class ClientGUI extends javax.swing.JFrame {
         } else {
             try {
                 client.Disconnect();
-                
+
                 client.isConnected = false;
             } catch (Exception e) {
                 System.err.println("[Client exception]: " + e.getMessage());
@@ -184,25 +188,26 @@ public class ClientGUI extends javax.swing.JFrame {
 
         if (client.isConnected == false) {
             menuItemConnection.setText("Connect");
+            listUser.setModel(new DefaultListModel());
         } else {
             menuItemConnection.setText("Disconnect");
         }
-        
+
         updateUsername();
         buttonSend.setEnabled(client.isConnected);
     }//GEN-LAST:event_menuItemConnectionActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
         sendMessage();
     }//GEN-LAST:event_buttonSendActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void textFieldMessageKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldMessageKeyReleased
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
@@ -211,11 +216,11 @@ public class ClientGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_textFieldMessageKeyReleased
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if(client.isConnected) {
+        if (client.isConnected) {
             try {
                 client.Disconnect();
             } catch (Exception e) {
