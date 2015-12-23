@@ -6,7 +6,7 @@ import javax.swing.text.DefaultCaret;
 public class ClientGUI extends javax.swing.JFrame {
 
     /* Config */
-    private final String GUI_TITLE = "Chat MarcArno";
+    private final String GUI_TITLE = "MarnoChat";
     /* --- */
 
     public Client client;
@@ -14,10 +14,10 @@ public class ClientGUI extends javax.swing.JFrame {
     /**
      * Creates new form ClientGUI
      *
-     * @param client
+     * @param chatClient
      */
-    public ClientGUI(Client client) {
-        this.client = client;
+    public ClientGUI(Client chatClient) {
+        this.client = chatClient;
 
         initComponents();
 

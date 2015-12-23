@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
-public class ClientSocket extends Client implements Runnable {
+public class SocketClient extends Client implements Runnable {
 
     Socket socketServer = null;
     PrintStream socketOut = null;
@@ -18,14 +18,14 @@ public class ClientSocket extends Client implements Runnable {
         socketIn = new BufferedReader(new InputStreamReader(socketServer.getInputStream()));
         socketOut = new PrintStream(socketServer.getOutputStream());
 
-        socketOut.println("CONNECT " + username + "\n");
+        socketOut.println("CONNECT " + username);
 
         this.run();
     }
 
     @Override
     void Disconnect() throws Exception {
-        socketOut.println("QUIT\n");
+        socketOut.println("DISCONNECT\n");
         socketOut.close();
         socketIn.close();
         socketServer.close();
@@ -33,15 +33,14 @@ public class ClientSocket extends Client implements Runnable {
 
     @Override
     void SendToServer(String message) throws Exception {
-        String[] elements = message.split(" ");
-        socketOut.println("SENDTO all CONTENT " + message + "\n");
+        socketOut.println("MSG " + message + "\n");
     }
 
     @Override
     public void run() {
         String line;
         try {
-            // !Thread.currentThread().isInterrupted() && 
+            // !Thread.currentThread().isInterrupted() &&
             while ((line = socketIn.readLine()) != null) {
                 handleMessage(line);
             }
@@ -53,16 +52,21 @@ public class ClientSocket extends Client implements Runnable {
     private void handleMessage(String line) {
         String[] elements = line.split(" ");
         switch (elements[0]) {
-            case "SIGNIN":
-                window.addChatText("server > all : " + elements[1] + "signed in...\n");
-                break;
-
-            case "SIGNOUT":
-                window.addChatText("server > all : " + elements[1] + "signed out...\n");
+            case "HISTORY":
+                // Handle history
+                // Format : HISTORY <num> <len1> <msg1> <len2> <msg2> ...
                 break;
 
             case "MSG":
                 window.addChatText(elements[1] + "\n");
+                break;
+
+            case "PRIVATE":
+                // Handle private message
+                break;
+
+            case "USERS":
+                // Handle user list
                 break;
 
             default:
@@ -70,5 +74,5 @@ public class ClientSocket extends Client implements Runnable {
                 break;
         }
     }
-    
+
 }

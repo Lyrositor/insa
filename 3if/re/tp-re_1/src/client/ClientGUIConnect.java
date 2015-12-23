@@ -1,7 +1,7 @@
 package client;
 
 public class ClientGUIConnect extends javax.swing.JDialog {
-    
+
     private final ClientGUI parent;
 
     /**
@@ -11,11 +11,11 @@ public class ClientGUIConnect extends javax.swing.JDialog {
      */
     public ClientGUIConnect(ClientGUI parent, boolean modal) {
         super(parent, modal);
-        
+
         this.parent = parent;
-        
+
         initComponents();
-        
+
         textFieldUsername.setText(parent.client.username);
         labelErrorConnection.setVisible(false);
     }
@@ -41,7 +41,7 @@ public class ClientGUIConnect extends javax.swing.JDialog {
         labelErrorConnection = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Connect");
+        setTitle("connect");
         setResizable(false);
 
         buttonCancel.setText("Cancel");
@@ -51,7 +51,7 @@ public class ClientGUIConnect extends javax.swing.JDialog {
             }
         });
 
-        buttonConnect.setText("Connect");
+        buttonConnect.setText("connect");
         buttonConnect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonConnectActionPerformed(evt);
@@ -60,7 +60,7 @@ public class ClientGUIConnect extends javax.swing.JDialog {
 
         labelTitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelTitle.setText("Connect");
+        labelTitle.setText("connect");
 
         labelUsername.setText("Username:");
 
@@ -141,31 +141,31 @@ public class ClientGUIConnect extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void buttonConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConnectActionPerformed
         labelErrorConnection.setVisible(false);
-        
+
         parent.client.username = textFieldUsername.getText();
-        
+
         try {
             parent.client.Connect(textFieldHost.getText(), textFieldPort.getText());
             parent.client.isConnected = true;
-            
+
             this.setVisible(false);
         } catch (Exception e) {
             System.err.println("[Client exception]: " + e.getMessage());
-            
+
             parent.client.isConnected = false;
-            
+
             labelErrorConnection.setVisible(true);
         }
     }//GEN-LAST:event_buttonConnectActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         this.setVisible(false);

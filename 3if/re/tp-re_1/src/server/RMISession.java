@@ -1,13 +1,15 @@
 package server;
 
-import protocol.ClientRMIInterface;
+import protocol.RMIClientInterface;
 
-public class RMISession extends Session {
+import java.util.LinkedList;
 
-    private ClientRMIInterface client;
+class RMISession extends Session {
+
+    private final RMIClientInterface client;
 
     public RMISession(
-            String sessionUsername, ClientRMIInterface sessionClient
+            String sessionUsername, RMIClientInterface sessionClient
     ) {
         super(sessionUsername);
         client = sessionClient;
@@ -15,16 +17,20 @@ public class RMISession extends Session {
 
     public boolean isActive() {
         try {
-            client.Ping();
+            client.ping();
         } catch (Exception e) {
             return false;
         }
         return true;
     }
 
+    public void sendHistory(LinkedList<String> messages) {
+
+    }
+
     public void sendMessage(String message) {
         try {
-            client.Send(message);
+            client.send(message);
         } catch (Exception e) {
             System.err.println(
                     "ERROR: Failed to send message (" + e.getMessage() + ")"
@@ -32,9 +38,13 @@ public class RMISession extends Session {
         }
     }
 
+    public void sendPrivateMessage(String username, String message) {
+
+    }
+
     public void sendUserList(String[] users) {
         try {
-            client.SendListUser(users);
+            client.sendUserList(users);
         } catch (Exception e) {
             System.err.println(
                     "ERROR: Failed to send list user (" + e.getMessage() + ")"

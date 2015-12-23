@@ -3,6 +3,7 @@ package server;
 import java.util.LinkedList;
 
 abstract class Session {
+
     private String username;
 
     public Session(String sessionUsername) {
@@ -19,18 +20,12 @@ abstract class Session {
 
     public abstract boolean isActive();
 
-    public void sendMessages(LinkedList<String> messages) {
-        String joinedMessage = String.join("\n", messages);
-        try {
-            sendMessage(joinedMessage);
-        } catch (Exception e) {
-            System.err.println(
-                    "ERROR: Failed to send message (" + e.getMessage() + ")"
-            );
-        }
-    }
+    public abstract void sendHistory(LinkedList<String> messages);
 
     public abstract void sendMessage(String message);
 
+    public abstract void sendPrivateMessage(String username, String message);
+
     public abstract void sendUserList(String[] users);
+
 }

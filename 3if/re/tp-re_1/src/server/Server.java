@@ -5,19 +5,26 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
+
+import server.exceptions.*;
 
 abstract class Server {
 
-    final static private String dateFormat = "[HH:mm:ss]";
+    final static private String DATE_FORMAT = "[HH:mm:ss]";
+    final static private Pattern USERNAME_PATTERN = Pattern.compile(
+            "^[a-zA-Z0-9_\\-]{3,32}$"
+    );
 
-    protected int port;
+    protected final int port;
 
     private BufferedWriter historyBufferedWriter;
-    private LinkedList<String> messages = new LinkedList<>();
-    private HashMap<String, Session> sessions = new HashMap<>();
 
-    private SecureRandom random = new SecureRandom();
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
+    private final LinkedList<String> messages = new LinkedList<>();
+    private final HashMap<String, Session> sessions = new HashMap<>();
+    private final SecureRandom random = new SecureRandom();
+    private final SimpleDateFormat dateFormatter =
+            new SimpleDateFormat(DATE_FORMAT);
 
     public Server(int serverPort, String historyFilename) throws IOException {
         super();
@@ -31,37 +38,53 @@ abstract class Server {
     public abstract void run() throws Exception;
 
     protected void addMessage(String sessionId, String message)
-            throws IOException {
+            throws InvalidSessionException {
         if (!checkSessionExists(sessionId))
-            throw new RuntimeException("Invalid session ID");
+            throw new InvalidSessionException();
         String username = sessions.get(sessionId).getUsername();
         broadcastMessage("<" + username + "> " + message);
     }
 
-    protected String addUser(Session session) {
-        if (!checkUsername(session.getUsername()))
-            throw new RuntimeException("Username already in use");
+    protected void addPrivateMessage(
+            String sessionId, String destUsername, String message)
+            throws InvalidSessionException, UserNotFoundException {
+        if (!checkSessionExists(sessionId))
+            throw new InvalidSessionException();
+        Session srcSession = sessions.get(sessionId);
+        Session destSession = getSessionByUsername(destUsername);
+        if (checkSessionActive(destSession))
+            destSession.sendPrivateMessage(srcSession.getUsername(), message);
+        else
+            throw new UserNotFoundException();
+    }
+
+    protected String addUser(Session session)
+            throws InvalidUsernameException {
+        if (!isUsernameAvailable(session.getUsername()))
+            throw new InvalidUsernameException();
         String sessionId = registerSession(session);
-        session.sendMessages(messages);
+        session.sendHistory(messages);
         broadcastUserList();
         broadcastMessage("* " + session.getUsername() + " has joined *");
         return sessionId;
     }
 
-    protected void removeUser(String sessionId) {
+    protected void removeUser(String sessionId)
+            throws InvalidSessionException {
         if (!checkSessionExists(sessionId))
-            throw new RuntimeException("Invalid session ID");
+            throw new InvalidSessionException();
         String username = sessions.get(sessionId).getUsername();
         broadcastMessage("* " + username + " has left *");
         sessions.remove(sessionId);
         broadcastUserList();
     }
 
-    protected void renameUser(String sessionId, String newUsername) {
+    protected void renameUser(String sessionId, String newUsername)
+            throws InvalidSessionException, InvalidUsernameException {
         if (!checkSessionExists(sessionId))
-            throw new RuntimeException("Invalid session ID");
-        if (!checkUsername(newUsername))
-            throw new RuntimeException("Username already in use");
+            throw new InvalidSessionException();
+        if (!isUsernameAvailable(newUsername))
+            throw new InvalidUsernameException();
         Session session = sessions.get(sessionId);
         String oldUsername = session.getUsername();
         session.changeUsername(newUsername);
@@ -98,13 +121,15 @@ abstract class Server {
     }
 
     private boolean checkSessionActive(Session session) {
-        if (session.isActive())
-            return true;
-        sessions.values().remove(session);
-        broadcastUserList();
-        broadcastMessage(
-                "* " + session.getUsername() + " has been disconnected *"
-        );
+        if (session != null) {
+            if (session.isActive())
+                return true;
+            sessions.values().remove(session);
+            broadcastUserList();
+            broadcastMessage(
+                    "* " + session.getUsername() + " has been disconnected *"
+            );
+        }
         return false;
     }
 
@@ -112,18 +137,26 @@ abstract class Server {
         return sessions.containsKey(sessionId);
     }
 
-    private boolean checkUsername(String username) {
+    private Session findSession(String username) {
         for (Session session : sessions.values()) {
             if (!checkSessionActive(session))
                 continue;
             if (session.getUsername().equals(username))
-                return false;
+                return session;
         }
-        return true;
+        return null;
     }
 
     private String getNextSessionId() {
         return new BigInteger(130, random).toString(32);
+    }
+
+    private Session getSessionByUsername(String username) {
+        for (Session session : sessions.values()) {
+            if (session.getUsername().equals(username))
+                return session;
+        }
+        return null;
     }
 
     private String[] getUserList() {
@@ -136,6 +169,10 @@ abstract class Server {
             i++;
         }
         return users;
+    }
+
+    private boolean isUsernameAvailable(String username) {
+        return isUsernameValid(username) && findSession(username) == null;
     }
 
     private void loadMessageHistory(File historyFile) throws IOException {
@@ -155,5 +192,9 @@ abstract class Server {
         String sessionId = getNextSessionId();
         sessions.put(sessionId, session);
         return sessionId;
+    }
+
+    private static boolean isUsernameValid(String username) {
+        return USERNAME_PATTERN.matcher(username).find();
     }
 }

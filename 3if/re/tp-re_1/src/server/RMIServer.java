@@ -1,16 +1,18 @@
 package server;
 
-import protocol.ClientRMIInterface;
-import protocol.ServerRMIInterface;
-
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import protocol.Config;
 
-class RMIServer extends Server implements ServerRMIInterface {
+import protocol.RMIConfig;
+import protocol.RMIClientInterface;
+import protocol.MarnoProtocol;
+import protocol.RMIServerInterface;
+import server.exceptions.ServerException;
+
+class RMIServer extends Server implements RMIServerInterface {
 
     public RMIServer(int serverPort, String historyFilename)
             throws IOException {
@@ -18,57 +20,58 @@ class RMIServer extends Server implements ServerRMIInterface {
     }
 
     public void run() throws Exception {
-        ServerRMIInterface stub =
-                (ServerRMIInterface) UnicastRemoteObject.exportObject(this, 0);
+        RMIServerInterface stub =
+                (RMIServerInterface) UnicastRemoteObject.exportObject(this, 0);
 
         // Bind the remote object's stub in the registry
         Registry registry = LocateRegistry.createRegistry(port);
-        registry.bind(Config.REGISTRY_NAME, stub);
+        registry.bind(RMIConfig.REGISTRY_NAME, stub);
 
         System.out.println("Server listening on port " + port);
     }
 
     @Override
-    public String Connect(String username, ClientRMIInterface client)
+    public String connect(String username, RMIClientInterface client)
             throws RemoteException {
         RMISession session = new RMISession(username, client);
         try {
-            return this.addUser(session);
-        } catch (Exception e) {
-            throw new RemoteException("Username already in use");
+            return addUser(session);
+        } catch (ServerException e) {
+            throw new RemoteException(
+                    MarnoProtocol.ERROR_MESSAGES[e.getCode()], e);
         }
     }
 
     @Override
-    public boolean Rename(String sessionId, String newUsername)
+    public void rename(String sessionId, String newUsername)
             throws RemoteException {
         try {
-            this.renameUser(sessionId, newUsername);
-        } catch (Exception e) {
-            return false;
+            renameUser(sessionId, newUsername);
+        } catch (ServerException e) {
+            throw new RemoteException(
+                    MarnoProtocol.ERROR_MESSAGES[e.getCode()], e);
         }
-        return true;
     }
 
     @Override
-    public boolean Send(String sessionId, String message)
+    public void send(String sessionId, String message)
             throws RemoteException {
         try {
-            this.addMessage(sessionId, message);
-        } catch (Exception e) {
-            return false;
+            addMessage(sessionId, message);
+        } catch (ServerException e) {
+            throw new RemoteException(
+                    MarnoProtocol.ERROR_MESSAGES[e.getCode()], e);
         }
-        return true;
     }
 
     @Override
-    public boolean Disconnect(String sessionId) throws RemoteException {
+    public void disconnect(String sessionId) throws RemoteException {
         try {
-            this.removeUser(sessionId);
-        } catch (Exception e) {
-            return false;
+            removeUser(sessionId);
+        } catch (ServerException e) {
+            throw new RemoteException(
+                    MarnoProtocol.ERROR_MESSAGES[e.getCode()], e);
         }
-        return true;
     }
 
 }
