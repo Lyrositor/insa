@@ -7,9 +7,10 @@ import java.net.Socket;
 
 public class SocketClient extends Client implements Runnable {
 
-    Socket socketServer = null;
-    PrintStream socketOut = null;
-    BufferedReader socketIn = null;
+    private Socket socketServer = null;
+    private PrintStream socketOut = null;
+    private BufferedReader socketIn = null;
+    private Thread thread = null;
 
     @Override
     void Connect(String host, String port) throws Exception {
@@ -20,7 +21,8 @@ public class SocketClient extends Client implements Runnable {
 
         socketOut.println("CONNECT " + username);
 
-        this.run();
+        thread = new Thread(this);
+        thread.start();
     }
 
     @Override
@@ -50,7 +52,7 @@ public class SocketClient extends Client implements Runnable {
     }
 
     private void handleMessage(String line) {
-        String[] elements = line.split(" ");
+        String[] elements = line.split(" ", 2);
         switch (elements[0]) {
             case "HISTORY":
                 // Handle history
@@ -58,7 +60,7 @@ public class SocketClient extends Client implements Runnable {
                 break;
 
             case "MSG":
-                window.addChatText(elements[1] + "\n");
+                window.addChatText(elements[1]);
                 break;
 
             case "PRIVATE":
