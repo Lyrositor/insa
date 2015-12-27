@@ -46,7 +46,7 @@ class SocketSession extends Session implements Runnable {
     }
 
     public void sendHistory(LinkedList<String> messages) {
-        socketOut.print("HISTORY");
+        socketOut.print("HISTORY " + messages.size());
         for (String message : messages)
             socketOut.printf(" %d %s", message.length(), message);
         socketOut.println();

@@ -60,6 +60,31 @@ public class ClientGUI extends javax.swing.JFrame {
         }
         labelUsername.setText(client.username);
     }
+    
+    public void disconnect() {
+        if (client.isConnected == false) {
+            ClientGUIConnect clientGuiConnect = new ClientGUIConnect(this, true);
+            clientGuiConnect.setVisible(true);
+        } else {
+            try {
+                client.Disconnect();
+
+                client.isConnected = false;
+            } catch (Exception e) {
+                System.err.println("[Client exception]: " + e.getMessage());
+            }
+        }
+
+        if (client.isConnected == false) {
+            menuItemConnection.setText("Connect");
+            listUser.setModel(new DefaultListModel());
+        } else {
+            menuItemConnection.setText("Disconnect");
+        }
+
+        updateUsername();
+        buttonSend.setEnabled(client.isConnected);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -173,28 +198,7 @@ public class ClientGUI extends javax.swing.JFrame {
      * @param evt
      */
     private void menuItemConnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConnectionActionPerformed
-        if (client.isConnected == false) {
-            ClientGUIConnect clientGuiConnect = new ClientGUIConnect(this, true);
-            clientGuiConnect.setVisible(true);
-        } else {
-            try {
-                client.Disconnect();
-
-                client.isConnected = false;
-            } catch (Exception e) {
-                System.err.println("[Client exception]: " + e.getMessage());
-            }
-        }
-
-        if (client.isConnected == false) {
-            menuItemConnection.setText("Connect");
-            listUser.setModel(new DefaultListModel());
-        } else {
-            menuItemConnection.setText("Disconnect");
-        }
-
-        updateUsername();
-        buttonSend.setEnabled(client.isConnected);
+        disconnect();
     }//GEN-LAST:event_menuItemConnectionActionPerformed
 
     /**
