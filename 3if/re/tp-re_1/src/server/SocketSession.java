@@ -11,9 +11,11 @@ import server.exceptions.*;
 
 class SocketSession extends Session implements Runnable {
 
+    private boolean isActive = true;
+    private String sessionId;
+
     private final Socket client;
     private final SocketServer server;
-    private String sessionId;
     private final BufferedReader socketIn;
     private final PrintStream socketOut;
 
@@ -28,23 +30,31 @@ class SocketSession extends Session implements Runnable {
         socketOut = new PrintStream(client.getOutputStream(), true);
     }
 
+    @Override
     public boolean isActive() {
-        return true;
+        return isActive;
     }
 
+    @Override
     public void run() {
-        for (;;) {
+        while (isActive) {
             String line;
             try {
                 line = socketIn.readLine();
             } catch (IOException e) {
-                System.out.println("CLIENT: Closing socket with client");
+                System.out.println("INFO: Closing socket with client");
+                try {
+                    disconnect();
+                } catch (ServerException se) {
+                    System.out.println("ERROR: Failed to disconnect properly");
+                }
                 break;
             }
             handleInput(line);
         }
     }
 
+    @Override
     public void sendHistory(LinkedList<String> messages) {
         socketOut.print("HISTORY " + messages.size());
         for (String message : messages)
@@ -52,26 +62,34 @@ class SocketSession extends Session implements Runnable {
         socketOut.println();
     }
 
+    @Override
     public void sendMessage(String message) {
         socketOut.println("MSG " + message);
     }
 
+    @Override
     public void sendPrivateMessage(String username, String message) {
         socketOut.println("PRIVATE " + username + " " + message);
     }
 
+    @Override
     public void sendUserList(String[] users) {
         socketOut.println("USERS " + String.join(" ", users));
     }
 
     private void handleInput(String input) {
         String[] command = input.split(" ", 2);
+        isActive = true;
         System.out.println("CLIENT: " + input);
         try {
             switch (command[0]) {
                 case "CONNECT":
                     changeUsername(command[1]);
                     sessionId = server.addUser(this);
+                    break;
+
+                case "PING":
+                    socketOut.println("PONG");
                     break;
 
                 case "MSG":
@@ -91,14 +109,7 @@ class SocketSession extends Session implements Runnable {
                     break;
 
                 case "DISCONNECT":
-                    server.removeUser(sessionId);
-                    try {
-                        socketIn.close();
-                        socketOut.close();
-                    } catch (IOException e) {
-                        System.err.println(
-                                "ERROR: Failed to close client socket");
-                    }
+                    disconnect();
                     break;
 
                 default:
@@ -116,5 +127,17 @@ class SocketSession extends Session implements Runnable {
         else
             socketOut.print("ERROR " + errorCode);
         socketOut.println();
+    }
+
+    private void disconnect() throws ServerException {
+        isActive = false;
+        server.removeUser(sessionId);
+        try {
+            socketIn.close();
+            socketOut.close();
+        } catch (IOException e) {
+            System.err.println(
+                    "ERROR: Failed to close client socket");
+        }
     }
 }

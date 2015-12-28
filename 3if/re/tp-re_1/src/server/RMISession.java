@@ -15,6 +15,7 @@ class RMISession extends Session {
         client = sessionClient;
     }
 
+    @Override
     public boolean isActive() {
         try {
             client.ping();
@@ -24,10 +25,12 @@ class RMISession extends Session {
         return true;
     }
 
+    @Override
     public void sendHistory(LinkedList<String> messages) {
 
     }
 
+    @Override
     public void sendMessage(String message) {
         try {
             client.send(message);
@@ -38,10 +41,12 @@ class RMISession extends Session {
         }
     }
 
+    @Override
     public void sendPrivateMessage(String username, String message) {
 
     }
 
+    @Override
     public void sendUserList(String[] users) {
         try {
             client.sendUserList(users);

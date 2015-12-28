@@ -33,8 +33,18 @@ public class ClientGUI extends javax.swing.JFrame {
      * @param text
      */
     public void addChatText(String text) {
+        addChatText(text, true);
+    }
+
+    public void addChatText(String text, boolean append) {
         if (!text.isEmpty()) {
-            textAreaChat.setText(textAreaChat.getText() + "\n" + text);
+            if (!textAreaChat.getText().isEmpty()) {
+                if (append)
+                    textAreaChat.setText(textAreaChat.getText() + "\n" + text);
+                else
+                    textAreaChat.setText(text + "\n" + textAreaChat.getText());
+            } else
+                textAreaChat.setText(text);
         }
     }
 
@@ -60,9 +70,9 @@ public class ClientGUI extends javax.swing.JFrame {
         }
         labelUsername.setText(client.username);
     }
-    
+
     public void disconnect() {
-        if (client.isConnected == false) {
+        if (!client.isConnected) {
             ClientGUIConnect clientGuiConnect = new ClientGUIConnect(this, true);
             clientGuiConnect.setVisible(true);
         } else {
@@ -75,7 +85,7 @@ public class ClientGUI extends javax.swing.JFrame {
             }
         }
 
-        if (client.isConnected == false) {
+        if (!client.isConnected) {
             menuItemConnection.setText("Connect");
             listUser.setModel(new DefaultListModel());
         } else {

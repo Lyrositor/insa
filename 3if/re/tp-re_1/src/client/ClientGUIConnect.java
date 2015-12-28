@@ -41,7 +41,7 @@ public class ClientGUIConnect extends javax.swing.JDialog {
         labelErrorConnection = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("connect");
+        setTitle("Connect");
         setResizable(false);
 
         buttonCancel.setText("Cancel");
@@ -51,7 +51,7 @@ public class ClientGUIConnect extends javax.swing.JDialog {
             }
         });
 
-        buttonConnect.setText("connect");
+        buttonConnect.setText("Connect");
         buttonConnect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonConnectActionPerformed(evt);
@@ -60,7 +60,7 @@ public class ClientGUIConnect extends javax.swing.JDialog {
 
         labelTitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelTitle.setText("connect");
+        labelTitle.setText("Connect");
 
         labelUsername.setText("Username:");
 

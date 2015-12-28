@@ -37,7 +37,7 @@ abstract class Server {
 
     public abstract void run() throws Exception;
 
-    protected void addMessage(String sessionId, String message)
+    protected synchronized void addMessage(String sessionId, String message)
             throws InvalidSessionException {
         if (!checkSessionExists(sessionId))
             throw new InvalidSessionException();
@@ -45,20 +45,21 @@ abstract class Server {
         broadcastMessage("<" + username + "> " + message);
     }
 
-    protected void addPrivateMessage(
+    protected synchronized void addPrivateMessage(
             String sessionId, String destUsername, String message)
             throws InvalidSessionException, UserNotFoundException {
         if (!checkSessionExists(sessionId))
             throw new InvalidSessionException();
+        String destSessionId = getSessionIdByUsername(destUsername);
         Session srcSession = sessions.get(sessionId);
-        Session destSession = getSessionByUsername(destUsername);
-        if (checkSessionActive(destSession))
+        Session destSession = sessions.get(destSessionId);
+        if (checkSessionActive(destSessionId))
             destSession.sendPrivateMessage(srcSession.getUsername(), message);
         else
             throw new UserNotFoundException();
     }
 
-    protected String addUser(Session session)
+    protected synchronized String addUser(Session session)
             throws InvalidUsernameException {
         if (!isUsernameAvailable(session.getUsername()))
             throw new InvalidUsernameException();
@@ -69,17 +70,17 @@ abstract class Server {
         return sessionId;
     }
 
-    protected void removeUser(String sessionId)
+    protected synchronized void removeUser(String sessionId)
             throws InvalidSessionException {
         if (!checkSessionExists(sessionId))
             throw new InvalidSessionException();
         String username = sessions.get(sessionId).getUsername();
-        broadcastMessage("* " + username + " has left *");
         sessions.remove(sessionId);
+        broadcastMessage("* " + username + " has left *");
         broadcastUserList();
     }
 
-    protected void renameUser(String sessionId, String newUsername)
+    protected synchronized void renameUser(String sessionId, String newUsername)
             throws InvalidSessionException, InvalidUsernameException {
         if (!checkSessionExists(sessionId))
             throw new InvalidSessionException();
@@ -94,7 +95,7 @@ abstract class Server {
         );
     }
 
-    private void broadcastMessage(String message) {
+    private synchronized void broadcastMessage(String message) {
         Date now = new Date();
         String line = dateFormatter.format(now) + " " + message;
         messages.add(line);
@@ -108,74 +109,76 @@ abstract class Server {
                             + ")"
             );
         }
-        for (Session session : sessions.values())
-            if (checkSessionActive(session))
-                session.sendMessage(line);
+        for (Map.Entry<String, Session> s : sessions.entrySet())
+            if (checkSessionActive(s.getKey()))
+                s.getValue().sendMessage(line);
     }
 
-    private void broadcastUserList() {
+    private synchronized void broadcastUserList() {
         String[] userList = getUserList();
-        for (Session session : sessions.values())
-            if (checkSessionActive(session))
-                session.sendUserList(userList);
+        for (Map.Entry<String, Session> s : sessions.entrySet())
+            if (checkSessionActive(s.getKey()))
+                s.getValue().sendUserList(userList);
     }
 
-    private boolean checkSessionActive(Session session) {
+    private synchronized boolean checkSessionActive(String sessionId) {
+        Session session = sessions.get(sessionId);
         if (session != null) {
             if (session.isActive())
                 return true;
-            sessions.values().remove(session);
-            broadcastUserList();
-            broadcastMessage(
-                    "* " + session.getUsername() + " has been disconnected *"
-            );
+            try {
+                removeUser(sessionId);
+            } catch (InvalidSessionException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
 
-    private boolean checkSessionExists(String sessionId) {
+    private synchronized boolean checkSessionExists(String sessionId) {
         return sessions.containsKey(sessionId);
     }
 
-    private Session findSession(String username) {
-        for (Session session : sessions.values()) {
-            if (!checkSessionActive(session))
+    private synchronized Session findSession(String username) {
+        for (Map.Entry<String, Session> s : sessions.entrySet()) {
+            if (!checkSessionActive(s.getKey()))
                 continue;
-            if (session.getUsername().equals(username))
-                return session;
+            if (s.getValue().getUsername().equals(username))
+                return s.getValue();
         }
         return null;
     }
 
-    private String getNextSessionId() {
+    private synchronized String getNextSessionId() {
         return new BigInteger(130, random).toString(32);
     }
 
-    private Session getSessionByUsername(String username) {
-        for (Session session : sessions.values()) {
-            if (session.getUsername().equals(username))
-                return session;
+    private synchronized String getSessionIdByUsername(String username) {
+        for (Map.Entry<String, Session> s : sessions.entrySet()) {
+            if (s.getValue().getUsername().equals(username))
+                return s.getKey();
         }
         return null;
     }
 
-    private String[] getUserList() {
+    private synchronized String[] getUserList() {
         String[] users = new String[sessions.size()];
         int i = 0;
-        for (Session session : sessions.values()) {
-            if (!checkSessionActive(session))
+        for (Map.Entry<String, Session> s : sessions.entrySet()) {
+            if (!checkSessionActive(s.getKey()))
                 continue;
-            users[i] = session.getUsername();
+            users[i] = s.getValue().getUsername();
             i++;
         }
         return users;
     }
 
-    private boolean isUsernameAvailable(String username) {
+    private synchronized boolean isUsernameAvailable(String username) {
         return isUsernameValid(username) && findSession(username) == null;
     }
 
-    private void loadMessageHistory(File historyFile) throws IOException {
+    private synchronized void loadMessageHistory(File historyFile)
+            throws IOException {
         if (historyFile.createNewFile())
             return;
         FileReader reader = new FileReader(historyFile);
@@ -188,7 +191,7 @@ abstract class Server {
         bufferedReader.close();
     }
 
-    private String registerSession(Session session) {
+    private synchronized String registerSession(Session session) {
         String sessionId = getNextSessionId();
         sessions.put(sessionId, session);
         return sessionId;

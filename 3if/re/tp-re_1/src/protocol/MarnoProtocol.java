@@ -2,6 +2,9 @@ package protocol;
 
 public class MarnoProtocol {
 
+    public static final int PING_FREQUENCY = 1000;
+    public static final int TIMEOUT = 5000;
+
     public static final int INVALID_SESSION = 0;
     public static final int INVALID_USERNAME = 1;
     public static final int USER_NOT_FOUND = 2;

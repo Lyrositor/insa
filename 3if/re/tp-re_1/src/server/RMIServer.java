@@ -19,6 +19,7 @@ class RMIServer extends Server implements RMIServerInterface {
         super(serverPort, historyFilename);
     }
 
+    @Override
     public void run() throws Exception {
         RMIServerInterface stub =
                 (RMIServerInterface) UnicastRemoteObject.exportObject(this, 0);
@@ -27,7 +28,7 @@ class RMIServer extends Server implements RMIServerInterface {
         Registry registry = LocateRegistry.createRegistry(port);
         registry.bind(RMIConfig.REGISTRY_NAME, stub);
 
-        System.out.println("Server listening on port " + port);
+        System.out.println("RMI Server listening on port " + port);
     }
 
     @Override

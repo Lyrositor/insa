@@ -1,5 +1,7 @@
 package server;
 
+import protocol.MarnoProtocol;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,11 +22,13 @@ class SocketServer extends Server {
         pool = Executors.newFixedThreadPool(MAX_THREADS);
     }
 
+    @Override
     public void run() {
-        System.out.println("Server listening on port " + port);
+        System.out.println("Socket Server listening on port " + port);
         for (;;) {
             try {
                 Socket clientSocket = listenSocket.accept();
+                clientSocket.setSoTimeout(MarnoProtocol.TIMEOUT);
                 SocketSession session = new SocketSession(this, clientSocket);
                 pool.execute(session);
             } catch (IOException e) {
