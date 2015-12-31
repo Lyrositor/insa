@@ -79,6 +79,7 @@ class SocketSession extends Session implements Runnable {
 
     private void handleInput(String input) {
         String[] command = input.split(" ", 2);
+        String[] subCommand;
         isActive = true;
         System.out.println("CLIENT: " + input);
         try {
@@ -97,8 +98,9 @@ class SocketSession extends Session implements Runnable {
                     break;
 
                 case "PRIVATE":
+                    subCommand = command[1].split(" ", 2);
                     try {
-                        server.addPrivateMessage(sessionId, command[1], command[2]);
+                        server.addPrivateMessage(sessionId, subCommand[0], subCommand[1]);
                     } catch (UserNotFoundException e) {
                         sendError(e.getCode(), command[1]);
                     }

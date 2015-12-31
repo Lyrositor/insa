@@ -150,7 +150,7 @@ public class ClientGUIConnect extends javax.swing.JDialog {
         parent.client.username = textFieldUsername.getText();
 
         try {
-            parent.client.Connect(textFieldHost.getText(), textFieldPort.getText());
+            parent.client.connect(textFieldHost.getText(), textFieldPort.getText());
             parent.client.isConnected = true;
 
             this.setVisible(false);
@@ -164,7 +164,7 @@ public class ClientGUIConnect extends javax.swing.JDialog {
     }//GEN-LAST:event_buttonConnectActionPerformed
 
     /**
-     *
+     * Close the window
      * @param evt
      */
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed

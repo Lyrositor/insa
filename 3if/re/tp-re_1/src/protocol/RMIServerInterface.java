@@ -11,6 +11,8 @@ public interface RMIServerInterface extends Remote {
     void rename(String sessionId, String newUsername) throws RemoteException;
 
     void send(String sessionId, String message) throws RemoteException;
+    
+    void sendPrivateMessage(String sessionId, String username, String message) throws RemoteException;
 
     void disconnect(String sessionId) throws RemoteException;
 }

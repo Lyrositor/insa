@@ -54,7 +54,10 @@ abstract class Server {
         Session srcSession = sessions.get(sessionId);
         Session destSession = sessions.get(destSessionId);
         if (checkSessionActive(destSessionId))
-            destSession.sendPrivateMessage(srcSession.getUsername(), message);
+            destSession.sendPrivateMessage(
+                    dateFormatter.format(
+                            new Date()) + " " + srcSession.getUsername(), 
+                    message);
         else
             throw new UserNotFoundException();
     }

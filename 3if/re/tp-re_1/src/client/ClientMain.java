@@ -6,6 +6,9 @@ import protocol.RMIClientInterface;
 
 public class ClientMain {
 
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
 
         /* Nimbus style */

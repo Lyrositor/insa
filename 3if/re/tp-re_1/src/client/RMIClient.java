@@ -14,7 +14,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     private RMIServerInterface stub;
 
     @Override
-    public void Connect(String host, String port) throws Exception {
+    public void connect(String host, String port) throws Exception {
         Registry registry = LocateRegistry.getRegistry(host, Integer.parseInt(port));
         stub = (RMIServerInterface) registry.lookup(RMIConfig.REGISTRY_NAME);
         window.textAreaChat.setText("");
@@ -27,13 +27,18 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     @Override
-    public void Disconnect() throws Exception {
+    public void disconnect() throws Exception {
         stub.disconnect(this.sessionId);
     }
 
     @Override
-    public void SendToServer(String message) throws RemoteException {
+    public void sendMessageToServer(String message) throws RemoteException {
         stub.send(this.sessionId, message);
+    }
+    
+    @Override
+    void sendPrivateMessageToServer(String username, String message) throws Exception {
+        stub.sendPrivateMessage(this.sessionId, username, message);
     }
 
     @Override

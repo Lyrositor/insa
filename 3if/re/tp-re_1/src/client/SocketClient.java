@@ -23,7 +23,7 @@ public class SocketClient extends Client implements Runnable {
     private Thread pingThread = null;
 
     @Override
-    void Connect(String host, String port) throws Exception {
+    void connect(String host, String port) throws Exception {
         socketServer = new Socket(host, Integer.parseInt(port));
         socketServer.setSoTimeout(MarnoProtocol.TIMEOUT);
 
@@ -52,7 +52,7 @@ public class SocketClient extends Client implements Runnable {
     }
 
     @Override
-    void Disconnect() throws Exception {
+    void disconnect() throws Exception {
         synchronized (pingThread) {
             pingThread.notify();
         }
@@ -66,8 +66,13 @@ public class SocketClient extends Client implements Runnable {
     }
 
     @Override
-    void SendToServer(String message) throws Exception {
+    void sendMessageToServer(String message) throws Exception {
         socketOut.println("MSG " + message);
+    }
+    
+    @Override
+    void sendPrivateMessageToServer(String username, String message) throws Exception {
+        socketOut.println("PRIVATE " + username + " " + message);
     }
 
     @Override
@@ -116,7 +121,7 @@ public class SocketClient extends Client implements Runnable {
             case "PRIVATE":
                 // Handle private message
                 subElements = elements[1].split(" ");
-                window.addChatText("*" + subElements[1] + "* " + subElements[2]);
+                window.addChatText(subElements[0] + " {" + subElements[1] + "} " + subElements[2]);
                 break;
 
             case "USERS":
@@ -147,5 +152,5 @@ public class SocketClient extends Client implements Runnable {
                 break;
         }
     }
-
+    
 }

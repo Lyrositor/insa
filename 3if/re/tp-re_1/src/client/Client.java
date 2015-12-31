@@ -16,10 +16,12 @@ abstract class Client {
         window.setVisible(true);
     }
 
-    abstract void Connect(String host, String port) throws Exception;
+    abstract void connect(String host, String port) throws Exception;
 
-    abstract void Disconnect() throws Exception;
+    abstract void disconnect() throws Exception;
 
-    abstract void SendToServer(String message) throws Exception;
+    abstract void sendMessageToServer(String message) throws Exception;
+    
+    abstract void sendPrivateMessageToServer(String username, String message) throws Exception;
     
 }
