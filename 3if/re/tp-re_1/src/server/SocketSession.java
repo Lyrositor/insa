@@ -63,13 +63,15 @@ class SocketSession extends Session implements Runnable {
     }
 
     @Override
-    public void sendMessage(String message) {
-        socketOut.println("MSG " + message);
+    public void sendMessage(String date, String message) {
+        socketOut.println("MSG " + date + " " + message);
     }
 
     @Override
-    public void sendPrivateMessage(String username, String message) {
-        socketOut.println("PRIVATE " + username + " " + message);
+    public void sendPrivateMessage(
+            String date, String username, String message
+    ) {
+        socketOut.println("PRIVATE " + date + " " + username + " " + message);
     }
 
     @Override

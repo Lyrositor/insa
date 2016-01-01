@@ -64,10 +64,11 @@ class RMIServer extends Server implements RMIServerInterface {
                     MarnoProtocol.ERROR_MESSAGES[e.getCode()], e);
         }
     }
-    
+
     @Override
-    public void sendPrivateMessage(String sessionId, String username, String message)
-            throws RemoteException {
+    public void sendPrivateMessage(
+            String sessionId, String username, String message
+    ) throws RemoteException {
         try {
             addPrivateMessage(sessionId, username, message);
         } catch (ServerException e) {

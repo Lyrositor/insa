@@ -22,9 +22,11 @@ abstract class Session {
 
     public abstract void sendHistory(LinkedList<String> messages);
 
-    public abstract void sendMessage(String message);
+    public abstract void sendMessage(
+            String date, String message);
 
-    public abstract void sendPrivateMessage(String username, String message);
+    public abstract void sendPrivateMessage(
+            String date, String username, String message);
 
     public abstract void sendUserList(String[] users);
 

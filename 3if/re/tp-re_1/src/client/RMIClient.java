@@ -3,6 +3,7 @@ package client;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import protocol.RMIClientInterface;
 import protocol.RMIConfig;
@@ -15,7 +16,9 @@ public class RMIClient extends Client implements RMIClientInterface {
 
     @Override
     public void connect(String host, String port) throws Exception {
-        Registry registry = LocateRegistry.getRegistry(host, Integer.parseInt(port));
+        Registry registry = LocateRegistry.getRegistry(
+                host, Integer.parseInt(port)
+        );
         stub = (RMIServerInterface) registry.lookup(RMIConfig.REGISTRY_NAME);
         window.textAreaChat.setText("");
 
@@ -35,15 +38,28 @@ public class RMIClient extends Client implements RMIClientInterface {
     public void sendMessageToServer(String message) throws RemoteException {
         stub.send(this.sessionId, message);
     }
-    
+
     @Override
-    void sendPrivateMessageToServer(String username, String message) throws Exception {
+    void sendPrivateMessageToServer(String username, String message)
+            throws Exception {
         stub.sendPrivateMessage(this.sessionId, username, message);
     }
 
     @Override
-    public void send(String message) throws RemoteException {
-       window.addChatText(message);
+    public void sendMessage(String date, String message)
+            throws RemoteException {
+       window.addChatText(date + " " + message);
+    }
+
+    public void sendHistory(LinkedList<String> history)
+            throws RemoteException {
+        window.addChatText(String.join("\n", history), false);
+    }
+
+    @Override
+    public void sendPrivateMessage(String date, String username, String message)
+            throws RemoteException {
+        window.addChatText(date + " {" + username + "} " + message);
     }
 
     @Override

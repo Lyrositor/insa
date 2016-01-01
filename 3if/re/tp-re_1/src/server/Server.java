@@ -55,9 +55,10 @@ abstract class Server {
         Session destSession = sessions.get(destSessionId);
         if (checkSessionActive(destSessionId))
             destSession.sendPrivateMessage(
-                    dateFormatter.format(
-                            new Date()) + " " + srcSession.getUsername(), 
-                    message);
+                    dateFormatter.format(new Date()),
+                    srcSession.getUsername(),
+                    message
+            );
         else
             throw new UserNotFoundException();
     }
@@ -99,8 +100,8 @@ abstract class Server {
     }
 
     private synchronized void broadcastMessage(String message) {
-        Date now = new Date();
-        String line = dateFormatter.format(now) + " " + message;
+        String now = dateFormatter.format(new Date());
+        String line = now + " " + message;
         messages.add(line);
         try {
             historyBufferedWriter.write(line);
@@ -114,7 +115,7 @@ abstract class Server {
         }
         for (Map.Entry<String, Session> s : sessions.entrySet())
             if (checkSessionActive(s.getKey()))
-                s.getValue().sendMessage(line);
+                s.getValue().sendMessage(now, message);
     }
 
     private synchronized void broadcastUserList() {

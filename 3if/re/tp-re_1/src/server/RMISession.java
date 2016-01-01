@@ -27,23 +27,37 @@ class RMISession extends Session {
 
     @Override
     public void sendHistory(LinkedList<String> messages) {
-
-    }
-
-    @Override
-    public void sendMessage(String message) {
         try {
-            client.send(message);
+            client.sendHistory(messages);
         } catch (Exception e) {
             System.err.println(
-                    "ERROR: Failed to send message (" + e.getMessage() + ")"
+                    "ERROR: Failed to sendMessage history"
             );
         }
     }
 
     @Override
-    public void sendPrivateMessage(String username, String message) {
+    public void sendMessage(String date, String message) {
+        try {
+            client.sendMessage(date, message);
+        } catch (Exception e) {
+            System.err.println(
+                    "ERROR: Failed to sendMessage message (" + e.getMessage() + ")"
+            );
+        }
+    }
 
+    @Override
+    public void sendPrivateMessage(
+            String date, String username, String message)
+    {
+        try {
+            client.sendPrivateMessage(date, username, message);
+        } catch (Exception e) {
+            System.err.println(
+                    "ERROR: Failed to sendMessage PM (" + e.getMessage() + ")"
+            );
+        }
     }
 
     @Override
@@ -52,7 +66,7 @@ class RMISession extends Session {
             client.sendUserList(users);
         } catch (Exception e) {
             System.err.println(
-                    "ERROR: Failed to send list user (" + e.getMessage() + ")"
+                    "ERROR: Failed to sendMessage list user (" + e.getMessage() + ")"
             );
         }
     }

@@ -69,7 +69,7 @@ public class SocketClient extends Client implements Runnable {
     void sendMessageToServer(String message) throws Exception {
         socketOut.println("MSG " + message);
     }
-    
+
     @Override
     void sendPrivateMessageToServer(String username, String message) throws Exception {
         socketOut.println("PRIVATE " + username + " " + message);
@@ -120,8 +120,11 @@ public class SocketClient extends Client implements Runnable {
 
             case "PRIVATE":
                 // Handle private message
-                subElements = elements[1].split(" ");
-                window.addChatText(subElements[0] + " {" + subElements[1] + "} " + subElements[2]);
+                subElements = elements[1].split(" ", 3);
+                window.addChatText(
+                        subElements[0] + " {" + subElements[1] + "} " +
+                        subElements[2]
+                );
                 break;
 
             case "USERS":
@@ -152,5 +155,5 @@ public class SocketClient extends Client implements Runnable {
                 break;
         }
     }
-    
+
 }
