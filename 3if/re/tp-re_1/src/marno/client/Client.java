@@ -1,13 +1,13 @@
-package client;
+package marno.client;
 
 abstract class Client {
 
     /* Config */
     private final String DEFAULT_USERNAME = "Test";
     /* --- */
-    
+
     protected ClientGUI window;
-    
+
     public boolean isConnected = false;
     public String username = DEFAULT_USERNAME;
 
@@ -21,7 +21,7 @@ abstract class Client {
     abstract void disconnect() throws Exception;
 
     abstract void sendMessageToServer(String message) throws Exception;
-    
+
     abstract void sendPrivateMessageToServer(String username, String message) throws Exception;
-    
+
 }

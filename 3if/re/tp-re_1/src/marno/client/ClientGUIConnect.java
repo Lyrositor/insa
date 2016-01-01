@@ -1,4 +1,4 @@
-package client;
+package marno.client;
 
 public class ClientGUIConnect extends javax.swing.JDialog {
 

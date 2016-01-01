@@ -1,8 +1,8 @@
-package client;
+package marno.client;
 
 import java.rmi.server.UnicastRemoteObject;
 import javax.swing.JOptionPane;
-import protocol.RMIClientInterface;
+import marno.protocol.RMIClientInterface;
 
 public class ClientMain {
 

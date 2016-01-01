@@ -1,6 +1,6 @@
-package client;
+package marno.client;
 
-import protocol.MarnoProtocol;
+import marno.protocol.MarnoProtocol;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import static protocol.MarnoProtocol.ERROR_MESSAGES;
+import static marno.protocol.MarnoProtocol.ERROR_MESSAGES;
 
 public class SocketClient extends Client implements Runnable {
 

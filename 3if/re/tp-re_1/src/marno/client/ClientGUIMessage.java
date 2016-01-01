@@ -1,7 +1,7 @@
-package client;
+package marno.client;
 
 public class ClientGUIMessage extends javax.swing.JDialog {
-    
+
     private final ClientGUI parent;
     private final String username;
 
@@ -18,7 +18,7 @@ public class ClientGUIMessage extends javax.swing.JDialog {
         this.username = username;
 
         initComponents();
-        
+
         labelUsername.setText(username);
     }
 
@@ -107,7 +107,7 @@ public class ClientGUIMessage extends javax.swing.JDialog {
 
     /**
      * Send the private message to the user
-     * @param evt 
+     * @param evt
      */
     private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
         try {

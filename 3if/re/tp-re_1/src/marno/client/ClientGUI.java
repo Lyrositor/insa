@@ -1,4 +1,4 @@
-package client;
+package marno.client;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -39,9 +39,9 @@ public class ClientGUI extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     *
      * @param text
-     * @param append 
+     * @param append
      */
     public void addChatText(String text, boolean append) {
         if (!text.isEmpty()) {
@@ -70,7 +70,7 @@ public class ClientGUI extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     *
      */
     private void updateUsername() {
         if (client.isConnected && !client.username.isEmpty()) {
@@ -82,7 +82,7 @@ public class ClientGUI extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     *
      */
     public void disconnect() {
         if (!client.isConnected) {

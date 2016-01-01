@@ -1,13 +1,13 @@
-package client;
+package marno.client;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
-import protocol.RMIClientInterface;
-import protocol.RMIConfig;
-import protocol.RMIServerInterface;
+import marno.protocol.RMIClientInterface;
+import marno.protocol.RMIConfig;
+import marno.protocol.RMIServerInterface;
 
 public class RMIClient extends Client implements RMIClientInterface {
 
@@ -36,7 +36,7 @@ public class RMIClient extends Client implements RMIClientInterface {
 
     @Override
     public void sendMessageToServer(String message) throws RemoteException {
-        stub.send(this.sessionId, message);
+        stub.sendMessage(this.sessionId, message);
     }
 
     @Override
