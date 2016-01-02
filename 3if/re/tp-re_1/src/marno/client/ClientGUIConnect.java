@@ -1,13 +1,22 @@
 package marno.client;
 
+import javax.swing.JOptionPane;
+
+/**
+ * Window connection options (username and server)
+ */
 public class ClientGUIConnect extends javax.swing.JDialog {
 
+    /**
+     * The main GUI window
+     */
     private final ClientGUI parent;
 
     /**
-     * Creates new form ClientGUIConnect
-     * @param parent
-     * @param modal
+     * Creates new form ClientGUIConnect, the window connection options
+     *
+     * @param parent the main GUI window
+     * @param modal if the parent is clickable or not
      */
     public ClientGUIConnect(ClientGUI parent, boolean modal) {
         super(parent, modal);
@@ -16,7 +25,9 @@ public class ClientGUIConnect extends javax.swing.JDialog {
 
         initComponents();
 
-        textFieldUsername.setText(parent.client.username);
+        if (parent.client != null) {
+            textFieldUsername.setText(parent.client.username);
+        }
         labelErrorConnection.setVisible(false);
     }
 
@@ -29,6 +40,7 @@ public class ClientGUIConnect extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupType = new javax.swing.ButtonGroup();
         buttonCancel = new javax.swing.JButton();
         buttonConnect = new javax.swing.JButton();
         labelTitle = new javax.swing.JLabel();
@@ -39,6 +51,9 @@ public class ClientGUIConnect extends javax.swing.JDialog {
         textFieldHost = new javax.swing.JTextField();
         textFieldPort = new javax.swing.JTextField();
         labelErrorConnection = new javax.swing.JLabel();
+        labelType = new javax.swing.JLabel();
+        radioButtonSocket = new javax.swing.JRadioButton();
+        radioButtonRmi = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Connect");
@@ -68,7 +83,7 @@ public class ClientGUIConnect extends javax.swing.JDialog {
 
         labelPort.setText("Port:");
 
-        textFieldUsername.setText("UsernameTest");
+        textFieldUsername.setText("User");
 
         textFieldHost.setText("127.0.0.1");
 
@@ -77,6 +92,15 @@ public class ClientGUIConnect extends javax.swing.JDialog {
         labelErrorConnection.setForeground(java.awt.Color.red);
         labelErrorConnection.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelErrorConnection.setText("Error: Connection failed");
+
+        labelType.setText("Type:");
+
+        buttonGroupType.add(radioButtonSocket);
+        radioButtonSocket.setSelected(true);
+        radioButtonSocket.setText("Socket");
+
+        buttonGroupType.add(radioButtonRmi);
+        radioButtonRmi.setText("RMI");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,22 +117,23 @@ public class ClientGUIConnect extends javax.swing.JDialog {
                         .addComponent(buttonConnect))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(labelUsername)
-                                    .addGap(18, 18, 18))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(labelHost)
-                                    .addGap(31, 31, 31)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelPort)
-                                .addGap(33, 33, 33)))
+                            .addComponent(labelUsername)
+                            .addComponent(labelHost)
+                            .addComponent(labelPort)
+                            .addComponent(labelType))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(textFieldUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
-                                .addComponent(textFieldHost))
-                            .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(textFieldHost)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(radioButtonSocket)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(radioButtonRmi))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(textFieldUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+                                        .addComponent(textFieldPort)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -116,19 +141,24 @@ public class ClientGUIConnect extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelUsername)
                     .addComponent(textFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelHost)
                     .addComponent(textFieldHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelPort)
                     .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelType)
+                    .addComponent(radioButtonSocket)
+                    .addComponent(radioButtonRmi))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
                 .addComponent(labelErrorConnection, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -141,44 +171,61 @@ public class ClientGUIConnect extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     *
-     * @param evt
+     * Event in reaction to a click at the connection button :
+     *     try to instanciate and connect the client with the specified options,
+     *     and update the graphical elements
+     * @param evt the click
      */
     private void buttonConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConnectActionPerformed
         labelErrorConnection.setVisible(false);
+
+        if (radioButtonSocket.isSelected()) {
+            parent.client = new SocketClient(parent);
+        } else if (radioButtonRmi.isSelected()) {
+            parent.client = new RMIClient(parent);
+        } else {
+            JOptionPane.showMessageDialog(null, "Please choice a connection type.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         parent.client.username = textFieldUsername.getText();
 
         try {
             parent.client.connect(textFieldHost.getText(), textFieldPort.getText());
-            parent.client.isConnected = true;
 
             this.setVisible(false);
         } catch (Exception e) {
             System.err.println("[Client exception]: " + e.getMessage());
 
-            parent.client.isConnected = false;
+            parent.client = null;
 
             labelErrorConnection.setVisible(true);
         }
     }//GEN-LAST:event_buttonConnectActionPerformed
 
     /**
-     * Close the window
-     * @param evt
+     * Event in reaction to a click at the cancel button, to close the window
+     * @param evt the click
      */
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_buttonCancelActionPerformed
 
+    /**
+     * Graphical elements variables
+     */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCancel;
     private javax.swing.JButton buttonConnect;
+    private javax.swing.ButtonGroup buttonGroupType;
     private javax.swing.JLabel labelErrorConnection;
     private javax.swing.JLabel labelHost;
     private javax.swing.JLabel labelPort;
     private javax.swing.JLabel labelTitle;
+    private javax.swing.JLabel labelType;
     private javax.swing.JLabel labelUsername;
+    private javax.swing.JRadioButton radioButtonRmi;
+    private javax.swing.JRadioButton radioButtonSocket;
     private javax.swing.JTextField textFieldHost;
     private javax.swing.JTextField textFieldPort;
     private javax.swing.JTextField textFieldUsername;

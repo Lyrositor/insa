@@ -5,22 +5,25 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.text.DefaultCaret;
 
+/**
+ * Main Graphical User Interface window for all the program
+ */
 public class ClientGUI extends javax.swing.JFrame {
 
-    /* Config */
+    /**
+     * Default title for the GUI window
+     */
     private final String GUI_TITLE = "MarnoChat";
-    /* --- */
-
-    public Client client;
 
     /**
-     * Creates new form ClientGUI
-     *
-     * @param chatClient
+     * Client is by default null, and it's instantiate by ClientGUIConnect
      */
-    public ClientGUI(Client chatClient) {
-        this.client = chatClient;
+    protected Client client = null;
 
+    /**
+     * Creates new form ClientGUI, the main GUI window
+     */
+    public ClientGUI() {
         initComponents();
 
         updateUsername();
@@ -31,35 +34,37 @@ public class ClientGUI extends javax.swing.JFrame {
     }
 
     /**
-     *
-     * @param text
+     * Adding text to the text area chat at the bottom
+     * @param text the text added in the chat
      */
     public void addChatText(String text) {
         addChatText(text, true);
     }
 
     /**
-     *
-     * @param text
-     * @param append
+     * Adding text to the text area chat at top or bottom
+     * @param text the text added in the chat
+     * @param append true = bottom | false = top
      */
     public void addChatText(String text, boolean append) {
         if (!text.isEmpty()) {
             if (!textAreaChat.getText().isEmpty()) {
-                if (append)
+                if (append) {
                     textAreaChat.setText(textAreaChat.getText() + "\n" + text);
-                else
+                } else {
                     textAreaChat.setText(text + "\n" + textAreaChat.getText());
-            } else
+                }
+            } else {
                 textAreaChat.setText(text);
+            }
         }
     }
 
     /**
-     *
+     * Send the input of the text field to the server
      */
     private void sendMessage() {
-        if (client.isConnected) {
+        if (client != null) {
             try {
                 client.sendMessageToServer(textFieldMessage.getText());
                 textFieldMessage.setText("");
@@ -70,35 +75,37 @@ public class ClientGUI extends javax.swing.JFrame {
     }
 
     /**
-     *
+     * Change the username of the user at top of user list and change the window title
      */
     private void updateUsername() {
-        if (client.isConnected && !client.username.isEmpty()) {
-            this.setTitle(GUI_TITLE + " - " + client.username);
-        } else {
-            this.setTitle(GUI_TITLE);
+        if (client != null) {
+            if (!client.username.isEmpty()) {
+                this.setTitle(GUI_TITLE + " - " + client.username);
+            } else {
+                this.setTitle(GUI_TITLE);
+            }
+            labelUsername.setText(client.username);
         }
-        labelUsername.setText(client.username);
     }
 
     /**
-     *
+     * Try to the close the connection with the server by call a client disconnection, and update graphical elements
      */
     public void disconnect() {
-        if (!client.isConnected) {
+        if (client == null) {
             ClientGUIConnect clientGuiConnect = new ClientGUIConnect(this, true);
             clientGuiConnect.setVisible(true);
         } else {
             try {
                 client.disconnect();
 
-                client.isConnected = false;
+                client = null;
             } catch (Exception e) {
                 System.err.println("[Client exception]: " + e.getMessage());
             }
         }
 
-        if (!client.isConnected) {
+        if (client == null) {
             menuItemConnection.setText("Connect");
             listUser.setModel(new DefaultListModel());
         } else {
@@ -106,8 +113,13 @@ public class ClientGUI extends javax.swing.JFrame {
         }
 
         updateUsername();
-        buttonSend.setEnabled(client.isConnected);
-        listUser.setEnabled(client.isConnected);
+        if (client == null) {
+            buttonSend.setEnabled(false);
+            listUser.setEnabled(false);
+        } else {
+            buttonSend.setEnabled(true);
+            listUser.setEnabled(true);
+        }
     }
 
     /**
@@ -223,24 +235,24 @@ public class ClientGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     *
-     * @param evt
+     * Event in reaction to a click in the menu bar
+     * @param evt the click
      */
     private void menuItemConnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemConnectionActionPerformed
         disconnect();
     }//GEN-LAST:event_menuItemConnectionActionPerformed
 
     /**
-     *
-     * @param evt
+     * Event in reaction to a click at the send button
+     * @param evt the click
      */
     private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
         sendMessage();
     }//GEN-LAST:event_buttonSendActionPerformed
 
     /**
-     *
-     * @param evt
+     * Event in reaction to press key ENTER to send a message
+     * @param evt the pressed key
      */
     private void textFieldMessageKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldMessageKeyReleased
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
@@ -249,11 +261,11 @@ public class ClientGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_textFieldMessageKeyReleased
 
     /**
-     *
-     * @param evt
+     * Event in reaction to a click to close the window and call a disconnection
+     * @param evt the click
      */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if (client.isConnected) {
+        if (client != null) {
             try {
                 client.disconnect();
             } catch (Exception e) {
@@ -262,8 +274,12 @@ public class ClientGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * Event in reaction to a click at a username in the user list to open private message window
+     * @param evt the click
+     */
     private void listUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listUserMouseClicked
-        if (client.isConnected) {
+        if (client != null) {
             JList list = (JList) evt.getSource();
             String username = (String) list.getModel().getElementAt(list.locationToIndex(evt.getPoint()));
             if (!username.equals(client.username)) {
@@ -275,6 +291,9 @@ public class ClientGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_listUserMouseClicked
 
+    /**
+     * Graphical elements variables
+     */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonSend;
     private javax.swing.JLabel labelUsername;

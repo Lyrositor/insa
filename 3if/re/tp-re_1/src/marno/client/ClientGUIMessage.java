@@ -1,15 +1,26 @@
 package marno.client;
 
+/**
+ * Window private message
+ */
 public class ClientGUIMessage extends javax.swing.JDialog {
 
+    /**
+     * The main GUI window
+     */
     private final ClientGUI parent;
+    
+    /**
+     * Name of the user who received the message
+     */
     private final String username;
 
     /**
-     * Creates new form ClientGUIMessage
-     * @param parent
-     * @param modal
-     * @param username
+     * Creates new form ClientGUIMessage, to send a private message
+     *
+     * @param parent the main GUI window
+     * @param modal if the parent is clickable or not
+     * @param username the name of the user who received the message
      */
     public ClientGUIMessage(ClientGUI parent, boolean modal, String username) {
         super(parent, modal);
@@ -101,13 +112,18 @@ public class ClientGUIMessage extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Event in reaction to a click at the cancel button, to close the window
+     * @param evt the click
+     */
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     /**
      * Send the private message to the user
-     * @param evt
+     *
+     * @param evt the click
      */
     private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
         try {
@@ -118,6 +134,9 @@ public class ClientGUIMessage extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_buttonSendActionPerformed
 
+    /**
+     * Graphical elements variables
+     */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCancel;
     private javax.swing.JButton buttonSend;

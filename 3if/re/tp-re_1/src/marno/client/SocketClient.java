@@ -12,16 +12,52 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import static marno.protocol.MarnoProtocol.ERROR_MESSAGES;
 
+/**
+ * Implementation of the Client class for Socket connection
+ */
 public class SocketClient extends Client implements Runnable {
 
+    /**
+     * The socket linked to the server
+     */
     private Socket socketServer = null;
+    /**
+     * The out stream for send informations to the server
+     */
     private PrintStream socketOut = null;
+    /**
+     * The input stream for receive informations from the server
+     */
     private BufferedReader socketIn = null;
 
+    /**
+     * Know if the client if listening to the server or not
+     */
     private volatile boolean listening = true;
+    /**
+     * Main thread of the client to receive informations
+     */
     private Thread mainThread = null;
+    /**
+     * Ping-pong thread with the server to know if the connection if lost
+     */
     private Thread pingThread = null;
 
+    /**
+     * Constructor with the main GUI window
+     * @param window the main GUI window
+     */
+    public SocketClient(ClientGUI window) {
+        super(window);
+    }
+
+    /**
+     * Launch a connection with the server, at the host with the port number.
+     * Launch two threads too, one to receive informations, and another to ping-pong
+     * @param host the hostname of the server
+     * @param port the port number of the server
+     * @throws Exception raise an exception if connection fail
+     */
     @Override
     void connect(String host, String port) throws Exception {
         socketServer = new Socket(host, Integer.parseInt(port));
@@ -51,6 +87,10 @@ public class SocketClient extends Client implements Runnable {
         pingThread.start();
     }
 
+    /**
+     * Close the connection with the server properly
+     * @throws Exception raise an exception if a problem appear
+     */
     @Override
     void disconnect() throws Exception {
         synchronized (pingThread) {
@@ -65,16 +105,30 @@ public class SocketClient extends Client implements Runnable {
         socketServer.close();
     }
 
+    /**
+     * Send a message to all people of the server with the output stream
+     * @param message the message to sent
+     * @throws Exception raise an exception if a problem appear
+     */
     @Override
     void sendMessageToServer(String message) throws Exception {
         socketOut.println("MSG " + message);
     }
 
+    /**
+     * Send a private message to an user at the server with the output stream
+     * @param username the user who receive the message
+     * @param message the message to sent
+     * @throws Exception raise an exception if a problem appear
+     */
     @Override
     void sendPrivateMessageToServer(String username, String message) throws Exception {
         socketOut.println("PRIVATE " + username + " " + message);
     }
 
+    /**
+     * The running thread who receive informations, and handle it in the handleInput function
+     */
     @Override
     public void run() {
         String line;
@@ -88,6 +142,10 @@ public class SocketClient extends Client implements Runnable {
         }
     }
 
+    /**
+     * Handle the information from the server, and update the graphical elements
+     * @param input the information
+     */
     private void handleInput(String input) {
         String[] elements = input.split(" ", 2);
         String[] subElements;
@@ -122,8 +180,8 @@ public class SocketClient extends Client implements Runnable {
                 // Handle private message
                 subElements = elements[1].split(" ", 3);
                 window.addChatText(
-                        subElements[0] + " {" + subElements[1] + "} " +
-                        subElements[2]
+                        subElements[0] + " {" + subElements[1] + "} "
+                        + subElements[2]
                 );
                 break;
 
