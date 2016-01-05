@@ -66,7 +66,7 @@ public class RMIClient extends Client implements RMIClientInterface {
                     null, ERROR_MESSAGES[1], "Error",
                     JOptionPane.ERROR_MESSAGE
             );
-            this.disconnect();
+            disconnect();
             window.disconnect();
         }
     }
@@ -78,7 +78,7 @@ public class RMIClient extends Client implements RMIClientInterface {
      */
     @Override
     public void disconnect() throws Exception {
-        stub.disconnect(this.sessionId);
+        stub.disconnect(sessionId);
     }
 
     /**
@@ -89,7 +89,7 @@ public class RMIClient extends Client implements RMIClientInterface {
      */
     @Override
     public void sendMessageToServer(String message) throws RemoteException {
-        stub.sendMessage(this.sessionId, message);
+        stub.sendMessage(sessionId, message);
     }
 
     /**
@@ -102,7 +102,7 @@ public class RMIClient extends Client implements RMIClientInterface {
     @Override
     void sendPrivateMessageToServer(String username, String message)
             throws Exception {
-        stub.sendPrivateMessage(this.sessionId, username, message);
+        stub.sendPrivateMessage(sessionId, username, message);
     }
 
     /**
