@@ -1,22 +1,24 @@
 package marno.client;
 
 /**
- * Common class for types of client, with common methods
+ * Handles client functionality that is independent of the underlying protocol
+ * implementation (RMI or sockets).
  */
 abstract class Client {
 
     /**
-     * Link to the main GUI window who hosting the client
+     * The client's main GUI window.
      */
     protected ClientGUI window;
 
     /**
-     * Client username with a default value
+     * Client username (default: "User").
      */
     public String username = "User";
 
     /**
-     * Client constructor, call in daughter by super()
+     * Attaches the client to a GUI window and makes it visible.
+     *
      * @param window the main GUI window
      */
     public Client(ClientGUI window) {
@@ -25,31 +27,38 @@ abstract class Client {
     }
 
     /**
-     * Method for connect to the server. Need to be reimplanted
+     * Sends a connection request to the server.
+     *
      * @param host address of the server
-     * @param port number of the server
-     * @throws Exception if connection fail
+     * @param port port number of the server
+     * @throws Exception if the connection fails
      */
     abstract void connect(String host, String port) throws Exception;
 
     /**
-     * Close the connection to the server properly. Need to be reimplanted
-     * @throws Exception if a problem appear
+     * Cleanly closes the connection to the server.
+     *
+     * @throws Exception if the client fails to cleanly disconnect
      */
     abstract void disconnect() throws Exception;
 
     /**
-     * Send a classical message (text) of the chat to the server for all people. Need to be reimplanted
+     * Sends a public text message to the server.
+     *
+     * The message will be broadcast to all other clients connected to the
+     * server.
+     *
      * @param message the input text to sent
-     * @throws Exception 
+     * @throws Exception if an exception occurs during execution
      */
     abstract void sendMessageToServer(String message) throws Exception;
 
     /**
-     * Send a private message to a specific person. Need to be reimplanted
-     * @param username the name of the person who received the message
-     * @param message the input text to sent
-     * @throws Exception 
+     * Sends a private message to another client connected to the server.
+     *
+     * @param username the username of the receiving client
+     * @param message the contents of the message
+     * @throws Exception if an exception occurs during execution
      */
     abstract void sendPrivateMessageToServer(String username, String message) throws Exception;
 

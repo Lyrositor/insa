@@ -1,27 +1,31 @@
 package marno.client;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UIManager;
+
 /**
- * Main class for client
+ * Main client class; creates and runs a new GUI client window.
  */
 public class ClientMain {
 
     /**
-     * Main function, firstly executed, who defined the graphical style and launch the window
-     * 
+     * Defines the preferred look and feel, then creates a new window.
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
 
         /* Nimbus style */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ClientGUIConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(ClientGUIConnect.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         ClientGUI clientGui = new ClientGUI();

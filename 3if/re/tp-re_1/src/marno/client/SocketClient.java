@@ -13,50 +13,62 @@ import javax.swing.JOptionPane;
 import static marno.protocol.MarnoProtocol.ERROR_MESSAGES;
 
 /**
- * Implementation of the Client class for Socket connection
+ * The socket implementation of the Marno client.
  */
 public class SocketClient extends Client implements Runnable {
 
     /**
-     * The socket linked to the server
+     * The server-side socket, read for incoming commands.
+     *
+     * Warning: The socket should not be read from directly. Use
+     * {@code socketIn} instead.
      */
     private Socket socketServer = null;
+
     /**
-     * The out stream for send informations to the server
+     * The output stream used to send commands to the server.
      */
     private PrintStream socketOut = null;
+
     /**
-     * The input stream for receive informations from the server
+     * The input stream used to receive commands from the server.
      */
     private BufferedReader socketIn = null;
 
     /**
-     * Know if the client if listening to the server or not
+     * Whether the client is currently listening for input from the server.
      */
     private volatile boolean listening = true;
+
     /**
-     * Main thread of the client to receive informations
+     * Main client thread.
+     *
+     * Listens for input from the server.
      */
     private Thread mainThread = null;
+
     /**
-     * Ping-pong thread with the server to know if the connection if lost
+     * Secondary thread which constantly pings the server, to keep the
+     * connection active.
      */
     private Thread pingThread = null;
 
     /**
-     * Constructor with the main GUI window
-     * @param window the main GUI window
+     * Ties the client to its GUI window.
+     * @param window the client's main GUI window
      */
     public SocketClient(ClientGUI window) {
         super(window);
     }
 
     /**
-     * Launch a connection with the server, at the host with the port number.
-     * Launch two threads too, one to receive informations, and another to ping-pong
+     * Initiates a connection with the specified server, then starts two
+     * threads: one to receive input from the server, another to continuously
+     * ping it.
+     *
      * @param host the hostname of the server
      * @param port the port number of the server
-     * @throws Exception raise an exception if connection fail
+     * @throws Exception if an error occurs
      */
     @Override
     void connect(String host, String port) throws Exception {
@@ -88,8 +100,9 @@ public class SocketClient extends Client implements Runnable {
     }
 
     /**
-     * Close the connection with the server properly
-     * @throws Exception raise an exception if a problem appear
+     * Closes the connection with the server.
+     *
+     * @throws Exception if the client is unable to disconnect cleanly
      */
     @Override
     void disconnect() throws Exception {
@@ -106,8 +119,9 @@ public class SocketClient extends Client implements Runnable {
     }
 
     /**
-     * Send a message to all people of the server with the output stream
-     * @param message the message to sent
+     * Sends a public message to the server.
+     *
+     * @param message the contents of the message
      * @throws Exception raise an exception if a problem appear
      */
     @Override
@@ -116,10 +130,11 @@ public class SocketClient extends Client implements Runnable {
     }
 
     /**
-     * Send a private message to an user at the server with the output stream
-     * @param username the user who receive the message
-     * @param message the message to sent
-     * @throws Exception raise an exception if a problem appear
+     * Sends a private message to another client connected to the server.
+     *
+     * @param username the username of the intended recipient
+     * @param message the contents of the message
+     * @throws Exception if an error occurs
      */
     @Override
     void sendPrivateMessageToServer(String username, String message) throws Exception {
@@ -127,7 +142,7 @@ public class SocketClient extends Client implements Runnable {
     }
 
     /**
-     * The running thread who receive informations, and handle it in the handleInput function
+     * Listens for incoming messages from the server.
      */
     @Override
     public void run() {
@@ -143,8 +158,9 @@ public class SocketClient extends Client implements Runnable {
     }
 
     /**
-     * Handle the information from the server, and update the graphical elements
-     * @param input the information
+     * Handle the commands from the server, and update the graphical elements.
+     *
+     * @param input an incoming command
      */
     private void handleInput(String input) {
         String[] elements = input.split(" ", 2);

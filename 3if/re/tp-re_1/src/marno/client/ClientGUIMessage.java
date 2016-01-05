@@ -1,26 +1,26 @@
 package marno.client;
 
 /**
- * Window private message
+ * Private message window.
  */
 public class ClientGUIMessage extends javax.swing.JDialog {
 
     /**
-     * The main GUI window
+     * The client's main GUI window.
      */
     private final ClientGUI parent;
-    
+
     /**
-     * Name of the user who received the message
+     * Username of the intended recipient of the message.
      */
     private final String username;
 
     /**
-     * Creates new form ClientGUIMessage, to send a private message
+     * Initializes the window from the ClientGUIMessage form's generated code.
      *
      * @param parent the main GUI window
-     * @param modal if the parent is clickable or not
-     * @param username the name of the user who received the message
+     * @param modal whether the parent is clickable or not
+     * @param username username of the intended recipient of the message
      */
     public ClientGUIMessage(ClientGUI parent, boolean modal, String username) {
         super(parent, modal);
@@ -112,23 +112,14 @@ public class ClientGUIMessage extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * Event in reaction to a click at the cancel button, to close the window
-     * @param evt the click
-     */
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
-        this.setVisible(false);
+        setVisible(false);
     }//GEN-LAST:event_buttonCancelActionPerformed
 
-    /**
-     * Send the private message to the user
-     *
-     * @param evt the click
-     */
     private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
         try {
             parent.client.sendPrivateMessageToServer(username, textAreaMessage.getText());
-            this.setVisible(false);
+            setVisible(false);
         } catch (Exception e) {
             System.err.println("[Client exception]: " + e.getMessage());
         }

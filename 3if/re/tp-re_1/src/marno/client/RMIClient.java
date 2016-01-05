@@ -11,22 +11,25 @@ import marno.protocol.RMIConfig;
 import marno.protocol.RMIServerInterface;
 
 /**
- * Implementation of the Client class for RMI connection, with the RMI Client Interface
+ * The RMI implementation of the Marno client.
  */
 public class RMIClient extends Client implements RMIClientInterface {
 
     /**
-     * The unique number of the client session
+     * The unique ID of the client session.
      */
     private String sessionId;
+
     /**
-     * Link to the RMI server
+     * The RMI server currently connected to.
      */
     private RMIServerInterface stub;
 
     /**
-     * Constructor with the main GUI window, and create a reference object of this client
-     * @param window the main GUI window
+     * Ties the client to its GUI window, then exports this client as a remote
+     * RMI object, ready for the server to use.
+     *
+     * @param window the client's main GUI window
      */
     public RMIClient(ClientGUI window) {
         super(window);
@@ -39,11 +42,11 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * Launch a connection with the server, at the host with the port number.
-     * Launch two threads too, one to receive informations, and another to ping-pong
+     * Initiates a connection with the specified server.
+     *
      * @param host the hostname of the server
      * @param port the port number of the server
-     * @throws Exception raise an exception if connection fail
+     * @throws Exception if the connection fails
      */
     @Override
     public void connect(String host, String port) throws Exception {
@@ -59,10 +62,11 @@ public class RMIClient extends Client implements RMIClientInterface {
             // Handle invalid username
         }
     }
-    
+
     /**
-     * Close the connection with the server
-     * @throws Exception raise an exception if a problem appear
+     * Closes the connection with the server.
+     *
+     * @throws Exception if the client is unable to cleanly disconnect
      */
     @Override
     public void disconnect() throws Exception {
@@ -70,9 +74,10 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * Send a message to all people of the server with the output stream
-     * @param message the message to sent
-     * @throws RemoteException raise an exception if a problem appear
+     * Sends a public message to the server.
+     *
+     * @param message the contents of the message
+     * @throws RemoteException if an error occurs
      */
     @Override
     public void sendMessageToServer(String message) throws RemoteException {
@@ -80,10 +85,11 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * Send a private message to an user at the server
-     * @param username the user who receive the message
-     * @param message the message to sent
-     * @throws Exception raise an exception if a problem appear
+     * Sends a private message to another client connected to the server.
+     *
+     * @param username the username of the intended recipient
+     * @param message the contents of the message
+     * @throws Exception if an error occurs
      */
     @Override
     void sendPrivateMessageToServer(String username, String message)
@@ -92,10 +98,11 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * Receive a message from the server and add to the chat
+     * Receives a message from the server and adds it to the chat box.
+     *
      * @param date date of emission of the message
-     * @param message the content text
-     * @throws RemoteException raise an exception if a problem appear
+     * @param message the message's contents
+     * @throws RemoteException if an error occurs
      */
     @Override
     public void sendMessage(String date, String message)
@@ -104,9 +111,11 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * Receive the history of message (one by one) from the server and add to the chat
-     * @param history
-     * @throws RemoteException raise an exception if a problem appear
+     * Receives all previous messages received by the server and adds them to
+     * the chat box.
+     *
+     * @param history a list of messages in the history
+     * @throws RemoteException if an error occurs
      */
     @Override
     public void sendHistory(LinkedList<String> history)
@@ -115,11 +124,13 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * Receive a private message, and add it to the chat
+     * Receives a private message, and adds it to the chat (with special
+     * formatting).
+     *
      * @param date date of emission of the message
-     * @param username the user who send the private message
-     * @param message the content text of the private message
-     * @throws RemoteException raise an exception if a problem appear
+     * @param username the sender of the message
+     * @param message the contents of the message
+     * @throws RemoteException if an error occurs
      */
     @Override
     public void sendPrivateMessage(String date, String username, String message)
@@ -128,9 +139,9 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * Receive the user list of people actually connected to the server
-     * @param users
-     * @throws RemoteException raise an exception if a problem appear
+     * Receives the list of clients currently connected to the server.
+     * @param users the list of users connected to the server
+     * @throws RemoteException if an error occurs
      */
     @Override
     public void sendUserList(String[] users) throws RemoteException {
@@ -142,8 +153,12 @@ public class RMIClient extends Client implements RMIClientInterface {
     }
 
     /**
-     * Ping
-     * @throws RemoteException raise an exception if a problem appear
+     * Receives a ping from the server.
+     *
+     * Used by the server to check that the client is still alive. If the client
+     * has become unreachable, an exception will be raised on the server-side.
+     *
+     * @throws RemoteException if the client cannot be reached
      */
     @Override
     public void ping() throws RemoteException {

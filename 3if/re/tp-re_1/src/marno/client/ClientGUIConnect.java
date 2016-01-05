@@ -8,15 +8,15 @@ import javax.swing.JOptionPane;
 public class ClientGUIConnect extends javax.swing.JDialog {
 
     /**
-     * The main GUI window
+     * The client's main GUI window.
      */
     private final ClientGUI parent;
 
     /**
-     * Creates new form ClientGUIConnect, the window connection options
+     * Initializes the window from the ClientGUIConnect form's generated code.
      *
      * @param parent the main GUI window
-     * @param modal if the parent is clickable or not
+     * @param modal whether the parent is clickable or not
      */
     public ClientGUIConnect(ClientGUI parent, boolean modal) {
         super(parent, modal);
@@ -25,9 +25,8 @@ public class ClientGUIConnect extends javax.swing.JDialog {
 
         initComponents();
 
-        if (parent.client != null) {
+        if (parent.client != null)
             textFieldUsername.setText(parent.client.username);
-        }
         labelErrorConnection.setVisible(false);
     }
 
@@ -171,10 +170,11 @@ public class ClientGUIConnect extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Event in reaction to a click at the connection button :
-     *     try to instanciate and connect the client with the specified options,
-     *     and update the graphical elements
-     * @param evt the click
+     * Called when the connect button has been called.
+     *
+     * Tries to start a new client connection from the provided parameters.
+     *
+     * @param evt the click event
      */
     private void buttonConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConnectActionPerformed
         labelErrorConnection.setVisible(false);
@@ -184,16 +184,21 @@ public class ClientGUIConnect extends javax.swing.JDialog {
         } else if (radioButtonRmi.isSelected()) {
             parent.client = new RMIClient(parent);
         } else {
-            JOptionPane.showMessageDialog(null, "Please choice a connection type.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    null, "Please choose a connection type.", "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
             return;
         }
 
         parent.client.username = textFieldUsername.getText();
 
         try {
-            parent.client.connect(textFieldHost.getText(), textFieldPort.getText());
+            parent.client.connect(
+                    textFieldHost.getText(), textFieldPort.getText()
+            );
 
-            this.setVisible(false);
+            setVisible(false);
         } catch (Exception e) {
             System.err.println("[Client exception]: " + e.getMessage());
 
@@ -203,12 +208,8 @@ public class ClientGUIConnect extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_buttonConnectActionPerformed
 
-    /**
-     * Event in reaction to a click at the cancel button, to close the window
-     * @param evt the click
-     */
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
-        this.setVisible(false);
+        setVisible(false);
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     /**
