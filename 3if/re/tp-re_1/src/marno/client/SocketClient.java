@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import static marno.protocol.MarnoProtocol.ERROR_MESSAGES;
@@ -219,8 +221,14 @@ public class SocketClient extends Client implements Runnable {
                         JOptionPane.ERROR_MESSAGE
                 );
 
-                if (errorNumber == 1) { // Invalid username => disconnect
-                    window.disconnect();
+                if (errorNumber == 1) {
+                    // Invalid username => disconnect
+                    try {
+                        this.disconnect();
+                        window.disconnect();
+                    } catch (Exception e) {
+                         System.err.println("[Client exception]: " + e.getMessage());
+                    }
                 }
                 break;
 

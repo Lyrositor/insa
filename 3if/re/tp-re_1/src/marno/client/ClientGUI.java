@@ -104,10 +104,10 @@ public class ClientGUI extends javax.swing.JFrame {
         } else {
             try {
                 client.disconnect();
-
-                client = null;
             } catch (Exception e) {
                 System.err.println("[Client exception]: " + e.getMessage());
+            } finally {
+                client = null;
             }
         }
 

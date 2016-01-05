@@ -6,6 +6,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import static marno.protocol.MarnoProtocol.ERROR_MESSAGES;
 import marno.protocol.RMIClientInterface;
 import marno.protocol.RMIConfig;
 import marno.protocol.RMIServerInterface;
@@ -60,6 +62,12 @@ public class RMIClient extends Client implements RMIClientInterface {
             sessionId = stub.connect(username, this);
         } catch (RemoteException e) {
             // Handle invalid username
+            JOptionPane.showMessageDialog(
+                    null, ERROR_MESSAGES[1], "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            this.disconnect();
+            window.disconnect();
         }
     }
 
