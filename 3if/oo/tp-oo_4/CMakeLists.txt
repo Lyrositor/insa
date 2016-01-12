@@ -9,7 +9,18 @@ set(TP-OO4_FLAGS ${CC_COMMON_FLAGS} ${CXX_COMMON_FLAGS})
 set(TP-OO4_INCLUDES include)
 set(TP-OO4_MAIN src/main.cpp)
 set(TP-OO4_SOURCES
-        )
+        src/Canvas.cpp
+        src/ConvexPolygon.cpp
+        src/Editor.cpp
+        src/Figure.cpp
+        src/FigureGroup.cpp
+        src/HistoryManager.cpp
+        src/Intersection.cpp
+        src/Polygon.cpp
+        src/Rectangle.cpp
+        src/Segment.cpp
+        src/Union.cpp
+        src/Vector2D.cpp)
 
 # Make the use of colors in terminal output optional
 if (TP-OO_MAP)
