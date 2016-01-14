@@ -1,6 +1,13 @@
-#include <list>
+#ifndef HISTORYMANAGER_H
+#define HISTORYMANAGER_H
 
-class Canvas;
+#include <list>
+#include "Canvas.h"
+
+struct HistoryEntry {
+    int type;
+    void* data;
+};
 
 class HistoryManager
 {
@@ -11,10 +18,7 @@ public:
 
 private:
     std::list<HistoryEntry> history;
-    std::iterator current;
+    //std::iterator current;
 };
 
-struct HistoryEntry {
-    int type;
-    void* data;
-};
+#endif

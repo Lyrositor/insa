@@ -1,6 +1,8 @@
+#ifndef EDITOR_H
+#define EDITOR_H
 
-class Canvas;
-class HistoryManager;
+#include "Canvas.h"
+#include "HistoryManager.h"
 
 class Editor
 {
@@ -14,3 +16,5 @@ private:
     Canvas* canvas;
     HistoryManager* historyMgr;
 };
+
+#endif
