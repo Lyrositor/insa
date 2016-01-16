@@ -1,18 +1,14 @@
-#ifndef VECTOR2D_h
-#define VECTOR2D_h
+#ifndef VECTOR2D_H
+#define VECTOR2D_H
 
-#include "Vector2D.h"
-
-using namespace std;
-
-class Vector2D
-{
-public:
-    Vector2D(int _x, int _y);
-    ~Vector2D();
+struct Vector2D {
+    Vector2D(long _x, long _y) : x(_x), y(_y) {};
 
     void serialize();
     void unserialize();
+
+    long x;
+    long y;
 };
 
-#endif
+#endif // VECTOR2D_H

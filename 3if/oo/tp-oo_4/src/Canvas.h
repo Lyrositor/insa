@@ -1,37 +1,42 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-#include <string>
-#include <list>
-#include <forward_list>
 #include <istream>
 #include <ostream>
+#include <string>
+#include <vector>
 #include <unordered_map>
-#include "Vector2D.h"
-//#include "Figure.h"
 
-using namespace std;
+#include "Vector2D.h"
+
+class Figure;
+class HistoryManager;
 
 class Canvas
 {
 public:
     Canvas();
     ~Canvas();
-    
-    void addSegment(string name, Vector2D point1, Vector2D point2);
-    void addRectangle(string name, Vector2D point1, Vector2D point2);
-    void addConvexPolygon(string name, list<Vector2D*> points);
-    void addUnion(string name, forward_list<string*> names);
-    void contains(string name, Vector2D point);
-    void deleteFigure(string name);
-    void move(string name, Vector2D delta);
-    void listing();
-    void load(istream input);
-    void save(ostream output);
+
+    bool addSegment(std::string name, Vector2D point1, Vector2D point2);
+    bool addRectangle(std::string name, Vector2D point1, Vector2D point2);
+    bool addConvexPolygon(std::string name, std::vector<Vector2D> points);
+    bool addUnion(std::string name, std::vector<std::string> names);
+    bool addIntersection(std::string name, std::vector<std::string> names);
+    bool contains(std::string name, Vector2D point);
+    bool deleteFigures(std::vector<std::string> name);
+    void move(std::string name, Vector2D delta);
+    bool undo();
+    bool redo();
+    void list();
+    bool load(std::istream& input);
+    bool save(std::ostream& output);
     void clear();
-    
+
 private:
-    //unordered_map<string, Figure*> figures;
+    std::unordered_map<std::string, Figure*> figures;
+    HistoryManager* historyMgr;
+
 };
 
 #endif
