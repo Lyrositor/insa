@@ -1,0 +1,20 @@
+$ORIGIN tplan.3if.
+$TTL 1H
+
+tplan.3if.  IN  SOA ns.tplan.3if.   admin@tplan.3if 2016011500  2H  1H  1W  1D
+
+tplan.3if.  IN  NS  ns
+gest        IN  NS  ns
+prod        IN  NS  ns
+
+ns      IN  A   192.168.0.23
+
+; Bord de chaîne
+controle-video1 IN  A   192.168.0.50
+controle-video2 IN  A   192.168.0.51
+controle-video3 IN  A   192.168.0.52
+controle-video4 IN  A   192.168.0.53
+
+responsable     IN  A   192.168.0.54
+serv-mes        IN  A   192.168.0.55
+serv-video      IN  A   192.168.0.56

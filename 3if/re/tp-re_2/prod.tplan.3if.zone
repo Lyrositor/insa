@@ -1,0 +1,20 @@
+$ORIGIN gest.tplan.3if.
+$TTL 1H
+
+prod.tplan.3if. IN  SOA ns.tplan.3if.   admin@tplan.3if 2016011502  2H  1H  1W  1D
+
+tplan.3if.      IN  NS  ns
+ns.tplan.3if.   IN  A   192.168.0.23
+
+; Atelier
+fabrication1    IN  A   192.168.0.34  
+fabrication2    IN  A   192.168.0.35   
+fabrication3    IN  A   192.168.0.36    
+fabrication4    IN  A   192.168.0.37
+fabrication5    IN  A   192.168.0.38
+fabrication6    IN  A   192.168.0.39
+
+usinage1        IN  A   192.168.0.40
+usinage2        IN  A   192.168.0.41
+
+superviseur     IN  A   192.168.0.42

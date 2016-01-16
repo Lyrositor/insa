@@ -1,0 +1,36 @@
+$ORIGIN gest.tplan.3if.
+$TTL 1H
+
+gest.tplan.3if. IN  SOA ns.tplan.3if.   admin@tplan.3if 2016011501  2H  1H  1W  1D
+
+tplan.3if.      IN  NS  ns
+ns.tplan.3if.   IN  A   192.168.0.23
+
+; Réseau de gestion
+partage1    IN  A   192.168.0.2
+partage2    IN  A   192.168.0.3
+partage3    IN  A   192.168.0.4
+partage4    IN  A   192.168.0.5
+partage5    IN  A   192.168.0.6
+partage6    IN  A   192.168.0.7
+partage7    IN  A   192.168.0.8
+partage8    IN  A   192.168.0.9
+partage9    IN  A   192.168.0.10
+
+portable1   IN  A   192.168.0.11
+portable2   IN  A   192.168.0.12
+portable3   IN  A   192.168.0.13
+portable4   IN  A   192.168.0.14
+portable5   IN  A   192.168.0.15
+portable6   IN  A   192.168.0.16
+
+cao-plm1    IN  A   192.168.0.17
+cao-plm2    IN  A   192.168.0.18
+cao-plm3    IN  A   192.168.0.19
+cao-plm4    IN  A   192.168.0.20
+
+copieur1    IN  A   192.168.0.21
+copieur2    IN  A   192.168.0.22
+
+sauv-impr   IN  A   192.168.0.24
+si          IN  A   192.168.0.25
