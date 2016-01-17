@@ -2,10 +2,7 @@
 #define POLYGON_H
 
 #include <list>
-
 #include "Vector2D.h"
-
-using namespace std;
 
 class Polygon
 {
@@ -17,7 +14,7 @@ protected:
     virtual void serializePoints();
 
 private:
-    list<Vector2D> points;
+    std::list<Vector2D> points;
 };
 
-#endif
+#endif // POLYGON_H

@@ -1,0 +1,2 @@
+#include "FigureGroup.h"
+

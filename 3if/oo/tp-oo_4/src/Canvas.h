@@ -39,4 +39,4 @@ private:
 
 };
 
-#endif
+#endif // CANVAS_H

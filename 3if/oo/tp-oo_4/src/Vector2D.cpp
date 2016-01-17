@@ -1,8 +1,8 @@
 #include "Vector2D.h"
 
-void Vector2D::serialize()
+std::string Vector2D::serialize()
 {
-
+    return std::to_string(x) + ";" + std::to_string(y);
 }
 
 void Vector2D::unserialize()
