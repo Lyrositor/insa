@@ -1,7 +1,8 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 
-#include <list>
+#include <vector>
+#include <string>
 
 #include "Figure.h"
 #include "Vector2D.h"
@@ -13,10 +14,14 @@ public:
 
 protected:
     virtual void addPoint(Vector2D point);
-    virtual void serializePoints();
+    virtual char getType() = 0;
+    virtual bool contains(Vector2D point) = 0;
+    virtual std::string serialize() = 0;
 
-private:
-    std::list<Vector2D> points;
+    void move(Vector2D delta);
+    std::string serializePoints();
+    
+    std::vector<Vector2D> points;
 };
 
 #endif // POLYGON_H

@@ -25,9 +25,9 @@ public:
     Figure* createCopy();
     virtual char getType() = 0;
 
-    virtual bool contains() = 0;
+    virtual bool contains(Vector2D point) = 0;
     virtual void move(Vector2D delta) = 0;
-    //virtual std::string serialize();
+    virtual std::string serialize() = 0;
     //Figure* unserialize();
 
 };
