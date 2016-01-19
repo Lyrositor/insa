@@ -19,11 +19,11 @@ MAIN = src/main.cpp
 
 LIBS = -lboost_regex
 LIBPATH =
-INCPATH = include
+INCPATH = $(INCFLAG)include 
 
 BIN = $(BUILD)/tp-oo_3
 MK_D = @mkdir -p $(@D)
-MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@ $(INCFLAG)$(INCPATH) $(DEFINITIONS) $(LIBS)
+MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@ $(INCPATH) $(DEFINITIONS) $(LIBS)
 
 ALL = all
 CLEAN = clean
@@ -37,7 +37,7 @@ $(CLEAN):
 
 $(BIN): $(OBJ) $(MAIN)
 	$(MK_D)
-	$(CXX) $(CXXFLAGS) $^ $(OUTPUT) $@ $(INCFLAG)$(INCPATH) $(DEFINITIONS) $(LIBS)
+	$(CXX) $(CXXFLAGS) $^ $(OUTPUT) $@ $(INCPATH) $(DEFINITIONS) $(LIBS)
 
 $(BUILD)/src/ConfigReader.o: src/ConfigReader.cpp src/ConfigReader.h
 	$(MK_D)

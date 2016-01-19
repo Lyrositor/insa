@@ -6,7 +6,7 @@ set(TP-OO4_BIN tp-oo_4)
 set(TP-OO4_BIN_DIR bin)
 set(TP-OO4_DEFINITIONS)
 set(TP-OO4_FLAGS ${CC_COMMON_FLAGS} ${CXX_COMMON_FLAGS})
-set(TP-OO4_INCLUDES include)
+set(TP-OO4_INCLUDES)
 set(TP-OO4_MAIN src/main.cpp)
 set(TP-OO4_SOURCES
         src/Canvas.cpp

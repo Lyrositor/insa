@@ -50,7 +50,7 @@ endif (CMAKE_COMPILER_IS_GNUCXX)
 
 # Define a function for automatic generation of a simpler makefile
 function (create_makefile
-        FILENAME BIN BUILD SRC_ MAIN CXXFLAGS_ DEFINITIONS_ INCLUDE LIBS
+        FILENAME BIN BUILD SRC_ MAIN CXXFLAGS_ DEFINITIONS_ INCLUDE_ LIBS
         WORKING_DIR)
     message(STATUS "Creating makefile for ${BIN}")
 
@@ -69,6 +69,11 @@ function (create_makefile
     list(REMOVE_DUPLICATES DEFINITIONS_)
     list(SORT DEFINITIONS_)
     string(REPLACE ";" " " DEFINITIONS "${DEFINITIONS_}")
+
+    foreach (INC ${INCLUDE_})
+        string(REPLACE ${INC} "$(INCFLAG)${INC} " I_INC ${INC})
+        string(CONCAT INCLUDE ${I_INC})
+    endforeach (INC)
 
     string(CONFIGURE ${MAKEFILE} MAKEFILE @ONLY)
 

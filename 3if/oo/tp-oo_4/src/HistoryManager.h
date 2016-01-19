@@ -15,10 +15,12 @@ struct HistoryEntry
     static const char MOVE = 'M';
     static const char GROUP = 'G';
 
-    HistoryEntry(char op) : operation(op) {}
     virtual ~HistoryEntry() {}
 
     char operation;
+
+protected:
+    HistoryEntry(char op) : operation(op) {}
 };
 
 typedef std::vector<HistoryEntry*> History;
