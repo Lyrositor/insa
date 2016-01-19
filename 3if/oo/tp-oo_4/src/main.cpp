@@ -3,7 +3,7 @@
 
 #include "Editor.h"
 
-int main(int argc, char* argv[])
+int main()
 {
     // Disable synchronization with the C IO library to speed up input and
     // output.
@@ -16,6 +16,6 @@ int main(int argc, char* argv[])
         std::cerr << "[FATAL] " << e.what() << std::endl;
         return 1;
     }
-    
+
     return 0;
 }

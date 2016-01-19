@@ -181,8 +181,7 @@ CMD_RET Editor::handleInput(std::vector<std::string> & cmd)
             coords[i] = strtol(cmd[i + 2].c_str(), NULL, 0);
         Vector2D point = Vector2D(coords[0], coords[1]);
 
-        canvas->move(cmd[1], point);
-        return OK;
+        return canvas->move(cmd[1], point) ? OK : ERR;
     }
 
     // List all figures

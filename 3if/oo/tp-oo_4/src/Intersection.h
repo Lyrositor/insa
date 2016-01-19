@@ -1,10 +1,12 @@
 #ifndef INTERSECTION_H
 #define INTERSECTION_H
 
-class Intersection
+#include "FigureGroup.h"
+
+class Intersection : public FigureGroup
 {
-    
-    
+
+
 };
 
 #endif // INTERSECTION_H

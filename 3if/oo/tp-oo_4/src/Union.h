@@ -1,10 +1,12 @@
 #ifndef UNION_H
 #define UNION_H
 
-class Union
+#include "FigureGroup.h"
+
+class Union : public FigureGroup
 {
-    
-    
+
+
 };
 
 #endif // UNION_H

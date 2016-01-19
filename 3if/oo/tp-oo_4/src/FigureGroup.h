@@ -1,9 +1,11 @@
 #ifndef FIGUREGROUP_H
 #define FIGUREGROUP_H
 
-class FigureGroup
+#include "Figure.h"
+
+class FigureGroup : public Figure
 {
-    
+
 };
 
 #endif // FIGUREGROUP_H

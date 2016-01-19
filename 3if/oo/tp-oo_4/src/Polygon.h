@@ -2,9 +2,11 @@
 #define POLYGON_H
 
 #include <list>
+
+#include "Figure.h"
 #include "Vector2D.h"
 
-class Polygon
+class Polygon : public Figure
 {
 public:
     Polygon();

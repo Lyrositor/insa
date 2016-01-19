@@ -16,6 +16,7 @@ struct HistoryEntry
     static const char GROUP = 'G';
 
     HistoryEntry(char op) : operation(op) {}
+    virtual ~HistoryEntry() {}
 
     char operation;
 };
@@ -44,10 +45,10 @@ struct MoveEntry : public HistoryEntry
 
 struct GroupEntry : public HistoryEntry
 {
-    GroupEntry(std::vector<Figure*> g) : HistoryEntry(GROUP), group(g) {}
+    GroupEntry(std::vector<HistoryEntry*> g) : HistoryEntry(GROUP), group(g) {}
     ~GroupEntry();
 
-    std::vector<Figure*> group;
+    std::vector<HistoryEntry*> group;
 };
 
 class HistoryManager
@@ -61,7 +62,8 @@ public:
     bool undo(Canvas* canvas);
 
 private:
-    bool doEntry(HistoryEntry* entry, bool redo);
+    void clearEntries(History::iterator start);
+    bool doEntry(Canvas* canvas, HistoryEntry* entry, bool doRedo);
 
     History history;
     History::iterator current;
