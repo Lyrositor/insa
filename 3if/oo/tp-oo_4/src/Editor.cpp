@@ -163,10 +163,10 @@ CMD_RET Editor::handleInput(std::vector<std::string> & cmd)
     // Delete any number of figures
     else if (cmd[0] == CMD_DELETE)
     {
-        if (cmd.size() < 3)
+        if (cmd.size() < 2)
             return ERR;
 
-        std::vector<std::string> names(cmd.begin() + 2, cmd.end());
+        std::vector<std::string> names(cmd.begin() + 1, cmd.end());
         return canvas->deleteFigures(names) ? OK : ERR;
     }
 

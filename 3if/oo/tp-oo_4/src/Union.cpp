@@ -1,23 +1,21 @@
 #include "Union.h"
 
-Union::Union(std::vector<Figure*> _figures)
+bool Union::contains(const Vector2D& point) const
 {
-    figures = _figures;
-}
-
-bool Union::contains(Vector2D point)
-{
-    for(std::vector<Figure*>::iterator it = figures.begin(); it != figures.end(); ++it)
-    {
-        if((*it)->contains(point))
-        {
+    for (auto&& figure : figures)
+        if (figure->contains(point))
             return true;
-        }
-    }
+
     return false;
 }
 
-std::string Union::serialize()
+std::ostream &operator<<(std::ostream& os, const Union* un)
 {
-    return std::string(1, getType()) + ' ' + serializeFigures();
+    return un->serializeFigures(os);
+}
+
+std::istream &operator>>(std::istream& is, Union*& un)
+{
+    un = new Union(FigureGroup::unserializeFigures(is));
+    return is;
 }

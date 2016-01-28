@@ -1,8 +1,9 @@
 #ifndef SEGMENT_H
 #define SEGMENT_H
 
-#include <string>
 #include <istream>
+#include <ostream>
+#include <string>
 
 #include "Polygon.h"
 #include "Vector2D.h"
@@ -10,25 +11,15 @@
 class Segment : public Polygon
 {
 public:
-    Segment(Vector2D point1, Vector2D point2);
-    
-    char getType()
-    {
-        return SEGMENT;
-    }
-    bool contains(Vector2D point);
-    std::string serialize();
-    static Segment unserialize(std::istream is)
-    {
-        long x, y;
-        char c;
-        is >> x >> c >> y;
-        Vector2D a(x, y);
-        is >> x >> c >> y;
-        Vector2D b(x, y);
-        
-        return Segment(a, b);
-    }
+    Segment(const Vector2D& point1, const Vector2D& point2) :
+            Polygon({point1, point2}) {};
+
+    bool contains(const Vector2D& point) const;
+    char getType() const { return SEGMENT; }
+
+    friend std::ostream& operator<<(std::ostream& os, const Segment* segment);
+    friend std::istream& operator>>(std::istream& is, Segment*& segment);
+
 };
 
 #endif // SEGMENT_H

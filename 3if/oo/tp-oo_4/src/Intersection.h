@@ -1,27 +1,25 @@
 #ifndef INTERSECTION_H
 #define INTERSECTION_H
 
-#include <vector>
-#include <string>
 #include <istream>
+#include <string>
+#include <vector>
 
 #include "FigureGroup.h"
 
 class Intersection : public FigureGroup
 {
 public:
-    Intersection(std::vector<Figure*> _figures);
+    Intersection() {}
+    Intersection(std::vector<Figure*> _figures) : FigureGroup(_figures) {}
+    Intersection(const Intersection& otherInter) : FigureGroup(otherInter) {}
 
-    char getType()
-    {
-        return INTERSECTION;
-    }
-    bool contains(Vector2D point);
-    std::string serialize();
-    static Intersection unserialize(std::istream is)
-    {
-        //return Intersection();
-    }
+    virtual bool contains(const Vector2D& point) const;
+    char getType() const { return INTERSECTION; }
+
+    friend std::ostream& operator<<(std::ostream& os, const Intersection* cp);
+    friend std::istream& operator>>(std::istream& is, Intersection*& cp);
+
 };
 
 #endif // INTERSECTION_H

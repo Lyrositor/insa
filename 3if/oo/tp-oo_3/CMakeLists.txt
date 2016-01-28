@@ -41,7 +41,7 @@ set_target_properties(${TP-OO3_BIN} PROPERTIES
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost 1.50.0 REQUIRED COMPONENTS regex)
+find_package(Boost 1.50.0 COMPONENTS regex)
 if (Boost_FOUND)
     list(APPEND TP-OO3_DEFINITIONS -DUSE_BOOST)
     include_directories(${Boost_INCLUDE_DIRS})

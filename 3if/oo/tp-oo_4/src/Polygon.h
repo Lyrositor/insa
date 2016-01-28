@@ -1,8 +1,9 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 
-#include <vector>
+#include <ostream>
 #include <string>
+#include <vector>
 
 #include "Figure.h"
 #include "Vector2D.h"
@@ -10,17 +11,18 @@
 class Polygon : public Figure
 {
 public:
-    Polygon();
+    Polygon(const std::vector<Vector2D>& _points) : points(_points) {};
+
+    virtual char getType() const = 0;
+
+    virtual bool contains(const Vector2D& point) const = 0;
+    void move(const Vector2D& delta);
+    std::ostream& serializePoints(std::ostream& os) const;
+    static std::vector<Vector2D> unserializePoints(std::istream& is);
 
 protected:
-    virtual void addPoint(Vector2D point);
-    virtual char getType() = 0;
-    virtual bool contains(Vector2D point) = 0;
-    virtual std::string serialize() = 0;
+    virtual void addPoint(const Vector2D& point);
 
-    void move(Vector2D delta);
-    std::string serializePoints();
-    
     std::vector<Vector2D> points;
 };
 

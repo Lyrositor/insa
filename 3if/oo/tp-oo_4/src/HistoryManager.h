@@ -56,7 +56,7 @@ struct GroupEntry : public HistoryEntry
 class HistoryManager
 {
 public:
-    HistoryManager() : current(history.begin()) {}
+    HistoryManager() : current(0) { }
     ~HistoryManager();
 
     void addEntry(HistoryEntry* entry);
@@ -64,11 +64,11 @@ public:
     bool undo(Canvas* canvas);
 
 private:
-    void clearEntries(History::iterator start);
+    void clearEntries(History::size_type start);
     bool doEntry(Canvas* canvas, HistoryEntry* entry, bool doRedo);
 
     History history;
-    History::iterator current;
+    History::size_type current;
 };
 
 #endif // HISTORY_MANAGER_H

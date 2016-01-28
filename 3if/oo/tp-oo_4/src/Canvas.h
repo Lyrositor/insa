@@ -7,10 +7,10 @@
 #include <vector>
 #include <unordered_map>
 
+#include "HistoryManager.h"
 #include "Vector2D.h"
 
 class Figure;
-class HistoryManager;
 
 class Canvas
 {

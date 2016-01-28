@@ -1,27 +1,25 @@
 #ifndef UNION_H
 #define UNION_H
 
-#include <vector>
-#include <string>
 #include <istream>
+#include <string>
+#include <vector>
 
 #include "FigureGroup.h"
 
 class Union : public FigureGroup
 {
 public:
-    Union(std::vector<Figure*> _figures);
+    Union() : FigureGroup() {}
+    Union(std::vector<Figure*> _figures) : FigureGroup(_figures) {}
+    Union(const Union& otherUnion) : FigureGroup(otherUnion) {}
 
-    char getType()
-    {
-        return UNION;
-    }
-    bool contains(Vector2D point);
-    std::string serialize();
-    static Union unserialize(std::istream is)
-    {
-        //return Union();
-    }
+    virtual bool contains(const Vector2D& point) const;
+    char getType() const { return UNION; }
+
+    friend std::ostream& operator<<(std::ostream& os, const Union* cp);
+    friend std::istream& operator>>(std::istream& is, Union*& cp);
+
 };
 
 #endif // UNION_H

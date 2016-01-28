@@ -1,14 +1,10 @@
 #ifndef FIGURE_H
 #define FIGURE_H
 
-#include <string>
-#include "Vector2D.h"
+#include <istream>
+#include <ostream>
 
-class ConvexPolygon;
-class Intersection;
-class Rectangle;
-class Segment;
-class Union;
+#include "Vector2D.h"
 
 class Figure
 {
@@ -21,15 +17,18 @@ public:
 
     virtual ~Figure() = default;
 
-    template<class T> T* as() { return static_cast<T*>(this); };
-    Figure* createCopy();
-    virtual char getType() = 0;
+    template<class T> const T* as() const
+    {
+        return static_cast<const T*>(this);
+    }
+    Figure* createCopy() const;
+    virtual char getType() const = 0;
 
-    virtual bool contains(Vector2D point) = 0;
-    virtual void move(Vector2D delta) = 0;
-    virtual std::string serialize() = 0;
-    //Figure* unserialize();
+    virtual bool contains(const Vector2D& point) const = 0;
+    virtual void move(const Vector2D& delta) = 0;
 
+    friend std::ostream& operator<<(std::ostream& os, const Figure* figure);
+    friend std::istream& operator>>(std::istream& is, Figure*& figure);
 };
 
 #endif // FIGURE_H

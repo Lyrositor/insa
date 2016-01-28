@@ -1,8 +1,9 @@
 #ifndef CONVEX_POLYGON_H
 #define CONVEX_POLYGON_H
 
-#include <vector>
 #include <istream>
+#include <ostream>
+#include <vector>
 
 #include "Polygon.h"
 #include "Vector2D.h"
@@ -10,29 +11,14 @@
 class ConvexPolygon : public Polygon
 {
 public:
-    ConvexPolygon(std::vector<Vector2D> _points);
-    
+    ConvexPolygon(const std::vector<Vector2D>& _points) : Polygon(_points) {};
+
     void appendPoint(const Vector2D& point);
-    char getType()
-    {
-        return CONVEX_POLYGON;
-    }
-    bool contains(Vector2D point);
-    std::string serialize();
-    static ConvexPolygon unserialize(std::istream is)
-    {
-        long x, y;
-        char c;
-        std::vector<Vector2D> points;
-        while(is)
-        {
-            is >> x >> c >> y;
-            Vector2D p(x, y);
-            points.push_back(p);
-        }
-        
-        return ConvexPolygon(points);
-    }
+    bool contains(const Vector2D& point) const;
+    char getType() const { return CONVEX_POLYGON; };
+
+    friend std::ostream& operator<<(std::ostream& os, const ConvexPolygon* cp);
+    friend std::istream& operator>>(std::istream& is, ConvexPolygon*& cp);
 };
 
 #endif // CONVEX_POLYGON_H

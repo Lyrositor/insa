@@ -10,14 +10,19 @@
 class FigureGroup : public Figure
 {
 public:
-    virtual char getType() = 0;
-    virtual bool contains(Vector2D point) = 0;
-    virtual void move(Vector2D delta);
-    virtual std::string serialize() = 0;
-    
-    std::string serializeFigures();
+    FigureGroup() {}
+    FigureGroup(std::vector<Figure*> _figures) : figures(_figures) {};
+    FigureGroup(const FigureGroup& otherFigureGroup);
+    virtual ~FigureGroup();
+
+    virtual bool contains(const Vector2D& point) const = 0;
+    virtual char getType() const = 0;
+    virtual void move(const Vector2D& delta);
+
     void addFigure(Figure* figure);
-    
+    std::ostream& serializeFigures(std::ostream& os) const;
+    static std::vector<Figure*> unserializeFigures(std::istream& is);
+
 protected:
     std::vector<Figure*> figures;
 };

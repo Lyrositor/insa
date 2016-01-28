@@ -1,23 +1,21 @@
 #include "Intersection.h"
 
-Intersection::Intersection(std::vector<Figure*> _figures)
+bool Intersection::contains(const Vector2D& point) const
 {
-    figures = _figures;
-}
-
-bool Intersection::contains(Vector2D point)
-{
-    for(std::vector<Figure*>::iterator it = figures.begin(); it != figures.end(); ++it)
-    {
-        if(!((*it)->contains(point)))
-        {
+    for (auto&& figure : figures)
+        if (!figure->contains(point))
             return false;
-        }
-    }
+
     return true;
 }
 
-std::string Intersection::serialize()
+std::ostream &operator<<(std::ostream& os, const Intersection* inter)
 {
-    return std::string(1, getType()) + ' ' + serializeFigures();
+    return inter->serializeFigures(os);
+}
+
+std::istream &operator>>(std::istream& is, Intersection*& inter)
+{
+    inter = new Intersection(FigureGroup::unserializeFigures(is));
+    return is;
 }

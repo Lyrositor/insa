@@ -27,8 +27,8 @@ bool Canvas::addSegment(
     if (figures.count(name))
         return false;
 
-    //Segment* figure = new Segment(point1, point2);
-    //addFigure(name, figure, new Segment(*figure));
+    Segment* figure = new Segment(point1, point2);
+    addFigure(name, figure, new Segment(*figure));
     return true;
 }
 
@@ -38,8 +38,8 @@ bool Canvas::addRectangle(
     if (figures.count(name))
         return false;
 
-    //Rectangle* figure = new Rectangle(point1, point2);
-    //addFigure(name, figure, new Rectangle(*figure));
+    Rectangle* figure = new Rectangle(point1, point2);
+    addFigure(name, figure, new Rectangle(*figure));
     return true;
 }
 
@@ -49,8 +49,8 @@ bool Canvas::addConvexPolygon(
     if (figures.count(name))
         return false;
 
-    //ConvexPolygon* figure = new ConvexPolygon(points);
-    //addFigure(name, figure, new ConvexPolygon(*figure));
+    ConvexPolygon* figure = new ConvexPolygon(points);
+    addFigure(name, figure, new ConvexPolygon(*figure));
     return true;
 }
 
@@ -60,18 +60,18 @@ bool Canvas::addUnion(
     if (figures.count(name))
         return false;
 
-    /*Union* figure = new Union();
+    Union* figure = new Union();
     try
     {
-        //for (const std::string& n : names)
-        //    figure->addFigure(figures.at(name));
+        for (const std::string& n : names)
+            figure->addFigure(figures.at(n));
     }
     catch (std::out_of_range& e)
     {
         delete figure;
         return false;
     }
-    addFigure(name, figure, new Union(*figure));*/
+    addFigure(name, figure, new Union(*figure));
     return true;
 }
 
@@ -81,18 +81,18 @@ bool Canvas::addIntersection(
     if (figures.count(name))
         return false;
 
-    /*Intersection* figure = new Intersection();
+    Intersection* figure = new Intersection();
     try
     {
-        //for (const std::string& n : names)
-        //    figure->addFigure(figures.at(name));
+        for (const std::string& n : names)
+            figure->addFigure(figures.at(n));
     }
     catch (std::out_of_range& e)
     {
         delete figure;
         return false;
     }
-    addFigure(name, figure, new Intersection(*figure));*/
+    addFigure(name, figure, new Intersection(*figure));
     return true;
 }
 
@@ -100,8 +100,7 @@ bool Canvas::contains(const std::string& name, const Vector2D& point) const
 {
     if (!figures.count(name))
         return false;
-    //return figures[name]->contains(point);
-    return true;
+    return figures.at(name)->contains(point);
 }
 
 bool Canvas::deleteFigures(const std::vector<std::string>& names)
@@ -118,14 +117,14 @@ bool Canvas::move(const std::string& name, const Vector2D& delta)
 {
     if (!figures.count(name))
         return false;
-    //figures[name]->move(delta);
+    figures[name]->move(delta);
     return true;
 }
 
 void Canvas::list() const
 {
-    //for (fig_ptr figure : figures)
-    //    std::cout << figure->serialize() << std::endl;
+    for (auto&&  figure : figures)
+        std::cout << figure.first << ' ' << figure.second << std::endl;
 }
 
 bool Canvas::undo()
@@ -140,52 +139,30 @@ bool Canvas::redo()
 
 bool Canvas::load(std::istream& input)
 {
-    std::string name, parameters;
-    char type;
-    while (input >> name >> type)
+    std::string name;
+    while (input >> name)
     {
-        switch (type)
-        {
-            case Figure::SEGMENT:
-                //addFigure(name, Segment::unserialize(input));
-                break;
-
-            case Figure::RECTANGLE:
-                //addFigure(name, Rectangle::unserialize(input));
-                break;
-
-            case Figure::CONVEX_POLYGON:
-                //addFigure(name, ConvexPolygon::unserialize(input));
-                break;
-
-            case Figure::UNION:
-                //addFigure(name, Union::unserialize(input));
-                break;
-
-            case Figure::INTERSECTION:
-                //addFigure(name, Intersection::unserialize(input));
-                break;
-
-            default:
-                return false;
-        }
+        Figure* figure;
+        input >> figure;
+        addFigure(name, figure);
     }
     return true;
 }
 
 bool Canvas::save(std::ostream& output) const
 {
-    /*for (auto figure : figures)
-        output << figure.first << " " << figure.second->serialize() <<
-                std::endl;*/
+    for (auto&& figure : figures)
+        output << figure.first << ' '<< figure.second << std::endl;
     return true;
 }
 
 void Canvas::clear()
 {
     std::vector<HistoryEntry*> entries;
-    for (auto figure : figures)
-        entries.push_back(new FigureEntry(figure.first, figure.second, true));
+    for (auto&& figure : figures)
+        entries.push_back(new FigureEntry(
+                figure.first, figure.second->createCopy(), true
+        ));
     figures.clear();
     historyMgr->addEntry(
             new GroupEntry(entries)

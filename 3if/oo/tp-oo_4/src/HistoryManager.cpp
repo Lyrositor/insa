@@ -1,6 +1,5 @@
 #include "Canvas.h"
 #include "ConvexPolygon.h"
-#include "HistoryManager.h"
 
 GroupEntry::~GroupEntry()
 {
@@ -17,34 +16,32 @@ HistoryManager::~HistoryManager()
 void HistoryManager::addEntry(HistoryEntry* entry)
 {
     // Discard any previous future actions.
-    if (current != history.end())
+    if (current != history.size())
         clearEntries(current);
 
     history.push_back(entry);
-    current = history.end();
+    current++;
 }
 
 bool HistoryManager::redo(Canvas* canvas)
 {
-    if (current == history.end())
+    if (current == history.size())
         return false;
-    current++;
-    return doEntry(canvas, *current, true);
+    return doEntry(canvas, history[current++], true);
 }
 
 bool HistoryManager::undo(Canvas* canvas)
 {
-    if (current == history.begin())
+    if (current == 0)
         return false;
-    current--;
-    return doEntry(canvas, *current, false);
+    return doEntry(canvas, history[--current], false);
 }
 
-void HistoryManager::clearEntries(History::iterator start)
+void HistoryManager::clearEntries(History::size_type start)
 {
-    for (History::iterator it = start; it != history.end(); it++)
-        delete *it;
-    history.erase(start, history.end());
+    for (History::size_type i = start, s = history.size(); i < s; i++)
+        delete history[i];
+    history.erase(history.begin() + start, history.end());
 }
 
 bool HistoryManager::doEntry(Canvas* canvas, HistoryEntry* entry, bool doRedo)
