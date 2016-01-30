@@ -43,16 +43,16 @@ void Editor::run()
         cmd.clear();
         char c;
         std::string item;
-        while (std::cin.get(c))
+        for (;;)
         {
-            if (c == DELIM || c == '\n')
+            if (!std::cin.get(c) || c == DELIM || c == '\n')
             {
                 if (!item.empty())
                 {
                     cmd.push_back(item);
                     item.clear();
                 }
-                if (c == '\n')
+                if (c != DELIM)
                     break;
             }
             else
