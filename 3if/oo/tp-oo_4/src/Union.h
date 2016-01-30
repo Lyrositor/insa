@@ -2,6 +2,7 @@
 #define UNION_H
 
 #include <istream>
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -11,8 +12,8 @@ class Union : public FigureGroup
 {
 public:
     Union() : FigureGroup() {}
-    Union(std::vector<Figure*> _figures) : FigureGroup(_figures) {}
-    Union(const Union& otherUnion) : FigureGroup(otherUnion) {}
+    Union(std::vector<Figure*>& _figures) : FigureGroup(_figures) {}
+    Union(const Union& anUnion) : FigureGroup(anUnion) {}
 
     virtual bool contains(const Vector2D& point) const;
     char getType() const { return UNION; }

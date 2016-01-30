@@ -7,10 +7,9 @@ std::ostream& Vector2D::serialize(std::ostream& os) const
 
 Vector2D Vector2D::unserialize(std::istream& is)
 {
-    char c;
     long x, y;
     std::string temp;
-    is >> c;
+    is.ignore(1);
     std::getline(is, temp, ';');
     x = std::stoi(temp);
     std::getline(is, temp, ')');

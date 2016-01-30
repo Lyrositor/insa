@@ -2,6 +2,7 @@
 #define INTERSECTION_H
 
 #include <istream>
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -10,9 +11,9 @@
 class Intersection : public FigureGroup
 {
 public:
-    Intersection() {}
-    Intersection(std::vector<Figure*> _figures) : FigureGroup(_figures) {}
-    Intersection(const Intersection& otherInter) : FigureGroup(otherInter) {}
+    Intersection() : FigureGroup() {}
+    Intersection(std::vector<Figure*>& _figures) : FigureGroup(_figures) {}
+    Intersection(const Intersection& inter) : FigureGroup(inter) {}
 
     virtual bool contains(const Vector2D& point) const;
     char getType() const { return INTERSECTION; }

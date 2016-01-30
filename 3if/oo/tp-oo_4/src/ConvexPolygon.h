@@ -13,7 +13,6 @@ class ConvexPolygon : public Polygon
 public:
     ConvexPolygon(const std::vector<Vector2D>& _points) : Polygon(_points) {};
 
-    void appendPoint(const Vector2D& point);
     bool contains(const Vector2D& point) const;
     char getType() const { return CONVEX_POLYGON; };
 

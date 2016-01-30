@@ -1,6 +1,8 @@
 #ifndef FIGUREGROUP_H
 #define FIGUREGROUP_H
 
+#include <istream>
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -11,8 +13,9 @@ class FigureGroup : public Figure
 {
 public:
     FigureGroup() {}
-    FigureGroup(std::vector<Figure*> _figures) : figures(_figures) {};
-    FigureGroup(const FigureGroup& otherFigureGroup);
+    FigureGroup(std::vector<Figure*>& _figures) : figures(_figures) {};
+    FigureGroup(const FigureGroup& figureGroup);
+    FigureGroup& operator=(const FigureGroup& figureGroup);
     virtual ~FigureGroup();
 
     virtual bool contains(const Vector2D& point) const = 0;

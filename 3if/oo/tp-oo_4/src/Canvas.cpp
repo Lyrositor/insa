@@ -16,7 +16,7 @@ Canvas::Canvas()
 
 Canvas::~Canvas()
 {
-    for (auto figure : figures)
+    for (auto&& figure : figures)
         delete figure.second;
     delete historyMgr;
 }
@@ -27,8 +27,7 @@ bool Canvas::addSegment(
     if (figures.count(name))
         return false;
 
-    Segment* figure = new Segment(point1, point2);
-    addFigure(name, figure, new Segment(*figure));
+    addFigure(name, new Segment(point1, point2));
     return true;
 }
 
@@ -38,8 +37,7 @@ bool Canvas::addRectangle(
     if (figures.count(name))
         return false;
 
-    Rectangle* figure = new Rectangle(point1, point2);
-    addFigure(name, figure, new Rectangle(*figure));
+    addFigure(name, new Rectangle(point1, point2));
     return true;
 }
 
@@ -49,8 +47,7 @@ bool Canvas::addConvexPolygon(
     if (figures.count(name))
         return false;
 
-    ConvexPolygon* figure = new ConvexPolygon(points);
-    addFigure(name, figure, new ConvexPolygon(*figure));
+    addFigure(name, new ConvexPolygon(points));
     return true;
 }
 
@@ -64,14 +61,14 @@ bool Canvas::addUnion(
     try
     {
         for (const std::string& n : names)
-            figure->addFigure(figures.at(n));
+            figure->addFigure(figures.at(n)->createCopy());
     }
     catch (std::out_of_range& e)
     {
         delete figure;
         return false;
     }
-    addFigure(name, figure, new Union(*figure));
+    addFigure(name, figure);
     return true;
 }
 
@@ -85,14 +82,14 @@ bool Canvas::addIntersection(
     try
     {
         for (const std::string& n : names)
-            figure->addFigure(figures.at(n));
+            figure->addFigure(figures.at(n)->createCopy());
     }
     catch (std::out_of_range& e)
     {
         delete figure;
         return false;
     }
-    addFigure(name, figure, new Intersection(*figure));
+    addFigure(name, figure);
     return true;
 }
 
@@ -123,7 +120,7 @@ bool Canvas::move(const std::string& name, const Vector2D& delta)
 
 void Canvas::list() const
 {
-    for (auto&&  figure : figures)
+    for (auto&& figure : figures)
         std::cout << figure.first << ' ' << figure.second << std::endl;
 }
 
@@ -144,7 +141,7 @@ bool Canvas::load(std::istream& input)
     {
         Figure* figure;
         input >> figure;
-        addFigure(name, figure);
+        addFigure(name, figure, false);
     }
     return true;
 }
@@ -170,11 +167,13 @@ void Canvas::clear()
 }
 
 void Canvas::addFigure(
-        const std::string& name, Figure* figure, Figure* historyFigure
+        const std::string& name, Figure* figure, bool withHistoryEntry
 ) {
     figures[name] = figure;
-    if (historyFigure != nullptr)
-        historyMgr->addEntry(new FigureEntry(name, historyFigure, false));
+    if (withHistoryEntry)
+        historyMgr->addEntry(
+                new FigureEntry(name, figure->createCopy(), false)
+        );
 }
 
 void Canvas::deleteFigure(const std::string& name, bool withHistoryEntry)

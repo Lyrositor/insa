@@ -4,9 +4,11 @@
 
 bool Segment::contains(const Vector2D& point) const
 {
-    float AB = sqrt((points[1].x - points[0].x) * (points[1].x - points[0].x) + (points[1].y - points[0].y) * (points[1].y - points[0].y));
-    float AP = sqrt((point.x - points[0].x) * (point.x - points[0].x) + (point.y - points[0].y) * (point.y - points[0].y));
-    float PB = sqrt((points[1].x - point.x) * (points[1].x - point.x) + (points[1].y - point.y) * (points[1].y - point.y));
+    double AB = sqrt(
+            pow(points[1].x-points[0].x, 2) + pow(points[1].y-points[0].y, 2)
+    );
+    double AP = sqrt(pow(point.x-points[0].x, 2) + pow(point.y-points[0].y, 2));
+    double PB = sqrt(pow(point.x-points[1].x, 2) + pow(point.y-points[1].y, 2));
     return AB == AP + PB;
 }
 

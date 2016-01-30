@@ -16,6 +16,7 @@ std::ostream &operator<<(std::ostream& os, const Intersection* inter)
 
 std::istream &operator>>(std::istream& is, Intersection*& inter)
 {
-    inter = new Intersection(FigureGroup::unserializeFigures(is));
+    std::vector<Figure*> figures = FigureGroup::unserializeFigures(is);
+    inter = new Intersection(figures);
     return is;
 }

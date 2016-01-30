@@ -1,21 +1,17 @@
 #include "FigureGroup.h"
 
-/*std::string FigureGroup::serializeFigures()
-{
-    std::string line = "";
-    for(std::vector<Figure*>::iterator it = figures.begin(); it != figures.end(); ++it)
-    {
-        line += (*it)->serialize();
-    }
-    return line;
-}*/
-
 FigureGroup::FigureGroup(const FigureGroup& figureGroup)
 {
     for (Figure* figure : figureGroup.figures)
         addFigure(figure->createCopy());
 }
 
+FigureGroup& FigureGroup::operator=(const FigureGroup& figureGroup)
+{
+    for (Figure* figure : figureGroup.figures)
+        addFigure(figure->createCopy());
+    return *this;
+}
 
 FigureGroup::~FigureGroup()
 {

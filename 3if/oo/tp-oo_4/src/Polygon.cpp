@@ -1,13 +1,8 @@
 #include "Polygon.h"
 
-void Polygon::addPoint(const Vector2D& point)
-{
-    points.push_back(point);
-}
-
 void Polygon::move(const Vector2D& delta)
 {
-    for (auto&& point : points)
+    for (Vector2D& point : points)
     {
         point.x += delta.x;
         point.y += delta.y;

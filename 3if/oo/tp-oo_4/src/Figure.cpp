@@ -5,8 +5,6 @@
 #include "Segment.h"
 #include "Union.h"
 
-#include <iostream>
-
 Figure* Figure::createCopy() const
 {
     switch (getType())

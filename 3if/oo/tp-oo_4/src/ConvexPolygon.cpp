@@ -1,19 +1,14 @@
 #include "ConvexPolygon.h"
 
-void ConvexPolygon::appendPoint(const Vector2D& point)
-{
-    addPoint(point);
-}
-
 bool ConvexPolygon::contains(const Vector2D& p) const
 /* From:
     https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html */
 {
     bool result = false;
 
-    for(size_t i = 0, j = points.size() - 1; i < points.size(); j = i++)
+    for (size_t s = points.size(), i = 0, j = s - 1; i < s; j = i++)
     {
-        if((points[i].y > p.y) != (points[j].y > p.y) &&
+        if ((points[i].y > p.y) != (points[j].y > p.y) &&
             (p.x < (points[j].x - points[i].x) * (p.y - points[i].y) /
                            (points[j].y-points[i].y) + points[i].x))
             {

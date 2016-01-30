@@ -253,6 +253,7 @@ CMD_RET Editor::handleInput(std::vector<std::string> & cmd)
         return OK;
     }
 
+    // Stops the running program.
     else if (cmd[0] == CMD_EXIT)
     {
         if (cmd.size() != 1)

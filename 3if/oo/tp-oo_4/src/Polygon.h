@@ -1,6 +1,7 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 
+#include <istream>
 #include <ostream>
 #include <string>
 #include <vector>
@@ -21,9 +22,8 @@ public:
     static std::vector<Vector2D> unserializePoints(std::istream& is);
 
 protected:
-    virtual void addPoint(const Vector2D& point);
-
     std::vector<Vector2D> points;
+
 };
 
 #endif // POLYGON_H

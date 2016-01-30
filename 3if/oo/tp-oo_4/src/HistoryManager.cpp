@@ -1,5 +1,5 @@
 #include "Canvas.h"
-#include "ConvexPolygon.h"
+#include "HistoryManager.h"
 
 GroupEntry::~GroupEntry()
 {
@@ -41,7 +41,10 @@ void HistoryManager::clearEntries(History::size_type start)
 {
     for (History::size_type i = start, s = history.size(); i < s; i++)
         delete history[i];
-    history.erase(history.begin() + start, history.end());
+    history.erase(
+            history.begin() + static_cast<History::difference_type>(start),
+            history.end()
+    );
 }
 
 bool HistoryManager::doEntry(Canvas* canvas, HistoryEntry* entry, bool doRedo)
@@ -56,7 +59,7 @@ bool HistoryManager::doEntry(Canvas* canvas, HistoryEntry* entry, bool doRedo)
                 canvas->deleteFigure(fE->name, false);
                 return true;
             }
-            canvas->addFigure(fE->name, fE->figure->createCopy());
+            canvas->addFigure(fE->name, fE->figure->createCopy(), false);
             return true;
         }
 

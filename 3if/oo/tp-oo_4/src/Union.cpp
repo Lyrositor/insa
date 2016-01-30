@@ -16,6 +16,7 @@ std::ostream &operator<<(std::ostream& os, const Union* un)
 
 std::istream &operator>>(std::istream& is, Union*& un)
 {
-    un = new Union(FigureGroup::unserializeFigures(is));
+    std::vector<Figure*> figures = FigureGroup::unserializeFigures(is);
+    un = new Union(figures);
     return is;
 }

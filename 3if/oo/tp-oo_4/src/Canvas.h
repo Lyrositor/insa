@@ -7,10 +7,10 @@
 #include <vector>
 #include <unordered_map>
 
-#include "HistoryManager.h"
 #include "Vector2D.h"
 
 class Figure;
+class HistoryManager;
 
 class Canvas
 {
@@ -51,7 +51,7 @@ public:
 private:
     void addFigure(
             const std::string& name, Figure* figure,
-            Figure* historyFigure = nullptr
+            bool withHistoryEntry = true
     );
     void deleteFigure(const std::string& name, bool withHistoryEntry = true);
 
