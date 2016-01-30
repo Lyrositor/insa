@@ -15,7 +15,7 @@ public:
     static const char SEGMENT = 'S';
     static const char UNION = 'U';
 
-    virtual ~Figure() = default;
+    virtual ~Figure() {}
 
     template<class T> const T* as() const
     {

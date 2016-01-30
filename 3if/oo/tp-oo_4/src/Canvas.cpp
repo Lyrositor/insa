@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 
 #include "Canvas.h"
 #include "ConvexPolygon.h"
