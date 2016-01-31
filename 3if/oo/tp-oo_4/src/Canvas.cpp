@@ -138,12 +138,28 @@ bool Canvas::redo()
 bool Canvas::load(std::istream& input)
 {
     std::string name;
+    std::unordered_map<std::string, Figure*> newFigures;
+    std::vector<HistoryEntry*> entries;
     while (input >> name)
     {
-        Figure* figure;
-        input >> figure;
-        addFigure(name, figure, false);
+        if (figures.count(name))
+        {
+            for (auto&& f : newFigures)
+                delete f.second;
+            return false;
+        }
+        input >> newFigures[name];
     }
+    for (auto&& f : newFigures)
+    {
+        addFigure(f.first, f.second, false);
+        entries.push_back(new FigureEntry(
+                f.first, f.second->createCopy(), false
+        ));
+    }
+    historyMgr->addEntry(
+            new GroupEntry(entries)
+    );
     return true;
 }
 
