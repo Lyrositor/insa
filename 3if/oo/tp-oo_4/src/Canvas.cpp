@@ -175,7 +175,7 @@ void Canvas::clear()
     std::vector<HistoryEntry*> entries;
     for (auto&& figure : figures)
         entries.push_back(new FigureEntry(
-                figure.first, figure.second->createCopy(), true
+                figure.first, figure.second, true
         ));
     figures.clear();
     historyMgr->addEntry(
@@ -198,5 +198,7 @@ void Canvas::deleteFigure(const std::string& name, bool withHistoryEntry)
     Figure* figure = figures.at(name);
     if (withHistoryEntry)
         historyMgr->addEntry(new FigureEntry(name, figure, true));
+    else
+        delete figure;
     figures.erase(name);
 }
