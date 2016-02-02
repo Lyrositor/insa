@@ -115,7 +115,7 @@ bool Canvas::move(const std::string& name, const Vector2D& delta)
 {
     if (!figures.count(name))
         return false;
-    figures[name]->move(delta);
+    moveFigure(name, delta);
     return true;
 }
 
@@ -201,4 +201,12 @@ void Canvas::deleteFigure(const std::string& name, bool withHistoryEntry)
     else
         delete figure;
     figures.erase(name);
+}
+
+void Canvas::moveFigure(const std::string& name, const Vector2D& delta,
+                        bool withHistoryEntry) {
+    Figure* figure = figures.at(name);
+    figure->move(delta);
+    if (withHistoryEntry)
+        historyMgr->addEntry(new MoveEntry(name, delta));
 }

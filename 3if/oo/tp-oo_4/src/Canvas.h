@@ -54,6 +54,10 @@ private:
             bool withHistoryEntry = true
     );
     void deleteFigure(const std::string& name, bool withHistoryEntry = true);
+    void moveFigure(
+            const std::string& name, const Vector2D& delta,
+            bool withHistoryEntry = true
+    );
 
     std::unordered_map<std::string, Figure*> figures;
     HistoryManager* historyMgr;
