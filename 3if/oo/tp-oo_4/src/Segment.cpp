@@ -4,12 +4,10 @@
 
 bool Segment::contains(const Vector2D& point) const
 {
-    double AB = sqrt(
-            pow(points[1].x-points[0].x, 2) + pow(points[1].y-points[0].y, 2)
-    );
-    double AP = sqrt(pow(point.x-points[0].x, 2) + pow(point.y-points[0].y, 2));
-    double PB = sqrt(pow(point.x-points[1].x, 2) + pow(point.y-points[1].y, 2));
-    return AB == AP + PB;
+    Vector2D AB = points[1].sub(points[0]);
+    Vector2D AP = point.sub(points[0]);
+    long scalar = AB.scalar(AP);
+    return AB.cross(AP) == 0 && scalar >= 0 && scalar <= AB.scalar(AB);
 }
 
 Figure* Segment::createCopy() const {

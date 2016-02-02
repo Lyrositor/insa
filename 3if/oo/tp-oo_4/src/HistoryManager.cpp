@@ -68,7 +68,7 @@ bool HistoryManager::doEntry(Canvas* canvas, HistoryEntry* entry, bool doRedo)
             MoveEntry* mE = static_cast<MoveEntry*>(entry);
             canvas->moveFigure(
                     mE->name,
-                    doRedo ? mE->delta : Vector2D(-mE->delta.x, -mE->delta.y),
+                    doRedo ? mE->delta : mE->delta.opposite(),
                     false
             );
             return true;
