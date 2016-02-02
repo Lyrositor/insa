@@ -5,25 +5,6 @@
 #include "Segment.h"
 #include "Union.h"
 
-Figure* Figure::createCopy() const
-{
-    switch (getType())
-    {
-        case Figure::SEGMENT:
-            return new Segment(*as<Segment>());
-        case Figure::RECTANGLE:
-            return new Rectangle(*as<Rectangle>());
-        case Figure::CONVEX_POLYGON:
-            return new ConvexPolygon(*as<ConvexPolygon>());
-        case Figure::UNION:
-            return new Union(*as<Union>());
-        case Figure::INTERSECTION:
-           return new Intersection(*as<Intersection>());
-        default:
-            return nullptr;
-    }
-}
-
 std::ostream& operator<<(std::ostream& os, const Figure* figure) {
     os << figure->getType() << ' ';
     switch (figure->getType())

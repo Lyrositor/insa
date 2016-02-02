@@ -9,6 +9,10 @@ bool Intersection::contains(const Vector2D& point) const
     return true;
 }
 
+Figure* Intersection::createCopy() const {
+    return new Intersection(*this);
+}
+
 std::ostream &operator<<(std::ostream& os, const Intersection* inter)
 {
     return inter->serializeFigures(os);

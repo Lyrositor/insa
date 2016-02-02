@@ -15,7 +15,8 @@ public:
     Union(std::vector<Figure*>& _figures) : FigureGroup(_figures) {}
     Union(const Union& anUnion) : FigureGroup(anUnion) {}
 
-    virtual bool contains(const Vector2D& point) const;
+    bool contains(const Vector2D& point) const;
+    Figure* createCopy() const;
     char getType() const { return UNION; }
 
     friend std::ostream& operator<<(std::ostream& os, const Union* cp);

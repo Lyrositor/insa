@@ -12,6 +12,10 @@ bool Segment::contains(const Vector2D& point) const
     return AB == AP + PB;
 }
 
+Figure* Segment::createCopy() const {
+    return new Segment(*this);
+}
+
 std::ostream& operator<<(std::ostream& os, const Segment* segment)
 {
     return segment->serializePoints(os);

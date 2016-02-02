@@ -15,7 +15,8 @@ public:
     Intersection(std::vector<Figure*>& _figures) : FigureGroup(_figures) {}
     Intersection(const Intersection& inter) : FigureGroup(inter) {}
 
-    virtual bool contains(const Vector2D& point) const;
+    bool contains(const Vector2D& point) const;
+    Figure* createCopy() const;
     char getType() const { return INTERSECTION; }
 
     friend std::ostream& operator<<(std::ostream& os, const Intersection* cp);

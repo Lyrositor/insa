@@ -9,6 +9,10 @@ bool Union::contains(const Vector2D& point) const
     return false;
 }
 
+Figure* Union::createCopy() const {
+    return new Union(*this);
+}
+
 std::ostream &operator<<(std::ostream& os, const Union* un)
 {
     return un->serializeFigures(os);

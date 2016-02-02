@@ -14,6 +14,7 @@ public:
     ConvexPolygon(const std::vector<Vector2D>& _points) : Polygon(_points) {};
 
     bool contains(const Vector2D& point) const;
+    Figure* createCopy() const;
     char getType() const { return CONVEX_POLYGON; };
 
     friend std::ostream& operator<<(std::ostream& os, const ConvexPolygon* cp);

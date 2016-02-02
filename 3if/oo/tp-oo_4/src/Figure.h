@@ -17,14 +17,10 @@ public:
 
     virtual ~Figure() {}
 
-    template<class T> const T* as() const
-    {
-        return static_cast<const T*>(this);
-    }
-    Figure* createCopy() const;
-    virtual char getType() const = 0;
-
+    template<class T> const T* as() const { return static_cast<const T*>(this); }
     virtual bool contains(const Vector2D& point) const = 0;
+    virtual Figure* createCopy() const = 0;
+    virtual char getType() const = 0;
     virtual void move(const Vector2D& delta) = 0;
 
     friend std::ostream& operator<<(std::ostream& os, const Figure* figure);

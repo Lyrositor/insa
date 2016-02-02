@@ -19,6 +19,10 @@ bool ConvexPolygon::contains(const Vector2D& p) const
     return result;
 }
 
+Figure* ConvexPolygon::createCopy() const {
+    return new ConvexPolygon(*this);
+}
+
 std::ostream& operator<<(std::ostream& os, const ConvexPolygon* cp)
 {
     return cp->serializePoints(os);

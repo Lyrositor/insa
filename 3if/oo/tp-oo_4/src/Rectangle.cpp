@@ -11,6 +11,10 @@ bool Rectangle::contains(const Vector2D& point) const
     );
 }
 
+Figure* Rectangle::createCopy() const {
+    return new Rectangle(*this);
+}
+
 std::ostream& operator<<(std::ostream& os, const Rectangle* rect)
 {
     return rect->serializePoints(os);

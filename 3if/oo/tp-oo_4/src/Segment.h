@@ -15,6 +15,7 @@ public:
             Polygon({point1, point2}) {};
 
     bool contains(const Vector2D& point) const;
+    Figure* createCopy() const;
     char getType() const { return SEGMENT; }
 
     friend std::ostream& operator<<(std::ostream& os, const Segment* segment);

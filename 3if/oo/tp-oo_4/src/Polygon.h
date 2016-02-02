@@ -17,6 +17,7 @@ public:
     virtual char getType() const = 0;
 
     virtual bool contains(const Vector2D& point) const = 0;
+    virtual Figure* createCopy() const = 0;
     void move(const Vector2D& delta);
     std::ostream& serializePoints(std::ostream& os) const;
     static std::vector<Vector2D> unserializePoints(std::istream& is);
