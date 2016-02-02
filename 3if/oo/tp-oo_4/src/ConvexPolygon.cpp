@@ -1,22 +1,23 @@
 #include "ConvexPolygon.h"
+#include "Segment.h"
 
-bool ConvexPolygon::contains(const Vector2D& p) const
-/* From:
-    https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html */
+bool ConvexPolygon::contains(const Vector2D& point) const
 {
-    bool result = false;
-
-    for (size_t s = points.size(), i = 0, j = s - 1; i < s; j = i++)
+    // Make sure the point is always on the same side of the polygon's sides.
+    // Since it's a convex polygon, if it's on the other side even once, the
+    // point is located outside of the polygon.
+    long lastCross = 0;
+    for (size_t i = 0, s = points.size(); i < s; i++)
     {
-        if ((points[i].y > p.y) != (points[j].y > p.y) &&
-            (p.x < (points[j].x - points[i].x) * (p.y - points[i].y) /
-                           (points[j].y-points[i].y) + points[i].x))
-            {
-                result = !result;
-            }
+        Vector2D side = points[(i+1) % s].sub(points[i]);
+        Vector2D toPoint = point.sub(points[i]);
+        long cross = side.cross(toPoint);
+        if (cross * lastCross <= 0 && lastCross != 0)
+            return Segment(points[i], points[(i+1) % s]).contains(point);
+        lastCross = cross;
     }
 
-    return result;
+    return true;
 }
 
 Figure* ConvexPolygon::createCopy() const {

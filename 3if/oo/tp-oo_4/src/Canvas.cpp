@@ -48,6 +48,23 @@ bool Canvas::addConvexPolygon(
     if (figures.count(name))
         return false;
 
+    // Check that it is a simple polygon.
+    // TODO
+
+    // Check that it is a valid convex polygon by making sure each of its sides
+    // are orientated the same way. We do this by checking that every cross
+    // product is of the same sign.
+    long lastCross = 0;
+    for (size_t i = 0, s = points.size(); i < s; i++)
+    {
+        Vector2D side1 = points[(i+1) % s].sub(points[i]);
+        Vector2D side2 = points[(i+2) % s].sub(points[(i+1) % s]);
+        long cross = side1.cross(side2);
+        if (cross * lastCross < 0)
+            return false;
+        lastCross = cross;
+    }
+
     addFigure(name, new ConvexPolygon(points));
     return true;
 }
