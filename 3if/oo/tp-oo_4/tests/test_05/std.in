@@ -1,0 +1,12 @@
+R rectangle1 -8 4 4 -4
+R rectangle2 0 0 1 1
+LIST
+MOVE rectangle2 -1 0
+LIST
+HIT rectangle1 -8 4
+HIT rectangle1 4 -8
+HIT rectangle1 1 0
+HIT rectangle1 -8 5
+HIT rectangle1 4 -5
+HIT rectangle2 0 0
+EXIT

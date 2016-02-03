@@ -1,0 +1,19 @@
+PC poly1 3 4 4 2 2 1
+PC poly2 1 1 -1 2 -3 0 -1 -3 1 0
+PC poly3 1 1 2 3
+HIT poly3 1 1
+LIST
+MOVE poly1 -2 -1
+LIST
+HIT poly1 1 3
+HIT poly1 2 1
+HIT poly1 0 0
+HIT poly1 3 2
+HIT poly1 2 2
+HIT poly2 -3 0
+HIT poly2 1 0
+HIT poly2 -1 -2
+HIT poly2 -2 0
+HIT poly2 1 2
+HIT poly2 -2 -2
+EXIT

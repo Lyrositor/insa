@@ -1,0 +1,25 @@
+OK
+OK
+OK
+segment1 S [(0;0) (4;0)]
+segment2 S [(-2;-2) (2;2)]
+segment3 S [(-10;-10) (-6;-10)]
+OK
+segment1 S [(0;0) (4;0)]
+segment2 S [(-2;-2) (2;2)]
+segment3 S [(0;0) (4;0)]
+YES
+YES
+YES
+NO
+NO
+NO
+YES
+YES
+NO
+YES
+YES
+YES
+NO
+NO
+NO

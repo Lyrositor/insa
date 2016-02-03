@@ -1,0 +1,13 @@
+S segment -3 1 5 1
+R rectangle -8 4 4 -4
+PC poly 1 1 -1 2 -3 0 -1 -3 1 0
+OR union segment rectangle poly
+OI inter segment rectangle poly
+OR super union inter
+SAVE canvas.txt
+LOAD canvas.txt
+CLEAR
+S segmentbis -3 1 5 1
+LOAD canvas.txt
+LIST
+EXIT

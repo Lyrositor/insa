@@ -152,7 +152,7 @@ bool Canvas::redo()
 bool Canvas::load(std::istream& input)
 {
     std::string name;
-    std::unordered_map<std::string, Figure*> newFigures;
+    std::map<std::string, Figure*> newFigures;
     std::vector<HistoryEntry*> entries;
     while (input >> name)
     {
@@ -180,7 +180,7 @@ bool Canvas::load(std::istream& input)
 bool Canvas::save(std::ostream& output) const
 {
     for (auto&& figure : figures)
-        output << figure.first << ' '<< figure.second << std::endl;
+        output << figure.first << ' ' << figure.second << std::endl;
     return true;
 }
 

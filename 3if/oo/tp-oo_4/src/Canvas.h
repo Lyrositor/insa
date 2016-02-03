@@ -2,10 +2,10 @@
 #define CANVAS_H
 
 #include <istream>
+#include <map>
 #include <ostream>
 #include <string>
 #include <vector>
-#include <unordered_map>
 
 #include "Vector2D.h"
 
@@ -59,7 +59,7 @@ private:
             bool withHistoryEntry = true
     );
 
-    std::unordered_map<std::string, Figure*> figures;
+    std::map<std::string, Figure*> figures;
     HistoryManager* historyMgr;
 
 };

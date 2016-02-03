@@ -1,0 +1,13 @@
+S segment -3 1 5 1
+R rectangle -8 4 4 -4
+PC poly 1 1 -1 2 -3 0 -1 -3 1 0
+OI inter1 segment rectangle poly
+LIST
+MOVE segment 10 10
+OI inter2 inter1 segment rectangle poly
+LIST
+HIT inter1 -1 1
+HIT inter1 1 1
+HIT inter1 -2 0
+HIT inter1 -8 4
+EXIT

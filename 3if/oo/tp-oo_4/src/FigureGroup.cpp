@@ -38,10 +38,7 @@ std::ostream& FigureGroup::serializeFigures(std::ostream& os) const
     {
         size_t e = figures.size() - 1;
         for (size_t i = 0; i < e; i++)
-        {
             os << figures.at(i) << ' ';
-            os << ' ';
-        }
         os << figures.at(e);
     }
     return os << ']';

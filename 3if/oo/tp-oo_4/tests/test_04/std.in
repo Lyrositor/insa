@@ -1,0 +1,22 @@
+S segment1 0 0 4 0
+S segment2 -2 -2 2 2
+S segment3 -10 -10 -6 -10
+LIST
+MOVE segment3 10 10
+LIST
+HIT segment1 0 0
+HIT segment1 4 0
+HIT segment1 2 0
+HIT segment1 5 0
+HIT segment1 -1 0
+HIT segment1 2 1
+HIT segment2 0 0
+HIT segment2 -2 -2
+HIT segment2 -2 -1
+HIT segment3 0 0
+HIT segment3 4 0
+HIT segment3 2 0
+HIT segment3 5 0
+HIT segment3 -1 0
+HIT segment3 2 1
+EXIT
