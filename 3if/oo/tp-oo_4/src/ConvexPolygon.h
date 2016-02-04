@@ -53,10 +53,11 @@ public:
     /** Reads a convex polygon from an input stream.
      *
      * @param is the input stream to read from
-     * @param cp a pointer to overwrite with the location of the new instance
+     * @param cp a pointer to overwrite with the location of a new instance
      * @return the provided input stream
      */
     friend std::istream& operator>>(std::istream& is, ConvexPolygon*& cp);
+
 };
 
 #endif // CONVEX_POLYGON_H

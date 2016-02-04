@@ -33,6 +33,8 @@ void FigureGroup::addFigure(Figure* figure)
 
 std::ostream& FigureGroup::serializeFigures(std::ostream& os) const
 {
+    // Write the list of figures in the following format:
+    // [figure1 figure2 figure3 figure4]
     os << '[';
     if (figures.size() > 0)
     {

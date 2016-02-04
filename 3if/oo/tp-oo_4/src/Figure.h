@@ -57,7 +57,7 @@ public:
      * This method automatically determines the sub-type of this class to write
      * it to the stream.
      * @param os the output stream to write to
-     * @param cp the figure instance to write
+     * @param figure the figure instance to write
      * @return the provided output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const Figure* figure);
@@ -67,10 +67,11 @@ public:
      * This method automatically determines the sub-type of this class as it
      * reads it from the stream.
      * @param is the input stream to read from
-     * @param cp a pointer to overwrite with the location of the new instance
+     * @param figure a pointer to overwrite with the location of a new instance
      * @return the provided input stream
      */
     friend std::istream& operator>>(std::istream& is, Figure*& figure);
+
 };
 
 #endif // FIGURE_H

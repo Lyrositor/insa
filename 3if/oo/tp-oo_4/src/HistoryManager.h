@@ -12,9 +12,13 @@ class Figure;
 /** Represents a user operation in the program's history. */
 struct HistoryEntry
 {
-    // Entry types' identifiers
+    /** A figure creation/deletion operation. */
     static const char FIGURE = 'F';
+
+    /** A figure movement operation. */
     static const char MOVE = 'M';
+
+    /** A grouped operation. */
     static const char GROUP = 'G';
 
     /** Destroys the entry; should be sub-classed. */
@@ -29,6 +33,7 @@ protected:
      * @param op the operation type of this entry
      */
     HistoryEntry(char op) : operation(op) {}
+
 };
 
 typedef std::vector<HistoryEntry*> History;
@@ -56,6 +61,7 @@ struct FigureEntry : public HistoryEntry
 
     /** Whether or not the figure was deleted. */
     bool deleted;
+
 };
 
 /** A figure movement operation entry. */
@@ -72,8 +78,9 @@ struct MoveEntry : public HistoryEntry
     /** The associated figure's name. */
     std::string name;
 
-    /* The vector by which the figure was moved. */
+    /** The vector by which the figure was moved. */
     Vector2D delta;
+
 };
 
 /** A group history entry; all sub-operations are executed as a whole. */
@@ -90,6 +97,7 @@ struct GroupEntry : public HistoryEntry
 
     /** The collection of sub-entries. */
     std::vector<HistoryEntry*> group;
+
 };
 
 /** Manages the history of user operations in the program. */
@@ -147,6 +155,7 @@ private:
 
     /** The current position in the history of operations. */
     History::size_type current;
+
 };
 
 #endif // HISTORY_MANAGER_H

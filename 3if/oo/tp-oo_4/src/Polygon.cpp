@@ -11,6 +11,8 @@ void Polygon::move(const Vector2D& delta)
 
 std::ostream& Polygon::serializePoints(std::ostream& os) const
 {
+    // Write the list of points in the following format:
+    // [(x1;y1) (x2;y2) (x3;y3)]
     os << '[';
     if (points.size() > 0)
     {

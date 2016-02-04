@@ -56,6 +56,7 @@ private:
 
     /** The associated canvas instance. */
     Canvas* canvas;
+
 };
 
 #endif // EDITOR_H

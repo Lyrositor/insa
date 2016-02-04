@@ -73,18 +73,21 @@ public:
     /** Writes all sub-figures out to the stream.
      *
      * @param os the output stream to write to
+     * @return the output stream passed as a parameter
      */
     std::ostream& serializeFigures(std::ostream& os) const;
 
     /** Reads a list of sub-figures to add from an input stream.
      *
      * @param is the input stream to read from
+     * @return the collection of sub-figures read
      */
     static std::vector<Figure*> unserializeFigures(std::istream& is);
 
 protected:
     /** The collection of sub-figures. */
     std::vector<Figure*> figures;
+
 };
 
 #endif // FIGUREGROUP_H

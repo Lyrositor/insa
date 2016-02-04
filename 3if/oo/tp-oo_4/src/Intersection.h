@@ -51,18 +51,18 @@ public:
     /** Writes an intersection to an output stream.
      *
      * @param os the output stream to write to
-     * @param cp the intersection instance to write
+     * @param inter the intersection instance to write
      * @return the provided output stream
      */
-    friend std::ostream& operator<<(std::ostream& os, const Intersection* cp);
+    friend std::ostream& operator<<(std::ostream& os, const Intersection* inter);
 
-    /** Reads a figure from an input stream.
+    /** Reads an intersection from an input stream.
      *
      * @param is the input stream to read from
-     * @param cp a pointer to overwrite with the location of the new instance
+     * @param inter a pointer to overwrite with the location of a new instance
      * @return the provided input stream
      */
-    friend std::istream& operator>>(std::istream& is, Intersection*& cp);
+    friend std::istream& operator>>(std::istream& is, Intersection*& inter);
 
 };
 
