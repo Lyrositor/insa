@@ -15,12 +15,17 @@ enum CMD_RET
     EXIT
 };
 
+/** Reads user commands and translates them into canvas operations. */
 class Editor
 {
 public:
+    /** Initialize a new editor, with a blank starting canvas. */
     Editor();
+
+    /** Destroy the canvas, then the editor. */
     ~Editor();
 
+    /** Listens indefinitely for commands from the user. */
     void run();
 
 private:
@@ -42,8 +47,14 @@ private:
     static const std::string CMD_CLEAR;
     static const std::string CMD_EXIT;
 
+    /** Parses a tokenized user command and returns the result.
+     *
+     * @param cmd a user command, split by its DELIM
+     * @return a status code representing success, silent success, error or exit
+     */
     CMD_RET handleInput(std::vector<std::string>& cmd);
 
+    /** The associated canvas instance. */
     Canvas* canvas;
 };
 

@@ -72,6 +72,9 @@ bool Canvas::addUnion(
     if (figures.count(name))
         return false;
 
+    // Create the union figure by figure, to make sure every component figure
+    // exists; if at least one doesn't, the created figures are deleted and
+    // the union is not added.
     Union* figure = new Union();
     try
     {
@@ -83,6 +86,7 @@ bool Canvas::addUnion(
         delete figure;
         return false;
     }
+
     addFigure(name, figure);
     return true;
 }
@@ -93,6 +97,9 @@ bool Canvas::addIntersection(
     if (figures.count(name))
         return false;
 
+    // Create the intersection figure by figure, to make sure every component
+    // figure exists; if at least one doesn't, the created figures are deleted
+    // and the intersection is not added.
     Intersection* figure = new Intersection();
     try
     {
@@ -104,6 +111,7 @@ bool Canvas::addIntersection(
         delete figure;
         return false;
     }
+
     addFigure(name, figure);
     return true;
 }
@@ -154,6 +162,9 @@ bool Canvas::load(std::istream& input)
     std::string name;
     std::map<std::string, Figure*> newFigures;
     std::vector<HistoryEntry*> entries;
+
+    // Create every figure listed in the file. If at least one has a name that
+    // is already in use, all created figures are destroyed and load fails.
     while (input >> name)
     {
         if (figures.count(name))
@@ -164,6 +175,8 @@ bool Canvas::load(std::istream& input)
         }
         input >> newFigures[name];
     }
+
+    // Add the figures to the canvas and record their addition.
     for (auto&& f : newFigures)
     {
         addFigure(f.first, f.second, false);
@@ -174,6 +187,7 @@ bool Canvas::load(std::istream& input)
     historyMgr->addEntry(
             new GroupEntry(entries)
     );
+
     return true;
 }
 
@@ -186,6 +200,8 @@ bool Canvas::save(std::ostream& output) const
 
 void Canvas::clear()
 {
+    // Record the deletion of every figure in the history manager as a single
+    // operation before removing them from the canvas.
     std::vector<HistoryEntry*> entries;
     for (auto&& figure : figures)
         entries.push_back(new FigureEntry(

@@ -7,6 +7,8 @@
 
 std::ostream& operator<<(std::ostream& os, const Figure* figure) {
     os << figure->getType() << ' ';
+
+    // Convert a figure to its specialized type, then read it from the stream.
     switch (figure->getType())
     {
         case Figure::SEGMENT:

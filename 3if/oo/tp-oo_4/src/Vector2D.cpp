@@ -27,8 +27,8 @@ Vector2D Vector2D::unserialize(std::istream& is)
     std::string temp;
     is.ignore(1);
     std::getline(is, temp, ';');
-    x = std::stoi(temp);
+    x = std::stol(temp);
     std::getline(is, temp, ')');
-    y = std::stoi(temp);
+    y = std::stol(temp);
     return Vector2D(x, y);
 }

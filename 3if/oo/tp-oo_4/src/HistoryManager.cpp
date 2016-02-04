@@ -1,4 +1,5 @@
 #include "Canvas.h"
+#include "Figure.h"
 #include "HistoryManager.h"
 
 GroupEntry::~GroupEntry()
@@ -51,6 +52,8 @@ bool HistoryManager::doEntry(Canvas* canvas, HistoryEntry* entry, bool doRedo)
 {
     switch (entry->operation)
     {
+        // Figure creation/deletion entry: create the figure if redo'ing a
+        // creation or undo'ing a deletion, otherwise delete the figure.
         case HistoryEntry::FIGURE:
         {
             FigureEntry* fE = static_cast<FigureEntry*>(entry);
@@ -63,6 +66,8 @@ bool HistoryManager::doEntry(Canvas* canvas, HistoryEntry* entry, bool doRedo)
             return true;
         }
 
+        // Figure movement entry: move the figure by the specified delta if
+        // redo'ing, otherwise by its opposite.
         case HistoryEntry::MOVE:
         {
             MoveEntry* mE = static_cast<MoveEntry*>(entry);
@@ -74,6 +79,7 @@ bool HistoryManager::doEntry(Canvas* canvas, HistoryEntry* entry, bool doRedo)
             return true;
         }
 
+        // Group entry: execute each sub-entry.
         case HistoryEntry::GROUP:
         {
             GroupEntry* gE = static_cast<GroupEntry*>(entry);

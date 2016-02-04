@@ -6,6 +6,7 @@
 #include "Editor.h"
 #include "Vector2D.h"
 
+// Command strings
 const std::string Editor::CMD_ADD_SEGMENT = "S";
 const std::string Editor::CMD_ADD_RECTANGLE = "R";
 const std::string Editor::CMD_ADD_CONVEX_POLYGON = "PC";
@@ -43,6 +44,10 @@ void Editor::run()
         cmd.clear();
         char c;
         std::string item;
+
+        // Keep reading character by character until a newline or EOF is
+        // reached. Tokenize items as they are read (by splitting them on
+        // DELIM).
         for (;;)
         {
             if (!std::cin.get(c) || c == DELIM || c == '\n')
@@ -89,7 +94,7 @@ CMD_RET Editor::handleInput(std::vector<std::string> & cmd)
 
         long coords[4];
         for (size_t i = 0; i < 4; i++)
-            coords[i] = strtol(cmd[i + 2].c_str(), NULL, 0);
+            coords[i] = std::stol(cmd[i + 2]);
         Vector2D point1 = Vector2D(coords[0], coords[1]);
         Vector2D point2 = Vector2D(coords[2], coords[3]);
         return canvas->addSegment(cmd[1], point1, point2) ? OK : ERR;
@@ -103,7 +108,7 @@ CMD_RET Editor::handleInput(std::vector<std::string> & cmd)
 
         long coords[4];
         for (size_t i = 0; i < 4; i++)
-            coords[i] = strtol(cmd[i + 2].c_str(), NULL, 0);
+            coords[i] = std::stol(cmd[i + 2]);
         Vector2D point1 = Vector2D(coords[0], coords[1]);
         Vector2D point2 = Vector2D(coords[2], coords[3]);
         return canvas->addRectangle(cmd[1], point1, point2) ? OK : ERR;
@@ -117,10 +122,7 @@ CMD_RET Editor::handleInput(std::vector<std::string> & cmd)
 
         std::vector<Vector2D> points;
         for (size_t i = 2; i < cmd.size(); i += 2)
-            points.emplace_back(
-                    strtol(cmd[i].c_str(), NULL, 0),
-                    strtol(cmd[i + 1].c_str(), NULL, 0)
-            );
+            points.emplace_back(std::stol(cmd[i]), std::stol(cmd[i + 1]));
         return canvas->addConvexPolygon(cmd[1], points) ? OK : ERR;
     }
 
@@ -152,11 +154,11 @@ CMD_RET Editor::handleInput(std::vector<std::string> & cmd)
 
         long coords[2];
         for (size_t i = 0; i < 2; i++)
-            coords[i] = strtol(cmd[i + 2].c_str(), NULL, 0);
+            coords[i] = std::stol(cmd[i + 2]);
         Vector2D point = Vector2D(coords[0], coords[1]);
 
-        std::cout <<
-                (canvas->contains(cmd[1], point) ? "YES" : "NO") << std::endl;
+        std::cout << (canvas->contains(cmd[1], point) ? "YES" : "NO")
+                << std::endl;
         return OK_NO_MSG;
     }
 
@@ -178,7 +180,7 @@ CMD_RET Editor::handleInput(std::vector<std::string> & cmd)
 
         long coords[2];
         for (size_t i = 0; i < 2; i++)
-            coords[i] = strtol(cmd[i + 2].c_str(), NULL, 0);
+            coords[i] = std::stol(cmd[i + 2]);
         Vector2D point = Vector2D(coords[0], coords[1]);
 
         return canvas->move(cmd[1], point) ? OK : ERR;

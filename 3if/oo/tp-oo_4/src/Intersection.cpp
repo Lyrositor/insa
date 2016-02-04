@@ -2,6 +2,9 @@
 
 bool Intersection::contains(const Vector2D& point) const
 {
+    if (figures.empty())
+        return false;
+
     for (auto&& figure : figures)
         if (!figure->contains(point))
             return false;
