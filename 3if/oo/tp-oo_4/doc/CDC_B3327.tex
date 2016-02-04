@@ -1,0 +1,415 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[frenchb]{babel}
+\usepackage[autolanguage]{numprint}
+\usepackage[margin=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{gensymb}
+
+\begin{document}
+	
+	\title{
+		Compte-rendu du TP C++ 4\\
+		Cahier des charges détaillés
+	}
+	\author{
+		Arnaud Favier\\
+		\and
+		Marc Gagné
+	}
+	\date{Février 2016}
+	\maketitle
+	
+	\section*{Préambule}
+	
+	L’application doit être un éditeur de formes géométriques permettant de manipuler ces formes simplement. L’application ne comportera pas d’interface graphique, et fonctionnera en mode console uniquement. L'interaction avec l'éditeur se fera en mode console aussi. L’éditeur contiendra un ensemble de formes géométriques appelé le modèle. L'éditeur doit permettre la gestion des formes géométriques (aussi appelées figures) suivantes :
+	\begin{itemize}
+		\item Le segment (défini par deux points)
+		\item Le rectangle (défini par deux points : haut gauche et bas droit)
+		\item Le polygone convexe (défini par une liste de points)
+	\end{itemize}
+	
+	L’application doit également permettre d'effectuer des opérations au travers de commandes dédiées :
+	\begin{itemize}
+		\item L'ajout d'un nouvel objet au modèle actuel (avec l'une de formes présentées précédemment)
+		\item La création d'un nouvel objet comme résultat d'une opération sur des objets existants. Les opérations pouvant être :
+		\begin{itemize}
+			\item La réunion (regroupement dans un ensemble de un ou plusieurs objets dans leur totalité)
+			\item L’intersection (ensemble des parties communes des objets)
+		\end{itemize}
+	\item La suppression d'un objet
+	\item Le déplacement d'un objet (suivant une distance en abscisse et une en ordonnée)
+	\item La vérification d’un point se trouvant à l'intérieur d'un objet ou non (exactement sur côté de l’objet est considéré comme intérieur)
+	\item La persistance d'un ensemble d'objets construit de cette manière via :
+		\begin{itemize}
+			\item Une sauvegarde du modèle courant (dans un fichier de sauvegarde au format texte)
+			\item Un chargement d’un modèle précédent (grâce au fichier de sauvegarde)
+		\end{itemize}
+	\end{itemize}
+	
+	L'interaction avec cette application se fera en mode console uniquement. L'application reçoit des commandes en entrée. Une commande est définie par une chaîne des caractères terminée avec le symbole de fin de ligne \texttt{\textbackslash n}. Après la réception d'une commande, l'application peut répondre avec un texte (qui peut être vide). L'application peut afficher à tout instant en console, des lignes des caractères qui commencent avec le caractère \#. Ces lignes sont considérées comme des commentaires, et n'ont pas d'influence sur le fonctionnement des entrées/sorties.
+	
+	Pour des raisons d'intégration avec d'autres modules déjà existants, l’application doit implémenter d'une manière très stricte l'interface en mode console, en respectant la syntaxe détaillée dans la section Commandes possibles.
+	
+	\section{Commandes possibles}
+	Toutes les commandes d'ajout échouent si une figure existe déjà avec le même nom. De même, les commandes qui fournissent des noms de figure qui sont censées exister dans le modèle échouent si ces noms ne correspondent pas à des figures créées.
+	
+	\subsection{Ajouter un segment}
+	Ajoute un objet de type segment entre le point de coordonnées (X1; Y1) et le point de coordonnées (X2; Y2). L'objet a un nom (\texttt{Name}), qui est une chaîne de caractère composée de lettres et/ou de chiffres, sans caractère séparateur (du type espace, \texttt{\textbackslash n}, \texttt{\textbackslash t}...) à l'intérieur. Les paramètres des coordonnées de la commande sont des entiers longs.
+	
+	La réponse à la commande est \texttt{OK} si la commande s'est bien exécutée, \texttt{ERR} dans le cas contraire.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{S Name X1 Y1 X2 Y2} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: S c11 12 15 45 20
+		R: OK
+		C: S 12 15
+		R: ERR
+	\end{verbatim}
+	
+	\subsection{Ajouter un rectangle}
+	Ajoute un objet de type rectangle défini par deux coordonnées de points : le point en haut à gauche de coordonnées (X1, Y1) et le point en bas à droite de coordonnées (X2, Y2). L'objet a un nom (\texttt{Name}), qui est une chaîne de caractère composée de lettres et/ou de chiffres, sans caractère séparateur (du type espace, \texttt{\textbackslash n}, \texttt{\textbackslash t}...) à l'intérieur. Les paramètres des coordonnées de la commande sont des entiers longs.
+	
+	La réponse à la commande est \texttt{OK} si la commande s'est bien exécutée, \texttt{ERR} dans le cas contraire.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{R Name X1 Y1 X2 Y2} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: R rectangle1 56 46 108 4536
+		R: OK
+		C: R 56 46
+		R: ERR
+	\end{verbatim}
+	
+	\subsection{Ajouter un polygone convexe}
+	Ajoute un objet de type polygone défini par une liste de coordonnées de points : (X1; Y1); (X2; Y2); (X3; Y3) ... (Xn; Yn), avec n >= 3. L'objet a un nom (\texttt{Name}), qui est une chaîne de caractère composée de lettres et/ou de chiffres, sans caractère séparateur (du type espace, \texttt{\textbackslash n}, \texttt{\textbackslash t}...) à l'intérieur. Les paramètres des coordonnées de la commande sont des entiers longs. Il est rappelé qu’un polygone est convexe si l'ensemble de ses angles sont inférieurs à 180\degree. Il est supposé par le programme que le polygone fourni n'est pas croisé.
+	
+	La réponse à la commande est \texttt{OK} si la commande s'est bien exécutée, \texttt{ERR} dans le cas contraire : si le polygone n'est pas convexe, une erreur sera générée (retourner \texttt{ERR}).
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{PC Name X1 Y1 X2 Y2 ... Xn Yn} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: PC Name12 56 46 108 4536 80 100
+		R: OK
+		C: PC 56 46
+		R: ERR
+	\end{verbatim}
+	
+	\subsection{Opération de réunion}
+	Permet de construire un nouveau objet appelé Name comme la réunion de la liste d'objets existants énumérés par leur nom : \texttt{NameObj1}... \texttt{NameObjN} (de 1 à N). La réunion est un regroupement dans un ensemble de un ou plusieurs objets dans leur totalité. Si au moins un des noms fourni ne correspond pas à une figure existant dans le modèle, la création échoue et la commande renvoie \texttt{ERR}.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{OR Name NameObj1 NameObj2... NameObjN} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: PC Name12 56 46 108 4536 80 100
+		R: OK
+		C: S seg1 56 46 108 4536
+		R: OK
+		C: OR re1 seg1 Name12
+		R: OK
+		C: OR fig0
+		R: ERR
+	\end{verbatim}
+	
+	\subsection{Opération d'intersection}
+	Permet de construire un nouveau objet appelé Name comme l'intersection de la liste d'objets existants énumérés par leur nom : \texttt{NameObj1}... \texttt{NameObjN} (de 1 à N). L’intersection est l’ensemble des parties communes des objets. Si au moins un des noms fourni ne correspond pas à une figure existant dans le modèle, la création échoue et la commande renvoie \texttt{ERR}.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{OI Name NameObj1 NameObj2... NameObjN} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: PC Name12 56 46 108 4536 80 100
+		R: OK
+		C: S seg1 56 46 108 4536
+		R: OK
+		C: OI int 1 seg1 Name12
+		R: OK
+		C: OI fig0
+		R: ERR
+	\end{verbatim}
+	
+	\subsection{Opération d'appartenance}
+	Permet de vérifier si le point de coordonnées (X; Y) se trouve bien à l'intérieur de l'objet appelé \texttt{Name}. Si le point se trouve exactement sur le bord de l’objet, on le considérera comme à l’intérieur de ce dernier.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{HIT Name X Y} & [\texttt{YES} | \texttt{NO}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: R rectangle1 56 46 108 4536
+		R: OK
+		C: HIT rectangle1 57 50
+		R: YES
+		C: HIT rectangle1 56 46
+		R: YES
+		C: HIT rectangle1 52 38
+		R: NO
+	\end{verbatim}
+	
+	\subsection{Suppression}
+	Supprime les objets existants énumérés par leur nom : \texttt{NameObj1}... \texttt{NameObjN} (de 1 à N) qui sont passés en paramètre. Si un nom est invalide, aucun objet n'est supprimé, et une erreur \texttt{ERR} est renvoyée.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{DELETE NameObj1 NameObj2... NameObjN} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: DELETE rectangle1 Name1
+		R: OK
+	\end{verbatim}
+	
+	\subsection{Déplacement}
+	Déplace l'objet appelé \texttt{Name} d’une distance de dX sur l'axe des abscisses (x) et d’une distance de dY sur l'axe des ordonnées (y).
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{MOVE Name dX dY} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: MOVE Name12 100 -25
+		R: OK
+	\end{verbatim}
+	
+	\subsection{Énumération}
+	Affiche les descripteurs des objets existants, dans l’ordre inverse de l’ordre de création. Si aucun objet n’est défini, la commande n’affiche rien. Le format d’affichage est celui défini dans la section Format d’affichage et de fichier. La liste est triée alphabétiquement.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | p{3cm}|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{LIST} & [\texttt{Desc1} \newline \texttt{Desc2} \newline \texttt{...} \newline \texttt{DescN} | (vide) ] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	LIST
+	[Desc1
+	Desc2
+	...
+	DescN | (vide) ]
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: LIST
+		R : Name12 C [(56;46) (108;4536) (80;100)]
+		R : re1 U [S [(56;46) (108;4536)]  C [(56;46) (108;4536) (80;100)]]
+		R : seg1 S [(56;46) (108;4536)]
+	\end{verbatim}
+	
+	\subsection{Annuler la dernière opération}
+	Annuler la dernière opération qui a eu un effet sur le modèle : insertion d'un objet, suppression, déplacement, chargement d'un fichier... Si le début de l'historique a été atteint, la commande renvoie \texttt{ERR}.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{UNDO} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: UNDO
+		R: OK
+	\end{verbatim}
+	
+	\subsection{Refaire la dernière opération}
+	Ré-exécuter la dernière opération annulée qui a eu un effet sur le modèle. La commande \texttt{REDO} a un effet sur le modèle s'il y a eu au moins une commande \texttt{UNDO} précédemment; sinon, la commande renvoie \texttt{ERR}.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{REDO} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: REDO
+		R: OK
+	\end{verbatim}
+	
+	\subsection{Sauvegarder le modèle courant}
+	Sauvegarde le modèle courant (l’ensemble des formes géométriques courantes) dans un fichier au format texte à la racine du dossier contenant le projet. Le format du fichier est celui défini dans la section Format d’affichage et de fichier.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{SAVE Filename} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: SAVE a.txt
+		R: OK
+	\end{verbatim}
+	
+	\subsection{Charger un modèle en mémoire}
+	Charge un ensemble d'objets dans le modèle courant à partir d'un fichier au format texte. Le format du fichier est celui défini dans la section Format d’affichage et de fichier. Si au moins une des figures du modèle à charger a le même nom qu'une figure dans le modèle existant, le chargement est annulé, aucune modification du modèle en cours n'est effectuée et la commande renvoie \texttt{ERR}.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{LOAD filename} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: LOAD a.txt
+		R: OK
+	\end{verbatim}
+	
+	\subsection{Vider le modèle courant}
+	Supprime tous les objets composant le modèle actuel. Le modèle étant l’ensemble des formes géométriques courantes de l’application.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{CLEAR} & [\texttt{OK} | \texttt{ERR}] \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: CLEAR
+		R: OK
+	\end{verbatim}
+	
+	\subsection{Fermer l'application}
+	Quitte l'application sans afficher de message.
+	
+	\begin{center}
+		\begin{tabular}[c]{|c | c|}
+			\hline
+			\textbf{Commande} & \textbf{Réponse} \\
+			\hline
+			\texttt{EXIT} & (aucune)\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: EXIT
+		R:
+	\end{verbatim}
+	
+	\section{Format d’affichage et de fichier}
+	Lors des différentes commandes de l’application, il est parfois nécessaire d’afficher les formes géométriques en console, ou de les enregistrer dans un fichier au format texte. Pour cela, le format suivant sera adopté :
+	
+	\texttt{Name Type [(Point1X;Point1Y) (Point2X;Point2Y) ... (PointNX;PointNY)]}
+	pour les formes simples (formes géométriques), ou
+	\texttt{Name Type [Type [(Point1X;Point1Y) (Point2X;Point2Y)] Type [(Point1X;Point1Y) (Point2X;Point2Y)]]}
+	pour les objets plus complexes (unions, intersections).
+	
+	\textbf{Exemple :}
+	\begin{verbatim}
+		C: PC Name12 56 46 108 4536 80 100
+		R: OK
+		C: S seg1 56 46 108 4536
+		R: OK
+		C: OR re1 seg1 Name12
+		R: OK
+		C: SAVE test
+		R: OK
+		C: LIST
+		R: Name12 C [(56;46) (108;4536) (80;100)]
+		R: re1 U [S [(56;46) (108;4536)]  C [(56;46) (108;4536) (80;100)]]
+		R: seg1 S [(56;46) (108;4536)]
+		C: SAVE test.txt
+		R: OK
+	\end{verbatim}
+	
+	Contenu de \texttt{test.txt} :
+	\begin{verbatim}
+		Name12 C [(56;46) (108;4536) (80;100)]
+		re1 U [S [(56;46) (108;4536)]  C [(56;46) (108;4536) (80;100)]]
+		seg1 S [(56;46) (108;4536)]
+	\end{verbatim}
+	
+\end{document}

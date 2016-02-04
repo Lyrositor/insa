@@ -1,3 +1,4 @@
 bin/
+doc/*.out
 tests/benchmark.csv
 tests/results.csv
