@@ -6,7 +6,7 @@ nKo=0
 nTotal=0
 nMis=0
 
-export PATH=$PATH:../bin/:../../bin
+export PATH=$PATH:bin/:../bin/:../../bin
 for i in test_*
 do
   ./test.sh $i results.csv

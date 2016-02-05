@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-BIN="../bin/tp-oo_4"
+export PATH=$PATH:bin/:../bin/
+
+BIN="tp-oo_4"
 NUM_ATTEMPTS=5
 NUM_BLOCKS=1000
 NUM_SUB_BLOCKS=100
