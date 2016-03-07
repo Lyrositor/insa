@@ -1,3 +1,7 @@
+-- Informations de connexion à distance
+-- Host Local Port Forward : if-oracle02
+-- SID : DB2
+
 CREATE DATABASE LINK CENTRAL 
 CONNECT TO afavier IDENTIFIED BY arnaud
 USING 'DB1';
