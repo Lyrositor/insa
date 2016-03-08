@@ -16,6 +16,7 @@ public class Client implements Serializable {
     private String nom;
     private String prenom;
     private String mail;
+    private String motDePasse;
     private String adresse;
     private Double longitude;
     private Double latitude;
@@ -23,7 +24,7 @@ public class Client implements Serializable {
     public Client() {
     }
 
-    public Client(String nom, String prenom, String adresse, String mail) {
+    public Client(String nom, String prenom, String adresse, String mail, String motDePasse) {
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
@@ -44,6 +45,10 @@ public class Client implements Serializable {
 
     public String getMail() {
         return mail;
+    }
+
+    public String getMotDePasse() {
+        return motDePasse;
     }
 
     public String getAdresse() {
@@ -68,6 +73,10 @@ public class Client implements Serializable {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public void setMotDePasse(String motDePasse) {
+        this.motDePasse = motDePasse;
     }
 
     public void setAdresse(String adresse) {
