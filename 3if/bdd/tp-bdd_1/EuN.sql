@@ -377,7 +377,7 @@ GRANT ALL ON STOCK_EuN TO MGAGNE, APAYAN1, OSTEIN, OVICENTE, NSORIN;
 GRANT ALL ON STOCK_O TO MGAGNE, APAYAN1, OSTEIN, OVICENTE, NSORIN;
 GRANT ALL ON PAYS_CONTINENT TO MGAGNE, APAYAN1, OSTEIN, OVICENTE, NSORIN;
 
--- VUE GLOBALE
+-- VUE GLOBALE --
 CREATE OR REPLACE VIEW VIEW_GLOBAL_CLIENTS
 (code_client, societe, adresse, ville, code_postal, pays, telephone, fax)
 AS
@@ -450,8 +450,75 @@ AS
 );
 CREATE OR REPLACE SYNONYM Stock FOR VIEW_GLOBAL_STOCK;
 
--- Question 3
+-- QUESTION 3 --
 
 select * from clients;
 select * from clients where pays in ( 'Allemagne' , 'Royaume-Uni' );
 select * from clients_eun; -- pour le continent Amériques, respectivement EuN et EuS.
+
+-- Tests supplémentaires
+SELECT COUNT(*) as "local" FROM Clients;
+SELECT COUNT(*) as "source" FROM RYORI.CLIENTS@CENTRAL;
+
+SELECT * FROM RYORI.CLIENTS@CENTRAL
+MINUS (SELECT * FROM clients);
+
+-----
+SELECT COUNT(*) as "local" FROM commandes;
+SELECT COUNT(*) as "source" FROM RYORI.commandes@CENTRAL;
+
+SELECT * FROM RYORI.commandes@CENTRAL
+MINUS (SELECT * FROM Commandes);
+
+-----
+SELECT COUNT(*) as "local" FROM details_commandes;
+SELECT COUNT(*) as "source" FROM RYORI.details_commandes@CENTRAL;
+
+SELECT * FROM RYORI.details_commandes@CENTRAL
+MINUS (SELECT * FROM details_commandes);
+
+-----
+SELECT COUNT(*) as "local" FROM stock;
+SELECT COUNT(*) as "source" FROM RYORI.stock@CENTRAL;
+
+SELECT * FROM RYORI.stock@CENTRAL
+MINUS (SELECT * FROM stock);
+-----
+
+--- REPLICATION ---
+DROP MATERIALIZED VIEW MVEmployes;
+CREATE MATERIALIZED VIEW MVEmployes
+REFRESH COMPLETE 
+START WITH sysdate 
+NEXT sysdate+2/1440
+AS
+(
+  SELECT *
+  FROM OSTEIN.Employes@A
+);
+CREATE OR REPLACE SYNONYM Employes FOR MVEmployes;
+
+
+DROP MATERIALIZED VIEW MVProduits;
+CREATE MATERIALIZED VIEW MVProduits
+REFRESH COMPLETE 
+START WITH sysdate 
+NEXT sysdate+2/1440
+AS
+(
+  SELECT *
+  FROM OVICENTE.Produits@EuS
+);
+CREATE OR REPLACE SYNONYM Produits FOR MVProduits;
+
+DROP MATERIALIZED VIEW MVCategories;
+CREATE MATERIALIZED VIEW MVCategories
+REFRESH COMPLETE 
+START WITH sysdate 
+NEXT sysdate+2/1440
+AS
+(
+  SELECT *
+  FROM OVICENTE.Categories@EuS
+);
+CREATE OR REPLACE SYNONYM Categories FOR MVCategories;
