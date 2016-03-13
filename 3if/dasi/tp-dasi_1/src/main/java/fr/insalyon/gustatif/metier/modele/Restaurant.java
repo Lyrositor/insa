@@ -12,8 +12,9 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Restaurant implements Serializable {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String denomination;
     private String description;
@@ -86,7 +87,15 @@ public class Restaurant implements Serializable {
 
     @Override
     public String toString() {
-        return "Restaurant{" + "id=" + id + ", denomination=" + denomination + ", description=" + description + ", adresse=" + adresse + ", longitudeAdresse=" + longitude + ", latitudeAdresse=" + latitude + ", produits=" + produits + '}';
+        return "Restaurant{" +
+                "id=" + id +
+                ", denomination=" + denomination +
+                ", description=" + description +
+                ", adresse=" + adresse +
+                ", longitudeAdresse=" + longitude +
+                ", latitudeAdresse=" + latitude +
+                ", produits=" + produits +
+                '}';
     }
     
     

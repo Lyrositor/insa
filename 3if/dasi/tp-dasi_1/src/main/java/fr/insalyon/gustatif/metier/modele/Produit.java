@@ -10,7 +10,7 @@ import javax.persistence.Id;
 public class Produit implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String denomination;
     private String description;
@@ -65,7 +65,13 @@ public class Produit implements Serializable {
 
     @Override
     public String toString() {
-        return "Produit{" + "id=" + id + ", denomination=" + denomination + ", description=" + description + ", prix=" + prix + ", poids=" + poids + '}';
+        return "Produit{" +
+                "id=" + id +
+                ", denomination=" + denomination +
+                ", description=" + description +
+                ", prix=" + prix +
+                ", poids=" + poids +
+                '}';
     }
    
     

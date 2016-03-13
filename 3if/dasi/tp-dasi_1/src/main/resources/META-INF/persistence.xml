@@ -5,6 +5,7 @@
     <class>fr.insalyon.gustatif.metier.modele.Client</class>
     <class>fr.insalyon.gustatif.metier.modele.Produit</class>
     <class>fr.insalyon.gustatif.metier.modele.Restaurant</class>
+    <class>fr.insalyon.gustatif.metier.modele.Cycliste</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/tp-dasi_1"/>
       <property name="javax.persistence.jdbc.password" value="gustatif"/>

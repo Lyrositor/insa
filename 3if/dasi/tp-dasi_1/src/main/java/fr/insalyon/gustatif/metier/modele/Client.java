@@ -11,7 +11,7 @@ import javax.persistence.Id;
 public class Client implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String nom;
     private String prenom;
@@ -90,7 +90,15 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", mail=" + mail + ", adresse=" + adresse + ", longitude=" + longitude + ", latitude=" + latitude + '}';
+        return "Client{" +
+                "id=" + id +
+                ", nom=" + nom +
+                ", prenom=" + prenom +
+                ", mail=" + mail +
+                ", adresse=" + adresse +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                '}';
     }
 
 }

@@ -10,10 +10,6 @@ import fr.insalyon.gustatif.metier.modele.Restaurant;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author afavier
- */
 public class Main {
 
     public static void main(String[] args) {
