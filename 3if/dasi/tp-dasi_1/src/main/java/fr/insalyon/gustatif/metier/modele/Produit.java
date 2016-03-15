@@ -3,14 +3,12 @@ package fr.insalyon.gustatif.metier.modele;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Produit implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id @GeneratedValue
     private Long id;
     private String denomination;
     private String description;
@@ -73,6 +71,6 @@ public class Produit implements Serializable {
                 ", poids=" + poids +
                 '}';
     }
-   
-    
+
+
 }

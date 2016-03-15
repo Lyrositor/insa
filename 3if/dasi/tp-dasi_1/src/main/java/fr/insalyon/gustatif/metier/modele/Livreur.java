@@ -1,14 +1,20 @@
 package fr.insalyon.gustatif.metier.modele;
 
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+@Entity
 public abstract class Livreur {
 
-    private boolean disponible;
-    private float capacite;
+    @Id @GeneratedValue
+    protected Long id;
+    protected boolean disponible;
+    protected float capacite;
     @OneToMany
-    private List<Livraison> livraisons;
+    protected List<Livraison> livraisons;
 
     public boolean isDisponible() {
         return disponible;

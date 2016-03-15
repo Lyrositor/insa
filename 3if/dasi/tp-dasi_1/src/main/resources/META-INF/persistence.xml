@@ -6,6 +6,10 @@
     <class>fr.insalyon.gustatif.metier.modele.Produit</class>
     <class>fr.insalyon.gustatif.metier.modele.Restaurant</class>
     <class>fr.insalyon.gustatif.metier.modele.Cycliste</class>
+    <class>fr.insalyon.gustatif.metier.modele.Drone</class>
+    <class>fr.insalyon.gustatif.metier.modele.Gestionnaire</class>
+    <class>fr.insalyon.gustatif.metier.modele.Livraison</class>
+    <class>fr.insalyon.gustatif.metier.modele.Livreur</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/tp-dasi_1"/>
       <property name="javax.persistence.jdbc.password" value="gustatif"/>

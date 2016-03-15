@@ -1,16 +1,13 @@
 package fr.insalyon.gustatif.metier.modele;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Gestionnaire implements Serializable {
+public class Gestionnaire {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id @GeneratedValue
     private Long id;
     private String mail;
     private String motDePasse;
@@ -38,7 +35,7 @@ public class Gestionnaire implements Serializable {
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
     }
-    
+
     @Override
     public String toString() {
         return "Gestionnaire{" +

@@ -1,17 +1,10 @@
 package fr.insalyon.gustatif.metier.modele;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Entity
-public class Cycliste extends Livreur implements Serializable {
+public class Cycliste extends Livreur {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
     private String mail;
     private String motDePasse;
     private String nom;
@@ -48,13 +41,13 @@ public class Cycliste extends Livreur implements Serializable {
     public void setNom(String nom) {
         this.nom = nom;
     }
-    
+
     @Override
     public String toString() {
         return "Cycliste{" +
                 "id=" + id +
-                ", capacite=" + getCapacite() +
-                ", disponible=" + isDisponible() +
+                ", capacite=" + capacite +
+                ", disponible=" + disponible +
                 ", mail=" + mail +
                 ", nom=" + nom +
                 '}';

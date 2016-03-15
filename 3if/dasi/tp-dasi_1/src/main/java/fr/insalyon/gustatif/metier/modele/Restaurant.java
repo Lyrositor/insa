@@ -6,25 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
 public class Restaurant implements Serializable {
-    
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+
+    @Id @GeneratedValue
     private Long id;
     private String denomination;
     private String description;
     private String adresse;
     private Double longitude;
     private Double latitude;
-
     @OneToMany
     private List<Produit> produits;
-    
+
     public Restaurant() {
         produits = new ArrayList<>();
     }
@@ -97,6 +94,6 @@ public class Restaurant implements Serializable {
                 ", produits=" + produits +
                 '}';
     }
-    
-    
+
+
 }

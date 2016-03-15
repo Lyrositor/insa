@@ -5,40 +5,34 @@ import java.util.Date;
 import java.util.HashMap;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import static javax.persistence.TemporalType.DATE;
 
 @Entity
 public class Livraison implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id @GeneratedValue
     private Long id;
-    @OneToOne
     private Client client;
-    @OneToOne
     private Livreur livreur;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(DATE)
     private Date dateCommande;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(DATE)
     private Date dateLivraison;
-    @ManyToOne
-    private HashMap<Produit, Float> produits;
+    private HashMap<Produit, Long> produits;
 
     public Livraison() {
     }
-    
-    public Livraison(Client client, Livreur livreur, Date dateCommande, Date dateLivraison, HashMap<Produit, Float> produits) {
+
+    public Livraison(Client client, Livreur livreur, Date dateCommande, Date dateLivraison, HashMap<Produit, Long> produits) {
         this.client = client;
         this.livreur = livreur;
         this.dateCommande = dateCommande;
         this.dateLivraison = dateLivraison;
         this.produits = produits;
     }
-    
+
     public Client getClient() {
         return client;
     }
@@ -71,14 +65,14 @@ public class Livraison implements Serializable {
         this.dateLivraison = dateLivraison;
     }
 
-    public HashMap<Produit, Float> getProduits() {
+    public HashMap<Produit, Long> getProduits() {
         return produits;
     }
 
-    public void setProduits(HashMap<Produit, Float> produits) {
+    public void setProduits(HashMap<Produit, Long> produits) {
         this.produits = produits;
     }
-    
+
     @Override
     public String toString() {
         return "Livraison{" +
