@@ -79,14 +79,22 @@ public class ServiceMetier {
         JpaUtil.ouvrirTransaction();
 
         // Calcul des localisation
-        LatLng localisationClient = getLatLng(client.getAdresse());
-        if (localisationClient == null) {
-            throw new ServiceException(12, "Adresse du client incorrecte : localisation impossible.");
+        if (client.getLatitude() == null) {
+            throw new ServiceException(12, "Latitude de l'adresse cliente non définie.");
         }
-        LatLng localisationRestaurant = getLatLng(restaurant.getAdresse());
-        if (localisationRestaurant == null) {
-            throw new ServiceException(13, "Adresse du restaurant incorrecte : localisation impossible.");
+        if (client.getLongitude() == null) {
+            throw new ServiceException(13, "Longitude de l'adresse cliente non définie.");
         }
+        LatLng localisationClient = new LatLng(client.getLatitude(), client.getLongitude());
+
+        if (restaurant.getLatitude() == null) {
+            throw new ServiceException(14, "Latitude de l'adresse du restaurant non définie.");
+        }
+        if (restaurant.getLongitude() == null) {
+            throw new ServiceException(15, "Longitude de l'adresse du restaurant non définie.");
+        }
+        LatLng localisationRestaurant = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
+
         Double distanceRestaurantClient = getFlightDistanceInKm(localisationRestaurant, localisationClient);
 
         // Calcul du poids de la commande
@@ -105,7 +113,7 @@ public class ServiceMetier {
             }
         }
         if (listeLivreurs == null) {
-            throw new ServiceException(11, "Il n'y a pas de livreur disponible pour le moment. Merci de commander plus tard.");
+            throw new ServiceException(11, "Aucun livreur n'est disponible ou ne possède une capacité de charge suffisante pour le moment. Merci de commander plus tard.");
         }
 
         // Sélection du livreur le plus proche
