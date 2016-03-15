@@ -1,11 +1,12 @@
 package fr.insalyon.gustatif.metier.modele;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Gestionnaire {
+public class Gestionnaire implements Serializable {
 
     @Id @GeneratedValue
     private Long id;

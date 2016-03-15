@@ -2,22 +2,56 @@ package fr.insalyon.gustatif.metier.service;
 
 import fr.insalyon.gustatif.dao.*;
 import fr.insalyon.gustatif.metier.modele.*;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class ServiceMetier {
 
-    private static ClientDao clientDao = new ClientDao();
-    private static GestionnaireDao gestionnaireDao = new GestionnaireDao();
-    private static LivraisonDao livraisonDao = new LivraisonDao();
-    private static LivreurDao livreurDao = new LivreurDao();
-    private static ProduitDao produitDao = new ProduitDao();
-    private static RestaurantDao restaurantDao = new RestaurantDao();
+    private static final ClientDao clientDao = new ClientDao();
+    private static final GestionnaireDao gestionnaireDao = new GestionnaireDao();
+    private static final LivraisonDao livraisonDao = new LivraisonDao();
+    private static final LivreurDao livreurDao = new LivreurDao();
+    private static final ProduitDao produitDao = new ProduitDao();
+    private static final RestaurantDao restaurantDao = new RestaurantDao();
 
-    public void initialiserDonnees() {
-        // Chargement des données d'un fichier SQL
-        // Création en dur des données
+    private static final String[] NOMS = {
+        "MARTIN", "DUPRE", "BERNARD", "DUBOIS", "THOMAS", "ROBERT", "RICHARD",
+        "PETIT"
+    };
+    private static final String[] PRENOMS = {
+        "Jean", "Daniel", "Anne", "Marie", "Pierre", "Jullie", "Marc", "Arnaud"
+    };
+    private static final String[] RUES = {
+        "Cours Emile Zola", "rue Galilee", "rue du Marais", "rue du Tonkin"
+    };
+    private static final int MAX_NUMERO_RUE = 100;
+    private static final float MAX_CAPACITE_CYCLISTE = 50.0f;
+    private static final float MAX_CAPACITE_DRONE = 20.0f;
+    private static final int NUM_CYCLISTES = 40;
+    private static final int NUM_DRONES = 10;
+
+    public void initialiserDonnees() throws Throwable {
+        // Création des données en dur sur les livreurs et les gestionnaires
+        Random r = new Random();
+        JpaUtil.creerEntityManager();
+        JpaUtil.ouvrirTransaction();
+        for (int i = 0; i < NUM_CYCLISTES; i++) {
+            String nom = NOMS[r.nextInt(NOMS.length)];
+            String prenom = PRENOMS[r.nextInt(PRENOMS.length)];
+            Cycliste cycliste = new Cycliste(
+                    nom, prenom,
+                    prenom.toLowerCase()+'.'+nom.toLowerCase()+"@gustatif.com",
+                    new BigInteger(130, r).toString(32),
+                    (r.nextInt(MAX_NUMERO_RUE)+1)+' '+RUES[r.nextInt(RUES.length)],
+                    r.nextFloat() * MAX_CAPACITE_CYCLISTE, true
+            );
+            livreurDao.create(cycliste);
+        }
+        JpaUtil.validerTransaction();
+        JpaUtil.fermerEntityManager();
     }
 
     public void inscrireClient(Client client) {

@@ -1,12 +1,13 @@
 package fr.insalyon.gustatif.metier.modele;
 
 import com.google.maps.model.LatLng;
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Client {
+public class Client implements Serializable {
 
     @Id @GeneratedValue
     private Long id;
@@ -21,10 +22,11 @@ public class Client {
     public Client() {
     }
 
-    public Client(String nom, String prenom, String adresse, String mail, String motDePasse) {
+    public Client(String nom, String prenom, String mail, String motDePasse, String adresse) {
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
+        this.motDePasse = motDePasse;
         this.adresse = adresse;
     }
 
@@ -92,6 +94,7 @@ public class Client {
                 ", nom=" + nom +
                 ", prenom=" + prenom +
                 ", mail=" + mail +
+                ", motDePasse=" + motDePasse +
                 ", adresse=" + adresse +
                 ", longitude=" + longitude +
                 ", latitude=" + latitude +
