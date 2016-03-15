@@ -9,10 +9,9 @@ import java.util.List;
 public class ServiceMetier {
 
     private static ClientDao clientDao = new ClientDao();
-    private static CyclisteDao cyclisteDao = new CyclisteDao();
-    private static DroneDao droneDao = new DroneDao();
     private static GestionnaireDao gestionnaireDao = new GestionnaireDao();
     private static LivraisonDao livraisonDao = new LivraisonDao();
+    private static LivreurDao livreurDao = new LivreurDao();
     private static ProduitDao produitDao = new ProduitDao();
     private static RestaurantDao restaurantDao = new RestaurantDao();
 
@@ -36,33 +35,51 @@ public class ServiceMetier {
         return null;
     }
 
-    public Livraison commander(Client client, HashMap<Produit, Long> produits) {
-        return null;
+    public Livraison commander(Client client, HashMap<Produit, Long> produits) throws Throwable {
+        JpaUtil.creerEntityManager();
+        JpaUtil.ouvrirTransaction();
+
+        List<Livreur> listeLivreur = livreurDao.findAll();
+
+        Livraison livraison = new Livraison(client, null, new Date(), null, produits);
+        livraisonDao.create(livraison);
+
+        JpaUtil.validerTransaction();
+        return livraison;
     }
 
     public List<Restaurant> listerRestaurants() throws Throwable {
-        RestaurantDao restaurantDao = new RestaurantDao();
+        JpaUtil.creerEntityManager();
+
         List<Restaurant> listeRestaurants = restaurantDao.findAll();
         return listeRestaurants;
     }
 
     public List<Produit> listerProduitsRestaurant(Restaurant restaurant) {
-        return null;
+        JpaUtil.creerEntityManager();
+
+        List<Produit> listeProduits = restaurant.getProduits();
+        return listeProduits;
     }
 
-    public List<Livreur> listerLivreurs() {
-        /*CyclisteDao cyclisteDao = new CyclisteDao();
-         DroneDao droneDao = new DroneDao();
-         List<Livreur> listeLivreurs = null;
-         try {
-         listeLivreurs = cyclisteDao.findAll();
-         } catch (Throwable ex) {
-         Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
-        return null;
+    public List<Livreur> listerLivreurs() throws Throwable {
+        JpaUtil.creerEntityManager();
+
+        List<Livreur> listeLivreurs = livreurDao.findAll();
+        return listeLivreurs;
     }
 
-    public void cloturerLivraison(Livraison livraison, Date dateLivraison) {
+    public void cloturerLivraison(Livraison livraison, Date dateLivraison) throws ServiceException, Throwable {
+        JpaUtil.creerEntityManager();
+        JpaUtil.ouvrirTransaction();
+
+        if (dateLivraison.before(livraison.getDateCommande())) {
+            throw new ServiceException(10, "La date de livraison ne peut être inférieure à la date de commande.");
+        }
+        livraison.setDateLivraison(dateLivraison);
+        livraisonDao.update(livraison);
+
+        JpaUtil.validerTransaction();
     }
 
 }
