@@ -1,12 +1,17 @@
 package fr.insalyon.gustatif.metier.service;
 
+import com.google.maps.model.LatLng;
 import fr.insalyon.gustatif.dao.*;
 import fr.insalyon.gustatif.metier.modele.*;
 import java.math.BigInteger;
+import java.util.Random;
+import static fr.insalyon.gustatif.util.GeoTest.getFlightDistanceInKm;
+import static fr.insalyon.gustatif.util.GeoTest.getLatLng;
+import static fr.insalyon.gustatif.util.GeoTest.getTripDurationByBicycleInMinute;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map.Entry;
 
 public class ServiceMetier {
 
@@ -43,9 +48,9 @@ public class ServiceMetier {
             String prenom = PRENOMS[r.nextInt(PRENOMS.length)];
             Cycliste cycliste = new Cycliste(
                     nom, prenom,
-                    prenom.toLowerCase()+'.'+nom.toLowerCase()+"@gustatif.com",
+                    prenom.toLowerCase() + '.' + nom.toLowerCase() + "@gustatif.com",
                     new BigInteger(130, r).toString(32),
-                    (r.nextInt(MAX_NUMERO_RUE)+1)+' '+RUES[r.nextInt(RUES.length)],
+                    (r.nextInt(MAX_NUMERO_RUE) + 1) + ' ' + RUES[r.nextInt(RUES.length)],
                     r.nextFloat() * MAX_CAPACITE_CYCLISTE, true
             );
             livreurDao.create(cycliste);
@@ -69,13 +74,59 @@ public class ServiceMetier {
         return null;
     }
 
-    public Livraison commander(Client client, HashMap<Produit, Long> produits) throws Throwable {
+    public Livraison commander(Client client, Restaurant restaurant, HashMap<Produit, Long> produits) throws ServiceException, Throwable {
         JpaUtil.creerEntityManager();
         JpaUtil.ouvrirTransaction();
 
-        List<Livreur> listeLivreur = livreurDao.findAll();
+        // Calcul des localisation
+        LatLng localisationClient = getLatLng(client.getAdresse());
+        if (localisationClient == null) {
+            throw new ServiceException(12, "Adresse du client incorrecte : localisation impossible.");
+        }
+        LatLng localisationRestaurant = getLatLng(restaurant.getAdresse());
+        if (localisationRestaurant == null) {
+            throw new ServiceException(13, "Adresse du restaurant incorrecte : localisation impossible.");
+        }
+        Double distanceRestaurantClient = getFlightDistanceInKm(localisationRestaurant, localisationClient);
 
-        Livraison livraison = new Livraison(client, null, new Date(), null, produits);
+        // Calcul du poids de la commande
+        Float poidsCommande = 0f;
+        for (Entry<Produit, Long> entry : produits.entrySet()) {
+            Produit produit = entry.getKey();
+            //Long id = entry.getValue();
+            poidsCommande += produit.getPoids();
+        }
+
+        // Liste des livreurs disponibles et capables de supporter la charge
+        List<Livreur> listeLivreurs = null;
+        for (Livreur livreur : livreurDao.findAll()) {
+            if (livreur.isDisponible() && poidsCommande <= livreur.getCapacite()) {
+                listeLivreurs.add(livreur);
+            }
+        }
+        if (listeLivreurs == null) {
+            throw new ServiceException(11, "Il n'y a pas de livreur disponible pour le moment. Merci de commander plus tard.");
+        }
+
+        // Sélection du livreur le plus proche
+        Livreur livreurSelection = null;
+        Double dureeMini = Double.MAX_VALUE;
+        for (Livreur livreur : listeLivreurs) {
+            Double duree = Double.MAX_VALUE;
+            if (livreur instanceof Cycliste) {
+                duree = getTripDurationByBicycleInMinute(getLatLng(livreur.getAdresse()), localisationClient, localisationRestaurant);
+            } else if (livreur instanceof Drone) {
+                Double distance = getFlightDistanceInKm(getLatLng(livreur.getAdresse()), localisationRestaurant);
+                distance += distanceRestaurantClient;
+                duree = (distance / ((Drone) livreur).getVitesseMoyenne()) * 60;
+            }
+            if (dureeMini > duree) {
+                dureeMini = duree;
+                livreurSelection = livreur;
+            }
+        }
+
+        Livraison livraison = new Livraison(client, livreurSelection, new Date(), null, produits);
         livraisonDao.create(livraison);
 
         JpaUtil.validerTransaction();

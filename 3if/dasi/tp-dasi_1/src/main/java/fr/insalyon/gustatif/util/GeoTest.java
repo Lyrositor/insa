@@ -57,24 +57,24 @@ public class GeoTest {
     public static Double getTripDurationByBicycleInMinute(LatLng origin, LatLng destination, LatLng... steps) {
         return getTripDurationOrDistance(TravelMode.BICYCLING, true, origin, destination, steps);
     }
-    
+
     public static Double getTripDistanceByCarInKm(LatLng origin, LatLng destination, LatLng... steps) {
         return getTripDurationOrDistance(TravelMode.DRIVING, false, origin, destination, steps);
     }
-    
+
     public static Double getTripDurationOrDistance(TravelMode mode, boolean duration, LatLng origin, LatLng destination, LatLng... steps) {
 
         DirectionsApiRequest request = DirectionsApi.getDirections(MON_CONTEXTE_GEOAPI, origin.toString(), destination.toString());
         request.mode(mode);
         request.region("fr");
-        
+
         if (steps.length > 0) {
-            
+
             String[] stringSteps = new String[steps.length];
-            for (int i=0; i<steps.length; i++) {
+            for (int i = 0; i < steps.length; i++) {
                 stringSteps[i] = steps[i].toString();
             }
-            
+
             request.waypoints(stringSteps);
         }
 
@@ -97,8 +97,7 @@ public class GeoTest {
 
         if (duration) {
             return cumulDuration;
-        }
-        else {
+        } else {
             return cumulDistance;
         }
     }
@@ -106,7 +105,7 @@ public class GeoTest {
     public static void main(String[] args) {
         Logger logger = Logger.getLogger(GeoApiContext.class.getName());
         logger.setLevel(Level.WARNING);
-        
+
         String adresse1 = "7 Avenue Jean Capelle Ouest, Villeurbanne";
         LatLng coords1 = getLatLng(adresse1);
         System.out.println("Lat/Lng de Adresse #1: " + coords1);
@@ -118,7 +117,7 @@ public class GeoTest {
 
         Double duree = getTripDurationByBicycleInMinute(coords1, coords3, coords2);
         System.out.println("Durée de Trajet à Vélo de Adresse #1 à Adresse #3 en passant par Adresse #2: " + duree + " min");
-        
+
         Double distance = getTripDistanceByCarInKm(coords1, coords3);
         System.out.println("Distance en Voiture de Adresse #1 à Adresse #3 (trajet direct par la route): " + distance + " km");
 
