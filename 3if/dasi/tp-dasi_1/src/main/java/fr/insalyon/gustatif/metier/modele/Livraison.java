@@ -19,7 +19,7 @@ public class Livraison implements Serializable {
     @Temporal(DATE)
     private Date dateCommande;
     @Temporal(DATE)
-    private Date dateLivraison;
+    private Date dateLivraison = null;
     private HashMap<Produit, Long> produits;
 
     public Livraison() {

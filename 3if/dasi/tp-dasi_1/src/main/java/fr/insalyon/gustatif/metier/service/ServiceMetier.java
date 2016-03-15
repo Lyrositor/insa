@@ -5,6 +5,7 @@ import fr.insalyon.gustatif.dao.JpaUtil;
 import fr.insalyon.gustatif.dao.RestaurantDao;
 import fr.insalyon.gustatif.metier.modele.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,43 +16,32 @@ public class ServiceMetier {
         JpaUtil.creerEntityManager();
     }
 
-    public boolean creerClient(Client client) {
-        return false;
+    public void inscrireClient(Client client) {
     }
 
-    public boolean authentifier(String mail, String motdePasse) {
-        /*// Recherche parmis les clients
-         List<Client> listeClients = listerClients();
-         for (Client client : listeClients) {
-         if (client.getMail().equals(mail) && client.getMotDePasse().equals(motdePasse)) {
-         return true;
-         }
-         }
-         // Recherche parmis les cyclistes
-         List<Cycliste> listeCyclistes = listerCyclistes();
-         for (Cycliste cycliste : listeCyclistes) {
-         if (cycliste.getMail().equals(email) && cycliste.getMotDePasse().equals(motdePasse)) {
-         return true;
-         }
-         }*/
-        return false;
+    public Client authentifierClient(String mail, String motdePasse) {
+        return null;
     }
 
-    public void commander(Livraison livraison) {
+    public Cycliste authentifierCycliste(String mail, String motdePasse) {
+        return null;
     }
 
-    public List<Restaurant> listerRestaurants() {
+    public Gestionnaire authentifierGestionnaire(String mail, String motdePasse) {
+        return null;
+    }
+
+    public Livraison commander(Client client, HashMap<Produit, Long> produits) {
+        return null;
+    }
+
+    public List<Restaurant> listerRestaurants() throws Throwable {
         RestaurantDao restaurantDao = new RestaurantDao();
-        List<Restaurant> listeRestaurants = null;
-        try {
-            listeRestaurants = restaurantDao.findAll();
-        } catch (Throwable ex) {
-            Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        List<Restaurant> listeRestaurants = restaurantDao.findAll();
         return listeRestaurants;
     }
 
-    public List<Plat> listerPlatsRestaurant(Restaurant restaurant) {
+    public List<Produit> listerProduitsRestaurant(Restaurant restaurant) {
         return null;
     }
 
@@ -65,17 +55,6 @@ public class ServiceMetier {
          Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
          }*/
         return null;
-    }
-
-    public List<Client> listerClients() {
-        ClientDao clientDao = new ClientDao();
-        List<Client> listeClients = null;
-        try {
-            listeClients = clientDao.findAll();
-        } catch (Throwable ex) {
-            Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return listeClients;
     }
 
     public void cloturerLivraison(Livraison livraison, Date dateLivraison) {
