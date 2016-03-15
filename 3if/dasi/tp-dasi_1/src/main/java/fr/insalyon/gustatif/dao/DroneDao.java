@@ -1,52 +1,51 @@
 package fr.insalyon.gustatif.dao;
 
-import fr.insalyon.gustatif.metier.modele.Produit;
+import fr.insalyon.gustatif.metier.modele.Drone;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-public class ProduitDao {
+public class DroneDao {
 
-    public void create(Produit produit) throws Throwable {
+    public void create(Drone drone) throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
         try {
-            em.persist(produit);
+            em.persist(drone);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public Produit update(Produit produit) throws Throwable {
+    public Drone update(Drone drone) throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
         try {
-            produit = em.merge(produit);
+            drone = em.merge(drone);
         } catch (Exception e) {
             throw e;
         }
-        return produit;
+        return drone;
     }
 
-    public Produit findById(Long id) throws Throwable {
+    public Drone findById(Long id) throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
-        Produit produit = null;
+        Drone drone = null;
         try {
-            produit = em.find(Produit.class, id);
+            drone = em.find(Drone.class, id);
         } catch (Exception e) {
             throw e;
         }
-        return produit;
+        return drone;
     }
 
-    public List<Produit> findAll() throws Throwable {
+    public List<Drone> findAll() throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
-        List<Produit> produits = null;
+        List<Drone> drones = null;
         try {
-            Query q = em.createQuery("SELECT p FROM Produit p");
-            produits = (List<Produit>) q.getResultList();
+            Query q = em.createQuery("SELECT d FROM Drone d ORDER BY d.nom");
+            drones = (List<Drone>) q.getResultList();
         } catch (Exception e) {
             throw e;
         }
-
-        return produits;
+        return drones;
     }
 }
