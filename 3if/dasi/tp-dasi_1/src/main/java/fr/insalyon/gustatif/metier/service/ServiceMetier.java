@@ -1,19 +1,30 @@
 package fr.insalyon.gustatif.metier.service;
 
-import fr.insalyon.gustatif.dao.ClientDao;
-import fr.insalyon.gustatif.dao.JpaUtil;
-import fr.insalyon.gustatif.dao.RestaurantDao;
+import fr.insalyon.gustatif.dao.*;
 import fr.insalyon.gustatif.metier.modele.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ServiceMetier {
 
+    private ClientDao clientDao;
+    private CyclisteDao cyclisteDao;
+    private DroneDao droneDao;
+    private GestionnaireDao gestionnaireDao;
+    private LivraisonDao livraisonDao;
+    private ProduitDao produitDao;
+    private RestaurantDao restaurantDao;
+
     public void initialiserService() {
         JpaUtil.creerEntityManager();
+        clientDao = new ClientDao();
+        cyclisteDao = new CyclisteDao();
+        droneDao = new DroneDao();
+        gestionnaireDao = new GestionnaireDao();
+        livraisonDao = new LivraisonDao();
+        produitDao = new ProduitDao();
+        restaurantDao = new RestaurantDao();
     }
 
     public void inscrireClient(Client client) {
