@@ -8,23 +8,17 @@ import java.util.List;
 
 public class ServiceMetier {
 
-    private ClientDao clientDao;
-    private CyclisteDao cyclisteDao;
-    private DroneDao droneDao;
-    private GestionnaireDao gestionnaireDao;
-    private LivraisonDao livraisonDao;
-    private ProduitDao produitDao;
-    private RestaurantDao restaurantDao;
+    private static ClientDao clientDao = new ClientDao();
+    private static CyclisteDao cyclisteDao = new CyclisteDao();
+    private static DroneDao droneDao = new DroneDao();
+    private static GestionnaireDao gestionnaireDao = new GestionnaireDao();
+    private static LivraisonDao livraisonDao = new LivraisonDao();
+    private static ProduitDao produitDao = new ProduitDao();
+    private static RestaurantDao restaurantDao = new RestaurantDao();
 
-    public void initialiserService() {
-        JpaUtil.creerEntityManager();
-        clientDao = new ClientDao();
-        cyclisteDao = new CyclisteDao();
-        droneDao = new DroneDao();
-        gestionnaireDao = new GestionnaireDao();
-        livraisonDao = new LivraisonDao();
-        produitDao = new ProduitDao();
-        restaurantDao = new RestaurantDao();
+    public void initialiserDonnees() {
+        // Chargement des données d'un fichier SQL
+        // Création en dur des données
     }
 
     public void inscrireClient(Client client) {
