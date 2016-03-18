@@ -20,8 +20,8 @@ MAIN = src/Mere.cpp
 OBJ = $(SRC:%.cpp=$(BUILDDIR)/%.o)
 
 LIBS = -lncurses -ltcl -ltp
-LIBPATH = /share/public/tp/tp-multitache;include/
-INCPATH = /share/public/tp/tp-multitache;lib/
+LIBPATH = lib/#;/share/public/tp/tp-multitache
+INCPATH = include/#;/share/public/tp/tp-multitache
 
 BIN = $(BUILDDIR)/tp-pc_1
 MK_D = @mkdir -p $(@D)
