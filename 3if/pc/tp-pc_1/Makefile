@@ -16,7 +16,7 @@ DEFINITIONS = -DNDEBUG -DMAP
 BUILDDIR = bin
 SRCDIR = src
 SRC = 
-MAIN = src/Mere.cpp
+MAIN = src/Mere.cpp src/Simulateur.cpp src/BarriereEBPP.cpp
 OBJ = $(SRC:%.cpp=$(BUILDDIR)/%.o)
 
 LIBS = -lncurses -ltcl -ltp
