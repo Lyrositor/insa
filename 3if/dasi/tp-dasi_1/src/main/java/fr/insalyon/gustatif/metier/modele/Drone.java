@@ -11,9 +11,13 @@ public class Drone extends Livreur implements Serializable {
     public Drone() {
     }
 
-    public Drone(float vitesseMoyenne, float capacite) {
+    public Drone(
+            float vitesseMoyenne, float capacite, boolean disponible,
+            String adresse) {
         this.vitesseMoyenne = vitesseMoyenne;
+        this.adresse = adresse;
         this.capacite = capacite;
+        this.disponible = disponible;
     }
 
     public float getVitesseMoyenne() {

@@ -16,7 +16,7 @@ public class Cycliste extends Livreur implements Serializable {
 
     public Cycliste(
             String nom, String prenom, String mail, String motDePasse,
-            String adresse, float capacite, boolean disponible
+            float capacite, boolean disponible, String adresse
     ) {
         this.nom = nom;
         this.prenom = prenom;

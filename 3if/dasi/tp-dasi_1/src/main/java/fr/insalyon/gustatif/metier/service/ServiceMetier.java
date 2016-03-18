@@ -35,14 +35,16 @@ public class ServiceMetier {
     private static final int MAX_NUMERO_RUE = 100;
     private static final float MAX_CAPACITE_CYCLISTE = 50.0f;
     private static final float MAX_CAPACITE_DRONE = 20.0f;
+    private static final float MAX_VITESSE_MOYENNE = 50.0f;
     private static final int NUM_CYCLISTES = 40;
     private static final int NUM_DRONES = 10;
 
     public void initialiserDonnees() throws Throwable {
-        // Création des données en dur sur les livreurs et les gestionnaires
         Random r = new Random();
         JpaUtil.creerEntityManager();
         JpaUtil.ouvrirTransaction();
+
+        // Création en dur des cyclistes
         for (int i = 0; i < NUM_CYCLISTES; i++) {
             String nom = NOMS[r.nextInt(NOMS.length)];
             String prenom = PRENOMS[r.nextInt(PRENOMS.length)];
@@ -50,11 +52,22 @@ public class ServiceMetier {
                     nom, prenom,
                     prenom.toLowerCase() + '.' + nom.toLowerCase() + "@gustatif.com",
                     new BigInteger(130, r).toString(32),
-                    (r.nextInt(MAX_NUMERO_RUE) + 1) + ' ' + RUES[r.nextInt(RUES.length)],
-                    r.nextFloat() * MAX_CAPACITE_CYCLISTE, true
+                    r.nextFloat() * MAX_CAPACITE_CYCLISTE, true,
+                    (r.nextInt(MAX_NUMERO_RUE)+1)+" "+RUES[r.nextInt(RUES.length)]
             );
             livreurDao.create(cycliste);
         }
+
+        // Création en dur des drones
+        for (int i = 0; i < NUM_DRONES; i++) {
+            Drone drone = new Drone(
+                    r.nextFloat() * MAX_VITESSE_MOYENNE,
+                    r.nextFloat() * MAX_CAPACITE_DRONE, true,
+                    (r.nextInt(MAX_NUMERO_RUE)+1)+" "+RUES[r.nextInt(RUES.length)]
+            );
+            livreurDao.create(drone);
+        }
+
         JpaUtil.validerTransaction();
         JpaUtil.fermerEntityManager();
     }
