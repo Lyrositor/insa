@@ -48,4 +48,17 @@ public class LivreurDao {
         }
         return livreurs;
     }
+
+    public List<Livreur> findAllAvalaibleWithCapacity(Float poids) throws Throwable {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        List<Livreur> livreurs = null;
+        try {
+            //Query q = em.createQuery("SELECT l FROM Livreur l WHERE disponible = true and capacity >= poids ORDER BY l.nom");
+            Query q = em.createQuery("SELECT l FROM Livreur l ORDER BY l.nom");
+            livreurs = (List<Livreur>) q.getResultList();
+        } catch (Exception e) {
+            throw e;
+        }
+        return livreurs;
+    }
 }
