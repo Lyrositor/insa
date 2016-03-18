@@ -38,6 +38,7 @@ public class ServiceMetier {
     private static final float MAX_VITESSE_MOYENNE = 50.0f;
     private static final int NUM_CYCLISTES = 40;
     private static final int NUM_DRONES = 10;
+    private static final int NUM_GESTIONNAIRES = 3;
 
     public void initialiserDonnees() throws Throwable {
         Random r = new Random();
@@ -50,7 +51,7 @@ public class ServiceMetier {
             String prenom = PRENOMS[r.nextInt(PRENOMS.length)];
             Cycliste cycliste = new Cycliste(
                     nom, prenom,
-                    prenom.toLowerCase() + '.' + nom.toLowerCase() + "@gustatif.com",
+                    prenom.toLowerCase() + '.' + nom.toLowerCase() + "@gustatif.fr",
                     new BigInteger(130, r).toString(32),
                     r.nextFloat() * MAX_CAPACITE_CYCLISTE, true,
                     (r.nextInt(MAX_NUMERO_RUE)+1)+" "+RUES[r.nextInt(RUES.length)]
@@ -66,6 +67,17 @@ public class ServiceMetier {
                     (r.nextInt(MAX_NUMERO_RUE)+1)+" "+RUES[r.nextInt(RUES.length)]
             );
             livreurDao.create(drone);
+        }
+
+        // Création en dur des gestionnaires
+        for (int i = 0; i < NUM_GESTIONNAIRES; i++) {
+            String nom = NOMS[r.nextInt(NOMS.length)];
+            String prenom = PRENOMS[r.nextInt(PRENOMS.length)];
+            Gestionnaire gestionnaire = new Gestionnaire(
+                    prenom.toLowerCase() + '.' + nom.toLowerCase() + "@gustatif.fr",
+                    new BigInteger(130, r).toString(32)
+            );
+            gestionnaireDao.create(gestionnaire);
         }
 
         JpaUtil.validerTransaction();
