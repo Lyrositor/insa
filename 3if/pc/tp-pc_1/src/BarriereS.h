@@ -1,19 +1,20 @@
 /*************************************************************************
-                           BarriereEBPP  -  description
+           BarriereS  -  Gère la barrière de sortie du parking
                              -------------------
     début                : 18/03/2016
-    copyright            : (C) 2016 par Marc Gagné & Arnaud Favier
-    e-mail               : marc.gagne@insa-lyon.fr, arnaud.favier@insa-lyon.fr
+    copyright            : (C) 2016 par Arnaud Favier & Marc Gagné
+    e-mail               : arnaud.favier@insa-lyon.fr
+                           marc.gagne@insa-lyon.fr
 *************************************************************************/
 
-//---------- Interface de la tâche <BarriereEBPP> (fichier BarriereEBPP.h) -------
-#if ! defined ( BARRIEREEBPP_H )
-#define BARRIEREEBPP_H
+//---------- Interface de la tâche <BarriereS> (fichier BarriereS.h) -----
+#if ! defined ( BARRIERE_S_H )
+#define BARRIERE_S_H
 
 //------------------------------------------------------------------------
-// Rôle de la tâche <BarriereEBPP>
+// Rôle de la tâche <BarriereS>
 //
-// Barriere Entrée Blaise-Pascal Prof
+// Gère la barrière de sortie du parking.
 //------------------------------------------------------------------------
 
 /////////////////////////////////////////////////////////////////  INCLUDE
@@ -32,10 +33,10 @@
 // Contrat :
 //
 
-void BarriereEBPP (void);
+void BarriereS (void);
 // Mode d'emploi :
-// Point d'entrée de la Barriere Entrée Blaise-Pascal Prof
+// Point d'entrée de la tâche pour la barrière de sortie.
 // Contrat :
 //
 
-#endif // BARRIEREEBPP_H
+#endif // BARRIERE_S_H

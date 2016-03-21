@@ -1,18 +1,19 @@
 /*************************************************************************
-                           BarriereEBPP  -  description
+           BarriereS  -  Gère la barrière de sortie du parking
                              -------------------
     début                : 18/03/2016
-    copyright            : (C) 2016 par Marc Gagné & Arnaud Favier
-    e-mail               : marc.gagne@insa-lyon.fr, arnaud.favier@insa-lyon.fr
+    copyright            : (C) 2016 par Arnaud Favier & Marc Gagné
+    e-mail               : arnaud.favier@insa-lyon.fr
+                           marc.gagne@insa-lyon.fr
 *************************************************************************/
 
-//---------- Réalisation de la tâche <BarriereEBPP> (fichier BarriereEBPP.cpp) ---
+//---------- Réalisation de la tâche <BarriereS> (fichier BarriereS.cpp) -
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include système
 
 //------------------------------------------------------ Include personnel
-#include "BarriereEBPP.h"
+#include "BarriereS.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -32,6 +33,28 @@
 //{
 //} //----- fin de nom
 
+static void InitialiserBarriereS ( void )
+// Mode d'emploi :
+//
+// Contrat :
+//
+// Algorithme :
+//
+{
+
+} //----- fin de InitialiserBarriereS
+
+static void DetruireBarriereS ( void )
+// Mode d'emploi :
+//
+// Contrat :
+//
+// Algorithme :
+//
+{
+    exit(0);
+} //----- fin de DetruireBarriereS
+
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
 //type Nom ( liste de paramètres )
@@ -40,10 +63,10 @@
 //{
 //} //----- fin de Nom
 
-void BarriereEBPP (void)
+void BarriereS ( void )
 // Algorithme :
 //
 {
-    exit(0);
-} //----- fin de BarriereEBPP
-
+    InitialiserBarriereS();
+    DetruireBarriereS();
+} //----- fin de BarriereS
