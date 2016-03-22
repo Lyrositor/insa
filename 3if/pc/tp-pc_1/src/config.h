@@ -13,11 +13,11 @@
 #include <sys/ipc.h>
 #include <sys/types.h>
 
-const char * CHEMIN_IPC = "/Parking";
-const key_t CLE_BARRIERE_PBP = ftok(CHEMIN_IPC, 'P');
-const key_t CLE_BARRIERE_ABP = ftok(CHEMIN_IPC, 'A');
-const key_t CLE_BARRIERE_EGB = ftok(CHEMIN_IPC, 'E');
-const key_t CLE_BARRIERE_SGB = ftok(CHEMIN_IPC, 'S');
+static const char * const CHEMIN_IPC = "/Parking";
+static const key_t CLE_BARRIERE_PBP = ftok(CHEMIN_IPC, 'P');
+static const key_t CLE_BARRIERE_ABP = ftok(CHEMIN_IPC, 'A');
+static const key_t CLE_BARRIERE_EGB = ftok(CHEMIN_IPC, 'E');
+static const key_t CLE_BARRIERE_SGB = ftok(CHEMIN_IPC, 'S');
 
 typedef struct msg_voiture {
     long mtype;
@@ -25,8 +25,8 @@ typedef struct msg_voiture {
     unsigned int place;
 } msg_voiture;
 
-const long MSG_ENTREE_PROF = 0;
-const long MSG_ENTREE_AUTRE = 1;
-const long MSG_SORTIE = 2;
+static const long MSG_ENTREE_PROF = 0;
+static const long MSG_ENTREE_AUTRE = 1;
+static const long MSG_SORTIE = 2;
 
 #endif // CONFIG_H
