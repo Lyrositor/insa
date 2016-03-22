@@ -3,12 +3,15 @@ package fr.insalyon.gustatif.metier.service;
 import com.google.maps.model.LatLng;
 import fr.insalyon.gustatif.dao.*;
 import fr.insalyon.gustatif.metier.modele.*;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Random;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServiceMetier {
 
@@ -181,28 +184,28 @@ public class ServiceMetier {
         return gestionnaire;
     }
 
-    public Livraison commander(Client client, Restaurant restaurant, HashMap<Produit, Long> produits) throws ServiceException, Throwable {
+    public Livraison commander(Client client, Restaurant restaurant, HashMap<Produit, Long> produits) throws ServiceException {
         JpaUtil.creerEntityManager();
         JpaUtil.ouvrirTransaction();
 
         // Calcul des localisation
         if (client.getLatitude() == null) {
             JpaUtil.fermerEntityManager();
-            throw new ServiceException(12, "Latitude de l'adresse cliente non définie.");
+            throw new ServiceException(ServiceException.ERREUR_CLIENT_LATITUDE);
         }
         if (client.getLongitude() == null) {
             JpaUtil.fermerEntityManager();
-            throw new ServiceException(13, "Longitude de l'adresse cliente non définie.");
+            throw new ServiceException(ServiceException.ERREUR_CLIENT_LONGITUDE);
         }
         LatLng localisationClient = new LatLng(client.getLatitude(), client.getLongitude());
 
         if (restaurant.getLatitude() == null) {
             JpaUtil.fermerEntityManager();
-            throw new ServiceException(14, "Latitude de l'adresse du restaurant non définie.");
+            throw new ServiceException(ServiceException.ERREUR_RESTAURANT_LATITUDE);
         }
         if (restaurant.getLongitude() == null) {
             JpaUtil.fermerEntityManager();
-            throw new ServiceException(15, "Longitude de l'adresse du restaurant non définie.");
+            throw new ServiceException(ServiceException.ERREUR_RESTAURANT_LONGITUDE);
         }
         LatLng localisationRestaurant = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
 
@@ -217,7 +220,12 @@ public class ServiceMetier {
         }
 
         // Liste des livreurs disponibles et capables de supporter la charge
-        List<Livreur> listeLivreurs = LIVREUR_DAO.findAllAvalaibleWithCapacity(poidsCommande);
+        List<Livreur> listeLivreurs;
+        try {
+            listeLivreurs = LIVREUR_DAO.findAllAvalaibleWithCapacity(poidsCommande);
+        } catch (Throwable ex) {
+            throw new ServiceException(ServiceException.ERREUR_LIVREUR_LISTE);
+        }
 
         // Sélection du livreur le plus proche
         Livreur livreurSelection = null;
@@ -239,18 +247,29 @@ public class ServiceMetier {
 
         if (livreurSelection == null) {
             JpaUtil.fermerEntityManager();
-            throw new ServiceException(11, "Aucun livreur n'est disponible ou ne possède une capacité de charge suffisante pour le moment. Merci de commander plus tard.");
+            throw new ServiceException(ServiceException.ERREUR_LIVREUR_SELECTION);
         }
 
         /* DEMO */
         System.out.println("Attente de l'utilisateur... Appuyer sur [Entrée] pour continuer.");
-        System.in.read();
+        try {
+            System.in.read();
+        } catch (Exception e) {
+        }
         /* --- */
 
         Livraison livraison = new Livraison(client, livreurSelection, new Date(), null, produits);
-        LIVRAISON_DAO.create(livraison);
+        try {
+            LIVRAISON_DAO.create(livraison);
+        } catch (Throwable ex) {
+            throw new ServiceException(ServiceException.ERREUR_LIVRAISON_CREATE);
+        }
         livreurSelection.setDisponible(false);
-        LIVREUR_DAO.update(livreurSelection);
+        try {
+            LIVREUR_DAO.update(livreurSelection);
+        } catch (Throwable ex) {
+            throw new ServiceException(ServiceException.ERREUR_LIVREUR_UPDATE);
+        }
 
         JpaUtil.validerTransaction();
         JpaUtil.fermerEntityManager();
@@ -284,15 +303,19 @@ public class ServiceMetier {
         return listeLivreurs;
     }
 
-    public void cloturerLivraison(Livraison livraison, Date dateLivraison) throws ServiceException, Throwable {
+    public void cloturerLivraison(Livraison livraison, Date dateLivraison) throws ServiceException {
         JpaUtil.creerEntityManager();
         JpaUtil.ouvrirTransaction();
 
         if (dateLivraison.before(livraison.getDateCommande())) {
-            throw new ServiceException(10, "La date de livraison ne peut être inférieure à la date de commande.");
+            throw new ServiceException(ServiceException.ERREUR_LIVRAISON_DATE);
         }
         livraison.setDateLivraison(dateLivraison);
-        LIVRAISON_DAO.update(livraison);
+        try {
+            LIVRAISON_DAO.update(livraison);
+        } catch (Throwable ex) {
+            throw new ServiceException(ServiceException.ERREUR_LIVRAISON_UPDATE);
+        }
 
         JpaUtil.validerTransaction();
         JpaUtil.fermerEntityManager();

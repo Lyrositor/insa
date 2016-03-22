@@ -3,37 +3,34 @@ package fr.insalyon.gustatif.metier.service;
 public class ServiceException extends Exception {
 
     private int numero;
-    private String description;
 
     public static final int ERREUR_CREATION_CLIENT = 1;
     public static final int ERREUR_CREATION_CLIENT_MAIL = 2;
     public static final int ERREUR_INTROUVABLE = 3;
     public static final int ERREUR_MOT_DE_PASSE = 4;
 
-    public ServiceException(int numero, String description) {
-        this.numero = numero;
-        this.description = description;
-    }
+    public static final int ERREUR_CLIENT_LATITUDE = 5;
+    public static final int ERREUR_CLIENT_LONGITUDE = 6;
+    public static final int ERREUR_RESTAURANT_LATITUDE = 7;
+    public static final int ERREUR_RESTAURANT_LONGITUDE = 8;
+    public static final int ERREUR_LIVREUR_LISTE = 9;
+    public static final int ERREUR_LIVREUR_SELECTION = 10;
+    public static final int ERREUR_LIVRAISON_CREATE = 11;
+    public static final int ERREUR_LIVREUR_UPDATE = 12;
+
+    public static final int ERREUR_LIVRAISON_DATE = 13;
+    public static final int ERREUR_LIVRAISON_UPDATE = 14;
 
     public ServiceException(int numero) {
         this.numero = numero;
-        this.description = null;
     }
 
     public int getNumero() {
         return numero;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public void setNumero(int numero) {
         this.numero = numero;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
 }
