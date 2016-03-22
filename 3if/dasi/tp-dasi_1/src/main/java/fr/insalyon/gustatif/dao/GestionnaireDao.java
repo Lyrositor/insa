@@ -37,6 +37,19 @@ public class GestionnaireDao {
         return gestionnaire;
     }
 
+    public Gestionnaire findByMail(String mail) throws Throwable {
+        EntityManager em = JpaUtil.obtenirEntityManager();
+        Gestionnaire gestionnaire = null;
+        try {
+            Query q = em.createQuery("SELECT g FROM Gestionnaire g WHERE mail=:mail");
+            q.setParameter("mail", mail);
+            gestionnaire = (Gestionnaire) q.getSingleResult();
+        } catch (Exception e) {
+            throw e;
+        }
+        return gestionnaire;
+    }
+
     public List<Gestionnaire> findAll() throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<Gestionnaire> gestionnaires = null;

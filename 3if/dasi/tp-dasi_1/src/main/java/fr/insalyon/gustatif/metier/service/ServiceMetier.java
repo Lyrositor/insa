@@ -5,9 +5,6 @@ import fr.insalyon.gustatif.dao.*;
 import fr.insalyon.gustatif.metier.modele.*;
 import java.math.BigInteger;
 import java.util.Random;
-import static fr.insalyon.gustatif.util.GeoTest.getFlightDistanceInKm;
-import static fr.insalyon.gustatif.util.GeoTest.getLatLng;
-import static fr.insalyon.gustatif.util.GeoTest.getTripDurationByBicycleInMinute;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +12,12 @@ import java.util.Map.Entry;
 
 public class ServiceMetier {
 
-    private static final ClientDao clientDao = new ClientDao();
-    private static final GestionnaireDao gestionnaireDao = new GestionnaireDao();
-    private static final LivraisonDao livraisonDao = new LivraisonDao();
-    private static final LivreurDao livreurDao = new LivreurDao();
-    private static final ProduitDao produitDao = new ProduitDao();
-    private static final RestaurantDao restaurantDao = new RestaurantDao();
+    private static final ClientDao CLIENT_DAO = new ClientDao();
+    private static final GestionnaireDao GESTIONNAIRE_DAO = new GestionnaireDao();
+    private static final LivraisonDao LIVRAISON_DAO = new LivraisonDao();
+    private static final LivreurDao LIVREUR_DAO = new LivreurDao();
+    private static final ProduitDao PRODUIT_DAO = new ProduitDao();
+    private static final RestaurantDao RESTAURANT_DAO = new RestaurantDao();
 
     private static final String[] NOMS = {
         "MARTIN", "DUPRE", "BERNARD", "DUBOIS", "THOMAS", "ROBERT", "RICHARD",
@@ -30,7 +27,10 @@ public class ServiceMetier {
         "Jean", "Daniel", "Anne", "Marie", "Pierre", "Jullie", "Marc", "Arnaud"
     };
     private static final String[] RUES = {
-        "Cours Emile Zola", "rue Galilee", "rue du Marais", "rue du Tonkin"
+        "Cours Emile Zola, 69100 Villeurbanne",
+        "rue Galilée, 69100 Villeurbanne",
+        "rue du Marais, 69100 Villeurbanne",
+        "rue du Tonkin, 69100 Villeurbanne"
     };
     private static final int MAX_NUMERO_RUE = 100;
     private static final float MAX_CAPACITE_CYCLISTE = 50.0f;
@@ -49,14 +49,17 @@ public class ServiceMetier {
         for (int i = 0; i < NUM_CYCLISTES; i++) {
             String nom = NOMS[r.nextInt(NOMS.length)];
             String prenom = PRENOMS[r.nextInt(PRENOMS.length)];
+            String adresse = (r.nextInt(MAX_NUMERO_RUE)+1)+" "+RUES[r.nextInt(RUES.length)];
+            LatLng coordonnees = ServiceTechnique.getLatLng(adresse);
             Cycliste cycliste = new Cycliste(
                     nom, prenom,
                     prenom.toLowerCase() + '.' + nom.toLowerCase() + "@gustatif.fr",
                     new BigInteger(130, r).toString(32),
                     r.nextFloat() * MAX_CAPACITE_CYCLISTE, true,
-                    (r.nextInt(MAX_NUMERO_RUE)+1)+" "+RUES[r.nextInt(RUES.length)]
+                    adresse
             );
-            livreurDao.create(cycliste);
+            cycliste.setCoordonnees(coordonnees);
+            LIVREUR_DAO.create(cycliste);
         }
 
         // Création en dur des drones
@@ -66,7 +69,7 @@ public class ServiceMetier {
                     r.nextFloat() * MAX_CAPACITE_DRONE, true,
                     (r.nextInt(MAX_NUMERO_RUE)+1)+" "+RUES[r.nextInt(RUES.length)]
             );
-            livreurDao.create(drone);
+            LIVREUR_DAO.create(drone);
         }
 
         // Création en dur des gestionnaires
@@ -77,26 +80,101 @@ public class ServiceMetier {
                     prenom.toLowerCase() + '.' + nom.toLowerCase() + "@gustatif.fr",
                     new BigInteger(130, r).toString(32)
             );
-            gestionnaireDao.create(gestionnaire);
+            GESTIONNAIRE_DAO.create(gestionnaire);
         }
 
         JpaUtil.validerTransaction();
         JpaUtil.fermerEntityManager();
     }
 
-    public void inscrireClient(Client client) {
+    public void inscrireClient(Client client) throws ServiceException {
+        // Géolocaliser le client en cours d'insccription.
+        LatLng coordonnees = ServiceTechnique.getLatLng(client.getAdresse());
+        client.setCoordonnees(coordonnees);
+
+        JpaUtil.creerEntityManager();
+        JpaUtil.ouvrirTransaction();
+
+        // Vérifier qu'il n'y pas d'autres clients avec le même mail
+        try {
+            Client c = CLIENT_DAO.findByMail(client.getMail());
+            JpaUtil.fermerEntityManager();
+            throw new ServiceException(ServiceException.ERREUR_CREATION_CLIENT_MAIL);
+        } catch (Throwable t) { }
+
+        // Ajouter le client.
+        try {
+            CLIENT_DAO.create(client);
+        } catch (Throwable t) {
+            JpaUtil.fermerEntityManager();
+            throw new ServiceException(ServiceException.ERREUR_CREATION_CLIENT);
+        }
+
+        JpaUtil.validerTransaction();
+        JpaUtil.fermerEntityManager();
     }
 
-    public Client authentifierClient(String mail, String motdePasse) {
-        return null;
+    public Client authentifierClient(String mail, String motDePasse) throws ServiceException {
+        JpaUtil.creerEntityManager();
+        JpaUtil.ouvrirTransaction();
+
+        // Trouver un client avec l'adresse mail correspondante
+        Client client = null;
+        try {
+            client = CLIENT_DAO.findByMail(mail);
+        } catch (Throwable t) {
+            JpaUtil.fermerEntityManager();
+            throw new ServiceException(ServiceException.ERREUR_INTROUVABLE);
+        }
+        JpaUtil.fermerEntityManager();
+
+        // Vérifier le mot de passe.
+        if (motDePasse.equals(client.getMotDePasse()))
+            throw new ServiceException(ServiceException.ERREUR_MOT_DE_PASSE);
+
+        return client;
     }
 
-    public Cycliste authentifierCycliste(String mail, String motdePasse) {
-        return null;
+    public Cycliste authentifierCycliste(String mail, String motDePasse) throws ServiceException {
+        JpaUtil.creerEntityManager();
+        JpaUtil.ouvrirTransaction();
+
+        // Trouver un client avec l'adresse mail correspondante
+        Cycliste cycliste = null;
+        try {
+            cycliste = (Cycliste) LIVREUR_DAO.findByMail(mail);
+        } catch (Throwable t) {
+            JpaUtil.fermerEntityManager();
+            throw new ServiceException(ServiceException.ERREUR_INTROUVABLE);
+        }
+        JpaUtil.fermerEntityManager();
+
+        // Vérifier le mot de passe.
+        if (motDePasse.equals(cycliste.getMotDePasse()))
+            throw new ServiceException(ServiceException.ERREUR_MOT_DE_PASSE);
+
+        return cycliste;
     }
 
-    public Gestionnaire authentifierGestionnaire(String mail, String motdePasse) {
-        return null;
+    public Gestionnaire authentifierGestionnaire(String mail, String motDePasse) throws ServiceException {
+        JpaUtil.creerEntityManager();
+        JpaUtil.ouvrirTransaction();
+
+        // Trouver un client avec l'adresse mail correspondante
+        Gestionnaire gestionnaire = null;
+        try {
+            gestionnaire = GESTIONNAIRE_DAO.findByMail(mail);
+        } catch (Throwable t) {
+            JpaUtil.fermerEntityManager();
+            throw new ServiceException(ServiceException.ERREUR_INTROUVABLE);
+        }
+        JpaUtil.fermerEntityManager();
+
+        // Vérifier le mot de passe.
+        if (motDePasse.equals(gestionnaire.getMotDePasse()))
+            throw new ServiceException(ServiceException.ERREUR_MOT_DE_PASSE);
+
+        return gestionnaire;
     }
 
     public Livraison commander(Client client, Restaurant restaurant, HashMap<Produit, Long> produits) throws ServiceException, Throwable {
@@ -120,7 +198,7 @@ public class ServiceMetier {
         }
         LatLng localisationRestaurant = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
 
-        Double distanceRestaurantClient = getFlightDistanceInKm(localisationRestaurant, localisationClient);
+        Double distanceRestaurantClient = ServiceTechnique.getFlightDistanceInKm(localisationRestaurant, localisationClient);
 
         // Calcul du poids de la commande
         Float poidsCommande = 0f;
@@ -132,7 +210,7 @@ public class ServiceMetier {
 
         // Liste des livreurs disponibles et capables de supporter la charge
         List<Livreur> listeLivreurs = null;
-        for (Livreur livreur : livreurDao.findAll()) {
+        for (Livreur livreur : LIVREUR_DAO.findAll()) {
             if (livreur.isDisponible() && poidsCommande <= livreur.getCapacite()) {
                 listeLivreurs.add(livreur);
             }
@@ -147,9 +225,9 @@ public class ServiceMetier {
         for (Livreur livreur : listeLivreurs) {
             Double duree = Double.MAX_VALUE;
             if (livreur instanceof Cycliste) {
-                duree = getTripDurationByBicycleInMinute(getLatLng(livreur.getAdresse()), localisationClient, localisationRestaurant);
+                duree = ServiceTechnique.getTripDurationByBicycleInMinute(ServiceTechnique.getLatLng(livreur.getAdresse()), localisationClient, localisationRestaurant);
             } else if (livreur instanceof Drone) {
-                Double distance = getFlightDistanceInKm(getLatLng(livreur.getAdresse()), localisationRestaurant);
+                Double distance = ServiceTechnique.getFlightDistanceInKm(ServiceTechnique.getLatLng(livreur.getAdresse()), localisationRestaurant);
                 distance += distanceRestaurantClient;
                 duree = (distance / ((Drone) livreur).getVitesseMoyenne()) * 60;
             }
@@ -160,7 +238,7 @@ public class ServiceMetier {
         }
 
         Livraison livraison = new Livraison(client, livreurSelection, new Date(), null, produits);
-        livraisonDao.create(livraison);
+        LIVRAISON_DAO.create(livraison);
 
         JpaUtil.validerTransaction();
         return livraison;
@@ -169,7 +247,7 @@ public class ServiceMetier {
     public List<Restaurant> listerRestaurants() throws Throwable {
         JpaUtil.creerEntityManager();
 
-        List<Restaurant> listeRestaurants = restaurantDao.findAll();
+        List<Restaurant> listeRestaurants = RESTAURANT_DAO.findAll();
         return listeRestaurants;
     }
 
@@ -183,7 +261,7 @@ public class ServiceMetier {
     public List<Livreur> listerLivreurs() throws Throwable {
         JpaUtil.creerEntityManager();
 
-        List<Livreur> listeLivreurs = livreurDao.findAll();
+        List<Livreur> listeLivreurs = LIVREUR_DAO.findAll();
         return listeLivreurs;
     }
 
@@ -195,7 +273,7 @@ public class ServiceMetier {
             throw new ServiceException(10, "La date de livraison ne peut être inférieure à la date de commande.");
         }
         livraison.setDateLivraison(dateLivraison);
-        livraisonDao.update(livraison);
+        LIVRAISON_DAO.update(livraison);
 
         JpaUtil.validerTransaction();
     }
