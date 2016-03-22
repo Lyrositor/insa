@@ -49,14 +49,14 @@ public class ServiceMetier {
         for (int i = 0; i < NUM_CYCLISTES; i++) {
             String nom = NOMS[r.nextInt(NOMS.length)];
             String prenom = PRENOMS[r.nextInt(PRENOMS.length)];
-            String adresse = (r.nextInt(MAX_NUMERO_RUE)+1)+" "+RUES[r.nextInt(RUES.length)];
+            String adresse = (r.nextInt(MAX_NUMERO_RUE) + 1) + " " + RUES[r.nextInt(RUES.length)];
             LatLng coordonnees = ServiceTechnique.getLatLng(adresse);
             Cycliste cycliste = new Cycliste(
                     nom, prenom,
                     prenom.toLowerCase() + '.' + nom.toLowerCase() + "@gustatif.fr",
                     new BigInteger(130, r).toString(32),
                     r.nextFloat() * MAX_CAPACITE_CYCLISTE, true,
-                    adresse
+                    (r.nextInt(MAX_NUMERO_RUE) + 1) + " " + RUES[r.nextInt(RUES.length)]
             );
             cycliste.setCoordonnees(coordonnees);
             LIVREUR_DAO.create(cycliste);
@@ -67,7 +67,7 @@ public class ServiceMetier {
             Drone drone = new Drone(
                     r.nextFloat() * MAX_VITESSE_MOYENNE,
                     r.nextFloat() * MAX_CAPACITE_DRONE, true,
-                    (r.nextInt(MAX_NUMERO_RUE)+1)+" "+RUES[r.nextInt(RUES.length)]
+                    (r.nextInt(MAX_NUMERO_RUE) + 1) + " " + RUES[r.nextInt(RUES.length)]
             );
             LIVREUR_DAO.create(drone);
         }
@@ -100,7 +100,8 @@ public class ServiceMetier {
             Client c = CLIENT_DAO.findByMail(client.getMail());
             JpaUtil.fermerEntityManager();
             throw new ServiceException(ServiceException.ERREUR_CREATION_CLIENT_MAIL);
-        } catch (Throwable t) { }
+        } catch (Throwable t) {
+        }
 
         // Ajouter le client.
         try {
@@ -129,8 +130,9 @@ public class ServiceMetier {
         JpaUtil.fermerEntityManager();
 
         // Vérifier le mot de passe.
-        if (motDePasse.equals(client.getMotDePasse()))
+        if (motDePasse.equals(client.getMotDePasse())) {
             throw new ServiceException(ServiceException.ERREUR_MOT_DE_PASSE);
+        }
 
         return client;
     }
@@ -150,8 +152,9 @@ public class ServiceMetier {
         JpaUtil.fermerEntityManager();
 
         // Vérifier le mot de passe.
-        if (motDePasse.equals(cycliste.getMotDePasse()))
+        if (motDePasse.equals(cycliste.getMotDePasse())) {
             throw new ServiceException(ServiceException.ERREUR_MOT_DE_PASSE);
+        }
 
         return cycliste;
     }
@@ -171,8 +174,9 @@ public class ServiceMetier {
         JpaUtil.fermerEntityManager();
 
         // Vérifier le mot de passe.
-        if (motDePasse.equals(gestionnaire.getMotDePasse()))
+        if (motDePasse.equals(gestionnaire.getMotDePasse())) {
             throw new ServiceException(ServiceException.ERREUR_MOT_DE_PASSE);
+        }
 
         return gestionnaire;
     }
@@ -183,17 +187,21 @@ public class ServiceMetier {
 
         // Calcul des localisation
         if (client.getLatitude() == null) {
+            JpaUtil.fermerEntityManager();
             throw new ServiceException(12, "Latitude de l'adresse cliente non définie.");
         }
         if (client.getLongitude() == null) {
+            JpaUtil.fermerEntityManager();
             throw new ServiceException(13, "Longitude de l'adresse cliente non définie.");
         }
         LatLng localisationClient = new LatLng(client.getLatitude(), client.getLongitude());
 
         if (restaurant.getLatitude() == null) {
+            JpaUtil.fermerEntityManager();
             throw new ServiceException(14, "Latitude de l'adresse du restaurant non définie.");
         }
         if (restaurant.getLongitude() == null) {
+            JpaUtil.fermerEntityManager();
             throw new ServiceException(15, "Longitude de l'adresse du restaurant non définie.");
         }
         LatLng localisationRestaurant = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
@@ -209,13 +217,9 @@ public class ServiceMetier {
         }
 
         // Liste des livreurs disponibles et capables de supporter la charge
-        List<Livreur> listeLivreurs = null;
-        for (Livreur livreur : LIVREUR_DAO.findAll()) {
-            if (livreur.isDisponible() && poidsCommande <= livreur.getCapacite()) {
-                listeLivreurs.add(livreur);
-            }
-        }
+        List<Livreur> listeLivreurs = LIVREUR_DAO.findAllAvalaibleWithCapacity(poidsCommande);
         if (listeLivreurs == null) {
+            JpaUtil.fermerEntityManager();
             throw new ServiceException(11, "Aucun livreur n'est disponible ou ne possède une capacité de charge suffisante pour le moment. Merci de commander plus tard.");
         }
 
@@ -241,6 +245,7 @@ public class ServiceMetier {
         LIVRAISON_DAO.create(livraison);
 
         JpaUtil.validerTransaction();
+        JpaUtil.fermerEntityManager();
         return livraison;
     }
 
@@ -248,6 +253,8 @@ public class ServiceMetier {
         JpaUtil.creerEntityManager();
 
         List<Restaurant> listeRestaurants = RESTAURANT_DAO.findAll();
+
+        JpaUtil.fermerEntityManager();
         return listeRestaurants;
     }
 
@@ -255,6 +262,8 @@ public class ServiceMetier {
         JpaUtil.creerEntityManager();
 
         List<Produit> listeProduits = restaurant.getProduits();
+
+        JpaUtil.fermerEntityManager();
         return listeProduits;
     }
 
@@ -262,6 +271,8 @@ public class ServiceMetier {
         JpaUtil.creerEntityManager();
 
         List<Livreur> listeLivreurs = LIVREUR_DAO.findAll();
+
+        JpaUtil.fermerEntityManager();
         return listeLivreurs;
     }
 
@@ -276,6 +287,7 @@ public class ServiceMetier {
         LIVRAISON_DAO.update(livraison);
 
         JpaUtil.validerTransaction();
+        JpaUtil.fermerEntityManager();
     }
 
 }

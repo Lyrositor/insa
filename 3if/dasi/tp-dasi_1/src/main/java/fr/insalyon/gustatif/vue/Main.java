@@ -10,7 +10,8 @@ public class Main {
             service.initialiserDonnees();
         } catch (Throwable t) {
             System.err.println("ERREUR: Échec lors de l'initialisation.");
+            return;
         }
-        System.err.println("INFO: Initialisation réussie.");
+        System.err.println("INFO: Initialisation terminée.");
     }
 }
