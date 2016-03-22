@@ -130,7 +130,7 @@ public class ServiceMetier {
         JpaUtil.fermerEntityManager();
 
         // Vérifier le mot de passe.
-        if (motDePasse.equals(client.getMotDePasse())) {
+        if (!motDePasse.equals(client.getMotDePasse())) {
             throw new ServiceException(ServiceException.ERREUR_MOT_DE_PASSE);
         }
 
@@ -152,7 +152,7 @@ public class ServiceMetier {
         JpaUtil.fermerEntityManager();
 
         // Vérifier le mot de passe.
-        if (motDePasse.equals(cycliste.getMotDePasse())) {
+        if (!motDePasse.equals(cycliste.getMotDePasse())) {
             throw new ServiceException(ServiceException.ERREUR_MOT_DE_PASSE);
         }
 
@@ -174,7 +174,7 @@ public class ServiceMetier {
         JpaUtil.fermerEntityManager();
 
         // Vérifier le mot de passe.
-        if (motDePasse.equals(gestionnaire.getMotDePasse())) {
+        if (!motDePasse.equals(gestionnaire.getMotDePasse())) {
             throw new ServiceException(ServiceException.ERREUR_MOT_DE_PASSE);
         }
 
@@ -240,6 +240,11 @@ public class ServiceMetier {
                 livreurSelection = livreur;
             }
         }
+
+        /* DEMO */
+        System.out.println("Attente de l'utilisateur... Appuyer sur [Entrée] pour continuer.");
+        System.in.read();
+        /* --- */
 
         Livraison livraison = new Livraison(client, livreurSelection, new Date(), null, produits);
         LIVRAISON_DAO.create(livraison);

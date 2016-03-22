@@ -1,4 +1,4 @@
-package dao;
+package fr.insalyon.gustatif.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -25,7 +25,7 @@ public class JpaUtil {
      * <br/><strong>Vérifier le nom de l'unité de persistance
      * (cf.&nbsp;persistence.xml)</strong>
      */
-    public static final String PERSISTENCE_UNIT_NAME = "XXXXXXXXX-Moodle-PU";
+    public static final String PERSISTENCE_UNIT_NAME = "fr.insalyon_tp-dasi_1_jar_1.0-SNAPSHOTPU";
     /**
      * Factory de Entity Manager liée à l'unité de persistance.
      * <br/><strong>Vérifier le nom de l'unité de persistance indiquée dans
