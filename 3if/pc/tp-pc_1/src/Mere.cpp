@@ -57,7 +57,7 @@ int main ()
             {
                 // Père
                 /* --- Moteur --- */
-                waitpid(tachesPid[taches--], NULL, 0);
+                waitpid(tachesPid[--taches], NULL, 0);
 
                 /* --- Destruction --- */
                 while (taches)
