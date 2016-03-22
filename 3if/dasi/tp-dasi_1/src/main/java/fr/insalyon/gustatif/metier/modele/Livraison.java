@@ -12,7 +12,8 @@ import static javax.persistence.TemporalType.DATE;
 @Entity
 public class Livraison implements Serializable {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
     private Client client;
     private Livreur livreur;
@@ -31,6 +32,10 @@ public class Livraison implements Serializable {
         this.dateCommande = dateCommande;
         this.dateLivraison = dateLivraison;
         this.produits = produits;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Client getClient() {
@@ -75,14 +80,14 @@ public class Livraison implements Serializable {
 
     @Override
     public String toString() {
-        return "Livraison{" +
-                "id=" + id +
-                ", client=" + client +
-                ", livreur=" + livreur +
-                ", dateCommande=" + dateCommande +
-                ", dateLivraison=" + dateLivraison +
-                ", produits=" + produits +
-                '}';
+        return "Livraison{"
+                + "id=" + id
+                + ", client=" + client
+                + ", livreur=" + livreur
+                + ", dateCommande=" + dateCommande
+                + ", dateLivraison=" + dateLivraison
+                + ", produits=" + produits
+                + '}';
     }
 
 }

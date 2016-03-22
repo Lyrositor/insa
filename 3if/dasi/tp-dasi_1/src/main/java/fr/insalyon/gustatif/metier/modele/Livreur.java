@@ -11,7 +11,8 @@ import javax.persistence.OneToMany;
 @Entity
 public abstract class Livreur implements Serializable {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     protected Long id;
     protected float capacite;
     protected boolean disponible = true;
@@ -21,6 +22,10 @@ public abstract class Livreur implements Serializable {
 
     @OneToMany
     protected List<Livraison> livraisons;
+
+    public Long getId() {
+        return id;
+    }
 
     public boolean isDisponible() {
         return disponible;

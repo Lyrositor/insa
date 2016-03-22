@@ -264,11 +264,37 @@ public class ServiceMetier {
         } catch (Throwable ex) {
             throw new ServiceException(ServiceException.ERREUR_LIVRAISON_CREATE);
         }
+
         livreurSelection.setDisponible(false);
         try {
             LIVREUR_DAO.update(livreurSelection);
         } catch (Throwable ex) {
             throw new ServiceException(ServiceException.ERREUR_LIVREUR_UPDATE);
+        }
+        if (livreurSelection instanceof Cycliste) {
+
+            String produitCommande = "";
+            Float total = 0.0f;
+            for (Entry<Produit, Long> entry : produits.entrySet()) {
+                produitCommande += "    - " + entry.getValue() + " " + entry.getKey().getDenomination() + " : " + entry.getValue() + " x " + entry.getKey().getPrix() + "\n";
+                total += entry.getKey().getPrix();
+            }
+            produitCommande += "\n"
+                    + "TOTAL : " + total + " €";
+
+            String corps = "Bonjour " + ((Cycliste) livreurSelection).getPrenom() + ",\n\n"
+                    + "    Merci d'effectuer cette livraison dès maintenant, tout en respectant le code de la route ;-)\n\n"
+                    + " Le Chef\n\n"
+                    + "Détails de la Livraison\n"
+                    + "    - Date/heure : " + livraison.getDateCommande() + "\n"
+                    + "    - Livreur : " + ((Cycliste) livreurSelection).getPrenom() + " " + ((Cycliste) livreurSelection).getNom() + " (n°" + +(livreurSelection).getId() + ")\n"
+                    + "    - Restaurant : " + restaurant.getDenomination() + "\n"
+                    + "    - Client : \n"
+                    + "               " + client.getPrenom() + " " + client.getNom() + "\n"
+                    + "               " + client.getAdresse() + "\n\n\n"
+                    + "Commande :";
+            corps += produitCommande;
+            ServiceTechnique.envoyerMail("gustatif@gustatif.com", ((Cycliste) livreurSelection).getMail(), "Livraison n°" + livraison.getId() + " à effectuer", corps);
         }
 
         JpaUtil.validerTransaction();

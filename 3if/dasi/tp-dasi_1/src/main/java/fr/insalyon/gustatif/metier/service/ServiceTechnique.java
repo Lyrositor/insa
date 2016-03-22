@@ -15,9 +15,13 @@ public class ServiceTechnique {
     final static String CLE_GOOGLE_API = "AIzaSyAhf3JleYpal9S-xouJYH8lf7Dvz5Y2Nko";
     final static GeoApiContext CONTEXTE_GEOAPI = new GeoApiContext().setApiKey(CLE_GOOGLE_API);
 
-
-    public static void envoyerMail(String adresse, String sujet, String contenu) {
-
+    public static void envoyerMail(String expediteur, String destinataire, String objet, String corps) {
+        System.out.println(" --- Mail --- ");
+        System.out.println("Expediteur : " + expediteur);
+        System.out.println("Destinataire : " + destinataire);
+        System.out.println("Objet : " + objet);
+        System.out.println("Corps :\n" + corps);
+        System.out.println(" --- ---- --- ");
     }
 
     public static LatLng getLatLng(String adresse) {
