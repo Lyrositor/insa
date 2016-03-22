@@ -6,8 +6,6 @@ ECHO = @echo
 CXXFLAGS = -O3 -Wall -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wextra -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef
 LNFLAGS =
 COMPILEFLAG = -c
-INCFLAG = -I
-LIBFLAG = -L
 OUTPUT = -o
 RMFLAGS = -rf
 
@@ -20,12 +18,12 @@ MAIN = src/Mere.cpp
 OBJ = $(SRC:%.cpp=$(BUILDDIR)/%.o)
 
 LIBS = -lncurses -ltcl -ltp
-LIBPATH = lib/#;/share/public/tp/tp-multitache
-INCPATH = include/#;/share/public/tp/tp-multitache
+LIBPATH = -Llib/ -L/share/public/tp/tp-multitache
+INCPATH = -Iinclude/ -I/share/public/tp/tp-multitache
 
 BIN = $(BUILDDIR)/Parking
 MK_D = @mkdir -p $(@D)
-MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@ $(INCFLAG) $(INCPATH) $(DEFINITIONS) $(LIBFLAG) $(LIBPATH) $(LIBS)
+MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@ $(INCPATH) $(DEFINITIONS) $(LIBPATH) $(LIBS)
 
 ALL = all
 CLEAN = clean
@@ -39,7 +37,7 @@ $(CLEAN):
 
 $(BIN): $(OBJ) $(MAIN)
 	$(MK_D)
-	$(CXX) $(CXXFLAGS) $^ $(OUTPUT) $@ $(INCFLAG) $(INCPATH) $(DEFINITIONS) $(LIBFLAG) $(LIBPATH) $(LIBS)
+	$(CXX) $(CXXFLAGS) $^ $(OUTPUT) $@ $(INCPATH) $(DEFINITIONS) $(LIBPATH) $(LIBS)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(SRCDIR)/%.h
 	$(MK_D)

@@ -48,10 +48,10 @@ static void InitialiserSimulateur ( void )
 // Algorithme :
 //
 {
-    boitePBP = msgget(CLE_BARRIERE_PBP, 0666);
-    boiteABP = msgget(CLE_BARRIERE_ABP, 0666);
-    boiteEGB = msgget(CLE_BARRIERE_EGB, 0666);
-    boiteSGB = msgget(CLE_BARRIERE_SGB, 0666);
+    boitePBP = msgget(CLE_BARRIERE_PBP, 0600);
+    boiteABP = msgget(CLE_BARRIERE_ABP, 0600);
+    boiteEGB = msgget(CLE_BARRIERE_EGB, 0600);
+    boiteSGB = msgget(CLE_BARRIERE_SGB, 0600);
     nbVoiture = 0;
 } //----- fin de InitialiserSimulateur
 
@@ -106,47 +106,47 @@ void Commande (char code, unsigned int valeur)
 {
     switch(code)
     {
-        case 'e':
-        case 'E':
-            DetruireSimulateur();
+    case 'e':
+    case 'E':
+        DetruireSimulateur();
+        break;
+    case 'p':
+    case 'P':
+        switch (valeur)
+        {
+        case PROF_BLAISE_PASCAL:
+            EnvoyerMessage(boitePBP, MSG_ENTREE_PROF, nbVoiture, 0);
             break;
-        case 'p':
-        case 'P':
-            switch (valeur)
-            {
-            case PROF_BLAISE_PASCAL:
-                EnvoyerMessage(boitePBP, MSG_ENTREE_PROF, nbVoiture, 0);
-                break;
-            case ENTREE_GASTON_BERGER:
-                EnvoyerMessage(boiteEGB, MSG_ENTREE_PROF, nbVoiture, 0);
-                break;
-            default:
-                Afficher(MESSAGE, "Erreur : barrière non reconnue");
-            }
-            nbVoiture = (nbVoiture + 1) % 1000;
-            break;
-        case 'a':
-        case 'A':
-            switch (valeur)
-            {
-            case AUTRE_BLAISE_PASCAL:
-                EnvoyerMessage(boiteABP, MSG_ENTREE_AUTRE, nbVoiture, 0);
-                break;
-            case ENTREE_GASTON_BERGER:
-                EnvoyerMessage(boiteEGB, MSG_ENTREE_AUTRE, nbVoiture, 0);
-                break;
-            default:
-                Afficher(MESSAGE, "Erreur : barrière non reconnue");
-            }
-            nbVoiture = (nbVoiture + 1) % 1000;
-            break;
-        case 's':
-        case 'S':
-            EnvoyerMessage(boiteSGB, MSG_SORTIE, nbVoiture, valeur);
+        case ENTREE_GASTON_BERGER:
+            EnvoyerMessage(boiteEGB, MSG_ENTREE_PROF, nbVoiture, 0);
             break;
         default:
-            Afficher(MESSAGE, "Erreur : commande non reconnue");
+            Afficher(MESSAGE, "Erreur : barrière non reconnue");
+        }
+        nbVoiture = (nbVoiture + 1) % 1000;
+        break;
+    case 'a':
+    case 'A':
+        switch (valeur)
+        {
+        case AUTRE_BLAISE_PASCAL:
+            EnvoyerMessage(boiteABP, MSG_ENTREE_AUTRE, nbVoiture, 0);
             break;
-    }
+        case ENTREE_GASTON_BERGER:
+            EnvoyerMessage(boiteEGB, MSG_ENTREE_AUTRE, nbVoiture, 0);
+            break;
+        default:
+            Afficher(MESSAGE, "Erreur : barrière non reconnue");
+        }
+        nbVoiture = (nbVoiture + 1) % 1000;
+        break;
+    case 's':
+    case 'S':
+        EnvoyerMessage(boiteSGB, MSG_SORTIE, nbVoiture, valeur);
+        break;
+    default:
+        Afficher(MESSAGE, "Erreur : commande non reconnue");
+        break;
+	}
 } //----- fin de Commande
 
