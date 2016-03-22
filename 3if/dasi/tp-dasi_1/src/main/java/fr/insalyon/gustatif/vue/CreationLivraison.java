@@ -1,4 +1,4 @@
-package test;
+package fr.insalyon.gustatif.vue;
 
 import fr.insalyon.gustatif.metier.modele.Client;
 import fr.insalyon.gustatif.metier.modele.Livraison;

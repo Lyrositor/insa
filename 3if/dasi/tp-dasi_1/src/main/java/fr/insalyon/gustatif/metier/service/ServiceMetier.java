@@ -311,10 +311,17 @@ public class ServiceMetier {
             throw new ServiceException(ServiceException.ERREUR_LIVRAISON_DATE);
         }
         livraison.setDateLivraison(dateLivraison);
+        Livreur livreur = livraison.getLivreur();
+        livreur.setDisponible(true);
         try {
             LIVRAISON_DAO.update(livraison);
         } catch (Throwable ex) {
             throw new ServiceException(ServiceException.ERREUR_LIVRAISON_UPDATE);
+        }
+        try {
+            LIVREUR_DAO.update(livreur);
+        } catch (Throwable ex) {
+            throw new ServiceException(ServiceException.ERREUR_LIVREUR_UPDATE);
         }
 
         JpaUtil.validerTransaction();
