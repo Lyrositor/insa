@@ -33,8 +33,8 @@ public class ServiceMetier {
         "rue du Tonkin, 69100 Villeurbanne"
     };
     private static final int MAX_NUMERO_RUE = 100;
-    private static final float MAX_CAPACITE_CYCLISTE = 50.0f;
-    private static final float MAX_CAPACITE_DRONE = 20.0f;
+    private static final float MAX_CAPACITE_CYCLISTE = 50000.0f;
+    private static final float MAX_CAPACITE_DRONE = 20000.0f;
     private static final float MAX_VITESSE_MOYENNE = 50.0f;
     private static final int NUM_CYCLISTES = 40;
     private static final int NUM_DRONES = 10;
@@ -218,10 +218,6 @@ public class ServiceMetier {
 
         // Liste des livreurs disponibles et capables de supporter la charge
         List<Livreur> listeLivreurs = LIVREUR_DAO.findAllAvalaibleWithCapacity(poidsCommande);
-        if (listeLivreurs == null) {
-            JpaUtil.fermerEntityManager();
-            throw new ServiceException(11, "Aucun livreur n'est disponible ou ne possède une capacité de charge suffisante pour le moment. Merci de commander plus tard.");
-        }
 
         // Sélection du livreur le plus proche
         Livreur livreurSelection = null;
@@ -241,6 +237,11 @@ public class ServiceMetier {
             }
         }
 
+        if (livreurSelection == null) {
+            JpaUtil.fermerEntityManager();
+            throw new ServiceException(11, "Aucun livreur n'est disponible ou ne possède une capacité de charge suffisante pour le moment. Merci de commander plus tard.");
+        }
+
         /* DEMO */
         System.out.println("Attente de l'utilisateur... Appuyer sur [Entrée] pour continuer.");
         System.in.read();
@@ -248,6 +249,8 @@ public class ServiceMetier {
 
         Livraison livraison = new Livraison(client, livreurSelection, new Date(), null, produits);
         LIVRAISON_DAO.create(livraison);
+        livreurSelection.setDisponible(false);
+        LIVREUR_DAO.update(livreurSelection);
 
         JpaUtil.validerTransaction();
         JpaUtil.fermerEntityManager();
