@@ -41,6 +41,28 @@
 //{
 //} //----- fin de Nom
 
+int InitialiserBarriereEntree ( enum TypeBarriere barriere )
+// Mode d'emploi :
+//
+// Contrat :
+//
+// Algorithme :
+//
+{
+    switch(barriere)
+    {
+        case PROF_BLAISE_PASCAL:
+            return msgget(CLE_BARRIERE_PBP, 0600);
+        case AUTRE_BLAISE_PASCAL:
+            return msgget(CLE_BARRIERE_ABP, 0600);
+        case ENTREE_GASTON_BERGER:
+            return msgget(CLE_BARRIERE_EGB, 0600);
+        default:
+            return 0;
+            break;
+    }
+} //----- fin de InitialiserBarriereEntree
+
 void BarriereEntree(enum TypeBarriere barriere)
 // Algorithme :
 //
@@ -50,23 +72,10 @@ void BarriereEntree(enum TypeBarriere barriere)
     for(;;)
     {
         msg_voiture msg;
-        msgrcv(boite, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_ENTREE_PROF, 0);
-        TypeUsager typeUsage = AUCUN;
-        switch(msg.mtype)
-        {
-            case MSG_ENTREE_PROF:
-                typeUsage = PROF;
-                break;
-            case MSG_ENTREE_AUTRE:
-                typeUsage = AUTRE;
-                break;
-            default:
-                break;
-        }
-
-        DessinerVoitureBarriere(barriere, typeUsage);
+        msgrcv(boite, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_ENTREE, 0);
+        DessinerVoitureBarriere(barriere, msg.usager);
     }
 
-    DetruireBarriereEntree();
+//    DetruireBarriereEntree();
 } //----- fin de BarriereEntree
 
