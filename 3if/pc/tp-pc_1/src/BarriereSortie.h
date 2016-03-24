@@ -36,4 +36,4 @@ void BarriereSortie(void);
 // Contrat :
 //
 
-#endif // BARRIERE_SORTIE_H
+#endif // BARRIERE_S_H

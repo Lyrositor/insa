@@ -7,13 +7,18 @@
                            marc.gagne@insa-lyon.fr
 *************************************************************************/
 
-//---------- Réalisation de la tâche <BarriereSortie> (fichier BarriereSortie.cpp) -
+//-- Réalisation de la tâche <BarriereSortie> (fichier BarriereSortie.cpp)
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include système
 
+#include <signal.h>
+#include <sys/msg.h>
+
 //------------------------------------------------------ Include personnel
+
 #include "BarriereSortie.h"
+#include "config.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -22,18 +27,13 @@
 
 //---------------------------------------------------- Variables statiques
 
+static int boiteSGB;
+static size_t nbVoituriers;
+static pid_t voituriers[NB_PLACES];
+
 //------------------------------------------------------ Fonctions privées
-//static type nom ( liste de paramètres )
-// Mode d'emploi :
-//
-// Contrat :
-//
-// Algorithme :
-//
-//{
-//} //----- fin de nom
 
-static void InitialiserBarriereSortie ( void )
+static void DetruireBarriereSortie(int noSignal)
 // Mode d'emploi :
 //
 // Contrat :
@@ -41,10 +41,19 @@ static void InitialiserBarriereSortie ( void )
 // Algorithme :
 //
 {
+    if (noSignal == SIGUSR2)
+    {
+        // Tuer tous les voituriers qui tournent encore.
+        for (size_t i = 0; i < nbVoituriers; i++)
+        {
+            kill(voituriers[i], SIGUSR2);
+        }
 
-} //----- fin de InitialiserBarriereS
+        exit(0);
+    }
+} //----- fin de DetruireBarriereSortie
 
-static void DetruireBarriereSortie ( void )
+static void GererFinVoiturier ( int noSignal )
 // Mode d'emploi :
 //
 // Contrat :
@@ -52,21 +61,48 @@ static void DetruireBarriereSortie ( void )
 // Algorithme :
 //
 {
-    exit(0);
-} //----- fin de DetruireBarriereS
+    if (noSignal == SIGCHLD)
+    {
+
+    }
+} //----- fin de GererFinVoiturier
+
+static void InitialiserBarriereSortie(void)
+// Mode d'emploi :
+//
+// Contrat :
+//
+// Algorithme :
+//
+{
+    // Gérer le signal de destruction de la tâche.
+    struct sigaction actionDetruire;
+    actionDetruire.sa_handler = DetruireBarriereSortie;
+    sigemptyset(&actionDetruire.sa_mask);
+    actionDetruire.sa_flags = 0;
+    sigaction(SIGUSR2, &actionDetruire, NULL);
+
+    // Gérer le signal de fin d'un voiturier.
+    struct sigaction actionFinVoiturier;
+    actionFinVoiturier.sa_handler = GererFinVoiturier;
+    sigemptyset(&actionFinVoiturier.sa_mask);
+    actionFinVoiturier.sa_flags = 0;
+    sigaction(SIGUSR2, &actionFinVoiturier, NULL);
+
+    boiteSGB = msgget(CLE_BARRIERE_SGB, 0600);
+} //----- fin de InitialiserBarriereSortie
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-//type Nom ( liste de paramètres )
-// Algorithme :
-//
-//{
-//} //----- fin de Nom
 
-void BarriereSortie ( void )
+void BarriereSortie(void)
 // Algorithme :
 //
 {
     InitialiserBarriereSortie();
-    DetruireBarriereSortie();
-} //----- fin de BarriereS
+    for (;;)
+    {
+        msg_voiture msg;
+        msgrcv(boiteSGB, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_SORTIE, 0);
+    }
+} //----- fin de BarriereSortie
