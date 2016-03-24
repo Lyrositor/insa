@@ -11,6 +11,7 @@
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include système
+#include <signal.h>
 
 //------------------------------------------------------ Include personnel
 #include "BarriereEntree.h"
@@ -21,6 +22,8 @@
 //------------------------------------------------------------------ Types
 
 //---------------------------------------------------- Variables statiques
+static size_t nbVoituriers;
+static pid_t voituriers[NB_PLACES];
 
 //------------------------------------------------------ Fonctions privées
 //static type nom ( liste de paramètres )
@@ -33,15 +36,7 @@
 //{
 //} //----- fin de nom
 
-//////////////////////////////////////////////////////////////////  PUBLIC
-//---------------------------------------------------- Fonctions publiques
-//type Nom ( liste de paramètres )
-// Algorithme :
-//
-//{
-//} //----- fin de Nom
-
-int InitialiserBarriereEntree ( enum TypeBarriere barriere )
+static void DetruireBarriereEntree(int noSignal)
 // Mode d'emploi :
 //
 // Contrat :
@@ -49,6 +44,33 @@ int InitialiserBarriereEntree ( enum TypeBarriere barriere )
 // Algorithme :
 //
 {
+    if (noSignal == SIGUSR2)
+    {
+        // Tuer tous les voituriers qui tournent encore.
+        for (size_t i = 0; i < nbVoituriers; i++)
+        {
+            kill(voituriers[i], SIGUSR2);
+        }
+
+        exit(0);
+    }
+} //----- fin de DetruireBarriereEntree
+
+static int InitialiserBarriereEntree ( enum TypeBarriere barriere )
+// Mode d'emploi :
+//
+// Contrat :
+//
+// Algorithme :
+//
+{
+    // Gérer le signal de destruction de la tâche.
+    struct sigaction actionDetruire;
+    actionDetruire.sa_handler = DetruireBarriereEntree;
+    sigemptyset(&actionDetruire.sa_mask);
+    actionDetruire.sa_flags = 0;
+    sigaction(SIGUSR2, &actionDetruire, NULL);
+
     switch(barriere)
     {
         case PROF_BLAISE_PASCAL:
@@ -59,16 +81,23 @@ int InitialiserBarriereEntree ( enum TypeBarriere barriere )
             return msgget(CLE_BARRIERE_EGB, 0600);
         default:
             return 0;
-            break;
     }
 } //----- fin de InitialiserBarriereEntree
+
+//////////////////////////////////////////////////////////////////  PUBLIC
+//---------------------------------------------------- Fonctions publiques
+//type Nom ( liste de paramètres )
+// Algorithme :
+//
+//{
+//} //----- fin de Nom
 
 void BarriereEntree(enum TypeBarriere barriere)
 // Algorithme :
 //
 {
     int boite = InitialiserBarriereEntree(barriere);
-    
+
     for(;;)
     {
         msg_voiture msg;

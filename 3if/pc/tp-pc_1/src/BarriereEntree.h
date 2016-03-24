@@ -43,10 +43,4 @@ void BarriereEntree(enum TypeBarriere barriere);
 // Contrat :
 //
 
-int InitialiserBarriereEntree ( enum TypeBarriere barriere );
-// Mode d'emploi :
-// Initialise une barrière d'entrèe suivant le type donné en paramètre
-// Contrat :
-//
-
 #endif // BARRIERE_ENTREE_H

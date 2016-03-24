@@ -104,6 +104,7 @@ void Commande ( char code, unsigned int valeur )
 // Algorithme :
 //
 {
+    Effacer(MESSAGE);
     switch(code)
     {
     case 'e':
