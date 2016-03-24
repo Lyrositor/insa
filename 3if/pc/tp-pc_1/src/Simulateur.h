@@ -34,14 +34,14 @@
 //
 // Contrat :
 //
-void Simulateur (void);
+void Simulateur ( void );
 // Mode d'emploi :
 // Point d'entrée du Simulateur qui appele le menu
 // Contrat :
 //
 
 
-void Commande (char code, unsigned int valeur);
+void Commande ( char code, unsigned int valeur );
 // Mode d'emploi :
 // Voir documentation annexe Menu()
 // Contrat :

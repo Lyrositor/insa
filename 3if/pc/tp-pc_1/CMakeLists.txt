@@ -10,8 +10,8 @@ set(TP-PC1_INCLUDES include/)
 set(TP-PC1_LINK lib/)
 set(TP-PC1_MAIN src/Mere.cpp)
 set(TP-PC1_SOURCES
-        src/BarriereE.cpp
-        src/BarriereS.cpp
+        src/BarriereEntree.cpp
+        src/BarriereSortie.cpp
         src/Simulateur.cpp)
 
 # Check if the MAP option is set

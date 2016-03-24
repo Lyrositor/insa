@@ -12,6 +12,7 @@
 
 #include <sys/ipc.h>
 #include <sys/types.h>
+#include <Outils.h>
 
 static const char * const CHEMIN_IPC = "/Parking";
 static const key_t CLE_BARRIERE_PBP = ftok(CHEMIN_IPC, 'P');
@@ -21,12 +22,12 @@ static const key_t CLE_BARRIERE_SGB = ftok(CHEMIN_IPC, 'S');
 
 typedef struct msg_voiture {
     long mtype; // Type de message
+    TypeUsager usager; // Type de l'usager
     unsigned int numero; // Numéro de voiture
     unsigned int place; // Place possédée
 } msg_voiture;
 
-static const long MSG_ENTREE_PROF = 0;
-static const long MSG_ENTREE_AUTRE = 1;
-static const long MSG_SORTIE = 2;
+static const long MSG_ENTREE = 0;
+static const long MSG_SORTIE = 1;
 
 #endif // CONFIG_H

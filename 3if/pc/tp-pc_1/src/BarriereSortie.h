@@ -7,7 +7,7 @@
                            marc.gagne@insa-lyon.fr
 *************************************************************************/
 
-//---------- Interface de la tâche <BarriereSortie> (fichier BarriereSortie.h) -----
+//------ Interface de la tâche <BarriereSortie> (fichier BarriereSortie.h)
 #if ! defined ( BARRIERE_SORTIE_H )
 #define BARRIERE_SORTIE_H
 
@@ -19,21 +19,18 @@
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //--------------------------------------------------- Interfaces utilisées
+
 #include <stdlib.h>
 #include <unistd.h>
+
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-// type Nom ( liste de paramètres );
-// Mode d'emploi :
-//
-// Contrat :
-//
 
-void BarriereSortie (void);
+void BarriereSortie(void);
 // Mode d'emploi :
 // Point d'entrée de la tâche pour la barrière de sortie.
 // Contrat :

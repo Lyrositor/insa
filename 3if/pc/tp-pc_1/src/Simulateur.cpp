@@ -10,10 +10,9 @@
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include système
-
-//------------------------------------------------------ Include personnel
 #include <sys/msg.h>
 
+//------------------------------------------------------ Include personnel
 #include "config.h"
 #include "Simulateur.h"
 
@@ -67,7 +66,8 @@ static void DetruireSimulateur ( void )
 } //----- fin de DetruireSimulateur
 
 static void EnvoyerMessage (
-        int boite, long mtype, unsigned int numero, unsigned int place
+        int boite, long mtype, TypeUsager usager, unsigned int numero,
+        unsigned int place
 )
 // Mode d'emploi :
 //
@@ -76,8 +76,8 @@ static void EnvoyerMessage (
 // Algorithme :
 //
 {
-    msg_voiture msg = { mtype, numero, place};
-    msgsnd(boite, &msg, sizeof(msg.place), 0);
+    msg_voiture msg = { mtype, usager, numero, place};
+    msgsnd(boite, &msg, sizeof(msg) - sizeof(msg.mtype), 0);
 } //----- fin de EnvoyerMessage
 
 //////////////////////////////////////////////////////////////////  PUBLIC
@@ -88,7 +88,7 @@ static void EnvoyerMessage (
 //{
 //} //----- fin de Nom
 
-void Simulateur (void)
+void Simulateur ( void )
 // Algorithme :
 //
 {
@@ -100,7 +100,7 @@ void Simulateur (void)
 } //----- fin de Simulateur
 
 
-void Commande (char code, unsigned int valeur)
+void Commande ( char code, unsigned int valeur )
 // Algorithme :
 //
 {
@@ -115,10 +115,10 @@ void Commande (char code, unsigned int valeur)
         switch (valeur)
         {
         case PROF_BLAISE_PASCAL:
-            EnvoyerMessage(boitePBP, MSG_ENTREE_PROF, nbVoiture, 0);
+            EnvoyerMessage(boitePBP, MSG_ENTREE, PROF, nbVoiture, 0);
             break;
         case ENTREE_GASTON_BERGER:
-            EnvoyerMessage(boiteEGB, MSG_ENTREE_PROF, nbVoiture, 0);
+            EnvoyerMessage(boiteEGB, MSG_ENTREE, PROF, nbVoiture, 0);
             break;
         default:
             Afficher(MESSAGE, "Erreur : barrière non reconnue");
@@ -130,10 +130,10 @@ void Commande (char code, unsigned int valeur)
         switch (valeur)
         {
         case AUTRE_BLAISE_PASCAL:
-            EnvoyerMessage(boiteABP, MSG_ENTREE_AUTRE, nbVoiture, 0);
+            EnvoyerMessage(boiteABP, MSG_ENTREE, AUTRE, nbVoiture, 0);
             break;
         case ENTREE_GASTON_BERGER:
-            EnvoyerMessage(boiteEGB, MSG_ENTREE_AUTRE, nbVoiture, 0);
+            EnvoyerMessage(boiteEGB, MSG_ENTREE, AUTRE, nbVoiture, 0);
             break;
         default:
             Afficher(MESSAGE, "Erreur : barrière non reconnue");
@@ -142,7 +142,7 @@ void Commande (char code, unsigned int valeur)
         break;
     case 's':
     case 'S':
-        EnvoyerMessage(boiteSGB, MSG_SORTIE, nbVoiture, valeur);
+        EnvoyerMessage(boiteSGB, MSG_SORTIE, AUCUN, nbVoiture, valeur);
         break;
     default:
         Afficher(MESSAGE, "Erreur : commande non reconnue");

@@ -1,5 +1,5 @@
 /*************************************************************************
-           BarriereEntree  -  Gère une barrière d'entrée du parking
+         BarriereEntree  -  Gère une barrière d'entrée du parking
                              -------------------
     début                : 18/03/2016
     copyright            : (C) 2016 par Arnaud Favier & Marc Gagné
@@ -7,9 +7,9 @@
                            marc.gagne@insa-lyon.fr
 *************************************************************************/
 
-//---------- Interface de la tâche <BarriereEntree> (fichier BarriereEntree.h) ----
-#if ! defined ( BARRIERE_ENTREE_H )
-#define BARRIERE_ENTREE_H
+//------ Interface de la tâche <BarriereEntree> (fichier BarriereEntree.h)
+#if ! defined ( BARRIERE_E_H )
+#define BARRIERE_E_H
 
 //------------------------------------------------------------------------
 // Rôle de la tâche <BarriereEntree>
@@ -20,8 +20,8 @@
 /////////////////////////////////////////////////////////////////  INCLUDE
 //--------------------------------------------------- Interfaces utilisées
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/msg.h>
+#include <unistd.h>
 
 #include <Outils.h>
 #include "config.h"
@@ -37,7 +37,7 @@
 // Contrat :
 //
 
-void BarriereEntree ( enum TypeBarriere barriere );
+void BarriereEntree(enum TypeBarriere barriere);
 // Mode d'emploi :
 // Point d'entrée d'une barrière d'entrèe
 // Contrat :
