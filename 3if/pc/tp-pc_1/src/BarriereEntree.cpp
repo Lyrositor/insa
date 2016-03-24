@@ -45,6 +45,28 @@ void BarriereEntree(enum TypeBarriere barriere)
 // Algorithme :
 //
 {
-    exit(0);
+    int boite = InitialiserBarriereEntree(barriere);
+    
+    for(;;)
+    {
+        msg_voiture msg;
+        msgrcv(boite, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_ENTREE_PROF, 0);
+        TypeUsager typeUsage = AUCUN;
+        switch(msg.mtype)
+        {
+            case MSG_ENTREE_PROF:
+                typeUsage = PROF;
+                break;
+            case MSG_ENTREE_AUTRE:
+                typeUsage = AUTRE;
+                break;
+            default:
+                break;
+        }
+
+        DessinerVoitureBarriere(barriere, typeUsage);
+    }
+
+    DetruireBarriereEntree();
 } //----- fin de BarriereEntree
 

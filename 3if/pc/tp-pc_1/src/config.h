@@ -27,7 +27,7 @@ typedef struct msg_voiture {
     unsigned int place; // Place possédée
 } msg_voiture;
 
-static const long MSG_ENTREE = 0;
-static const long MSG_SORTIE = 1;
+static const long MSG_ENTREE = 1;
+static const long MSG_SORTIE = 2;
 
 #endif // CONFIG_H
