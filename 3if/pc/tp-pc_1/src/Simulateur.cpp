@@ -114,10 +114,10 @@ void Commande ( char code, unsigned int valeur )
     case 'P':
         switch (valeur)
         {
-        case PROF_BLAISE_PASCAL:
+        case 1:
             EnvoyerMessage(boitePBP, MSG_ENTREE, PROF, nbVoiture, 0);
             break;
-        case ENTREE_GASTON_BERGER:
+        case 2:
             EnvoyerMessage(boiteEGB, MSG_ENTREE, PROF, nbVoiture, 0);
             break;
         default:
@@ -129,10 +129,10 @@ void Commande ( char code, unsigned int valeur )
     case 'A':
         switch (valeur)
         {
-        case AUTRE_BLAISE_PASCAL:
+        case 1:
             EnvoyerMessage(boiteABP, MSG_ENTREE, AUTRE, nbVoiture, 0);
             break;
-        case ENTREE_GASTON_BERGER:
+        case 2:
             EnvoyerMessage(boiteEGB, MSG_ENTREE, AUTRE, nbVoiture, 0);
             break;
         default:

@@ -87,7 +87,7 @@ static void InitialiserBarriereSortie(void)
     actionFinVoiturier.sa_handler = GererFinVoiturier;
     sigemptyset(&actionFinVoiturier.sa_mask);
     actionFinVoiturier.sa_flags = 0;
-    sigaction(SIGUSR2, &actionFinVoiturier, NULL);
+    sigaction(SIGCHLD, &actionFinVoiturier, NULL);
 
     boiteSGB = msgget(CLE_BARRIERE_SGB, 0600);
 } //----- fin de InitialiserBarriereSortie
