@@ -9,8 +9,8 @@
 #include <Outils.h>
 
 #include "config.h"
-#include "BarriereE.h"
-#include "BarriereS.h"
+#include "BarriereEntree.h"
+#include "BarriereSortie.h"
 #include "Simulateur.h"
 
 int main ()
@@ -25,17 +25,17 @@ int main ()
     /* --- Initialisation --- */
     InitialiserApplication(terminal);
     int boites[] = {
-        msgget(CLE_BARRIERE_PBP, IPC_CREAT),
-        msgget(CLE_BARRIERE_ABP, IPC_CREAT),
-        msgget(CLE_BARRIERE_EGB, IPC_CREAT),
-        msgget(CLE_BARRIERE_SGB, IPC_CREAT)
+        msgget(CLE_BARRIERE_PBP, IPC_CREAT | 0600),
+        msgget(CLE_BARRIERE_ABP, IPC_CREAT | 0600),
+        msgget(CLE_BARRIERE_EGB, IPC_CREAT | 0600),
+        msgget(CLE_BARRIERE_SGB, IPC_CREAT | 0600)
     };
     tachesPid[taches++] = ActiverHeure();
 
     if ((tachesPid[taches++] = fork()) == 0)
     {
         // Fils - Barrière S (Sortie)
-        BarriereS();
+        BarriereSortie();
     }
     else
     {
@@ -43,7 +43,7 @@ int main ()
         if ((tachesPid[taches++] = fork()) == 0)
         {
             // Fils - Barrière PBP (Blaise Pascal - Profs)
-            BarriereE(PROF_BLAISE_PASCAL);
+            BarriereEntree(PROF_BLAISE_PASCAL);
         }
         else
         {

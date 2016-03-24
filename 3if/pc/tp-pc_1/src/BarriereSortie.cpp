@@ -1,5 +1,5 @@
 /*************************************************************************
-           BarriereS  -  Gère la barrière de sortie du parking
+           BarriereSortie  -  Gère la barrière de sortie du parking
                              -------------------
     début                : 18/03/2016
     copyright            : (C) 2016 par Arnaud Favier & Marc Gagné
@@ -7,13 +7,13 @@
                            marc.gagne@insa-lyon.fr
 *************************************************************************/
 
-//---------- Réalisation de la tâche <BarriereS> (fichier BarriereS.cpp) -
+//---------- Réalisation de la tâche <BarriereSortie> (fichier BarriereSortie.cpp) -
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include système
 
 //------------------------------------------------------ Include personnel
-#include "BarriereS.h"
+#include "BarriereSortie.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -33,7 +33,7 @@
 //{
 //} //----- fin de nom
 
-static void InitialiserBarriereS ( void )
+static void InitialiserBarriereSortie ( void )
 // Mode d'emploi :
 //
 // Contrat :
@@ -44,7 +44,7 @@ static void InitialiserBarriereS ( void )
 
 } //----- fin de InitialiserBarriereS
 
-static void DetruireBarriereS ( void )
+static void DetruireBarriereSortie ( void )
 // Mode d'emploi :
 //
 // Contrat :
@@ -63,10 +63,10 @@ static void DetruireBarriereS ( void )
 //{
 //} //----- fin de Nom
 
-void BarriereS ( void )
+void BarriereSortie ( void )
 // Algorithme :
 //
 {
-    InitialiserBarriereS();
-    DetruireBarriereS();
+    InitialiserBarriereSortie();
+    DetruireBarriereSortie();
 } //----- fin de BarriereS

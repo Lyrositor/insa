@@ -1,0 +1,5 @@
+	--- Informations ---
+
+Pour voir les processus, il y a 2 commandes :
+	- ps -u [username]
+	- ipcs

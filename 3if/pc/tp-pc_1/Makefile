@@ -13,13 +13,13 @@ DEFINITIONS = -DNDEBUG -DMAP
 
 BUILDDIR = bin
 SRCDIR = src
-SRC = BarriereE.cpp BarriereS.cpp Simulateur.cpp
+SRC = BarriereEntree.cpp BarriereSortie.cpp Simulateur.cpp
 MAIN = src/Mere.cpp
 OBJ = $(SRC:%.cpp=$(BUILDDIR)/%.o)
 
 LIBS = -lncurses -ltcl -ltp
-LIBPATH = -Llib/ -L/share/public/tp/tp-multitache
-INCPATH = -Iinclude/ -I/share/public/tp/tp-multitache
+LIBPATH = -Llib/ -L/shares/public/tp/tp-multitache
+INCPATH = -Iinclude/ -I/shares/public/tp/tp-multitache
 
 BIN = $(BUILDDIR)/Parking
 MK_D = @mkdir -p $(@D)
