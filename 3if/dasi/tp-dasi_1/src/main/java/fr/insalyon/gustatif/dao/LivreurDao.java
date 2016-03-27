@@ -37,19 +37,6 @@ public class LivreurDao {
         return livreur;
     }
 
-    public Livreur findByMail(String mail) throws Throwable {
-        EntityManager em = JpaUtil.obtenirEntityManager();
-        Livreur livreur = null;
-        try {
-            Query q = em.createQuery("SELECT l FROM Livreur l WHERE mail=:mail");
-            q.setParameter("mail", mail);
-            livreur = (Livreur) q.getSingleResult();
-        } catch (Exception e) {
-            throw e;
-        }
-        return livreur;
-    }
-
     public List<Livreur> findAll() throws Throwable {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<Livreur> livreurs = null;

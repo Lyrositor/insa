@@ -3,9 +3,17 @@ package fr.insalyon.gustatif.metier.modele;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import static javax.persistence.TemporalType.DATE;
 
@@ -21,12 +29,13 @@ public class Livraison implements Serializable {
     private Date dateCommande;
     @Temporal(DATE)
     private Date dateLivraison = null;
-    private HashMap<Produit, Long> produits;
+    @ElementCollection
+    private Map<Produit, Long> produits;
 
     public Livraison() {
     }
 
-    public Livraison(Client client, Livreur livreur, Date dateCommande, Date dateLivraison, HashMap<Produit, Long> produits) {
+    public Livraison(Client client, Livreur livreur, Date dateCommande, Date dateLivraison, Map<Produit, Long> produits) {
         this.client = client;
         this.livreur = livreur;
         this.dateCommande = dateCommande;
@@ -70,7 +79,7 @@ public class Livraison implements Serializable {
         this.dateLivraison = dateLivraison;
     }
 
-    public HashMap<Produit, Long> getProduits() {
+    public Map<Produit, Long> getProduits() {
         return produits;
     }
 

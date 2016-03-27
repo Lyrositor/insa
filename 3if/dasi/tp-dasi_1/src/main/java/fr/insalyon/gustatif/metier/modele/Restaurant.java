@@ -91,7 +91,6 @@ public class Restaurant implements Serializable {
                 ", adresse=" + adresse +
                 ", longitudeAdresse=" + longitude +
                 ", latitudeAdresse=" + latitude +
-                ", produits=" + produits +
                 '}';
     }
 

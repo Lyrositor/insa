@@ -3,19 +3,16 @@ package fr.insalyon.gustatif.metier.service;
 import com.google.maps.model.LatLng;
 import fr.insalyon.gustatif.dao.*;
 import fr.insalyon.gustatif.metier.modele.*;
-import java.io.IOException;
-import java.math.BigInteger;
 import java.util.Random;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ServiceMetier {
 
     private static final ClientDao CLIENT_DAO = new ClientDao();
+    private static final CyclisteDao CYCLISTE_DAO = new CyclisteDao();
     private static final GestionnaireDao GESTIONNAIRE_DAO = new GestionnaireDao();
     private static final LivraisonDao LIVRAISON_DAO = new LivraisonDao();
     private static final LivreurDao LIVREUR_DAO = new LivreurDao();
@@ -24,10 +21,17 @@ public class ServiceMetier {
 
     private static final String[] NOMS = {
         "MARTIN", "DUPRE", "BERNARD", "DUBOIS", "THOMAS", "ROBERT", "RICHARD",
-        "PETIT"
+        "PETIT", "DURAND", "LEROY", "MOREAU", "SIMON", "LAURENT", "LEFEBVRE",
+        "MICHEL", "GARCIA", "DAVID", "BERTRAND", "ROUX", "VINCENT", "FOURNIER",
+        "MOREL", "GIRARD", "ANDRE", "LEFEVRE", "MERCIER", "DUPONT", "LAMBERT",
+        "BONNET", "FRANCOIS", "MARTINEZ", "LEGRAND", "GARNIER", "FAURE",
+        "ROUSSEAU", "BLANC", "GUERIN", "MULLER", "HENRY", "ROUSSEL", "NICOLAS"
     };
     private static final String[] PRENOMS = {
-        "Jean", "Daniel", "Anne", "Marie", "Pierre", "Jullie", "Marc", "Arnaud"
+        "Jean", "Daniel", "Anne", "Marie", "Pierre", "Jullie", "Marc", "Arnaud",
+        "Lucas", "Nathan", "Enzo", "Leo", "Gabriel", "Louis", "Hugo", "Raphael",
+        "Jules", "Arthur", "Ethan", "Timeo", "Chloe", "Emma", "Sarah", "Lena",
+        "Jade", "Lola", "Ines", "Manon"
     };
     private static final String[] RUES = {
         "Cours Emile Zola, 69100 Villeurbanne",
@@ -43,7 +47,7 @@ public class ServiceMetier {
     private static final int NUM_DRONES = 10;
     private static final int NUM_GESTIONNAIRES = 3;
 
-    public void initialiserDonnees() throws Throwable {
+    public void initialiserDonnees() throws ServiceException {
         Random r = new Random();
         JpaUtil.creerEntityManager();
         JpaUtil.ouvrirTransaction();
@@ -57,12 +61,17 @@ public class ServiceMetier {
             Cycliste cycliste = new Cycliste(
                     nom, prenom,
                     prenom.toLowerCase() + '.' + nom.toLowerCase() + "@gustatif.fr",
-                    new BigInteger(130, r).toString(32),
+                    "password",
                     r.nextFloat() * MAX_CAPACITE_CYCLISTE, true,
                     (r.nextInt(MAX_NUMERO_RUE) + 1) + " " + RUES[r.nextInt(RUES.length)]
             );
             cycliste.setCoordonnees(coordonnees);
-            LIVREUR_DAO.create(cycliste);
+            try {
+                LIVREUR_DAO.create(cycliste);
+            } catch (Throwable t) {
+                JpaUtil.fermerEntityManager();
+                throw new ServiceException(ServiceException.ERREUR_INITIALISATION);
+            }
         }
 
         // Création en dur des drones
@@ -72,7 +81,12 @@ public class ServiceMetier {
                     r.nextFloat() * MAX_CAPACITE_DRONE, true,
                     (r.nextInt(MAX_NUMERO_RUE) + 1) + " " + RUES[r.nextInt(RUES.length)]
             );
-            LIVREUR_DAO.create(drone);
+            try {
+                LIVREUR_DAO.create(drone);
+            } catch (Throwable t) {
+                JpaUtil.fermerEntityManager();
+                throw new ServiceException(ServiceException.ERREUR_INITIALISATION);
+            }
         }
 
         // Création en dur des gestionnaires
@@ -81,9 +95,14 @@ public class ServiceMetier {
             String prenom = PRENOMS[r.nextInt(PRENOMS.length)];
             Gestionnaire gestionnaire = new Gestionnaire(
                     prenom.toLowerCase() + '.' + nom.toLowerCase() + "@gustatif.fr",
-                    new BigInteger(130, r).toString(32)
+                    "password"
             );
-            GESTIONNAIRE_DAO.create(gestionnaire);
+            try {
+                GESTIONNAIRE_DAO.create(gestionnaire);
+            } catch (Throwable t) {
+                JpaUtil.fermerEntityManager();
+                throw new ServiceException(ServiceException.ERREUR_INITIALISATION);
+            }
         }
 
         JpaUtil.validerTransaction();
@@ -147,7 +166,7 @@ public class ServiceMetier {
         // Trouver un client avec l'adresse mail correspondante
         Cycliste cycliste = null;
         try {
-            cycliste = (Cycliste) LIVREUR_DAO.findByMail(mail);
+            cycliste = (Cycliste) CYCLISTE_DAO.findByMail(mail);
         } catch (Throwable t) {
             JpaUtil.fermerEntityManager();
             throw new ServiceException(ServiceException.ERREUR_INTROUVABLE);
@@ -216,7 +235,7 @@ public class ServiceMetier {
         for (Entry<Produit, Long> entry : produits.entrySet()) {
             Produit produit = entry.getKey();
             //Long id = entry.getValue();
-            poidsCommande += produit.getPoids();
+            poidsCommande += produit.getPoids() * entry.getValue();
         }
 
         // Liste des livreurs disponibles et capables de supporter la charge
@@ -224,6 +243,7 @@ public class ServiceMetier {
         try {
             listeLivreurs = LIVREUR_DAO.findAllAvalaibleWithCapacity(poidsCommande);
         } catch (Throwable ex) {
+            JpaUtil.fermerEntityManager();
             throw new ServiceException(ServiceException.ERREUR_LIVREUR_LISTE);
         }
 
@@ -262,6 +282,7 @@ public class ServiceMetier {
         try {
             LIVRAISON_DAO.create(livraison);
         } catch (Throwable ex) {
+            JpaUtil.fermerEntityManager();
             throw new ServiceException(ServiceException.ERREUR_LIVRAISON_CREATE);
         }
 
@@ -269,6 +290,7 @@ public class ServiceMetier {
         try {
             LIVREUR_DAO.update(livreurSelection);
         } catch (Throwable ex) {
+            JpaUtil.fermerEntityManager();
             throw new ServiceException(ServiceException.ERREUR_LIVREUR_UPDATE);
         }
         if (livreurSelection instanceof Cycliste) {
@@ -302,10 +324,16 @@ public class ServiceMetier {
         return livraison;
     }
 
-    public List<Restaurant> listerRestaurants() throws Throwable {
+    public List<Restaurant> listerRestaurants() throws ServiceException {
         JpaUtil.creerEntityManager();
 
-        List<Restaurant> listeRestaurants = RESTAURANT_DAO.findAll();
+        List<Restaurant> listeRestaurants;
+        try {
+            listeRestaurants = RESTAURANT_DAO.findAll();
+        } catch (Throwable t) {
+            JpaUtil.fermerEntityManager();
+            throw new ServiceException(ServiceException.ERREUR_LISTE_RESTAURANTS);
+        }
 
         JpaUtil.fermerEntityManager();
         return listeRestaurants;
@@ -320,10 +348,16 @@ public class ServiceMetier {
         return listeProduits;
     }
 
-    public List<Livreur> listerLivreurs() throws Throwable {
+    public List<Livreur> listerLivreurs() throws ServiceException {
         JpaUtil.creerEntityManager();
 
-        List<Livreur> listeLivreurs = LIVREUR_DAO.findAll();
+        List<Livreur> listeLivreurs;
+        try {
+            listeLivreurs = LIVREUR_DAO.findAll();
+        } catch (Throwable t) {
+            JpaUtil.fermerEntityManager();
+            throw new ServiceException(ServiceException.ERREUR_LISTE_LIVREURS);
+        }
 
         JpaUtil.fermerEntityManager();
         return listeLivreurs;
@@ -334,6 +368,7 @@ public class ServiceMetier {
         JpaUtil.ouvrirTransaction();
 
         if (dateLivraison.before(livraison.getDateCommande())) {
+            JpaUtil.fermerEntityManager();
             throw new ServiceException(ServiceException.ERREUR_LIVRAISON_DATE);
         }
         livraison.setDateLivraison(dateLivraison);
@@ -342,11 +377,13 @@ public class ServiceMetier {
         try {
             LIVRAISON_DAO.update(livraison);
         } catch (Throwable ex) {
+            JpaUtil.fermerEntityManager();
             throw new ServiceException(ServiceException.ERREUR_LIVRAISON_UPDATE);
         }
         try {
             LIVREUR_DAO.update(livreur);
         } catch (Throwable ex) {
+            JpaUtil.fermerEntityManager();
             throw new ServiceException(ServiceException.ERREUR_LIVREUR_UPDATE);
         }
 

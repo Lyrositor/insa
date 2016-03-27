@@ -4,6 +4,8 @@ public class ServiceException extends Exception {
 
     private int numero;
 
+    public static final int ERREUR_INITIALISATION = 0;
+
     public static final int ERREUR_CREATION_CLIENT = 1;
     public static final int ERREUR_CREATION_CLIENT_MAIL = 2;
     public static final int ERREUR_INTROUVABLE = 3;
@@ -20,6 +22,9 @@ public class ServiceException extends Exception {
 
     public static final int ERREUR_LIVRAISON_DATE = 13;
     public static final int ERREUR_LIVRAISON_UPDATE = 14;
+
+    public static final int ERREUR_LISTE_RESTAURANTS = 15;
+    public static final int ERREUR_LISTE_LIVREURS = 15;
 
     public ServiceException(int numero) {
         this.numero = numero;
