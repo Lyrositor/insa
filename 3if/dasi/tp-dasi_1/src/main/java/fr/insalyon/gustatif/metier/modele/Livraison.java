@@ -4,26 +4,22 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import static javax.persistence.TemporalType.DATE;
 
 @Entity
 public class Livraison implements Serializable {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
+    @ManyToOne
     private Client client;
+    @ManyToOne
     private Livreur livreur;
     @Temporal(DATE)
     private Date dateCommande;
@@ -41,6 +37,8 @@ public class Livraison implements Serializable {
         this.dateCommande = dateCommande;
         this.dateLivraison = dateLivraison;
         this.produits = produits;
+        if (!this.livreur.getLivraisons().contains(this))
+            this.livreur.ajouterLivraison(this);
     }
 
     public Long getId() {
@@ -61,6 +59,8 @@ public class Livraison implements Serializable {
 
     public void setLivreur(Livreur livreur) {
         this.livreur = livreur;
+        if (!livreur.getLivraisons().contains(this))
+            livreur.ajouterLivraison(this);
     }
 
     public Date getDateCommande() {

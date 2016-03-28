@@ -1,10 +1,9 @@
 package fr.insalyon.gustatif.metier.modele;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
 
 @Entity
-public class Drone extends Livreur implements Serializable {
+public class Drone extends Livreur {
 
     private float vitesseMoyenne;
 

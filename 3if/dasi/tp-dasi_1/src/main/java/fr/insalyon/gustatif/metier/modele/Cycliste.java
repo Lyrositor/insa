@@ -1,10 +1,9 @@
 package fr.insalyon.gustatif.metier.modele;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
 
 @Entity
-public class Cycliste extends Livreur implements Serializable {
+public class Cycliste extends Livreur {
 
     private String nom;
     private String prenom;

@@ -11,57 +11,65 @@ import java.util.List;
 
 public class Main {
 
+    private static final String INTRO =
+            " _______           _______ _________ _______ _________ _ _________ _______ \n" +
+            "(  ____ \\|\\     /|(  ____ \\\\__   __/(  ___  )\\__   __/( )\\__   __/(  ____ \\\n" +
+            "| (    \\/| )   ( || (    \\/   ) (   | (   ) |   ) (   |/    ) (   | (    \\/\n" +
+            "| |      | |   | || (_____    | |   | (___) |   | |         | |   | (__    \n" +
+            "| | ____ | |   | |(_____  )   | |   |  ___  |   | |         | |   |  __)   \n" +
+            "| | \\_  )| |   | |      ) |   | |   | (   ) |   | |         | |   | (      \n" +
+            "| (___) || (___) |/\\____) |   | |   | )   ( |   | |      ___) (___| )      \n" +
+            "(_______)(_______)\\_______)   )_(   |/     \\|   )_(      \\_______/|/       \n\n" +
+            "Bienvenue à GUSTAT'IF Enterprise Edition 2017 (TM).";
+    private static final String CHOIX =
+            "Choisissez votre action :\n" +
+            "0) Initialiser les données\n" +
+            "1) Lister les restaurants\n" +
+            "2) Lister les produits d'un restaurant\n" +
+            "3) Créer une livraison\n" +
+            "4) Cloturer une livraison (cycliste)\n" +
+            "5) Cloturer une livraison (gestionnaire)\n" +
+            "6) Inscrire un client\n" +
+            "7) Lister les livreurs\n";
+
     public static void main(String[] args) {
         ServiceMetier service = new ServiceMetier();
-        try {
-            //service.initialiserDonnees();
-        } catch (Throwable t) {
-            t.printStackTrace();
-            System.err.println("ERREUR: Échec lors de l'initialisation.");
-            return;
-        }
+
+        Client client;
+        Cycliste cycliste;
+        Livraison livraison;
+        List<Livraison> livraisons;
+        String mail;
+        String motDePasse;
+        List<Produit> produits;
+        HashMap<Produit, Long> produitsCommande;
+        Restaurant restaurant;
+        List<Integer> options = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7);
 
         List<Restaurant> restaurants;
         List<Livreur> livreurs;
         try {
             restaurants = service.listerRestaurants();
             livreurs = service.listerLivreurs();
-        } catch (Throwable t) {
-            t.printStackTrace();
+        } catch (ServiceException e) {
             System.err.println("ERREUR: Échec lors du chargement des données.");
             return;
         }
-        Client client;
-        Restaurant restaurant;
-        List<Produit> produits;
-        HashMap<Produit, Long> produitsCommande;
-        String mail;
-        String motDePasse;
-        Cycliste cycliste;
 
-        List<Integer> options = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7);
-        System.out.println(
-                " _______           _______ _________ _______ _________ _ _________ _______ \n" +
-                "(  ____ \\|\\     /|(  ____ \\\\__   __/(  ___  )\\__   __/( )\\__   __/(  ____ \\\n" +
-                "| (    \\/| )   ( || (    \\/   ) (   | (   ) |   ) (   |/    ) (   | (    \\/\n" +
-                "| |      | |   | || (_____    | |   | (___) |   | |         | |   | (__    \n" +
-                "| | ____ | |   | |(_____  )   | |   |  ___  |   | |         | |   |  __)   \n" +
-                "| | \\_  )| |   | |      ) |   | |   | (   ) |   | |         | |   | (      \n" +
-                "| (___) || (___) |/\\____) |   | |   | )   ( |   | |      ___) (___| )      \n" +
-                "(_______)(_______)\\_______)   )_(   |/     \\|   )_(      \\_______/|/       \n");
-        System.out.println("Bienvenue à Gustat'IF Enterprise Edition 2017 (TM).");
+        System.out.println(INTRO);
         while (true) {
-            afficherChoix();
+            System.out.println(CHOIX);
             Integer choix = Saisie.lireInteger("Choix : ", options);
             client = null;
+            livraison = null;
             restaurant = null;
             produits = null;
             produitsCommande = new HashMap<>();
             mail = null;
             motDePasse = null;
             switch (choix) {
+                // Initialiser les données
                 case 0:
-                    // Initialiser les données
                     try {
                         service.initialiserDonnees();
                         restaurants = service.listerRestaurants();
@@ -71,6 +79,7 @@ public class Main {
                     }
                     break;
 
+                // Lister les restaurants
                 case 1:
                     // Affichage des restaurants
                     System.out.println("Restaurants :");
@@ -78,6 +87,7 @@ public class Main {
                         System.out.println("\t" + r);
                     break;
 
+                // Lister les produits d'un restaurant
                 case 2:
                     // Choix du restaurant
                     do {
@@ -97,6 +107,7 @@ public class Main {
                         System.out.println("\t" + p);
                     break;
 
+                // Créer une livraison
                 case 3:
                     // Authentification
                     System.out.println("Connectez-vous avec votre compte client.");
@@ -132,6 +143,7 @@ public class Main {
                     // Commande
                     try {
                         service.commander(client, restaurant, produitsCommande);
+                        livreurs = service.listerLivreurs();
                     } catch (ServiceException e) {
                         System.out.println("ERREUR : Échec de la commande.");
                         break;
@@ -139,6 +151,7 @@ public class Main {
                     System.out.println("Commande effectuée.");
                     break;
 
+                // Cloturer une livraison (cycliste)
                 case 4:
                     // Authentification
                     System.out.println("Connectez-vous avec votre compte cycliste.");
@@ -152,13 +165,12 @@ public class Main {
                     }
 
                     // Affichage de l'historique des livraisons
-                    List<Livraison> livraisons = cycliste.getLivraisons();
+                    livraisons = cycliste.getLivraisons();
                     for (Livraison l : livraisons)
                         System.out.println("\t" + l);
 
                     // Clôturation de la livraison en cours
                     System.out.println("Clôturation de la livraison en cours...");
-                    Livraison livraison = null;
                     for (Livraison l : livraisons)
                         if (l.getDateLivraison() == null) {
                             livraison = l;
@@ -167,6 +179,7 @@ public class Main {
                     if (livraison != null) {
                         try {
                             service.cloturerLivraison(livraison, new Date());
+                            livreurs = service.listerLivreurs();
                             System.out.println("Livraison clôturée : " + livraison);
                         } catch (ServiceException e) {
                             System.err.println("ERREUR : Échec lors de la clôturation.");
@@ -175,7 +188,59 @@ public class Main {
                         System.out.println("ERREUR : Aucune livraison en cours.");
                     break;
 
+                // Cloturer une livraison (gestionnaire)
                 case 5:
+                    // Authentification
+                    System.out.println("Connectez-vous avec votre compte gestionnaire.");
+                    mail = Saisie.lireChaine("\tMail : ");
+                    motDePasse = Saisie.lireChaine("\tMot de passe : ");
+                    Gestionnaire gestionnaire;
+                    try {
+                        gestionnaire = service.authentifierGestionnaire(mail, motDePasse);
+                    } catch (ServiceException e) {
+                        System.out.println("ERREUR : Erreur d'authentification.");
+                        break;
+                    }
+
+                    // Choisir le livreur
+                    Livreur livreur = null;
+                    do {
+                        long livreurId = Saisie.lireInteger("ID du livreur : ").longValue();
+                        for (Livreur l : livreurs)
+                            if (l.getId() == livreurId) {
+                                livreur = l;
+                                break;
+                            }
+                        if (livreur == null)
+                            System.out.println("ERREUR : Ce livreur n'existe pas.");
+                    } while (livreur == null);
+
+                    // Affichage de l'historique des livraisons
+                    livraisons = livreur.getLivraisons();
+                    for (Livraison l : livraisons)
+                        System.out.println("\t" + l);
+
+                    // Clôturation de la livraison en cours
+                    System.out.println("Clôturation de la livraison en cours...");
+                    for (Livraison l : livraisons)
+                        if (l.getDateLivraison() == null) {
+                            livraison = l;
+                            break;
+                        }
+                    if (livraison != null) {
+                        try {
+                            service.cloturerLivraison(livraison, new Date());
+                            livreurs = service.listerLivreurs();
+                            System.out.println("Livraison clôturée : " + livraison);
+                        } catch (ServiceException e) {
+                            System.err.println("ERREUR : Échec lors de la clôturation.");
+                        }
+                    } else
+                        System.out.println("ERREUR : Aucune livraison en cours.");
+                    break;
+
+                // Inscrire un client
+                case 6:
                     String nom = Saisie.lireChaine("Nom : ");
                     String prenom = Saisie.lireChaine("Prénom : ");
                     mail = Saisie.lireChaine("Mail : ");
@@ -190,40 +255,14 @@ public class Main {
                     }
                     break;
 
-                case 6:
+                // Lister les livreurs
+                case 7:
                     System.out.println("Livreurs :");
                     for (Livreur l : livreurs)
                         System.out.println("\t" + l);
-                    break;
-
-                case 7:
-                    // Authentification
-                    System.out.println("Connectez-vous avec votre compte gestionnaire.");
-                    mail = Saisie.lireChaine("\tMail : ");
-                    motDePasse = Saisie.lireChaine("\tMot de passe : ");
-                    Gestionnaire gestionnaire;
-                    try {
-                        gestionnaire = service.authentifierGestionnaire(mail, motDePasse);
-                    } catch (ServiceException e) {
-                        System.out.println("ERREUR : Erreur d'authentification.");
-                        break;
-                    }
-                    System.out.println(gestionnaire);
-
                     break;
             }
         }
     }
 
-    private static void afficherChoix() {
-        System.out.println("Choisissez votre action :");
-        System.out.println("0) Initialiser les données");
-        System.out.println("1) Lister les restaurants");
-        System.out.println("2) Lister les produits d'un restaurant");
-        System.out.println("3) Créer une livraison");
-        System.out.println("4) Cloturer une livraison");
-        System.out.println("5) Inscrire un client");
-        System.out.println("6) Lister les livreurs");
-        System.out.println("7) Authentifier un gestionnaire");
-    }
 }

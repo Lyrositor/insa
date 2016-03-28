@@ -72,5 +72,4 @@ public class Produit implements Serializable {
                 '}';
     }
 
-
 }

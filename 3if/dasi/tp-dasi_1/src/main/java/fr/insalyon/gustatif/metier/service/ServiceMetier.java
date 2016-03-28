@@ -47,6 +47,29 @@ public class ServiceMetier {
     private static final int NUM_DRONES = 10;
     private static final int NUM_GESTIONNAIRES = 3;
 
+    private static final String FORMAT_MESSAGE_INSCRIPTION_SUCCES =
+            "Bonjour %s,\n" +
+            "Nous vous confirmons votre inscription au service GUSTAT’IF. " +
+            "Votre numéro de client est : %d.";
+    private static final String FORMAT_MESSAGE_INSCRIPTION_ECHEC =
+            "Bonjour %s,\n" +
+            "Votre inscription au service GUSTAT’IF a malencontreusement échoué... " +
+            "Merci de recommencer ultérieurement.";
+    private static final String FORMAT_MESSAGE_LIVREUR =
+            "Bonjour %s,\n\n" +
+            "    Merci d'effectuer cette livraison dès maintenant, tout en respectant le code de la route ;-)\n\n" +
+            "Le Chef\n\n" +
+            "Détails de la Livraison\n" +
+            "    - Date/heure : %s\n" +
+            "    - Livreur : %s %s (n°%d)\n" +
+            "    - Restaurant : %s\n" +
+            "    - Client : \n" +
+            "               %s %s\n" +
+            "               %s\n\n\n" +
+            "Commande : \n%s\n" +
+            "TOTAL : %.2f€";
+    private static final String FORMAT_PRODUIT = "    - %d %s : %d x %.2f€\n";
+
     public void initialiserDonnees() throws ServiceException {
         Random r = new Random();
         JpaUtil.creerEntityManager();
@@ -129,9 +152,22 @@ public class ServiceMetier {
         try {
             CLIENT_DAO.create(client);
         } catch (Throwable t) {
+            ServiceTechnique.envoyerMail(
+                    "gustatif@gustatif.fr", client.getMail(),
+                    "Bienvenue chez GUSTAT'IF", String.format(
+                            FORMAT_MESSAGE_INSCRIPTION_ECHEC, client.getPrenom()
+                    )
+            );
             JpaUtil.fermerEntityManager();
             throw new ServiceException(ServiceException.ERREUR_CREATION_CLIENT);
         }
+        ServiceTechnique.envoyerMail(
+                    "gustatif@gustatif.fr", client.getMail(),
+                    "Bienvenue chez GUSTAT'IF", String.format(
+                            FORMAT_MESSAGE_INSCRIPTION_SUCCES,
+                            client.getPrenom(), client.getId()
+                    )
+            );
 
         JpaUtil.validerTransaction();
         JpaUtil.fermerEntityManager();
@@ -234,7 +270,6 @@ public class ServiceMetier {
         Float poidsCommande = 0f;
         for (Entry<Produit, Long> entry : produits.entrySet()) {
             Produit produit = entry.getKey();
-            //Long id = entry.getValue();
             poidsCommande += produit.getPoids() * entry.getValue();
         }
 
@@ -294,29 +329,30 @@ public class ServiceMetier {
             throw new ServiceException(ServiceException.ERREUR_LIVREUR_UPDATE);
         }
         if (livreurSelection instanceof Cycliste) {
-
-            String produitCommande = "";
+            Cycliste cycliste = (Cycliste) livreurSelection;
+            StringBuilder produitsCommande = new StringBuilder();
             Float total = 0.0f;
-            for (Entry<Produit, Long> entry : produits.entrySet()) {
-                produitCommande += "    - " + entry.getValue() + " " + entry.getKey().getDenomination() + " : " + entry.getValue() + " x " + entry.getKey().getPrix() + "\n";
-                total += entry.getKey().getPrix();
+            for (Entry<Produit, Long> e : produits.entrySet()) {
+                Produit p = e.getKey();
+                produitsCommande.append(String.format(
+                        FORMAT_PRODUIT, e.getValue(), p.getDenomination(),
+                        e.getValue(), p.getPrix()
+                ));
+                total += p.getPrix() * e.getValue();
             }
-            produitCommande += "\n"
-                    + "TOTAL : " + total + " €";
 
-            String corps = "Bonjour " + ((Cycliste) livreurSelection).getPrenom() + ",\n\n"
-                    + "    Merci d'effectuer cette livraison dès maintenant, tout en respectant le code de la route ;-)\n\n"
-                    + " Le Chef\n\n"
-                    + "Détails de la Livraison\n"
-                    + "    - Date/heure : " + livraison.getDateCommande() + "\n"
-                    + "    - Livreur : " + ((Cycliste) livreurSelection).getPrenom() + " " + ((Cycliste) livreurSelection).getNom() + " (n°" + +(livreurSelection).getId() + ")\n"
-                    + "    - Restaurant : " + restaurant.getDenomination() + "\n"
-                    + "    - Client : \n"
-                    + "               " + client.getPrenom() + " " + client.getNom() + "\n"
-                    + "               " + client.getAdresse() + "\n\n\n"
-                    + "Commande :";
-            corps += produitCommande;
-            ServiceTechnique.envoyerMail("gustatif@gustatif.com", ((Cycliste) livreurSelection).getMail(), "Livraison n°" + livraison.getId() + " à effectuer", corps);
+            String corps = String.format(
+                    FORMAT_MESSAGE_LIVREUR, cycliste.getPrenom(),
+                    livraison.getDateCommande(), cycliste.getPrenom(),
+                    cycliste.getNom(), cycliste.getId(),
+                    restaurant.getDenomination(), client.getPrenom(),
+                    client.getNom(), client.getAdresse(), produitsCommande,
+                    total
+            );
+            ServiceTechnique.envoyerMail(
+                    "gustatif@gustatif.fr", cycliste.getMail(),
+                    "Livraison n°" + livraison.getId() + " à effectuer", corps
+            );
         }
 
         JpaUtil.validerTransaction();
