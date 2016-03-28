@@ -8,19 +8,19 @@ import java.util.Date;
 
 public class ClotureLivraison {
 
-    /* Attention : le fichier data.sql dans ressrouces doit être chargé avant exécution ! */
+    /* Attention : le fichier data.sql dans ressources doit être chargé avant exécution ! */
     public static void main(String[] args) {
         try {
             ServiceMetier service = new ServiceMetier();
             service.initialiserDonnees();
 
-            System.out.println(" --- Clotue de commande --- ");
-            System.out.println("1. Numéro / id du livreur");
-            System.out.println("2. Numéro / id de la livraison");
-            System.out.print("Votre choix ? : ");
-
-            boolean continuer = false;
+            boolean continuer = true;
             do {
+                System.out.println(" --- Cloture de commande --- ");
+                System.out.println("1. Numéro / id du livreur");
+                System.out.println("2. Numéro / id de la livraison");
+                System.out.print("Votre choix ? : ");
+
                 switch (Saisie.lireInteger(null)) {
                     case 1:
                         System.out.println(" - Livreur - ");
@@ -30,6 +30,8 @@ public class ClotureLivraison {
                         Livreur livreur = service.trouverLivreur(new Long(idLivreur));
                         if (livreur != null) {
                             if (!livreur.getLivraisons().isEmpty()) {
+                                continuer = false;
+
                                 for (Livraison livraison : livreur.getLivraisons()) {
                                     if (livraison.getDateLivraison() == null) {
                                         service.cloturerLivraison(livraison, new Date());
@@ -51,6 +53,8 @@ public class ClotureLivraison {
 
                         Livraison livraison = service.trouverLivraison(new Long(idLivraison));
                         if (livraison != null) {
+                            continuer = false;
+
                             service.cloturerLivraison(livraison, new Date());
                             return;
                         } else {
@@ -59,7 +63,6 @@ public class ClotureLivraison {
                         break;
 
                     default:
-                        continuer = true;
                         System.out.println("Choix incorrect. Merci de recommencer");
                         break;
                 }

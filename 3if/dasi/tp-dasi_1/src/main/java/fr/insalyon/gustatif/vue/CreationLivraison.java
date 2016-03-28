@@ -14,7 +14,7 @@ public class CreationLivraison {
     private static final int RESTAURANT = 5;
     private static final int[] PRODUITS = {1, 2, 3};
 
-    /* Attention : le fichier data.sql dans ressrouces doit être chargé avant exécution ! */
+    /* Attention : le fichier data.sql dans ressources doit être chargé avant exécution ! */
     public static void main(String[] args) {
         try {
             ServiceMetier service = new ServiceMetier();
