@@ -1,13 +1,27 @@
 package fr.insalyon.gustatif.metier.service;
 
 import com.google.maps.model.LatLng;
-import fr.insalyon.gustatif.dao.*;
-import fr.insalyon.gustatif.metier.modele.*;
-import java.util.Random;
+import fr.insalyon.gustatif.dao.ClientDao;
+import fr.insalyon.gustatif.dao.CyclisteDao;
+import fr.insalyon.gustatif.dao.GestionnaireDao;
+import fr.insalyon.gustatif.dao.JpaUtil;
+import fr.insalyon.gustatif.dao.LivraisonDao;
+import fr.insalyon.gustatif.dao.LivreurDao;
+import fr.insalyon.gustatif.dao.ProduitDao;
+import fr.insalyon.gustatif.dao.RestaurantDao;
+import fr.insalyon.gustatif.metier.modele.Client;
+import fr.insalyon.gustatif.metier.modele.Cycliste;
+import fr.insalyon.gustatif.metier.modele.Drone;
+import fr.insalyon.gustatif.metier.modele.Gestionnaire;
+import fr.insalyon.gustatif.metier.modele.Livraison;
+import fr.insalyon.gustatif.metier.modele.Livreur;
+import fr.insalyon.gustatif.metier.modele.Produit;
+import fr.insalyon.gustatif.metier.modele.Restaurant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 
 public class ServiceMetier {
 
@@ -47,27 +61,27 @@ public class ServiceMetier {
     private static final int NUM_DRONES = 10;
     private static final int NUM_GESTIONNAIRES = 3;
 
-    private static final String FORMAT_MESSAGE_INSCRIPTION_SUCCES =
-            "Bonjour %s,\n" +
-            "Nous vous confirmons votre inscription au service GUSTAT’IF. " +
-            "Votre numéro de client est : %d.";
-    private static final String FORMAT_MESSAGE_INSCRIPTION_ECHEC =
-            "Bonjour %s,\n" +
-            "Votre inscription au service GUSTAT’IF a malencontreusement échoué... " +
-            "Merci de recommencer ultérieurement.";
-    private static final String FORMAT_MESSAGE_LIVREUR =
-            "Bonjour %s,\n\n" +
-            "    Merci d'effectuer cette livraison dès maintenant, tout en respectant le code de la route ;-)\n\n" +
-            "Le Chef\n\n" +
-            "Détails de la Livraison\n" +
-            "    - Date/heure : %s\n" +
-            "    - Livreur : %s %s (n°%d)\n" +
-            "    - Restaurant : %s\n" +
-            "    - Client : \n" +
-            "               %s %s\n" +
-            "               %s\n\n\n" +
-            "Commande : \n%s\n" +
-            "TOTAL : %.2f€";
+    private static final String FORMAT_MESSAGE_INSCRIPTION_SUCCES
+            = "Bonjour %s,\n"
+            + "Nous vous confirmons votre inscription au service GUSTAT’IF. "
+            + "Votre numéro de client est : %d.";
+    private static final String FORMAT_MESSAGE_INSCRIPTION_ECHEC
+            = "Bonjour %s,\n"
+            + "Votre inscription au service GUSTAT’IF a malencontreusement échoué... "
+            + "Merci de recommencer ultérieurement.";
+    private static final String FORMAT_MESSAGE_LIVREUR
+            = "Bonjour %s,\n\n"
+            + "    Merci d'effectuer cette livraison dès maintenant, tout en respectant le code de la route ;-)\n\n"
+            + "Le Chef\n\n"
+            + "Détails de la Livraison\n"
+            + "    - Date/heure : %s\n"
+            + "    - Livreur : %s %s (n°%d)\n"
+            + "    - Restaurant : %s\n"
+            + "    - Client : \n"
+            + "               %s %s\n"
+            + "               %s\n\n\n"
+            + "Commande : \n%s\n"
+            + "TOTAL : %.2f€";
     private static final String FORMAT_PRODUIT = "    - %d %s : %d x %.2f€\n";
 
     public void initialiserDonnees() throws ServiceException {
@@ -162,12 +176,12 @@ public class ServiceMetier {
             throw new ServiceException(ServiceException.ERREUR_CREATION_CLIENT);
         }
         ServiceTechnique.envoyerMail(
-                    "gustatif@gustatif.fr", client.getMail(),
-                    "Bienvenue chez GUSTAT'IF", String.format(
-                            FORMAT_MESSAGE_INSCRIPTION_SUCCES,
-                            client.getPrenom(), client.getId()
-                    )
-            );
+                "gustatif@gustatif.fr", client.getMail(),
+                "Bienvenue chez GUSTAT'IF", String.format(
+                        FORMAT_MESSAGE_INSCRIPTION_SUCCES,
+                        client.getPrenom(), client.getId()
+                )
+        );
 
         JpaUtil.validerTransaction();
         JpaUtil.fermerEntityManager();
@@ -425,6 +439,36 @@ public class ServiceMetier {
 
         JpaUtil.validerTransaction();
         JpaUtil.fermerEntityManager();
+    }
+
+    public Livreur trouverLivreur(Long id) throws ServiceException {
+        JpaUtil.creerEntityManager();
+
+        Livreur livreur = null;
+        try {
+            livreur = LIVREUR_DAO.findById(id);
+        } catch (Throwable t) {
+            JpaUtil.fermerEntityManager();
+            throw new ServiceException(ServiceException.ERREUR_TROUVER_LIVREUR);
+        }
+
+        JpaUtil.fermerEntityManager();
+        return livreur;
+    }
+
+    public Livraison trouverLivraison(Long id) throws ServiceException {
+        JpaUtil.creerEntityManager();
+
+        Livraison livraison = null;
+        try {
+            livraison = LIVRAISON_DAO.findById(id);
+        } catch (Throwable t) {
+            JpaUtil.fermerEntityManager();
+            throw new ServiceException(ServiceException.ERREUR_TROUVER_LIVRAISON);
+        }
+
+        JpaUtil.fermerEntityManager();
+        return livraison;
     }
 
 }

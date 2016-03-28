@@ -24,7 +24,11 @@ public class ServiceException extends Exception {
     public static final int ERREUR_LIVRAISON_UPDATE = 14;
 
     public static final int ERREUR_LISTE_RESTAURANTS = 15;
-    public static final int ERREUR_LISTE_LIVREURS = 15;
+    public static final int ERREUR_LISTE_LIVREURS = 16;
+
+    public static final int ERREUR_TROUVER_LIVREUR = 17;
+
+    public static final int ERREUR_TROUVER_LIVRAISON = 18;
 
     public ServiceException(int numero) {
         this.numero = numero;
