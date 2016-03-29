@@ -19,13 +19,11 @@ public class ClotureLivraison {
                 System.out.println(" --- Cloture de commande --- ");
                 System.out.println("1. Numéro / id du livreur");
                 System.out.println("2. Numéro / id de la livraison");
-                System.out.print("Votre choix ? : ");
 
-                switch (Saisie.lireInteger(null)) {
+                switch (Saisie.lireInteger("Votre choix ? : ")) {
                     case 1:
                         System.out.println(" - Livreur - ");
-                        System.out.print("Numéro / id du livreur : ");
-                        int idLivreur = Saisie.lireInteger(null);
+                        int idLivreur = Saisie.lireInteger("Numéro / id du livreur : ");
 
                         Livreur livreur = service.trouverLivreur(new Long(idLivreur));
                         if (livreur != null) {
@@ -48,8 +46,7 @@ public class ClotureLivraison {
 
                     case 2:
                         System.out.println(" - Livraison - ");
-                        System.out.print("Numéro / id de la livraison : ");
-                        int idLivraison = Saisie.lireInteger(null);
+                        int idLivraison = Saisie.lireInteger("Numéro / id de la livraison : ");
 
                         Livraison livraison = service.trouverLivraison(new Long(idLivraison));
                         if (livraison != null) {
