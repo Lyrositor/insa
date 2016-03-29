@@ -12,7 +12,7 @@ import com.google.maps.model.TravelMode;
 
 public class ServiceTechnique {
 
-    final static String CLE_GOOGLE_API = "AIzaSyDcVVJjfmxsNdbdUYeg9MjQoJJ6THPuap4";
+    final static String CLE_GOOGLE_API = "AIzaSyAhf3JleYpal9S-xouJYH8lf7Dvz5Y2Nko";
     final static GeoApiContext CONTEXTE_GEOAPI = new GeoApiContext().setApiKey(CLE_GOOGLE_API);
 
     public static void envoyerMail(String expediteur, String destinataire, String objet, String corps) {
