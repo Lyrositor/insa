@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Main.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST3 {font-family: Monospaced; font-weight: bold; font-style: italic}
+.ST4 {font-family: Monospaced; font-style: italic}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.comment {color: #969696}
+.ST2 {color: #ce7b00; font-family: Monospaced; font-weight: bold}
+.character {color: #ce7b00}
+.ST1 {color: #009900; font-family: Monospaced; font-style: italic}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\vue\Main.java</td></tr></table>
+<pre>
+  1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.vue;
+  2 
+  3 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.modele.*;
+  4 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.service.ServiceException;
+  5 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.service.ServiceMetier;
+  6 <span class="keyword-directive">import</span> fr.insalyon.gustatif.util.Saisie;
+  7 <span class="keyword-directive">import</span> java.util.Arrays;
+  8 <span class="keyword-directive">import</span> java.util.Date;
+  9 <span class="keyword-directive">import</span> java.util.HashMap;
+ 10 <span class="keyword-directive">import</span> java.util.List;
+ 11 
+ 12 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">Main</span> {
+ 13 
+ 14     <span class="keyword-directive">private</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> String <span class="ST1">INTRO</span> =
+ 15             <span class="character">&quot;</span><span class="character"> _______           _______ _________ _______ _________ _ _________ _______ </span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 16             <span class="character">&quot;</span><span class="character">(  ____ </span><span class="ST2">\\</span><span class="character">|</span><span class="ST2">\\</span><span class="character">     /|(  ____ </span><span class="ST2">\\</span><span class="ST2">\\</span><span class="character">__   __/(  ___  )</span><span class="ST2">\\</span><span class="character">__   __/( )</span><span class="ST2">\\</span><span class="character">__   __/(  ____ </span><span class="ST2">\\</span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 17             <span class="character">&quot;</span><span class="character">| (    </span><span class="ST2">\\</span><span class="character">/| )   ( || (    </span><span class="ST2">\\</span><span class="character">/   ) (   | (   ) |   ) (   |/    ) (   | (    </span><span class="ST2">\\</span><span class="character">/</span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 18             <span class="character">&quot;</span><span class="character">| |      | |   | || (_____    | |   | (___) |   | |         | |   | (__    </span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 19             <span class="character">&quot;</span><span class="character">| | ____ | |   | |(_____  )   | |   |  ___  |   | |         | |   |  __)   </span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 20             <span class="character">&quot;</span><span class="character">| | </span><span class="ST2">\\</span><span class="character">_  )| |   | |      ) |   | |   | (   ) |   | |         | |   | (      </span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 21             <span class="character">&quot;</span><span class="character">| (___) || (___) |/</span><span class="ST2">\\</span><span class="character">____) |   | |   | )   ( |   | |      ___) (___| )      </span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 22             <span class="character">&quot;</span><span class="character">(_______)(_______)</span><span class="ST2">\\</span><span class="character">_______)   )_(   |/     </span><span class="ST2">\\</span><span class="character">|   )_(      </span><span class="ST2">\\</span><span class="character">_______/|/       </span><span class="ST2">\n</span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 23             <span class="character">&quot;</span><span class="character">Bienvenue à GUSTAT&#39;IF Enterprise Edition 2017 (TM).</span><span class="character">&quot;</span>;
+ 24     <span class="keyword-directive">private</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> String <span class="ST1">CHOIX</span> =
+ 25             <span class="character">&quot;</span><span class="character">Choisissez votre action :</span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 26             <span class="character">&quot;</span><span class="character">0) Initialiser les données</span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 27             <span class="character">&quot;</span><span class="character">1) Lister les restaurants</span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 28             <span class="character">&quot;</span><span class="character">2) Lister les produits d&#39;un restaurant</span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 29             <span class="character">&quot;</span><span class="character">3) Créer une livraison</span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 30             <span class="character">&quot;</span><span class="character">4) Cloturer une livraison (cycliste)</span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 31             <span class="character">&quot;</span><span class="character">5) Cloturer une livraison (gestionnaire)</span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 32             <span class="character">&quot;</span><span class="character">6) Inscrire un client</span><span class="ST2">\n</span><span class="character">&quot;</span> +
+ 33             <span class="character">&quot;</span><span class="character">7) Lister les livreurs</span><span class="ST2">\n</span><span class="character">&quot;</span>;
+ 34 
+ 35     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST3">main</span>(String[] args) {
+ 36         ServiceMetier service = <span class="keyword-directive">new</span> ServiceMetier();
+ 37 
+ 38         Client client;
+ 39         Cycliste cycliste;
+ 40         Livraison livraison;
+ 41         List&lt;Livraison&gt; livraisons;
+ 42         String mail;
+ 43         String motDePasse;
+ 44         List&lt;Produit&gt; produits;
+ 45         HashMap&lt;Produit, Long&gt; produitsCommande;
+ 46         Restaurant restaurant;
+ 47         List&lt;Integer&gt; options = Arrays.<span class="ST4">asList</span>(0, 1, 2, 3, 4, 5, 6, 7);
+ 48 
+ 49         List&lt;Restaurant&gt; restaurants;
+ 50         List&lt;Livreur&gt; livreurs;
+ 51         <span class="keyword-directive">try</span> {
+ 52             restaurants = service.listerRestaurants();
+ 53         } <span class="keyword-directive">catch</span> (ServiceException e) {
+ 54             System.<span class="ST1">err</span>.println(<span class="character">&quot;</span><span class="character">ERREUR: Échec lors du chargement des données.</span><span class="character">&quot;</span>);
+ 55             <span class="keyword-directive">return</span>;
+ 56         }
+ 57 
+ 58         System.<span class="ST1">out</span>.println(<span class="ST1">INTRO</span>);
+ 59         <span class="keyword-directive">while</span> (<span class="keyword-directive">true</span>) {
+ 60             System.<span class="ST1">out</span>.println(<span class="ST1">CHOIX</span>);
+ 61             Integer choix = Saisie.<span class="ST4">lireInteger</span>(<span class="character">&quot;</span><span class="character">Choix : </span><span class="character">&quot;</span>, options);
+ 62             client = <span class="keyword-directive">null</span>;
+ 63             livraison = <span class="keyword-directive">null</span>;
+ 64             restaurant = <span class="keyword-directive">null</span>;
+ 65             produits = <span class="keyword-directive">null</span>;
+ 66             produitsCommande = <span class="keyword-directive">new</span> HashMap&lt;&gt;();
+ 67             mail = <span class="keyword-directive">null</span>;
+ 68             motDePasse = <span class="keyword-directive">null</span>;
+ 69             <span class="keyword-directive">switch</span> (choix) {
+ 70                 <span class="comment">// Initialiser les données</span>
+ 71                 <span class="keyword-directive">case</span> 0:
+ 72                     <span class="keyword-directive">try</span> {
+ 73                         service.initialiserDonnees();
+ 74                         restaurants = service.listerRestaurants();
+ 75                         livreurs = service.listerLivreurs();
+ 76                     } <span class="keyword-directive">catch</span> (ServiceException e) {
+ 77                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Échec de l&#39;initialisation.</span><span class="character">&quot;</span>);
+ 78                     }
+ 79                     <span class="keyword-directive">break</span>;
+ 80 
+ 81                 <span class="comment">// Lister les restaurants</span>
+ 82                 <span class="keyword-directive">case</span> 1:
+ 83                     <span class="comment">// Affichage des restaurants</span>
+ 84                     System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Restaurants :</span><span class="character">&quot;</span>);
+ 85                     <span class="keyword-directive">for</span> (Restaurant r : restaurants)
+ 86                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">&quot;</span> + r);
+ 87                     <span class="keyword-directive">break</span>;
+ 88 
+ 89                 <span class="comment">// Lister les produits d&#39;un restaurant</span>
+ 90                 <span class="keyword-directive">case</span> 2:
+ 91                     <span class="comment">// Choix du restaurant</span>
+ 92                     <span class="keyword-directive">do</span> {
+ 93                         <span class="keyword-directive">long</span> restaurantId = Saisie.<span class="ST4">lireInteger</span>(<span class="character">&quot;</span><span class="character">ID du restaurant : </span><span class="character">&quot;</span>);
+ 94                         <span class="keyword-directive">for</span> (Restaurant r : restaurants)
+ 95                             <span class="keyword-directive">if</span> (r.getId() == restaurantId) {
+ 96                                 restaurant = r;
+ 97                                 <span class="keyword-directive">break</span>;
+ 98                             }
+ 99                         <span class="keyword-directive">if</span> (restaurant == <span class="keyword-directive">null</span>)
+100                             System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Ce restaurant n&#39;existe pas.</span><span class="character">&quot;</span>);
+101                     } <span class="keyword-directive">while</span> (restaurant == <span class="keyword-directive">null</span>);
+102 
+103                     <span class="comment">// Affichage des produits</span>
+104                     System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Produits :</span><span class="character">&quot;</span>);
+105                     <span class="keyword-directive">for</span> (Produit p : service.listerProduitsRestaurant(restaurant))
+106                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">&quot;</span> + p);
+107                     <span class="keyword-directive">break</span>;
+108 
+109                 <span class="comment">// Créer une livraison</span>
+110                 <span class="keyword-directive">case</span> 3:
+111                     <span class="comment">// Authentification</span>
+112                     System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Connectez-vous avec votre compte client.</span><span class="character">&quot;</span>);
+113                     mail = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">Mail : </span><span class="character">&quot;</span>);
+114                     motDePasse = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">Mot de passe : </span><span class="character">&quot;</span>);
+115                     <span class="keyword-directive">try</span> {
+116                         client = service.authentifierClient(mail, motDePasse);
+117                     } <span class="keyword-directive">catch</span> (ServiceException e) {
+118                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Erreur d&#39;authentification.</span><span class="character">&quot;</span>);
+119                         <span class="keyword-directive">break</span>;
+120                     }
+121 
+122                     <span class="comment">// Choix du restaurant</span>
+123                     <span class="keyword-directive">do</span> {
+124                         <span class="keyword-directive">long</span> restaurantId = Saisie.<span class="ST4">lireInteger</span>(<span class="character">&quot;</span><span class="character">ID du restaurant : </span><span class="character">&quot;</span>).longValue();
+125                         <span class="keyword-directive">for</span> (Restaurant r : restaurants)
+126                             <span class="keyword-directive">if</span> (r.getId() == restaurantId) {
+127                                 restaurant = r;
+128                                 <span class="keyword-directive">break</span>;
+129                             }
+130                         <span class="keyword-directive">if</span> (restaurant == <span class="keyword-directive">null</span>)
+131                             System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Ce restaurant n&#39;existe pas.</span><span class="character">&quot;</span>);
+132                     } <span class="keyword-directive">while</span> (restaurant == <span class="keyword-directive">null</span>);
+133 
+134                     <span class="comment">// Choix des produits</span>
+135                     System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Choisissez vos produits :</span><span class="character">&quot;</span>);
+136                     <span class="keyword-directive">for</span> (Produit p : service.listerProduitsRestaurant(restaurant)) {
+137                         <span class="keyword-directive">int</span> qte = Saisie.<span class="ST4">lireInteger</span>(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">&quot;</span> + p.getDenomination() + <span class="character">&quot;</span><span class="character"> (</span><span class="character">&quot;</span> + p.getDescription() + <span class="character">&quot;</span><span class="character">) : </span><span class="character">&quot;</span>);
+138                         <span class="keyword-directive">if</span> (qte &gt; 0)
+139                             produitsCommande.put(p, <span class="keyword-directive">new</span> Long(qte));
+140                     }
+141 
+142                     <span class="comment">// Commande</span>
+143                     <span class="keyword-directive">try</span> {
+144                         service.commander(client, restaurant, produitsCommande);
+145                         livreurs = service.listerLivreurs();
+146                     } <span class="keyword-directive">catch</span> (ServiceException e) {
+147                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Échec de la commande.</span><span class="character">&quot;</span>);
+148                         <span class="keyword-directive">break</span>;
+149                     }
+150                     System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Commande effectuée.</span><span class="character">&quot;</span>);
+151                     <span class="keyword-directive">break</span>;
+152 
+153                 <span class="comment">// Cloturer une livraison (cycliste)</span>
+154                 <span class="keyword-directive">case</span> 4:
+155                     <span class="comment">// Authentification</span>
+156                     System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Connectez-vous avec votre compte cycliste.</span><span class="character">&quot;</span>);
+157                     mail = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">Mail : </span><span class="character">&quot;</span>);
+158                     motDePasse = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">Mot de passe : </span><span class="character">&quot;</span>);
+159                     <span class="keyword-directive">try</span> {
+160                         cycliste = service.authentifierCycliste(mail, motDePasse);
+161                     } <span class="keyword-directive">catch</span> (ServiceException e) {
+162                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Erreur d&#39;authentification.</span><span class="character">&quot;</span>);
+163                         <span class="keyword-directive">break</span>;
+164                     }
+165 
+166                     <span class="comment">// Affichage de l&#39;historique des livraisons</span>
+167                     livraisons = cycliste.getLivraisons();
+168                     <span class="keyword-directive">for</span> (Livraison l : livraisons)
+169                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">&quot;</span> + l);
+170 
+171                     <span class="comment">// Clôturation de la livraison en cours</span>
+172                     System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Clôturation de la livraison en cours...</span><span class="character">&quot;</span>);
+173                     <span class="keyword-directive">for</span> (Livraison l : livraisons)
+174                         <span class="keyword-directive">if</span> (l.getDateLivraison() == <span class="keyword-directive">null</span>) {
+175                             livraison = l;
+176                             <span class="keyword-directive">break</span>;
+177                         }
+178                     <span class="keyword-directive">if</span> (livraison != <span class="keyword-directive">null</span>) {
+179                         <span class="keyword-directive">try</span> {
+180                             service.cloturerLivraison(livraison, <span class="keyword-directive">new</span> Date());
+181                             livreurs = service.listerLivreurs();
+182                             System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Livraison clôturée : </span><span class="character">&quot;</span> + livraison);
+183                         } <span class="keyword-directive">catch</span> (ServiceException e) {
+184                             System.<span class="ST1">err</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Échec lors de la clôturation.</span><span class="character">&quot;</span>);
+185                         }
+186                     } <span class="keyword-directive">else</span>
+187                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Aucune livraison en cours.</span><span class="character">&quot;</span>);
+188                     <span class="keyword-directive">break</span>;
+189 
+190                 <span class="comment">// Cloturer une livraison (gestionnaire)</span>
+191                 <span class="keyword-directive">case</span> 5:
+192                     <span class="comment">// Authentification</span>
+193                     System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Connectez-vous avec votre compte gestionnaire.</span><span class="character">&quot;</span>);
+194                     mail = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">Mail : </span><span class="character">&quot;</span>);
+195                     motDePasse = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">Mot de passe : </span><span class="character">&quot;</span>);
+196                     Gestionnaire gestionnaire;
+197                     <span class="keyword-directive">try</span> {
+198                         gestionnaire = service.authentifierGestionnaire(mail, motDePasse);
+199                     } <span class="keyword-directive">catch</span> (ServiceException e) {
+200                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Erreur d&#39;authentification.</span><span class="character">&quot;</span>);
+201                         <span class="keyword-directive">break</span>;
+202                     }
+203 
+204                     <span class="comment">// Choisir le livreur</span>
+205                     <span class="keyword-directive">try</span> {
+206                         livreurs = service.listerLivreurs();
+207                     } <span class="keyword-directive">catch</span> (ServiceException e) {
+208                         System.<span class="ST1">err</span>.println(<span class="character">&quot;</span><span class="character">ERREUR: Échec lors du chargement des données.</span><span class="character">&quot;</span>);
+209                         <span class="keyword-directive">return</span>;
+210                     }
+211                     Livreur livreur = <span class="keyword-directive">null</span>;
+212                     <span class="keyword-directive">do</span> {
+213                         <span class="keyword-directive">long</span> livreurId = Saisie.<span class="ST4">lireInteger</span>(<span class="character">&quot;</span><span class="character">ID du livreur : </span><span class="character">&quot;</span>).longValue();
+214                         <span class="keyword-directive">for</span> (Livreur l : livreurs)
+215                             <span class="keyword-directive">if</span> (l.getId() == livreurId) {
+216                                 livreur = l;
+217                                 <span class="keyword-directive">break</span>;
+218                             }
+219                         <span class="keyword-directive">if</span> (livreur == <span class="keyword-directive">null</span>)
+220                             System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Ce livreur n&#39;existe pas.</span><span class="character">&quot;</span>);
+221                     } <span class="keyword-directive">while</span> (livreur == <span class="keyword-directive">null</span>);
+222 
+223                     <span class="comment">// Affichage de l&#39;historique des livraisons</span>
+224                     livraisons = livreur.getLivraisons();
+225                     <span class="keyword-directive">for</span> (Livraison l : livraisons)
+226                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">&quot;</span> + l);
+227 
+228                     <span class="comment">// Clôturation de la livraison en cours</span>
+229                     System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Clôturation de la livraison en cours...</span><span class="character">&quot;</span>);
+230                     <span class="keyword-directive">for</span> (Livraison l : livraisons)
+231                         <span class="keyword-directive">if</span> (l.getDateLivraison() == <span class="keyword-directive">null</span>) {
+232                             livraison = l;
+233                             <span class="keyword-directive">break</span>;
+234                         }
+235                     <span class="keyword-directive">if</span> (livraison != <span class="keyword-directive">null</span>) {
+236                         <span class="keyword-directive">try</span> {
+237                             service.cloturerLivraison(livraison, <span class="keyword-directive">new</span> Date());
+238                             livreurs = service.listerLivreurs();
+239                             System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Livraison clôturée : </span><span class="character">&quot;</span> + livraison);
+240                         } <span class="keyword-directive">catch</span> (ServiceException e) {
+241                             System.<span class="ST1">err</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Échec lors de la clôturation.</span><span class="character">&quot;</span>);
+242                         }
+243                     } <span class="keyword-directive">else</span>
+244                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Aucune livraison en cours.</span><span class="character">&quot;</span>);
+245                     <span class="keyword-directive">break</span>;
+246 
+247                 <span class="comment">// Inscrire un client</span>
+248                 <span class="keyword-directive">case</span> 6:
+249                     String nom = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="character">Nom : </span><span class="character">&quot;</span>);
+250                     String prenom = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="character">Prénom : </span><span class="character">&quot;</span>);
+251                     mail = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="character">Mail : </span><span class="character">&quot;</span>);
+252                     motDePasse = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="character">Mot de passe : </span><span class="character">&quot;</span>);
+253                     String adresse = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="character">Adresse : </span><span class="character">&quot;</span>);
+254                     client = <span class="keyword-directive">new</span> Client(nom, prenom, mail, motDePasse, adresse);
+255                     <span class="keyword-directive">try</span> {
+256                         service.inscrireClient(client);
+257                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Création réussie : </span><span class="character">&quot;</span> + client);
+258                     } <span class="keyword-directive">catch</span> (ServiceException e) {
+259                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Impossible de créer client.</span><span class="character">&quot;</span>);
+260                     }
+261                     <span class="keyword-directive">break</span>;
+262 
+263                 <span class="comment">// Lister les livreurs</span>
+264                 <span class="keyword-directive">case</span> 7:
+265                     <span class="keyword-directive">try</span> {
+266                         livreurs = service.listerLivreurs();
+267                     } <span class="keyword-directive">catch</span> (ServiceException e) {
+268                         System.<span class="ST1">err</span>.println(<span class="character">&quot;</span><span class="character">ERREUR: Échec lors du chargement des données.</span><span class="character">&quot;</span>);
+269                         <span class="keyword-directive">return</span>;
+270                     }
+271                     
+272                     System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Livreurs :</span><span class="character">&quot;</span>);
+273                     <span class="keyword-directive">for</span> (Livreur l : livreurs)
+274                         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="ST2">\t</span><span class="character">&quot;</span> + l);
+275                     <span class="keyword-directive">break</span>;
+276             }
+277         }
+278     }
+279 
+280 }
+281 
+</pre></body>
+</html>

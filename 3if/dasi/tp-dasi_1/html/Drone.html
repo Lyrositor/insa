@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Drone.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.ST1 {color: #009900}
+.character {color: #ce7b00}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\metier\modele\Drone.java</td></tr></table>
+<pre>
+ 1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.metier.modele;
+ 2 
+ 3 <span class="keyword-directive">import</span> javax.persistence.Entity;
+ 4 
+ 5 @Entity
+ 6 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">Drone</span> <span class="keyword-directive">extends</span> Livreur {
+ 7 
+ 8     <span class="keyword-directive">private</span> <span class="keyword-directive">float</span> <span class="ST1">vitesseMoyenne</span>;
+ 9 
+10     <span class="keyword-directive">public</span> <span class="ST0">Drone</span>() {
+11     }
+12 
+13     <span class="keyword-directive">public</span> <span class="ST0">Drone</span>(
+14             <span class="keyword-directive">float</span> vitesseMoyenne, <span class="keyword-directive">float</span> capacite, <span class="keyword-directive">boolean</span> disponible,
+15             String adresse) {
+16         <span class="keyword-directive">this</span>.<span class="ST1">vitesseMoyenne</span> = vitesseMoyenne;
+17         <span class="keyword-directive">this</span>.<span class="ST1">adresse</span> = adresse;
+18         <span class="keyword-directive">this</span>.<span class="ST1">capacite</span> = capacite;
+19         <span class="keyword-directive">this</span>.<span class="ST1">disponible</span> = disponible;
+20     }
+21 
+22     <span class="keyword-directive">public</span> <span class="keyword-directive">float</span> <span class="ST0">getVitesseMoyenne</span>() {
+23         <span class="keyword-directive">return</span> <span class="ST1">vitesseMoyenne</span>;
+24     }
+25 
+26     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setVitesseMoyenne</span>(<span class="keyword-directive">float</span> vitesseMoyenne) {
+27         <span class="keyword-directive">this</span>.<span class="ST1">vitesseMoyenne</span> = vitesseMoyenne;
+28     }
+29 
+30     @Override
+31     <span class="keyword-directive">public</span> String <span class="ST0">toString</span>() {
+32         <span class="keyword-directive">return</span> <span class="character">&quot;</span><span class="character">Drone{</span><span class="character">&quot;</span> +
+33                 <span class="character">&quot;</span><span class="character">id=</span><span class="character">&quot;</span> + <span class="ST1">id</span> +
+34                 <span class="character">&quot;</span><span class="character">, vitesseMoyenne=</span><span class="character">&quot;</span> + <span class="ST1">vitesseMoyenne</span> +
+35                 <span class="character">&quot;</span><span class="character">, capacite=</span><span class="character">&quot;</span> + <span class="ST1">capacite</span> +
+36                 <span class="character">&quot;</span><span class="character">, disponible=</span><span class="character">&quot;</span> + <span class="ST1">disponible</span> +
+37                 <span class="character">&quot;</span><span class="character">, adresse=</span><span class="character">&quot;</span> + <span class="ST1">adresse</span> +
+38                 <span class="character">&quot;</span><span class="character">, longitude=</span><span class="character">&quot;</span> + <span class="ST1">longitude</span> +
+39                 <span class="character">&quot;</span><span class="character">, latitude=</span><span class="character">&quot;</span> + <span class="ST1">latitude</span> +
+40                 <span class="character">&#39;</span><span class="character">}</span><span class="character">&#39;</span>;
+41     }
+42 
+43 }
+44 
+</pre></body>
+</html>

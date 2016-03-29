@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>JpaUtil.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST5 {font-family: Monospaced; font-weight: bold; font-style: italic}
+.ST4 {font-family: Monospaced; font-style: italic}
+.ST1 {font-family: Monospaced; font-weight: bold}
+.ST0 {color: #969696; font-family: Monospaced; font-weight: bold}
+.comment {color: #969696}
+.character {color: #ce7b00}
+.ST3 {color: #009900; font-family: Monospaced; font-style: italic}
+.keyword-directive {color: #0000e6}
+.ST2 {color: #9999ff; font-family: Monospaced; font-weight: bold}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\dao\JpaUtil.java</td></tr></table>
+<pre>
+  1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.dao;
+  2 
+  3 <span class="keyword-directive">import</span> javax.persistence.EntityManager;
+  4 <span class="keyword-directive">import</span> javax.persistence.EntityManagerFactory;
+  5 <span class="keyword-directive">import</span> javax.persistence.Persistence;
+  6 <span class="keyword-directive">import</span> javax.persistence.RollbackException;
+  7 
+  8 <span class="comment">/**</span>
+  9 <span class="comment"> * </span><span class="ST0">Cette</span> <span class="ST0">classe</span> <span class="ST0">fournit</span> <span class="ST0">des</span> <span class="ST0">méthodes</span> <span class="ST0">statiques</span> <span class="ST0">utiles</span> <span class="ST0">pour</span> <span class="ST0">accéder</span> <span class="ST0">aux</span>
+ 10 <span class="comment"> * </span><span class="ST0">fonctionnalités</span> <span class="ST0">de</span> <span class="ST0">JPA</span><span class="ST0"> (</span><span class="ST0">Entity</span> <span class="ST0">Manager</span><span class="ST0">, </span><span class="ST0">Entity</span> <span class="ST0">Transaction</span><span class="ST0">)</span><span class="ST0">.</span> <span class="comment">Le</span> <span class="comment">nom</span> <span class="comment">de</span>
+ 11 <span class="comment"> * </span><span class="comment">l</span><span class="comment">&#39;</span><span class="comment">unité</span> <span class="comment">de</span> <span class="comment">persistance</span><span class="comment"> (</span><span class="comment">PERSISTENCE_UNIT_NAME</span><span class="comment">) </span><span class="comment">doit</span> <span class="comment">être</span> <span class="comment">conforme</span> <span class="comment">à</span> <span class="comment">la</span>
+ 12 <span class="comment"> * </span><span class="comment">configuration</span> <span class="comment">indiquée</span> <span class="comment">dans</span> <span class="comment">le</span> <span class="comment">fichier</span> <span class="comment">persistence</span><span class="comment">.</span><span class="comment">xml</span> <span class="comment">du</span> <span class="comment">projet</span><span class="comment">.</span>
+ 13 <span class="comment"> *</span>
+ 14 <span class="comment"> * </span><span class="comment">Version</span> <span class="comment">du</span><span class="comment"> 22 </span><span class="comment">Mars</span><span class="comment"> 2016</span>
+ 15 <span class="comment"> *</span>
+ 16 <span class="comment"> * </span><span class="ST0">@author</span> <span class="comment">DASI</span> <span class="comment">Team</span>
+ 17  <span class="comment">*/</span>
+ 18 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST1">JpaUtil</span> {
+ 19 
+ 20     <span class="comment">/**</span>
+ 21 <span class="comment">     * </span><span class="ST0">Nom</span> <span class="ST0">de</span> <span class="ST0">l</span><span class="ST0">&#39;</span><span class="ST0">unité</span> <span class="ST0">de</span> <span class="ST0">persistance</span> <span class="ST0">utilisée</span> <span class="ST0">par</span> <span class="ST0">la</span> <span class="ST0">Factory</span> <span class="ST0">de</span> <span class="ST0">Entity</span> <span class="ST0">Manager</span><span class="ST0">.</span>
+ 22 <span class="comment">     * </span><span class="ST2">&lt;br/&gt;</span><span class="ST2">&lt;strong&gt;</span><span class="comment">Vérifier</span> <span class="comment">le</span> <span class="comment">nom</span> <span class="comment">de</span> <span class="comment">l</span><span class="comment">&#39;</span><span class="comment">unité</span> <span class="comment">de</span> <span class="comment">persistance</span>
+ 23 <span class="comment">     * (</span><span class="comment">cf</span><span class="comment">.</span><span class="comment">&amp;</span><span class="comment">nbsp</span><span class="comment">;</span><span class="comment">persistence</span><span class="comment">.</span><span class="comment">xml</span><span class="comment">)</span><span class="ST2">&lt;/strong&gt;</span>
+ 24      <span class="comment">*/</span>
+ 25     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> String <span class="ST3">PERSISTENCE_UNIT_NAME</span> = <span class="character">&quot;</span><span class="character">fr.insalyon_tp-dasi_1_jar_1.0-SNAPSHOTPU</span><span class="character">&quot;</span>;
+ 26     <span class="comment">/**</span>
+ 27 <span class="comment">     * </span><span class="ST0">Factory</span> <span class="ST0">de</span> <span class="ST0">Entity</span> <span class="ST0">Manager</span> <span class="ST0">liée</span> <span class="ST0">à</span> <span class="ST0">l</span><span class="ST0">&#39;</span><span class="ST0">unité</span> <span class="ST0">de</span> <span class="ST0">persistance</span><span class="ST0">.</span>
+ 28 <span class="comment">     * </span><span class="ST2">&lt;br/&gt;</span><span class="ST2">&lt;strong&gt;</span><span class="comment">Vérifier</span> <span class="comment">le</span> <span class="comment">nom</span> <span class="comment">de</span> <span class="comment">l</span><span class="comment">&#39;</span><span class="comment">unité</span> <span class="comment">de</span> <span class="comment">persistance</span> <span class="comment">indiquée</span> <span class="comment">dans</span>
+ 29 <span class="comment">     * </span><span class="comment">l</span><span class="comment">&#39;</span><span class="comment">attribut</span> <span class="comment">statique</span> <span class="comment">PERSISTENCE_UNIT_NAME</span>
+ 30 <span class="comment">     * (</span><span class="comment">cf</span><span class="comment">.</span><span class="comment">&amp;</span><span class="comment">nbsp</span><span class="comment">;</span><span class="comment">persistence</span><span class="comment">.</span><span class="comment">xml</span><span class="comment">)</span><span class="ST2">&lt;/strong&gt;</span>
+ 31      <span class="comment">*/</span>
+ 32     <span class="keyword-directive">private</span> <span class="keyword-directive">static</span> EntityManagerFactory <span class="ST3">entityManagerFactory</span> = Persistence.<span class="ST4">createEntityManagerFactory</span>(<span class="ST3">PERSISTENCE_UNIT_NAME</span>);
+ 33     <span class="comment">/**</span>
+ 34 <span class="comment">     * </span><span class="ST0">Gère</span> <span class="ST0">les</span> <span class="ST0">instances</span> <span class="ST0">courantes</span> <span class="ST0">de</span> <span class="ST0">Entity</span> <span class="ST0">Manager</span> <span class="ST0">liées</span> <span class="ST0">aux</span> <span class="ST0">Threads</span><span class="ST0">.</span>
+ 35 <span class="comment">     * </span><span class="comment">L</span><span class="comment">&#39;</span><span class="comment">utilisation</span> <span class="comment">de</span> <span class="comment">ThreadLocal</span> <span class="comment">garantie</span> <span class="comment">une</span> <span class="comment">unique</span> <span class="comment">instance</span> <span class="comment">courante</span> <span class="comment">par</span>
+ 36 <span class="comment">     * </span><span class="comment">Thread</span><span class="comment">.</span>
+ 37      <span class="comment">*/</span>
+ 38     <span class="keyword-directive">private</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> ThreadLocal&lt;EntityManager&gt; <span class="ST3">threadLocalEntityManager</span> = <span class="keyword-directive">new</span> ThreadLocal&lt;EntityManager&gt;() {
+ 39 
+ 40         @Override
+ 41         <span class="keyword-directive">protected</span> EntityManager <span class="ST1">initialValue</span>() {
+ 42             <span class="keyword-directive">return</span> <span class="keyword-directive">null</span>;
+ 43         }
+ 44     };
+ 45 
+ 46     <span class="comment">// Pause (sans exception)</span>
+ 47     <span class="keyword-directive">private</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST5">pause</span>(<span class="keyword-directive">long</span> milliseconds) {
+ 48         <span class="keyword-directive">try</span> {
+ 49             Thread.<span class="ST4">sleep</span>(milliseconds);
+ 50         } <span class="keyword-directive">catch</span> (InterruptedException ex) {
+ 51         }
+ 52     }
+ 53 
+ 54     <span class="comment">// Log sur la console</span>
+ 55     <span class="comment">// Les flush &amp; pause sont là pour (tenter de) synchroniser les sorties sur la console</span>
+ 56     <span class="keyword-directive">private</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST5">log</span>(String message) {
+ 57         System.<span class="ST3">out</span>.flush();
+ 58         <span class="ST4">pause</span>(5);
+ 59         System.<span class="ST3">err</span>.println(<span class="character">&quot;</span><span class="character">[JpaUtil:Log] </span><span class="character">&quot;</span> + message);
+ 60         System.<span class="ST3">err</span>.flush();
+ 61         <span class="ST4">pause</span>(5);
+ 62     }
+ 63 
+ 64     <span class="comment">/**</span>
+ 65 <span class="comment">     * </span><span class="ST0">Initialise</span> <span class="ST0">la</span> <span class="ST0">Factory</span> <span class="ST0">de</span> <span class="ST0">Entity</span> <span class="ST0">Manager</span><span class="ST0"> (</span><span class="ST0">nécessaire</span> <span class="ST0">au</span> <span class="ST0">fonctionnement</span> <span class="ST0">de</span>
+ 66 <span class="comment">     * </span><span class="ST0">JpaUtil</span> <span class="ST0">dans</span> <span class="ST0">une</span> <span class="ST0">Application</span> <span class="ST0">Web</span> <span class="ST0">sous</span> <span class="ST0">Glassfish</span><span class="ST0">)</span><span class="ST0">.</span>
+ 67 <span class="comment">     * </span><span class="ST2">&lt;br/&gt;</span><span class="ST2">&lt;strong&gt;</span><span class="comment">À</span> <span class="comment">utiliser</span> <span class="comment">uniquement</span> <span class="comment">dans</span> <span class="comment">la</span> <span class="comment">méthode</span> <span class="comment">init</span><span class="comment">() </span><span class="comment">de</span> <span class="comment">la</span> <span class="comment">Servlet</span>
+ 68 <span class="comment">     * </span><span class="comment">Contrôleur</span><span class="comment"> (</span><span class="comment">ActionServlet</span><span class="comment">)</span><span class="comment">.</span><span class="ST2">&lt;/strong&gt;</span>
+ 69      <span class="comment">*/</span>
+ 70     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">synchronized</span> <span class="keyword-directive">void</span> <span class="ST5">init</span>() {
+ 71         <span class="ST4">log</span>(<span class="character">&quot;</span><span class="character">Initialisation de la factory de contexte de persistance</span><span class="character">&quot;</span>);
+ 72         <span class="keyword-directive">if</span> (<span class="ST3">entityManagerFactory</span> != <span class="keyword-directive">null</span>) {
+ 73             <span class="ST3">entityManagerFactory</span>.close();
+ 74         }
+ 75         <span class="ST3">entityManagerFactory</span> = Persistence.<span class="ST4">createEntityManagerFactory</span>(<span class="ST3">PERSISTENCE_UNIT_NAME</span>);
+ 76     }
+ 77 
+ 78     <span class="comment">/**</span>
+ 79 <span class="comment">     * </span><span class="ST0">Libère</span> <span class="ST0">la</span> <span class="ST0">Factory</span> <span class="ST0">de</span> <span class="ST0">Entity</span> <span class="ST0">Manager</span><span class="ST0"> (</span><span class="ST0">pour</span> <span class="ST0">permettre</span> <span class="ST0">un</span> <span class="ST0">futur</span> <span class="ST0">rechargement</span>
+ 80 <span class="comment">     * </span><span class="ST0">propre</span> <span class="ST0">d</span><span class="ST0">&#39;</span><span class="ST0">une</span> <span class="ST0">Application</span> <span class="ST0">Web</span> <span class="ST0">sous</span> <span class="ST0">Glassfish</span><span class="ST0">)</span><span class="ST0">.</span>
+ 81 <span class="comment">     * </span><span class="ST2">&lt;br/&gt;</span><span class="ST2">&lt;strong&gt;</span><span class="comment">À</span> <span class="comment">utiliser</span> <span class="comment">uniquement</span> <span class="comment">dans</span> <span class="comment">la</span> <span class="comment">méthode</span> <span class="comment">destroy</span><span class="comment">() </span><span class="comment">de</span> <span class="comment">la</span>
+ 82 <span class="comment">     * </span><span class="comment">Servlet</span> <span class="comment">Contrôleur</span><span class="comment"> (</span><span class="comment">ActionServlet</span><span class="comment">)</span><span class="comment">.</span><span class="ST2">&lt;/strong&gt;</span>
+ 83      <span class="comment">*/</span>
+ 84     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">synchronized</span> <span class="keyword-directive">void</span> <span class="ST5">destroy</span>() {
+ 85         <span class="ST4">log</span>(<span class="character">&quot;</span><span class="character">Libération de la factory de contexte de persistance</span><span class="character">&quot;</span>);
+ 86         <span class="keyword-directive">if</span> (<span class="ST3">entityManagerFactory</span> != <span class="keyword-directive">null</span>) {
+ 87             <span class="ST3">entityManagerFactory</span>.close();
+ 88             <span class="ST3">entityManagerFactory</span> = <span class="keyword-directive">null</span>;
+ 89         }
+ 90     }
+ 91 
+ 92     <span class="comment">/**</span>
+ 93 <span class="comment">     * </span><span class="ST0">Créée</span> <span class="ST0">l</span><span class="ST0">&#39;</span><span class="ST0">instance</span> <span class="ST0">courante</span> <span class="ST0">de</span> <span class="ST0">Entity</span> <span class="ST0">Manager</span><span class="ST0"> (</span><span class="ST0">liée</span> <span class="ST0">à</span> <span class="ST0">ce</span> <span class="ST0">Thread</span><span class="ST0">)</span><span class="ST0">.</span>
+ 94 <span class="comment">     * </span><span class="ST2">&lt;br/&gt;</span><span class="ST2">&lt;strong&gt;</span><span class="comment">À</span> <span class="comment">utiliser</span> <span class="comment">uniquement</span> <span class="comment">au</span> <span class="comment">niveau</span> <span class="comment">Service</span><span class="comment">.</span><span class="ST2">&lt;/strong&gt;</span>
+ 95      <span class="comment">*/</span>
+ 96     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST5">creerEntityManager</span>() {
+ 97         <span class="ST4">log</span>(<span class="character">&quot;</span><span class="character">Création du contexte de persistance</span><span class="character">&quot;</span>);
+ 98         <span class="ST3">threadLocalEntityManager</span>.set(<span class="ST3">entityManagerFactory</span>.createEntityManager());
+ 99     }
+100 
+101     <span class="comment">/**</span>
+102 <span class="comment">     * </span><span class="ST0">Ferme</span> <span class="ST0">l</span><span class="ST0">&#39;</span><span class="ST0">instance</span> <span class="ST0">courante</span> <span class="ST0">de</span> <span class="ST0">Entity</span> <span class="ST0">Manager</span><span class="ST0"> (</span><span class="ST0">liée</span> <span class="ST0">à</span> <span class="ST0">ce</span> <span class="ST0">Thread</span><span class="ST0">)</span><span class="ST0">.</span>
+103 <span class="comment">     * </span><span class="ST2">&lt;br/&gt;</span><span class="ST2">&lt;strong&gt;</span><span class="comment">À</span> <span class="comment">utiliser</span> <span class="comment">uniquement</span> <span class="comment">au</span> <span class="comment">niveau</span> <span class="comment">Service</span><span class="comment">.</span><span class="ST2">&lt;/strong&gt;</span>
+104      <span class="comment">*/</span>
+105     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST5">fermerEntityManager</span>() {
+106         <span class="ST4">log</span>(<span class="character">&quot;</span><span class="character">Fermeture du contexte de persistance</span><span class="character">&quot;</span>);
+107         EntityManager em = <span class="ST3">threadLocalEntityManager</span>.get();
+108         em.close();
+109         <span class="ST3">threadLocalEntityManager</span>.set(<span class="keyword-directive">null</span>);
+110     }
+111 
+112     <span class="comment">/**</span>
+113 <span class="comment">     * </span><span class="ST0">Démarre</span> <span class="ST0">une</span> <span class="ST0">transaction</span> <span class="ST0">sur</span> <span class="ST0">l</span><span class="ST0">&#39;</span><span class="ST0">instance</span> <span class="ST0">courante</span> <span class="ST0">de</span> <span class="ST0">Entity</span> <span class="ST0">Manager</span><span class="ST0">.</span>
+114 <span class="comment">     * </span><span class="ST2">&lt;br/&gt;</span><span class="ST2">&lt;strong&gt;</span><span class="comment">À</span> <span class="comment">utiliser</span> <span class="comment">uniquement</span> <span class="comment">au</span> <span class="comment">niveau</span> <span class="comment">Service</span><span class="comment">.</span><span class="ST2">&lt;/strong&gt;</span>
+115      <span class="comment">*/</span>
+116     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST5">ouvrirTransaction</span>() {
+117         <span class="ST4">log</span>(<span class="character">&quot;</span><span class="character">Début de la transaction</span><span class="character">&quot;</span>);
+118         EntityManager em = <span class="ST3">threadLocalEntityManager</span>.get();
+119         <span class="keyword-directive">if</span> (em.getTransaction().isActive()) {
+120             <span class="ST4">log</span>(<span class="character">&quot;</span><span class="character">ATTENTION: la transaction est déjà ouverte</span><span class="character">&quot;</span>);
+121         }
+122         em.getTransaction().begin();
+123     }
+124 
+125     <span class="comment">/**</span>
+126 <span class="comment">     * </span><span class="ST0">Valide</span> <span class="ST0">la</span> <span class="ST0">transaction</span> <span class="ST0">courante</span> <span class="ST0">sur</span> <span class="ST0">l</span><span class="ST0">&#39;</span><span class="ST0">instance</span> <span class="ST0">courante</span> <span class="ST0">de</span> <span class="ST0">Entity</span> <span class="ST0">Manager</span><span class="ST0">.</span>
+127 <span class="comment">     * </span><span class="ST2">&lt;br/&gt;</span><span class="ST2">&lt;strong&gt;</span><span class="comment">À</span> <span class="comment">utiliser</span> <span class="comment">uniquement</span> <span class="comment">au</span> <span class="comment">niveau</span> <span class="comment">Service</span><span class="comment">.</span><span class="ST2">&lt;/strong&gt;</span>
+128 <span class="comment">     *</span>
+129 <span class="comment">     * </span><span class="ST0">@exception</span> <span class="comment">RollbackException</span> <span class="comment">lorsque</span> <span class="comment">le</span> <span class="ST2">&lt;em&gt;</span><span class="comment">commit</span><span class="ST2">&lt;/em&gt;</span> <span class="comment">n</span><span class="comment">&#39;</span><span class="comment">a</span> <span class="comment">pas</span> <span class="comment">réussi</span><span class="comment">.</span>
+130      <span class="comment">*/</span>
+131     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST5">validerTransaction</span>() <span class="keyword-directive">throws</span> RollbackException {
+132         <span class="ST4">log</span>(<span class="character">&quot;</span><span class="character">Validation (commit) de la transaction</span><span class="character">&quot;</span>);
+133         EntityManager em = <span class="ST3">threadLocalEntityManager</span>.get();
+134         <span class="keyword-directive">if</span> (!em.getTransaction().isActive()) {
+135             <span class="ST4">log</span>(<span class="character">&quot;</span><span class="character">ATTENTION: la transaction N&#39;est PAS ouverte</span><span class="character">&quot;</span>);
+136         }
+137         em.getTransaction().commit();
+138     }
+139 
+140     <span class="comment">/**</span>
+141 <span class="comment">     * </span><span class="ST0">Annule</span> <span class="ST0">la</span> <span class="ST0">transaction</span> <span class="ST0">courante</span> <span class="ST0">sur</span> <span class="ST0">l</span><span class="ST0">&#39;</span><span class="ST0">instance</span> <span class="ST0">courante</span> <span class="ST0">de</span> <span class="ST0">Entity</span> <span class="ST0">Manager</span><span class="ST0">.</span>
+142 <span class="comment">     * </span><span class="comment">Si</span> <span class="comment">la</span> <span class="comment">transaction</span> <span class="comment">courante</span> <span class="comment">n</span><span class="comment">&#39;</span><span class="comment">est</span> <span class="comment">pas</span> <span class="comment">démarrée</span><span class="comment">, </span><span class="comment">cette</span> <span class="comment">méthode</span> <span class="comment">n</span><span class="comment">&#39;</span><span class="comment">effectue</span>
+143 <span class="comment">     * </span><span class="comment">aucune</span> <span class="comment">opération</span><span class="comment">.</span>
+144 <span class="comment">     * </span><span class="ST2">&lt;br/&gt;</span><span class="ST2">&lt;strong&gt;</span><span class="comment">À</span> <span class="comment">utiliser</span> <span class="comment">uniquement</span> <span class="comment">au</span> <span class="comment">niveau</span> <span class="comment">Service</span><span class="comment">.</span><span class="ST2">&lt;/strong&gt;</span>
+145      <span class="comment">*/</span>
+146     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST5">annulerTransaction</span>() {
+147         <span class="ST4">log</span>(<span class="character">&quot;</span><span class="character">Annulation (rollback) de la transaction</span><span class="character">&quot;</span>);
+148         EntityManager em = <span class="ST3">threadLocalEntityManager</span>.get();
+149         <span class="keyword-directive">if</span> (!em.getTransaction().isActive()) {
+150             <span class="ST4">log</span>(<span class="character">&quot;</span><span class="character">ATTENTION: la transaction N&#39;est PAS ouverte =&gt; annulation ignorée par JpaUtil</span><span class="character">&quot;</span>);
+151         } <span class="keyword-directive">else</span> {
+152             em.getTransaction().rollback();
+153         }
+154     }
+155 
+156     <span class="comment">/**</span>
+157 <span class="comment">     * </span><span class="ST0">Retourne</span> <span class="ST0">l</span><span class="ST0">&#39;</span><span class="ST0">instance</span> <span class="ST0">courante</span> <span class="ST0">de</span> <span class="ST0">Entity</span> <span class="ST0">Manager</span><span class="ST0">.</span>
+158 <span class="comment">     * </span><span class="ST2">&lt;br/&gt;</span><span class="ST2">&lt;strong&gt;</span><span class="comment">À</span> <span class="comment">utiliser</span> <span class="comment">uniquement</span> <span class="comment">au</span> <span class="comment">niveau</span> <span class="comment">DAO</span><span class="comment">.</span><span class="ST2">&lt;/strong&gt;</span>
+159 <span class="comment">     *</span>
+160 <span class="comment">     * </span><span class="ST0">@return</span> <span class="comment">instance</span> <span class="comment">de</span> <span class="comment">Entity</span> <span class="comment">Manager</span>
+161      <span class="comment">*/</span>
+162     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> EntityManager <span class="ST5">obtenirEntityManager</span>() {
+163         <span class="ST4">log</span>(<span class="character">&quot;</span><span class="character">Obtention du contexte de persistance</span><span class="character">&quot;</span>);
+164         <span class="keyword-directive">return</span> <span class="ST3">threadLocalEntityManager</span>.get();
+165     }
+166 
+167 }
+168 
+</pre></body>
+</html>

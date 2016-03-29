@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>ClotureLivraison.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST1 {font-family: Monospaced; font-weight: bold; font-style: italic}
+.ST3 {font-family: Monospaced; font-style: italic}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.comment {color: #969696}
+.character {color: #ce7b00}
+.ST2 {color: #009900; font-family: Monospaced; font-style: italic}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\vue\ClotureLivraison.java</td></tr></table>
+<pre>
+ 1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.vue;
+ 2 
+ 3 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.modele.Livraison;
+ 4 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.modele.Livreur;
+ 5 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.service.ServiceMetier;
+ 6 <span class="keyword-directive">import</span> fr.insalyon.gustatif.util.Saisie;
+ 7 <span class="keyword-directive">import</span> java.util.Date;
+ 8 
+ 9 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">ClotureLivraison</span> {
+10 
+11     <span class="comment">/* Attention : le fichier data.sql dans ressources doit être chargé avant exécution ! */</span>
+12     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST1">main</span>(String[] args) {
+13         <span class="keyword-directive">try</span> {
+14             ServiceMetier service = <span class="keyword-directive">new</span> ServiceMetier();
+15             service.initialiserDonnees();
+16 
+17             <span class="keyword-directive">boolean</span> continuer = <span class="keyword-directive">true</span>;
+18             <span class="keyword-directive">do</span> {
+19                 System.<span class="ST2">out</span>.println(<span class="character">&quot;</span><span class="character"> --- Cloture de commande --- </span><span class="character">&quot;</span>);
+20                 System.<span class="ST2">out</span>.println(<span class="character">&quot;</span><span class="character">1. Numéro / id du livreur</span><span class="character">&quot;</span>);
+21                 System.<span class="ST2">out</span>.println(<span class="character">&quot;</span><span class="character">2. Numéro / id de la livraison</span><span class="character">&quot;</span>);
+22 
+23                 <span class="keyword-directive">switch</span> (Saisie.<span class="ST3">lireInteger</span>(<span class="character">&quot;</span><span class="character">Votre choix ? : </span><span class="character">&quot;</span>)) {
+24                     <span class="keyword-directive">case</span> 1:
+25                         System.<span class="ST2">out</span>.println(<span class="character">&quot;</span><span class="character"> - Livreur - </span><span class="character">&quot;</span>);
+26                         <span class="keyword-directive">int</span> idLivreur = Saisie.<span class="ST3">lireInteger</span>(<span class="character">&quot;</span><span class="character">Numéro / id du livreur : </span><span class="character">&quot;</span>);
+27 
+28                         Livreur livreur = service.trouverLivreur(<span class="keyword-directive">new</span> Long(idLivreur));
+29                         <span class="keyword-directive">if</span> (livreur != <span class="keyword-directive">null</span>) {
+30                             <span class="keyword-directive">if</span> (!livreur.getLivraisons().isEmpty()) {
+31                                 continuer = <span class="keyword-directive">false</span>;
+32 
+33                                 <span class="keyword-directive">for</span> (Livraison livraison : livreur.getLivraisons()) {
+34                                     <span class="keyword-directive">if</span> (livraison.getDateLivraison() == <span class="keyword-directive">null</span>) {
+35                                         service.cloturerLivraison(livraison, <span class="keyword-directive">new</span> Date());
+36                                         <span class="keyword-directive">return</span>;
+37                                     }
+38                                 }
+39                             } <span class="keyword-directive">else</span> {
+40                                 System.<span class="ST2">out</span>.println(<span class="character">&quot;</span><span class="character">Erreur : Pas de livraison pour ce livreur [getLivraison() = null]</span><span class="character">&quot;</span>);
+41                             }
+42                         } <span class="keyword-directive">else</span> {
+43                             System.<span class="ST2">out</span>.println(<span class="character">&quot;</span><span class="character">Erreur : Livreur non trouvé [livreur = null]</span><span class="character">&quot;</span>);
+44                         }
+45                         <span class="keyword-directive">break</span>;
+46 
+47                     <span class="keyword-directive">case</span> 2:
+48                         System.<span class="ST2">out</span>.println(<span class="character">&quot;</span><span class="character"> - Livraison - </span><span class="character">&quot;</span>);
+49                         <span class="keyword-directive">int</span> idLivraison = Saisie.<span class="ST3">lireInteger</span>(<span class="character">&quot;</span><span class="character">Numéro / id de la livraison : </span><span class="character">&quot;</span>);
+50 
+51                         Livraison livraison = service.trouverLivraison(<span class="keyword-directive">new</span> Long(idLivraison));
+52                         <span class="keyword-directive">if</span> (livraison != <span class="keyword-directive">null</span>) {
+53                             continuer = <span class="keyword-directive">false</span>;
+54 
+55                             service.cloturerLivraison(livraison, <span class="keyword-directive">new</span> Date());
+56                             <span class="keyword-directive">return</span>;
+57                         } <span class="keyword-directive">else</span> {
+58                             System.<span class="ST2">out</span>.println(<span class="character">&quot;</span><span class="character">Erreur : Livraison non trouvé [livraison = null]</span><span class="character">&quot;</span>);
+59                         }
+60                         <span class="keyword-directive">break</span>;
+61 
+62                     <span class="keyword-directive">default</span>:
+63                         System.<span class="ST2">out</span>.println(<span class="character">&quot;</span><span class="character">Choix incorrect. Merci de recommencer</span><span class="character">&quot;</span>);
+64                         <span class="keyword-directive">break</span>;
+65                 }
+66             } <span class="keyword-directive">while</span> (continuer);
+67         } <span class="keyword-directive">catch</span> (Throwable ex) {
+68             ex.printStackTrace();
+69         }
+70     }
+71 }
+72 
+</pre></body>
+</html>

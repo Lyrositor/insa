@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Produit.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.ST1 {color: #009900}
+.character {color: #ce7b00}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\metier\modele\Produit.java</td></tr></table>
+<pre>
+ 1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.metier.modele;
+ 2 
+ 3 <span class="keyword-directive">import</span> java.io.Serializable;
+ 4 <span class="keyword-directive">import</span> javax.persistence.Entity;
+ 5 <span class="keyword-directive">import</span> javax.persistence.GeneratedValue;
+ 6 <span class="keyword-directive">import</span> javax.persistence.Id;
+ 7 
+ 8 @Entity
+ 9 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">Produit</span> <span class="keyword-directive">implements</span> Serializable {
+10 
+11     @Id @GeneratedValue
+12     <span class="keyword-directive">private</span> Long <span class="ST1">id</span>;
+13     <span class="keyword-directive">private</span> String <span class="ST1">denomination</span>;
+14     <span class="keyword-directive">private</span> String <span class="ST1">description</span>;
+15     <span class="keyword-directive">private</span> Float <span class="ST1">prix</span>;
+16     <span class="keyword-directive">private</span> Float <span class="ST1">poids</span>;
+17 
+18     <span class="keyword-directive">public</span> <span class="ST0">Produit</span>() {
+19     }
+20 
+21     <span class="keyword-directive">public</span> <span class="ST0">Produit</span>(String denomination, String description, Float prix, Float poids) {
+22         <span class="keyword-directive">this</span>.<span class="ST1">denomination</span> = denomination;
+23         <span class="keyword-directive">this</span>.<span class="ST1">description</span> = description;
+24         <span class="keyword-directive">this</span>.<span class="ST1">prix</span> = prix;
+25         <span class="keyword-directive">this</span>.<span class="ST1">poids</span> = poids;
+26     }
+27 
+28     <span class="keyword-directive">public</span> Long <span class="ST0">getId</span>() {
+29         <span class="keyword-directive">return</span> <span class="ST1">id</span>;
+30     }
+31 
+32     <span class="keyword-directive">public</span> String <span class="ST0">getDenomination</span>() {
+33         <span class="keyword-directive">return</span> <span class="ST1">denomination</span>;
+34     }
+35 
+36     <span class="keyword-directive">public</span> String <span class="ST0">getDescription</span>() {
+37         <span class="keyword-directive">return</span> <span class="ST1">description</span>;
+38     }
+39 
+40     <span class="keyword-directive">public</span> Float <span class="ST0">getPoids</span>() {
+41         <span class="keyword-directive">return</span> <span class="ST1">poids</span>;
+42     }
+43 
+44     <span class="keyword-directive">public</span> Float <span class="ST0">getPrix</span>() {
+45         <span class="keyword-directive">return</span> <span class="ST1">prix</span>;
+46     }
+47 
+48     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setPrix</span>(Float prix) {
+49         <span class="keyword-directive">this</span>.<span class="ST1">prix</span> = prix;
+50     }
+51 
+52     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setDenomination</span>(String denomination) {
+53         <span class="keyword-directive">this</span>.<span class="ST1">denomination</span> = denomination;
+54     }
+55 
+56     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setDescription</span>(String description) {
+57         <span class="keyword-directive">this</span>.<span class="ST1">description</span> = description;
+58     }
+59 
+60     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setPoids</span>(Float poids) {
+61         <span class="keyword-directive">this</span>.<span class="ST1">poids</span> = poids;
+62     }
+63 
+64     @Override
+65     <span class="keyword-directive">public</span> String <span class="ST0">toString</span>() {
+66         <span class="keyword-directive">return</span> <span class="character">&quot;</span><span class="character">Produit{</span><span class="character">&quot;</span> +
+67                 <span class="character">&quot;</span><span class="character">id=</span><span class="character">&quot;</span> + <span class="ST1">id</span> +
+68                 <span class="character">&quot;</span><span class="character">, denomination=</span><span class="character">&quot;</span> + <span class="ST1">denomination</span> +
+69                 <span class="character">&quot;</span><span class="character">, description=</span><span class="character">&quot;</span> + <span class="ST1">description</span> +
+70                 <span class="character">&quot;</span><span class="character">, prix=</span><span class="character">&quot;</span> + <span class="ST1">prix</span> +
+71                 <span class="character">&quot;</span><span class="character">, poids=</span><span class="character">&quot;</span> + <span class="ST1">poids</span> +
+72                 <span class="character">&#39;</span><span class="character">}</span><span class="character">&#39;</span>;
+73     }
+74 
+75 }
+76 
+</pre></body>
+</html>

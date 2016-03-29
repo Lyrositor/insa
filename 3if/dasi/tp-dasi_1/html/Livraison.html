@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Livraison.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.ST1 {color: #009900}
+.character {color: #ce7b00}
+.ST2 {color: #009900; font-family: Monospaced; font-style: italic}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\metier\modele\Livraison.java</td></tr></table>
+<pre>
+  1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.metier.modele;
+  2 
+  3 <span class="keyword-directive">import</span> java.io.Serializable;
+  4 <span class="keyword-directive">import</span> java.util.Date;
+  5 <span class="keyword-directive">import</span> java.util.HashMap;
+  6 <span class="keyword-directive">import</span> java.util.Map;
+  7 <span class="keyword-directive">import</span> javax.persistence.ElementCollection;
+  8 <span class="keyword-directive">import</span> javax.persistence.Entity;
+  9 <span class="keyword-directive">import</span> javax.persistence.GeneratedValue;
+ 10 <span class="keyword-directive">import</span> javax.persistence.Id;
+ 11 <span class="keyword-directive">import</span> javax.persistence.ManyToOne;
+ 12 <span class="keyword-directive">import</span> javax.persistence.Temporal;
+ 13 <span class="keyword-directive">import</span> <span class="keyword-directive">static</span> javax.persistence.TemporalType.DATE;
+ 14 
+ 15 @Entity
+ 16 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">Livraison</span> <span class="keyword-directive">implements</span> Serializable {
+ 17 
+ 18     @Id @GeneratedValue
+ 19     <span class="keyword-directive">private</span> Long <span class="ST1">id</span>;
+ 20     @ManyToOne
+ 21     <span class="keyword-directive">private</span> Client <span class="ST1">client</span>;
+ 22     @ManyToOne
+ 23     <span class="keyword-directive">private</span> Livreur <span class="ST1">livreur</span>;
+ 24     @Temporal(<span class="ST2">DATE</span>)
+ 25     <span class="keyword-directive">private</span> Date <span class="ST1">dateCommande</span>;
+ 26     @Temporal(<span class="ST2">DATE</span>)
+ 27     <span class="keyword-directive">private</span> Date <span class="ST1">dateLivraison</span> = <span class="keyword-directive">null</span>;
+ 28     @ElementCollection
+ 29     <span class="keyword-directive">private</span> Map&lt;Produit, Long&gt; <span class="ST1">produits</span>;
+ 30 
+ 31     <span class="keyword-directive">public</span> <span class="ST0">Livraison</span>() {
+ 32     }
+ 33 
+ 34     <span class="keyword-directive">public</span> <span class="ST0">Livraison</span>(Client client, Livreur livreur, Date dateCommande, Date dateLivraison, Map&lt;Produit, Long&gt; produits) {
+ 35         <span class="keyword-directive">this</span>.<span class="ST1">client</span> = client;
+ 36         <span class="keyword-directive">this</span>.<span class="ST1">livreur</span> = livreur;
+ 37         <span class="keyword-directive">this</span>.<span class="ST1">dateCommande</span> = dateCommande;
+ 38         <span class="keyword-directive">this</span>.<span class="ST1">dateLivraison</span> = dateLivraison;
+ 39         <span class="keyword-directive">this</span>.<span class="ST1">produits</span> = produits;
+ 40         <span class="keyword-directive">if</span> (!<span class="keyword-directive">this</span>.<span class="ST1">livreur</span>.getLivraisons().contains(<span class="keyword-directive">this</span>))
+ 41             <span class="keyword-directive">this</span>.<span class="ST1">livreur</span>.ajouterLivraison(<span class="keyword-directive">this</span>);
+ 42     }
+ 43 
+ 44     <span class="keyword-directive">public</span> Long <span class="ST0">getId</span>() {
+ 45         <span class="keyword-directive">return</span> <span class="ST1">id</span>;
+ 46     }
+ 47 
+ 48     <span class="keyword-directive">public</span> Client <span class="ST0">getClient</span>() {
+ 49         <span class="keyword-directive">return</span> <span class="ST1">client</span>;
+ 50     }
+ 51 
+ 52     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setClient</span>(Client client) {
+ 53         <span class="keyword-directive">this</span>.<span class="ST1">client</span> = client;
+ 54     }
+ 55 
+ 56     <span class="keyword-directive">public</span> Livreur <span class="ST0">getLivreur</span>() {
+ 57         <span class="keyword-directive">return</span> <span class="ST1">livreur</span>;
+ 58     }
+ 59 
+ 60     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setLivreur</span>(Livreur livreur) {
+ 61         <span class="keyword-directive">this</span>.<span class="ST1">livreur</span> = livreur;
+ 62         <span class="keyword-directive">if</span> (!livreur.getLivraisons().contains(<span class="keyword-directive">this</span>))
+ 63             livreur.ajouterLivraison(<span class="keyword-directive">this</span>);
+ 64     }
+ 65 
+ 66     <span class="keyword-directive">public</span> Date <span class="ST0">getDateCommande</span>() {
+ 67         <span class="keyword-directive">return</span> <span class="ST1">dateCommande</span>;
+ 68     }
+ 69 
+ 70     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setDateCommande</span>(Date dateCommande) {
+ 71         <span class="keyword-directive">this</span>.<span class="ST1">dateCommande</span> = dateCommande;
+ 72     }
+ 73 
+ 74     <span class="keyword-directive">public</span> Date <span class="ST0">getDateLivraison</span>() {
+ 75         <span class="keyword-directive">return</span> <span class="ST1">dateLivraison</span>;
+ 76     }
+ 77 
+ 78     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setDateLivraison</span>(Date dateLivraison) {
+ 79         <span class="keyword-directive">this</span>.<span class="ST1">dateLivraison</span> = dateLivraison;
+ 80     }
+ 81 
+ 82     <span class="keyword-directive">public</span> Map&lt;Produit, Long&gt; <span class="ST0">getProduits</span>() {
+ 83         <span class="keyword-directive">return</span> <span class="ST1">produits</span>;
+ 84     }
+ 85 
+ 86     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setProduits</span>(HashMap&lt;Produit, Long&gt; produits) {
+ 87         <span class="keyword-directive">this</span>.<span class="ST1">produits</span> = produits;
+ 88     }
+ 89 
+ 90     @Override
+ 91     <span class="keyword-directive">public</span> String <span class="ST0">toString</span>() {
+ 92         <span class="keyword-directive">return</span> <span class="character">&quot;</span><span class="character">Livraison{</span><span class="character">&quot;</span>
+ 93                 + <span class="character">&quot;</span><span class="character">id=</span><span class="character">&quot;</span> + <span class="ST1">id</span>
+ 94                 + <span class="character">&quot;</span><span class="character">, client=</span><span class="character">&quot;</span> + <span class="ST1">client</span>
+ 95                 + <span class="character">&quot;</span><span class="character">, livreur=</span><span class="character">&quot;</span> + <span class="ST1">livreur</span>
+ 96                 + <span class="character">&quot;</span><span class="character">, dateCommande=</span><span class="character">&quot;</span> + <span class="ST1">dateCommande</span>
+ 97                 + <span class="character">&quot;</span><span class="character">, dateLivraison=</span><span class="character">&quot;</span> + <span class="ST1">dateLivraison</span>
+ 98                 + <span class="character">&quot;</span><span class="character">, produits=</span><span class="character">&quot;</span> + <span class="ST1">produits</span>
+ 99                 + <span class="character">&#39;</span><span class="character">}</span><span class="character">&#39;</span>;
+100     }
+101 
+102 }
+103 
+</pre></body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>CreationLivraison.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST2 {font-family: Monospaced; font-weight: bold; font-style: italic}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.comment {color: #969696}
+.character {color: #ce7b00}
+.ST1 {color: #009900; font-family: Monospaced; font-style: italic}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\vue\CreationLivraison.java</td></tr></table>
+<pre>
+ 1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.vue;
+ 2 
+ 3 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.modele.Client;
+ 4 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.modele.Livraison;
+ 5 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.modele.Produit;
+ 6 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.modele.Restaurant;
+ 7 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.service.ServiceMetier;
+ 8 <span class="keyword-directive">import</span> java.util.HashMap;
+ 9 
+10 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">CreationLivraison</span> {
+11 
+12     <span class="keyword-directive">private</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> String <span class="ST1">EMAIL</span> = <span class="character">&quot;</span><span class="character">vincent.duraf@gmail.com</span><span class="character">&quot;</span>;
+13     <span class="keyword-directive">private</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> String <span class="ST1">MOT_DE_PASSE</span> = <span class="character">&quot;</span><span class="character">password</span><span class="character">&quot;</span>;
+14     <span class="keyword-directive">private</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST1">RESTAURANT</span> = 5;
+15     <span class="keyword-directive">private</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span>[] <span class="ST1">PRODUITS</span> = {1, 2, 3};
+16 
+17     <span class="comment">/* Attention : le fichier data.sql dans ressources doit être chargé avant exécution ! */</span>
+18     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST2">main</span>(String[] args) {
+19         <span class="keyword-directive">try</span> {
+20             ServiceMetier service = <span class="keyword-directive">new</span> ServiceMetier();
+21             service.initialiserDonnees();
+22 
+23             Livraison livraison = <span class="keyword-directive">null</span>;
+24 
+25             Client client = service.authentifierClient(<span class="ST1">EMAIL</span>, <span class="ST1">MOT_DE_PASSE</span>);
+26             Restaurant restaurant = service.listerRestaurants().get(<span class="ST1">RESTAURANT</span>);
+27             HashMap&lt;Produit, Long&gt; produits = <span class="keyword-directive">new</span> HashMap&lt;Produit, Long&gt;();
+28             produits.put(service.listerProduitsRestaurant(restaurant).get(<span class="ST1">PRODUITS</span>[0]), <span class="keyword-directive">new</span> Long(1));
+29             produits.put(service.listerProduitsRestaurant(restaurant).get(<span class="ST1">PRODUITS</span>[1]), <span class="keyword-directive">new</span> Long(1));
+30             produits.put(service.listerProduitsRestaurant(restaurant).get(<span class="ST1">PRODUITS</span>[2]), <span class="keyword-directive">new</span> Long(2));
+31 
+32             livraison = service.commander(client, restaurant, produits);
+33 
+34             System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Commande terminée avec succès :</span><span class="character">&quot;</span>);
+35             System.<span class="ST1">out</span>.println(livraison);
+36 
+37         } <span class="keyword-directive">catch</span> (Throwable t) {
+38             System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">ERREUR : Commande impossible.</span><span class="character">&quot;</span>);
+39             t.printStackTrace();
+40         }
+41     }
+42 
+43 }
+44 
+</pre></body>
+</html>

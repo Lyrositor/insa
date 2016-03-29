@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Cycliste.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.ST1 {color: #009900}
+.character {color: #ce7b00}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\metier\modele\Cycliste.java</td></tr></table>
+<pre>
+ 1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.metier.modele;
+ 2 
+ 3 <span class="keyword-directive">import</span> javax.persistence.Entity;
+ 4 
+ 5 @Entity
+ 6 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">Cycliste</span> <span class="keyword-directive">extends</span> Livreur {
+ 7 
+ 8     <span class="keyword-directive">private</span> String <span class="ST1">nom</span>;
+ 9     <span class="keyword-directive">private</span> String <span class="ST1">prenom</span>;
+10     <span class="keyword-directive">private</span> String <span class="ST1">mail</span>;
+11     <span class="keyword-directive">private</span> String <span class="ST1">motDePasse</span>;
+12 
+13     <span class="keyword-directive">public</span> <span class="ST0">Cycliste</span>() {
+14     }
+15 
+16     <span class="keyword-directive">public</span> <span class="ST0">Cycliste</span>(
+17             String nom, String prenom, String mail, String motDePasse,
+18             <span class="keyword-directive">float</span> capacite, <span class="keyword-directive">boolean</span> disponible, String adresse
+19     ) {
+20         <span class="keyword-directive">this</span>.<span class="ST1">nom</span> = nom;
+21         <span class="keyword-directive">this</span>.<span class="ST1">prenom</span> = prenom;
+22         <span class="keyword-directive">this</span>.<span class="ST1">mail</span> = mail;
+23         <span class="keyword-directive">this</span>.<span class="ST1">motDePasse</span> = motDePasse;
+24         <span class="keyword-directive">this</span>.<span class="ST1">adresse</span> = adresse;
+25         <span class="keyword-directive">this</span>.<span class="ST1">disponible</span> = disponible;
+26         <span class="keyword-directive">this</span>.<span class="ST1">capacite</span> = capacite;
+27     }
+28 
+29     <span class="keyword-directive">public</span> String <span class="ST0">getNom</span>() {
+30         <span class="keyword-directive">return</span> <span class="ST1">nom</span>;
+31     }
+32 
+33     <span class="keyword-directive">public</span> String <span class="ST0">getPrenom</span>() {
+34         <span class="keyword-directive">return</span> <span class="ST1">prenom</span>;
+35     }
+36 
+37     <span class="keyword-directive">public</span> String <span class="ST0">getMail</span>() {
+38         <span class="keyword-directive">return</span> <span class="ST1">mail</span>;
+39     }
+40 
+41     <span class="keyword-directive">public</span> String <span class="ST0">getMotDePasse</span>() {
+42         <span class="keyword-directive">return</span> <span class="ST1">motDePasse</span>;
+43     }
+44 
+45     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setNom</span>(String nom) {
+46         <span class="keyword-directive">this</span>.<span class="ST1">nom</span> = nom;
+47     }
+48 
+49     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setPrenom</span>(String prenom) {
+50         <span class="keyword-directive">this</span>.<span class="ST1">prenom</span> = prenom;
+51     }
+52 
+53     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setMail</span>(String mail) {
+54         <span class="keyword-directive">this</span>.<span class="ST1">mail</span> = mail;
+55     }
+56 
+57     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setMotDePasse</span>(String motDePasse) {
+58         <span class="keyword-directive">this</span>.<span class="ST1">motDePasse</span> = motDePasse;
+59     }
+60 
+61     @Override
+62     <span class="keyword-directive">public</span> String <span class="ST0">toString</span>() {
+63         <span class="keyword-directive">return</span> <span class="character">&quot;</span><span class="character">Cycliste{</span><span class="character">&quot;</span> +
+64                 <span class="character">&quot;</span><span class="character">id=</span><span class="character">&quot;</span> + <span class="ST1">id</span> +
+65                 <span class="character">&quot;</span><span class="character">, nom=</span><span class="character">&quot;</span> + <span class="ST1">nom</span> +
+66                 <span class="character">&quot;</span><span class="character">, prenom=</span><span class="character">&quot;</span> + <span class="ST1">prenom</span> +
+67                 <span class="character">&quot;</span><span class="character">, mail=</span><span class="character">&quot;</span> + <span class="ST1">mail</span> +
+68                 <span class="character">&quot;</span><span class="character">, motDePasse=</span><span class="character">&quot;</span> + <span class="ST1">motDePasse</span> +
+69                 <span class="character">&quot;</span><span class="character">, capacite=</span><span class="character">&quot;</span> + <span class="ST1">capacite</span> +
+70                 <span class="character">&quot;</span><span class="character">, disponible=</span><span class="character">&quot;</span> + <span class="ST1">disponible</span> +
+71                 <span class="character">&quot;</span><span class="character">, adresse=</span><span class="character">&quot;</span> + <span class="ST1">adresse</span> +
+72                 <span class="character">&quot;</span><span class="character">, longitude=</span><span class="character">&quot;</span> + <span class="ST1">longitude</span> +
+73                 <span class="character">&quot;</span><span class="character">, latitude=</span><span class="character">&quot;</span> + <span class="ST1">latitude</span> +
+74                 <span class="character">&#39;</span><span class="character">}</span><span class="character">&#39;</span>;
+75     }
+76 
+77 }
+78 
+</pre></body>
+</html>

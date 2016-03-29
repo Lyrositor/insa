@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Gestionnaire.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.ST1 {color: #009900}
+.character {color: #ce7b00}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\metier\modele\Gestionnaire.java</td></tr></table>
+<pre>
+ 1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.metier.modele;
+ 2 
+ 3 <span class="keyword-directive">import</span> java.io.Serializable;
+ 4 <span class="keyword-directive">import</span> javax.persistence.Entity;
+ 5 <span class="keyword-directive">import</span> javax.persistence.GeneratedValue;
+ 6 <span class="keyword-directive">import</span> javax.persistence.Id;
+ 7 
+ 8 @Entity
+ 9 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">Gestionnaire</span> <span class="keyword-directive">implements</span> Serializable {
+10 
+11     @Id @GeneratedValue
+12     <span class="keyword-directive">private</span> Long <span class="ST1">id</span>;
+13     <span class="keyword-directive">private</span> String <span class="ST1">mail</span>;
+14     <span class="keyword-directive">private</span> String <span class="ST1">motDePasse</span>;
+15 
+16     <span class="keyword-directive">public</span> <span class="ST0">Gestionnaire</span>() {
+17     }
+18 
+19     <span class="keyword-directive">public</span> <span class="ST0">Gestionnaire</span>(String mail, String motDePasse) {
+20         <span class="keyword-directive">this</span>.<span class="ST1">mail</span> = mail;
+21         <span class="keyword-directive">this</span>.<span class="ST1">motDePasse</span> = motDePasse;
+22     }
+23 
+24     <span class="keyword-directive">public</span> String <span class="ST0">getMail</span>() {
+25         <span class="keyword-directive">return</span> <span class="ST1">mail</span>;
+26     }
+27 
+28     <span class="keyword-directive">public</span> String <span class="ST0">getMotDePasse</span>() {
+29         <span class="keyword-directive">return</span> <span class="ST1">motDePasse</span>;
+30     }
+31 
+32     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setMail</span>(String mail) {
+33         <span class="keyword-directive">this</span>.<span class="ST1">mail</span> = mail;
+34     }
+35 
+36     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setMotDePasse</span>(String motDePasse) {
+37         <span class="keyword-directive">this</span>.<span class="ST1">motDePasse</span> = motDePasse;
+38     }
+39 
+40     @Override
+41     <span class="keyword-directive">public</span> String <span class="ST0">toString</span>() {
+42         <span class="keyword-directive">return</span> <span class="character">&quot;</span><span class="character">Gestionnaire{</span><span class="character">&quot;</span> +
+43                 <span class="character">&quot;</span><span class="character">id=</span><span class="character">&quot;</span> + <span class="ST1">id</span> +
+44                 <span class="character">&quot;</span><span class="character">, mail=</span><span class="character">&quot;</span> + <span class="ST1">mail</span> +
+45                 <span class="character">&#39;</span><span class="character">}</span><span class="character">&#39;</span>;
+46     }
+47 
+48 }
+49 
+</pre></body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Client.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.ST1 {color: #009900}
+.character {color: #ce7b00}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\metier\modele\Client.java</td></tr></table>
+<pre>
+  1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.metier.modele;
+  2 
+  3 <span class="keyword-directive">import</span> com.google.maps.model.LatLng;
+  4 <span class="keyword-directive">import</span> java.io.Serializable;
+  5 <span class="keyword-directive">import</span> javax.persistence.Entity;
+  6 <span class="keyword-directive">import</span> javax.persistence.GeneratedValue;
+  7 <span class="keyword-directive">import</span> javax.persistence.Id;
+  8 
+  9 @Entity
+ 10 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">Client</span> <span class="keyword-directive">implements</span> Serializable {
+ 11 
+ 12     @Id @GeneratedValue
+ 13     <span class="keyword-directive">private</span> Long <span class="ST1">id</span>;
+ 14     <span class="keyword-directive">private</span> String <span class="ST1">nom</span>;
+ 15     <span class="keyword-directive">private</span> String <span class="ST1">prenom</span>;
+ 16     <span class="keyword-directive">private</span> String <span class="ST1">mail</span>;
+ 17     <span class="keyword-directive">private</span> String <span class="ST1">motDePasse</span>;
+ 18     <span class="keyword-directive">private</span> String <span class="ST1">adresse</span>;
+ 19     <span class="keyword-directive">private</span> Double <span class="ST1">longitude</span>;
+ 20     <span class="keyword-directive">private</span> Double <span class="ST1">latitude</span>;
+ 21 
+ 22     <span class="keyword-directive">public</span> <span class="ST0">Client</span>() {
+ 23     }
+ 24 
+ 25     <span class="keyword-directive">public</span> <span class="ST0">Client</span>(String nom, String prenom, String mail, String motDePasse, String adresse) {
+ 26         <span class="keyword-directive">this</span>.<span class="ST1">nom</span> = nom;
+ 27         <span class="keyword-directive">this</span>.<span class="ST1">prenom</span> = prenom;
+ 28         <span class="keyword-directive">this</span>.<span class="ST1">mail</span> = mail;
+ 29         <span class="keyword-directive">this</span>.<span class="ST1">motDePasse</span> = motDePasse;
+ 30         <span class="keyword-directive">this</span>.<span class="ST1">adresse</span> = adresse;
+ 31     }
+ 32 
+ 33     <span class="keyword-directive">public</span> Long <span class="ST0">getId</span>() {
+ 34         <span class="keyword-directive">return</span> <span class="ST1">id</span>;
+ 35     }
+ 36 
+ 37     <span class="keyword-directive">public</span> String <span class="ST0">getNom</span>() {
+ 38         <span class="keyword-directive">return</span> <span class="ST1">nom</span>;
+ 39     }
+ 40 
+ 41     <span class="keyword-directive">public</span> String <span class="ST0">getPrenom</span>() {
+ 42         <span class="keyword-directive">return</span> <span class="ST1">prenom</span>;
+ 43     }
+ 44 
+ 45     <span class="keyword-directive">public</span> String <span class="ST0">getMail</span>() {
+ 46         <span class="keyword-directive">return</span> <span class="ST1">mail</span>;
+ 47     }
+ 48 
+ 49     <span class="keyword-directive">public</span> String <span class="ST0">getMotDePasse</span>() {
+ 50         <span class="keyword-directive">return</span> <span class="ST1">motDePasse</span>;
+ 51     }
+ 52 
+ 53     <span class="keyword-directive">public</span> String <span class="ST0">getAdresse</span>() {
+ 54         <span class="keyword-directive">return</span> <span class="ST1">adresse</span>;
+ 55     }
+ 56 
+ 57     <span class="keyword-directive">public</span> Double <span class="ST0">getLongitude</span>() {
+ 58         <span class="keyword-directive">return</span> <span class="ST1">longitude</span>;
+ 59     }
+ 60 
+ 61     <span class="keyword-directive">public</span> Double <span class="ST0">getLatitude</span>() {
+ 62         <span class="keyword-directive">return</span> <span class="ST1">latitude</span>;
+ 63     }
+ 64 
+ 65     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setNom</span>(String nom) {
+ 66         <span class="keyword-directive">this</span>.<span class="ST1">nom</span> = nom;
+ 67     }
+ 68 
+ 69     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setPrenom</span>(String prenom) {
+ 70         <span class="keyword-directive">this</span>.<span class="ST1">prenom</span> = prenom;
+ 71     }
+ 72 
+ 73     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setMail</span>(String mail) {
+ 74         <span class="keyword-directive">this</span>.<span class="ST1">mail</span> = mail;
+ 75     }
+ 76 
+ 77     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setMotDePasse</span>(String motDePasse) {
+ 78         <span class="keyword-directive">this</span>.<span class="ST1">motDePasse</span> = motDePasse;
+ 79     }
+ 80 
+ 81     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setAdresse</span>(String adresse) {
+ 82         <span class="keyword-directive">this</span>.<span class="ST1">adresse</span> = adresse;
+ 83     }
+ 84 
+ 85     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setCoordonnees</span>(LatLng latLng) {
+ 86         <span class="keyword-directive">this</span>.<span class="ST1">longitude</span> = latLng.<span class="ST1">lng</span>;
+ 87         <span class="keyword-directive">this</span>.<span class="ST1">latitude</span> = latLng.<span class="ST1">lat</span>;
+ 88     }
+ 89 
+ 90     @Override
+ 91     <span class="keyword-directive">public</span> String <span class="ST0">toString</span>() {
+ 92         <span class="keyword-directive">return</span> <span class="character">&quot;</span><span class="character">Client{</span><span class="character">&quot;</span> +
+ 93                 <span class="character">&quot;</span><span class="character">id=</span><span class="character">&quot;</span> + <span class="ST1">id</span> +
+ 94                 <span class="character">&quot;</span><span class="character">, nom=</span><span class="character">&quot;</span> + <span class="ST1">nom</span> +
+ 95                 <span class="character">&quot;</span><span class="character">, prenom=</span><span class="character">&quot;</span> + <span class="ST1">prenom</span> +
+ 96                 <span class="character">&quot;</span><span class="character">, mail=</span><span class="character">&quot;</span> + <span class="ST1">mail</span> +
+ 97                 <span class="character">&quot;</span><span class="character">, motDePasse=</span><span class="character">&quot;</span> + <span class="ST1">motDePasse</span> +
+ 98                 <span class="character">&quot;</span><span class="character">, adresse=</span><span class="character">&quot;</span> + <span class="ST1">adresse</span> +
+ 99                 <span class="character">&quot;</span><span class="character">, longitude=</span><span class="character">&quot;</span> + <span class="ST1">longitude</span> +
+100                 <span class="character">&quot;</span><span class="character">, latitude=</span><span class="character">&quot;</span> + <span class="ST1">latitude</span> +
+101                 <span class="character">&#39;</span><span class="character">}</span><span class="character">&#39;</span>;
+102     }
+103 
+104 }
+105 
+</pre></body>
+</html>

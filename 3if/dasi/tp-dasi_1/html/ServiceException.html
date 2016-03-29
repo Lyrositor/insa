@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>ServiceException.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.ST1 {color: #009900}
+.ST2 {color: #009900; font-family: Monospaced; font-style: italic}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\metier\service\ServiceException.java</td></tr></table>
+<pre>
+ 1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.metier.service;
+ 2 
+ 3 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">ServiceException</span> <span class="keyword-directive">extends</span> Exception {
+ 4 
+ 5     <span class="keyword-directive">private</span> <span class="keyword-directive">int</span> <span class="ST1">numero</span>;
+ 6 
+ 7     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_INITIALISATION</span> = 0;
+ 8 
+ 9     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_CREATION_CLIENT</span> = 1;
+10     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_CREATION_CLIENT_MAIL</span> = 2;
+11     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_INTROUVABLE</span> = 3;
+12     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_MOT_DE_PASSE</span> = 4;
+13 
+14     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_CLIENT_LATITUDE</span> = 5;
+15     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_CLIENT_LONGITUDE</span> = 6;
+16     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_RESTAURANT_LATITUDE</span> = 7;
+17     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_RESTAURANT_LONGITUDE</span> = 8;
+18     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_LIVREUR_LISTE</span> = 9;
+19     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_LIVREUR_SELECTION</span> = 10;
+20     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_LIVRAISON_CREATE</span> = 11;
+21     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_LIVREUR_UPDATE</span> = 12;
+22 
+23     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_LIVRAISON_DATE</span> = 13;
+24     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_LIVRAISON_UPDATE</span> = 14;
+25 
+26     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_LISTE_RESTAURANTS</span> = 15;
+27     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_LISTE_LIVREURS</span> = 16;
+28 
+29     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_TROUVER_LIVREUR</span> = 17;
+30 
+31     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">final</span> <span class="keyword-directive">int</span> <span class="ST2">ERREUR_TROUVER_LIVRAISON</span> = 18;
+32 
+33     <span class="keyword-directive">public</span> <span class="ST0">ServiceException</span>(<span class="keyword-directive">int</span> numero) {
+34         <span class="keyword-directive">this</span>.<span class="ST1">numero</span> = numero;
+35     }
+36 
+37     <span class="keyword-directive">public</span> <span class="keyword-directive">int</span> <span class="ST0">getNumero</span>() {
+38         <span class="keyword-directive">return</span> <span class="ST1">numero</span>;
+39     }
+40 
+41     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setNumero</span>(<span class="keyword-directive">int</span> numero) {
+42         <span class="keyword-directive">this</span>.<span class="ST1">numero</span> = numero;
+43     }
+44 
+45 }
+46 
+</pre></body>
+</html>

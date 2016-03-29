@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Saisie.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST2 {font-family: Monospaced; font-weight: bold; font-style: italic}
+.ST4 {font-family: Monospaced; font-style: italic}
+.ST1 {font-family: Monospaced; font-weight: bold}
+.ST0 {color: #969696; font-family: Monospaced; font-weight: bold}
+.comment {color: #969696}
+.character {color: #ce7b00}
+.ST3 {color: #009900; font-family: Monospaced; font-style: italic}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\util\Saisie.java</td></tr></table>
+<pre>
+ 1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.util;
+ 2 
+ 3 <span class="keyword-directive">import</span> java.io.BufferedReader;
+ 4 <span class="keyword-directive">import</span> java.io.IOException;
+ 5 <span class="keyword-directive">import</span> java.io.InputStreamReader;
+ 6 <span class="keyword-directive">import</span> java.util.List;
+ 7 
+ 8 <span class="comment">/**</span>
+ 9 <span class="comment"> *</span>
+10 <span class="comment"> * </span><span class="ST0">@author</span> <span class="comment">DASI</span> <span class="comment">Team</span>
+11  <span class="comment">*/</span>
+12 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST1">Saisie</span> {
+13 
+14     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> String <span class="ST2">lireChaine</span>(String invite) {
+15         String chaineLue = <span class="keyword-directive">null</span>;
+16         System.<span class="ST3">out</span>.print(invite);
+17         <span class="keyword-directive">try</span> {
+18             InputStreamReader isr = <span class="keyword-directive">new</span> InputStreamReader(System.<span class="ST3">in</span>);
+19             BufferedReader br = <span class="keyword-directive">new</span> BufferedReader(isr);
+20             chaineLue = br.readLine();
+21         } <span class="keyword-directive">catch</span> (IOException exception) {
+22             exception.printStackTrace(System.<span class="ST3">err</span>);
+23         }
+24         <span class="keyword-directive">return</span> chaineLue;
+25 
+26     }
+27 
+28     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> Integer <span class="ST2">lireInteger</span>(String invite) {
+29         Integer valeurLue = <span class="keyword-directive">null</span>;
+30         <span class="keyword-directive">try</span> {
+31             valeurLue = <span class="keyword-directive">new</span> Integer(<span class="ST4">lireChaine</span>(invite));
+32         } <span class="keyword-directive">catch</span> (java.lang.NumberFormatException e) {
+33             System.<span class="ST3">out</span>.println(<span class="character">&quot;</span><span class="character">erreur de saisie</span><span class="character">&quot;</span>);
+34             valeurLue = <span class="ST4">lireInteger</span>(invite);
+35         }
+36         <span class="keyword-directive">return</span> valeurLue;
+37     }
+38 
+39     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> Integer <span class="ST2">lireInteger</span>(String invite, List&lt;Integer&gt; valeursPossibles) {
+40         Integer valeurLue = <span class="keyword-directive">null</span>;
+41         <span class="keyword-directive">try</span> {
+42             valeurLue = <span class="keyword-directive">new</span> Integer(<span class="ST4">lireChaine</span>(invite));
+43             <span class="keyword-directive">if</span> (!(valeursPossibles.contains(valeurLue))) {
+44                 <span class="keyword-directive">throw</span> <span class="keyword-directive">new</span> Exception();
+45             }
+46         } <span class="keyword-directive">catch</span> (Exception e) {
+47             System.<span class="ST3">out</span>.println(<span class="character">&quot;</span><span class="character">erreur de saisie</span><span class="character">&quot;</span>);
+48             valeurLue = <span class="ST4">lireInteger</span>(invite, valeursPossibles);
+49         }
+50         <span class="keyword-directive">return</span> valeurLue;
+51     }
+52 
+53     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST2">main</span>(String[] args) {
+54         System.<span class="ST3">out</span>.println(<span class="character">&quot;</span><span class="character">Bonjour !</span><span class="character">&quot;</span>);
+55         String nom = Saisie.<span class="ST4">lireChaine</span>(<span class="character">&quot;</span><span class="character">Entrez votre nom: </span><span class="character">&quot;</span>);
+56         System.<span class="ST3">out</span>.println(<span class="character">&quot;</span><span class="character">Bonjour, </span><span class="character">&quot;</span> + nom + <span class="character">&quot;</span><span class="character"> !</span><span class="character">&quot;</span>);
+57         Integer age = Saisie.<span class="ST4">lireInteger</span>(<span class="character">&quot;</span><span class="character">Entrez votre âge: </span><span class="character">&quot;</span>);
+58         System.<span class="ST3">out</span>.println(<span class="character">&quot;</span><span class="character">Vous avez </span><span class="character">&quot;</span> + age + <span class="character">&quot;</span><span class="character"> ans.</span><span class="character">&quot;</span>);
+59         System.<span class="ST3">out</span>.println(<span class="character">&quot;</span><span class="character">Au revoir !</span><span class="character">&quot;</span>);
+60     }
+61 }
+62 
+</pre></body>
+</html>

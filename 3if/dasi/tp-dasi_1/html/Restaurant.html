@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Restaurant.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.ST1 {color: #009900}
+.character {color: #ce7b00}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\metier\modele\Restaurant.java</td></tr></table>
+<pre>
+ 1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.metier.modele;
+ 2 
+ 3 <span class="keyword-directive">import</span> com.google.maps.model.LatLng;
+ 4 <span class="keyword-directive">import</span> java.io.Serializable;
+ 5 <span class="keyword-directive">import</span> java.util.ArrayList;
+ 6 <span class="keyword-directive">import</span> java.util.List;
+ 7 <span class="keyword-directive">import</span> javax.persistence.Entity;
+ 8 <span class="keyword-directive">import</span> javax.persistence.GeneratedValue;
+ 9 <span class="keyword-directive">import</span> javax.persistence.Id;
+10 <span class="keyword-directive">import</span> javax.persistence.OneToMany;
+11 
+12 @Entity
+13 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">Restaurant</span> <span class="keyword-directive">implements</span> Serializable {
+14 
+15     @Id @GeneratedValue
+16     <span class="keyword-directive">private</span> Long <span class="ST1">id</span>;
+17     <span class="keyword-directive">private</span> String <span class="ST1">denomination</span>;
+18     <span class="keyword-directive">private</span> String <span class="ST1">description</span>;
+19     <span class="keyword-directive">private</span> String <span class="ST1">adresse</span>;
+20     <span class="keyword-directive">private</span> Double <span class="ST1">longitude</span>;
+21     <span class="keyword-directive">private</span> Double <span class="ST1">latitude</span>;
+22     @OneToMany
+23     <span class="keyword-directive">private</span> List&lt;Produit&gt; <span class="ST1">produits</span>;
+24 
+25     <span class="keyword-directive">public</span> <span class="ST0">Restaurant</span>() {
+26         <span class="ST1">produits</span> = <span class="keyword-directive">new</span> ArrayList&lt;&gt;();
+27     }
+28 
+29     <span class="keyword-directive">public</span> <span class="ST0">Restaurant</span>(String denomination, String description, String adresse) {
+30         <span class="keyword-directive">this</span>.<span class="ST1">denomination</span> = denomination;
+31         <span class="keyword-directive">this</span>.<span class="ST1">description</span> = description;
+32         <span class="keyword-directive">this</span>.<span class="ST1">adresse</span> = adresse;
+33         <span class="ST1">produits</span> = <span class="keyword-directive">new</span> ArrayList&lt;&gt;();
+34     }
+35 
+36     <span class="keyword-directive">public</span> Long <span class="ST0">getId</span>() {
+37         <span class="keyword-directive">return</span> <span class="ST1">id</span>;
+38     }
+39 
+40     <span class="keyword-directive">public</span> String <span class="ST0">getDenomination</span>() {
+41         <span class="keyword-directive">return</span> <span class="ST1">denomination</span>;
+42     }
+43 
+44     <span class="keyword-directive">public</span> String <span class="ST0">getDescription</span>() {
+45         <span class="keyword-directive">return</span> <span class="ST1">description</span>;
+46     }
+47 
+48     <span class="keyword-directive">public</span> String <span class="ST0">getAdresse</span>() {
+49         <span class="keyword-directive">return</span> <span class="ST1">adresse</span>;
+50     }
+51 
+52     <span class="keyword-directive">public</span> Double <span class="ST0">getLongitude</span>() {
+53         <span class="keyword-directive">return</span> <span class="ST1">longitude</span>;
+54     }
+55 
+56     <span class="keyword-directive">public</span> Double <span class="ST0">getLatitude</span>() {
+57         <span class="keyword-directive">return</span> <span class="ST1">latitude</span>;
+58     }
+59 
+60     <span class="keyword-directive">public</span> List&lt;Produit&gt; <span class="ST0">getProduits</span>() {
+61         <span class="keyword-directive">return</span> <span class="ST1">produits</span>;
+62     }
+63 
+64     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setDenomination</span>(String denomination) {
+65         <span class="keyword-directive">this</span>.<span class="ST1">denomination</span> = denomination;
+66     }
+67 
+68     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setDescription</span>(String description) {
+69         <span class="keyword-directive">this</span>.<span class="ST1">description</span> = description;
+70     }
+71 
+72     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setAdresse</span>(String adresse) {
+73         <span class="keyword-directive">this</span>.<span class="ST1">adresse</span> = adresse;
+74     }
+75 
+76     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">setCoordonnees</span>(LatLng latLng) {
+77         <span class="keyword-directive">this</span>.<span class="ST1">longitude</span> = latLng.<span class="ST1">lng</span>;
+78         <span class="keyword-directive">this</span>.<span class="ST1">latitude</span> = latLng.<span class="ST1">lat</span>;
+79     }
+80 
+81     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">addProduit</span>(Produit produit) {
+82         <span class="keyword-directive">this</span>.<span class="ST1">produits</span>.add(produit);
+83     }
+84 
+85     @Override
+86     <span class="keyword-directive">public</span> String <span class="ST0">toString</span>() {
+87         <span class="keyword-directive">return</span> <span class="character">&quot;</span><span class="character">Restaurant{</span><span class="character">&quot;</span> +
+88                 <span class="character">&quot;</span><span class="character">id=</span><span class="character">&quot;</span> + <span class="ST1">id</span> +
+89                 <span class="character">&quot;</span><span class="character">, denomination=</span><span class="character">&quot;</span> + <span class="ST1">denomination</span> +
+90                 <span class="character">&quot;</span><span class="character">, description=</span><span class="character">&quot;</span> + <span class="ST1">description</span> +
+91                 <span class="character">&quot;</span><span class="character">, adresse=</span><span class="character">&quot;</span> + <span class="ST1">adresse</span> +
+92                 <span class="character">&quot;</span><span class="character">, longitudeAdresse=</span><span class="character">&quot;</span> + <span class="ST1">longitude</span> +
+93                 <span class="character">&quot;</span><span class="character">, latitudeAdresse=</span><span class="character">&quot;</span> + <span class="ST1">latitude</span> +
+94                 <span class="character">&#39;</span><span class="character">}</span><span class="character">&#39;</span>;
+95     }
+96 
+97 }
+98 
+</pre></body>
+</html>

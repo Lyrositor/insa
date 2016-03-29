@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>RestaurantDao.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST1 {font-family: Monospaced; font-style: italic}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.character {color: #ce7b00}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\dao\RestaurantDao.java</td></tr></table>
+<pre>
+ 1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.dao;
+ 2 
+ 3 <span class="keyword-directive">import</span> fr.insalyon.gustatif.metier.modele.Restaurant;
+ 4 <span class="keyword-directive">import</span> java.util.List;
+ 5 <span class="keyword-directive">import</span> javax.persistence.EntityManager;
+ 6 <span class="keyword-directive">import</span> javax.persistence.Query;
+ 7 
+ 8 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">RestaurantDao</span> {
+ 9 
+10     <span class="keyword-directive">public</span> <span class="keyword-directive">void</span> <span class="ST0">create</span>(Restaurant restaurant) <span class="keyword-directive">throws</span> Throwable {
+11         EntityManager em = JpaUtil.<span class="ST1">obtenirEntityManager</span>();
+12         <span class="keyword-directive">try</span> {
+13             em.persist(restaurant);
+14         } <span class="keyword-directive">catch</span> (Exception e) {
+15             <span class="keyword-directive">throw</span> e;
+16         }
+17     }
+18 
+19     <span class="keyword-directive">public</span> Restaurant <span class="ST0">update</span>(Restaurant restaurant) <span class="keyword-directive">throws</span> Throwable {
+20         EntityManager em = JpaUtil.<span class="ST1">obtenirEntityManager</span>();
+21         <span class="keyword-directive">try</span> {
+22             restaurant = em.merge(restaurant);
+23         } <span class="keyword-directive">catch</span> (Exception e) {
+24             <span class="keyword-directive">throw</span> e;
+25         }
+26         <span class="keyword-directive">return</span> restaurant;
+27     }
+28 
+29     <span class="keyword-directive">public</span> Restaurant <span class="ST0">findById</span>(Long id) <span class="keyword-directive">throws</span> Throwable {
+30         EntityManager em = JpaUtil.<span class="ST1">obtenirEntityManager</span>();
+31         Restaurant restaurant = <span class="keyword-directive">null</span>;
+32         <span class="keyword-directive">try</span> {
+33             restaurant = em.find(Restaurant.<span class="keyword-directive">class</span>, id);
+34         } <span class="keyword-directive">catch</span> (Exception e) {
+35             <span class="keyword-directive">throw</span> e;
+36         }
+37         <span class="keyword-directive">return</span> restaurant;
+38     }
+39 
+40     <span class="keyword-directive">public</span> List&lt;Restaurant&gt; <span class="ST0">findAll</span>() <span class="keyword-directive">throws</span> Throwable {
+41         EntityManager em = JpaUtil.<span class="ST1">obtenirEntityManager</span>();
+42         List&lt;Restaurant&gt; restaurants = <span class="keyword-directive">null</span>;
+43         <span class="keyword-directive">try</span> {
+44             Query q = em.createQuery(<span class="character">&quot;</span><span class="character">SELECT r FROM Restaurant r order by r.denomination</span><span class="character">&quot;</span>);
+45             restaurants = (List&lt;Restaurant&gt;) q.getResultList();
+46         } <span class="keyword-directive">catch</span> (Exception e) {
+47             <span class="keyword-directive">throw</span> e;
+48         }
+49 
+50         <span class="keyword-directive">return</span> restaurants;
+51     }
+52 
+53 }
+54 
+</pre></body>
+</html>
