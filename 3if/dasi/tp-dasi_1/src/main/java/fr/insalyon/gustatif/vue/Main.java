@@ -50,7 +50,6 @@ public class Main {
         List<Livreur> livreurs;
         try {
             restaurants = service.listerRestaurants();
-            livreurs = service.listerLivreurs();
         } catch (ServiceException e) {
             System.err.println("ERREUR: Échec lors du chargement des données.");
             return;
@@ -203,6 +202,12 @@ public class Main {
                     }
 
                     // Choisir le livreur
+                    try {
+                        livreurs = service.listerLivreurs();
+                    } catch (ServiceException e) {
+                        System.err.println("ERREUR: Échec lors du chargement des données.");
+                        return;
+                    }
                     Livreur livreur = null;
                     do {
                         long livreurId = Saisie.lireInteger("ID du livreur : ").longValue();
@@ -257,6 +262,13 @@ public class Main {
 
                 // Lister les livreurs
                 case 7:
+                    try {
+                        livreurs = service.listerLivreurs();
+                    } catch (ServiceException e) {
+                        System.err.println("ERREUR: Échec lors du chargement des données.");
+                        return;
+                    }
+                    
                     System.out.println("Livreurs :");
                     for (Livreur l : livreurs)
                         System.out.println("\t" + l);

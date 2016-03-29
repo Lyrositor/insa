@@ -255,121 +255,128 @@ public class ServiceMetier {
 
     public Livraison commander(Client client, Restaurant restaurant, HashMap<Produit, Long> produits) throws ServiceException {
         JpaUtil.creerEntityManager();
-        JpaUtil.ouvrirTransaction();
+        Livraison livraison;
+        do {
+            JpaUtil.ouvrirTransaction();
 
-        // Calcul des localisation
-        if (client.getLatitude() == null) {
-            JpaUtil.fermerEntityManager();
-            throw new ServiceException(ServiceException.ERREUR_CLIENT_LATITUDE);
-        }
-        if (client.getLongitude() == null) {
-            JpaUtil.fermerEntityManager();
-            throw new ServiceException(ServiceException.ERREUR_CLIENT_LONGITUDE);
-        }
-        LatLng localisationClient = new LatLng(client.getLatitude(), client.getLongitude());
-
-        if (restaurant.getLatitude() == null) {
-            JpaUtil.fermerEntityManager();
-            throw new ServiceException(ServiceException.ERREUR_RESTAURANT_LATITUDE);
-        }
-        if (restaurant.getLongitude() == null) {
-            JpaUtil.fermerEntityManager();
-            throw new ServiceException(ServiceException.ERREUR_RESTAURANT_LONGITUDE);
-        }
-        LatLng localisationRestaurant = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
-
-        Double distanceRestaurantClient = ServiceTechnique.getFlightDistanceInKm(localisationRestaurant, localisationClient);
-
-        // Calcul du poids de la commande
-        Float poidsCommande = 0f;
-        for (Entry<Produit, Long> entry : produits.entrySet()) {
-            Produit produit = entry.getKey();
-            poidsCommande += produit.getPoids() * entry.getValue();
-        }
-
-        // Liste des livreurs disponibles et capables de supporter la charge
-        List<Livreur> listeLivreurs;
-        try {
-            listeLivreurs = LIVREUR_DAO.findAllAvalaibleWithCapacity(poidsCommande);
-        } catch (Throwable ex) {
-            JpaUtil.fermerEntityManager();
-            throw new ServiceException(ServiceException.ERREUR_LIVREUR_LISTE);
-        }
-
-        // Sélection du livreur le plus proche
-        Livreur livreurSelection = null;
-        Double dureeMini = Double.MAX_VALUE;
-        for (Livreur livreur : listeLivreurs) {
-            Double duree = Double.MAX_VALUE;
-            if (livreur instanceof Cycliste) {
-                duree = ServiceTechnique.getTripDurationByBicycleInMinute(ServiceTechnique.getLatLng(livreur.getAdresse()), localisationClient, localisationRestaurant);
-            } else if (livreur instanceof Drone) {
-                Double distance = ServiceTechnique.getFlightDistanceInKm(ServiceTechnique.getLatLng(livreur.getAdresse()), localisationRestaurant);
-                distance += distanceRestaurantClient;
-                duree = (distance / ((Drone) livreur).getVitesseMoyenne()) * 60;
+            // Calcul des localisation
+            if (client.getLatitude() == null) {
+                JpaUtil.fermerEntityManager();
+                throw new ServiceException(ServiceException.ERREUR_CLIENT_LATITUDE);
             }
-            if (dureeMini > duree) {
-                dureeMini = duree;
-                livreurSelection = livreur;
+            if (client.getLongitude() == null) {
+                JpaUtil.fermerEntityManager();
+                throw new ServiceException(ServiceException.ERREUR_CLIENT_LONGITUDE);
             }
-        }
+            LatLng localisationClient = new LatLng(client.getLatitude(), client.getLongitude());
 
-        if (livreurSelection == null) {
-            JpaUtil.fermerEntityManager();
-            throw new ServiceException(ServiceException.ERREUR_LIVREUR_SELECTION);
-        }
+            if (restaurant.getLatitude() == null) {
+                JpaUtil.fermerEntityManager();
+                throw new ServiceException(ServiceException.ERREUR_RESTAURANT_LATITUDE);
+            }
+            if (restaurant.getLongitude() == null) {
+                JpaUtil.fermerEntityManager();
+                throw new ServiceException(ServiceException.ERREUR_RESTAURANT_LONGITUDE);
+            }
+            LatLng localisationRestaurant = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
 
-        /* DEMO */
-        System.out.println("Attente de l'utilisateur... Appuyer sur [Entrée] pour continuer.");
-        try {
-            System.in.read();
-        } catch (Exception e) {
-        }
-        /* --- */
+            Double distanceRestaurantClient = ServiceTechnique.getFlightDistanceInKm(localisationRestaurant, localisationClient);
 
-        Livraison livraison = new Livraison(client, livreurSelection, new Date(), null, produits);
-        try {
-            LIVRAISON_DAO.create(livraison);
-        } catch (Throwable ex) {
-            JpaUtil.fermerEntityManager();
-            throw new ServiceException(ServiceException.ERREUR_LIVRAISON_CREATE);
-        }
-
-        livreurSelection.setDisponible(false);
-        try {
-            LIVREUR_DAO.update(livreurSelection);
-        } catch (Throwable ex) {
-            JpaUtil.fermerEntityManager();
-            throw new ServiceException(ServiceException.ERREUR_LIVREUR_UPDATE);
-        }
-        if (livreurSelection instanceof Cycliste) {
-            Cycliste cycliste = (Cycliste) livreurSelection;
-            StringBuilder produitsCommande = new StringBuilder();
-            Float total = 0.0f;
-            for (Entry<Produit, Long> e : produits.entrySet()) {
-                Produit p = e.getKey();
-                produitsCommande.append(String.format(
-                        FORMAT_PRODUIT, e.getValue(), p.getDenomination(),
-                        e.getValue(), p.getPrix()
-                ));
-                total += p.getPrix() * e.getValue();
+            // Calcul du poids de la commande
+            Float poidsCommande = 0f;
+            for (Entry<Produit, Long> entry : produits.entrySet()) {
+                Produit produit = entry.getKey();
+                poidsCommande += produit.getPoids() * entry.getValue();
             }
 
-            String corps = String.format(
-                    FORMAT_MESSAGE_LIVREUR, cycliste.getPrenom(),
-                    livraison.getDateCommande(), cycliste.getPrenom(),
-                    cycliste.getNom(), cycliste.getId(),
-                    restaurant.getDenomination(), client.getPrenom(),
-                    client.getNom(), client.getAdresse(), produitsCommande,
-                    total
-            );
-            ServiceTechnique.envoyerMail(
-                    "gustatif@gustatif.fr", cycliste.getMail(),
-                    "Livraison n°" + livraison.getId() + " à effectuer", corps
-            );
-        }
+            // Liste des livreurs disponibles et capables de supporter la charge
+            List<Livreur> listeLivreurs;
+            try {
+                listeLivreurs = LIVREUR_DAO.findAllAvalaibleWithCapacity(poidsCommande);
+            } catch (Throwable ex) {
+                JpaUtil.fermerEntityManager();
+                throw new ServiceException(ServiceException.ERREUR_LIVREUR_LISTE);
+            }
 
-        JpaUtil.validerTransaction();
+            // Sélection du livreur le plus proche
+            Livreur livreurSelection = null;
+            Double dureeMini = Double.MAX_VALUE;
+            for (Livreur livreur : listeLivreurs) {
+                Double duree = Double.MAX_VALUE;
+                if (livreur instanceof Cycliste) {
+                    duree = ServiceTechnique.getTripDurationByBicycleInMinute(ServiceTechnique.getLatLng(livreur.getAdresse()), localisationClient, localisationRestaurant);
+                } else if (livreur instanceof Drone) {
+                    Double distance = ServiceTechnique.getFlightDistanceInKm(ServiceTechnique.getLatLng(livreur.getAdresse()), localisationRestaurant);
+                    distance += distanceRestaurantClient;
+                    duree = (distance / ((Drone) livreur).getVitesseMoyenne()) * 60;
+                }
+                if (dureeMini > duree) {
+                    dureeMini = duree;
+                    livreurSelection = livreur;
+                }
+            }
+
+            if (livreurSelection == null) {
+                JpaUtil.fermerEntityManager();
+                throw new ServiceException(ServiceException.ERREUR_LIVREUR_SELECTION);
+            }
+
+            /* DEMO */
+            System.out.println("Attente de l'utilisateur... Appuyer sur [Entrée] pour continuer.");
+            try {
+                System.in.read();
+            } catch (Exception e) {
+            }
+            /* --- */
+
+            livraison = new Livraison(client, livreurSelection, new Date(), null, produits);
+            try {
+                LIVRAISON_DAO.create(livraison);
+            } catch (Throwable ex) {
+                JpaUtil.fermerEntityManager();
+                throw new ServiceException(ServiceException.ERREUR_LIVRAISON_CREATE);
+            }
+
+            livreurSelection.setDisponible(false);
+            try {
+                LIVREUR_DAO.update(livreurSelection);
+            } catch (Throwable ex) {
+                JpaUtil.fermerEntityManager();
+                throw new ServiceException(ServiceException.ERREUR_LIVREUR_UPDATE);
+            }
+            if (livreurSelection instanceof Cycliste) {
+                Cycliste cycliste = (Cycliste) livreurSelection;
+                StringBuilder produitsCommande = new StringBuilder();
+                Float total = 0.0f;
+                for (Entry<Produit, Long> e : produits.entrySet()) {
+                    Produit p = e.getKey();
+                    produitsCommande.append(String.format(
+                            FORMAT_PRODUIT, e.getValue(), p.getDenomination(),
+                            e.getValue(), p.getPrix()
+                    ));
+                    total += p.getPrix() * e.getValue();
+                }
+
+                String corps = String.format(
+                        FORMAT_MESSAGE_LIVREUR, cycliste.getPrenom(),
+                        livraison.getDateCommande(), cycliste.getPrenom(),
+                        cycliste.getNom(), cycliste.getId(),
+                        restaurant.getDenomination(), client.getPrenom(),
+                        client.getNom(), client.getAdresse(), produitsCommande,
+                        total
+                );
+                ServiceTechnique.envoyerMail(
+                        "gustatif@gustatif.fr", cycliste.getMail(),
+                        "Livraison n°" + livraison.getId() + " à effectuer", corps
+                );
+            }
+
+
+            try {
+                JpaUtil.validerTransaction();
+                break;
+            } catch(Exception e) { }
+        } while (true);
         JpaUtil.fermerEntityManager();
         return livraison;
     }

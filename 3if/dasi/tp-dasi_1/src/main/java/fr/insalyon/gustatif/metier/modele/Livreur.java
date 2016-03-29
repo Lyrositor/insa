@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 @Entity
 public abstract class Livreur implements Serializable {
@@ -21,6 +22,9 @@ public abstract class Livreur implements Serializable {
 
     @OneToMany(mappedBy="livreur")
     protected List<Livraison> livraisons;
+    
+    @Version
+    private Long version;
 
     public void ajouterLivraison(Livraison livraison) {
         livraisons.add(livraison);
