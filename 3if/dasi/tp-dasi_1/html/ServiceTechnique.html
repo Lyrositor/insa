@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>ServiceTechnique.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST2 {font-family: Monospaced; font-weight: bold; font-style: italic}
+.ST4 {font-family: Monospaced; font-style: italic}
+.ST0 {font-family: Monospaced; font-weight: bold}
+.comment {color: #969696}
+.ST5 {color: #009900}
+.ST3 {color: #ce7b00; font-family: Monospaced; font-weight: bold}
+.character {color: #ce7b00}
+.ST1 {color: #009900; font-family: Monospaced; font-style: italic}
+.keyword-directive {color: #0000e6}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">L:\Documents\insa-private\3if\dasi\tp-dasi_1\src\main\java\fr\insalyon\gustatif\metier\service\ServiceTechnique.java</td></tr></table>
+<pre>
+  1 <span class="keyword-directive">package</span> fr.insalyon.gustatif.metier.service;
+  2 
+  3 <span class="keyword-directive">import</span> com.google.maps.DirectionsApi;
+  4 <span class="keyword-directive">import</span> com.google.maps.DirectionsApiRequest;
+  5 <span class="keyword-directive">import</span> com.google.maps.GeoApiContext;
+  6 <span class="keyword-directive">import</span> com.google.maps.GeocodingApi;
+  7 <span class="keyword-directive">import</span> com.google.maps.model.DirectionsResult;
+  8 <span class="keyword-directive">import</span> com.google.maps.model.DirectionsRoute;
+  9 <span class="keyword-directive">import</span> com.google.maps.model.GeocodingResult;
+ 10 <span class="keyword-directive">import</span> com.google.maps.model.LatLng;
+ 11 <span class="keyword-directive">import</span> com.google.maps.model.TravelMode;
+ 12 
+ 13 <span class="keyword-directive">public</span> <span class="keyword-directive">class</span> <span class="ST0">ServiceTechnique</span> {
+ 14 
+ 15     <span class="keyword-directive">final</span> <span class="keyword-directive">static</span> String <span class="ST1">CLE_GOOGLE_API</span> = <span class="character">&quot;</span><span class="character">AIzaSyAhf3JleYpal9S-xouJYH8lf7Dvz5Y2Nko</span><span class="character">&quot;</span>;
+ 16     <span class="keyword-directive">final</span> <span class="keyword-directive">static</span> GeoApiContext <span class="ST1">CONTEXTE_GEOAPI</span> = <span class="keyword-directive">new</span> GeoApiContext().setApiKey(<span class="ST1">CLE_GOOGLE_API</span>);
+ 17 
+ 18     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">void</span> <span class="ST2">envoyerMail</span>(String expediteur, String destinataire, String objet, String corps) {
+ 19         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character"> --- Mail --- </span><span class="character">&quot;</span>);
+ 20         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Expediteur : </span><span class="character">&quot;</span> + expediteur);
+ 21         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Destinataire : </span><span class="character">&quot;</span> + destinataire);
+ 22         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Objet : </span><span class="character">&quot;</span> + objet);
+ 23         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character">Corps :</span><span class="ST3">\n</span><span class="character">&quot;</span> + corps);
+ 24         System.<span class="ST1">out</span>.println(<span class="character">&quot;</span><span class="character"> --- ---- --- </span><span class="character">&quot;</span>);
+ 25     }
+ 26 
+ 27     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> LatLng <span class="ST2">getLatLng</span>(String adresse) {
+ 28         <span class="keyword-directive">try</span> {
+ 29             GeocodingResult[] results = GeocodingApi.<span class="ST4">geocode</span>(<span class="ST1">CONTEXTE_GEOAPI</span>, adresse).await();
+ 30 
+ 31             <span class="keyword-directive">return</span> results[0].<span class="ST5">geometry</span>.<span class="ST5">location</span>;
+ 32 
+ 33         } <span class="keyword-directive">catch</span> (Exception ex) {
+ 34             <span class="keyword-directive">return</span> <span class="keyword-directive">null</span>;
+ 35         }
+ 36     }
+ 37 
+ 38     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">double</span> <span class="ST2">toRad</span>(<span class="keyword-directive">double</span> angleInDegree) {
+ 39         <span class="keyword-directive">return</span> angleInDegree * Math.<span class="ST1">PI</span> / 180.0;
+ 40     }
+ 41 
+ 42     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> <span class="keyword-directive">double</span> <span class="ST2">getFlightDistanceInKm</span>(LatLng origin, LatLng destination) {
+ 43 
+ 44         <span class="comment">// From: </span><span class="comment">http://www.movable-type.co.uk/scripts/latlong.html</span>
+ 45         <span class="keyword-directive">double</span> R = 6371.0; <span class="comment">// Average radius of Earth (km)</span>
+ 46         <span class="keyword-directive">double</span> dLat = <span class="ST4">toRad</span>(destination.<span class="ST5">lat</span> - origin.<span class="ST5">lat</span>);
+ 47         <span class="keyword-directive">double</span> dLon = <span class="ST4">toRad</span>(destination.<span class="ST5">lng</span> - origin.<span class="ST5">lng</span>);
+ 48         <span class="keyword-directive">double</span> lat1 = <span class="ST4">toRad</span>(origin.<span class="ST5">lat</span>);
+ 49         <span class="keyword-directive">double</span> lat2 = <span class="ST4">toRad</span>(destination.<span class="ST5">lat</span>);
+ 50 
+ 51         <span class="keyword-directive">double</span> a = Math.<span class="ST4">sin</span>(dLat / 2.0) * Math.<span class="ST4">sin</span>(dLat / 2.0)
+ 52                 + Math.<span class="ST4">sin</span>(dLon / 2.0) * Math.<span class="ST4">sin</span>(dLon / 2.0) * Math.<span class="ST4">cos</span>(lat1) * Math.<span class="ST4">cos</span>(lat2);
+ 53         <span class="keyword-directive">double</span> c = 2 * Math.<span class="ST4">atan2</span>(Math.<span class="ST4">sqrt</span>(a), Math.<span class="ST4">sqrt</span>(1.0 - a));
+ 54         <span class="keyword-directive">double</span> d = R * c;
+ 55 
+ 56         <span class="keyword-directive">return</span> d;
+ 57     }
+ 58 
+ 59     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> Double <span class="ST2">getTripDurationByBicycleInMinute</span>(LatLng origin, LatLng destination, LatLng... steps) {
+ 60         <span class="keyword-directive">return</span> <span class="ST4">getTripDurationOrDistance</span>(TravelMode.<span class="ST1">BICYCLING</span>, <span class="keyword-directive">true</span>, origin, destination, steps);
+ 61     }
+ 62 
+ 63     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> Double <span class="ST2">getTripDistanceByCarInKm</span>(LatLng origin, LatLng destination, LatLng... steps) {
+ 64         <span class="keyword-directive">return</span> <span class="ST4">getTripDurationOrDistance</span>(TravelMode.<span class="ST1">DRIVING</span>, <span class="keyword-directive">false</span>, origin, destination, steps);
+ 65     }
+ 66 
+ 67     <span class="keyword-directive">public</span> <span class="keyword-directive">static</span> Double <span class="ST2">getTripDurationOrDistance</span>(TravelMode mode, <span class="keyword-directive">boolean</span> duration, LatLng origin, LatLng destination, LatLng... steps) {
+ 68 
+ 69         DirectionsApiRequest request = DirectionsApi.<span class="ST4">getDirections</span>(<span class="ST1">CONTEXTE_GEOAPI</span>, origin.toString(), destination.toString());
+ 70         request.mode(mode);
+ 71         request.region(<span class="character">&quot;</span><span class="character">fr</span><span class="character">&quot;</span>);
+ 72 
+ 73         <span class="keyword-directive">if</span> (steps.<span class="ST5">length</span> &gt; 0) {
+ 74 
+ 75             String[] stringSteps = <span class="keyword-directive">new</span> String[steps.<span class="ST5">length</span>];
+ 76             <span class="keyword-directive">for</span> (<span class="keyword-directive">int</span> i = 0; i &lt; steps.<span class="ST5">length</span>; i++) {
+ 77                 stringSteps[i] = steps[i].toString();
+ 78             }
+ 79 
+ 80             request.waypoints(stringSteps);
+ 81         }
+ 82 
+ 83         <span class="keyword-directive">double</span> cumulDistance = 0.0;
+ 84         <span class="keyword-directive">double</span> cumulDuration = 0.0;
+ 85 
+ 86         <span class="keyword-directive">try</span> {
+ 87             DirectionsResult result = request.await();
+ 88             DirectionsRoute[] directions = result.<span class="ST5">routes</span>;
+ 89 
+ 90             <span class="keyword-directive">for</span> (<span class="keyword-directive">int</span> legIndex = 0; legIndex &lt; directions[0].<span class="ST5">legs</span>.<span class="ST5">length</span>; legIndex++) {
+ 91 
+ 92                 cumulDistance += directions[0].<span class="ST5">legs</span>[legIndex].<span class="ST5">distance</span>.<span class="ST5">inMeters</span> / 1000.0;
+ 93                 cumulDuration += Math.<span class="ST4">ceil</span>(directions[0].<span class="ST5">legs</span>[legIndex].<span class="ST5">duration</span>.<span class="ST5">inSeconds</span> / 60.0);
+ 94             }
+ 95 
+ 96         } <span class="keyword-directive">catch</span> (Exception ex) {
+ 97             <span class="keyword-directive">return</span> <span class="keyword-directive">null</span>;
+ 98         }
+ 99 
+100         <span class="keyword-directive">if</span> (duration) {
+101             <span class="keyword-directive">return</span> cumulDuration;
+102         } <span class="keyword-directive">else</span> {
+103             <span class="keyword-directive">return</span> cumulDistance;
+104         }
+105     }
+106 }
+107 
+</pre></body>
+</html>
