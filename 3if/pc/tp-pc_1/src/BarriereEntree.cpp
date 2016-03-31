@@ -12,6 +12,8 @@
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include système
 #include <signal.h>
+#include <sys/wait.h>
+#include <time.h>
 
 //------------------------------------------------------ Include personnel
 #include "BarriereEntree.h"
@@ -46,7 +48,7 @@ static void DetruireBarriereEntree(int noSignal)
 {
     if (noSignal == SIGUSR2)
     {
-        // Tuer tous les voituriers qui tournent encore.
+        // Tuer tous les voituriers qui tournent encore
         for (size_t i = 0; i < nbVoituriers; i++)
         {
             kill(voituriers[i], SIGUSR2);
@@ -55,6 +57,25 @@ static void DetruireBarriereEntree(int noSignal)
         exit(0);
     }
 } //----- fin de DetruireBarriereEntree
+
+static void GererFinVoiturier ( int noSignal )
+// Mode d'emploi :
+//
+// Contrat :
+//
+// Algorithme :
+//
+{
+    if(noSignal == SIGCHLD)
+    {
+        int status;
+        int place = WEXITSTATUS(status);
+
+        AfficherPlace(place, PROF, 1, time(NULL));
+
+        --nbVoituriers;
+    }
+}
 
 static int InitialiserBarriereEntree ( enum TypeBarriere barriere )
 // Mode d'emploi :
@@ -70,6 +91,13 @@ static int InitialiserBarriereEntree ( enum TypeBarriere barriere )
     sigemptyset(&actionDetruire.sa_mask);
     actionDetruire.sa_flags = 0;
     sigaction(SIGUSR2, &actionDetruire, NULL);
+
+    // Gérer le signal de fin d'un voiturier.
+    struct sigaction actionFinVoiturier;
+    actionFinVoiturier.sa_handler = GererFinVoiturier;
+    sigemptyset(&actionFinVoiturier.sa_mask);
+    actionFinVoiturier.sa_flags = 0;
+    sigaction(SIGCHLD, &actionFinVoiturier, NULL);
 
     switch(barriere)
     {
@@ -103,6 +131,8 @@ void BarriereEntree(enum TypeBarriere barriere)
         msg_voiture_t msg;
         msgrcv(boite, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_ENTREE, 0);
         DessinerVoitureBarriere(barriere, msg.usager);
+
+        voituriers[nbVoituriers++] = GarerVoiture(barriere);
     }
 
 //    DetruireBarriereEntree();
