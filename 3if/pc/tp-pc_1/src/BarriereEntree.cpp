@@ -100,7 +100,7 @@ void BarriereEntree(enum TypeBarriere barriere)
 
     for(;;)
     {
-        msg_voiture msg;
+        msg_voiture_t msg;
         msgrcv(boite, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_ENTREE, 0);
         DessinerVoitureBarriere(barriere, msg.usager);
     }

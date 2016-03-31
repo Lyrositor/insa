@@ -20,9 +20,6 @@
 /////////////////////////////////////////////////////////////////  INCLUDE
 //--------------------------------------------------- Interfaces utilisées
 
-#include <stdlib.h>
-#include <unistd.h>
-
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -30,7 +27,7 @@
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
 
-void BarriereSortie(void);
+void BarriereSortie( void );
 // Mode d'emploi :
 // Point d'entrée de la tâche pour la barrière de sortie.
 // Contrat :

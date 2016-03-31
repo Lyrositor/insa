@@ -20,12 +20,18 @@ static const key_t CLE_BARRIERE_ABP = ftok(CHEMIN_IPC, 'A');
 static const key_t CLE_BARRIERE_EGB = ftok(CHEMIN_IPC, 'E');
 static const key_t CLE_BARRIERE_SGB = ftok(CHEMIN_IPC, 'S');
 
-typedef struct msg_voiture {
+typedef struct {
     long mtype; // Type de message
     TypeUsager usager; // Type de l'usager
     unsigned int numero; // Numéro de voiture
     unsigned int place; // Place possédée
-} msg_voiture;
+} msg_voiture_t;
+
+typedef struct {
+	TypeUsager usager;
+	unsigned int numero;
+	time_t arrivee;
+} voiture_t;
 
 static const long MSG_ENTREE = 1;
 static const long MSG_SORTIE = 2;

@@ -14,6 +14,9 @@
 
 #include <signal.h>
 #include <sys/msg.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <time.h>
 
 //------------------------------------------------------ Include personnel
 
@@ -28,12 +31,11 @@
 //---------------------------------------------------- Variables statiques
 
 static int boiteSGB;
-static size_t nbVoituriers;
 static pid_t voituriers[NB_PLACES];
 
 //------------------------------------------------------ Fonctions privées
 
-static void DetruireBarriereSortie(int noSignal)
+static void DetruireBarriereSortie ( int noSignal )
 // Mode d'emploi :
 //
 // Contrat :
@@ -44,9 +46,12 @@ static void DetruireBarriereSortie(int noSignal)
     if (noSignal == SIGUSR2)
     {
         // Tuer tous les voituriers qui tournent encore.
-        for (size_t i = 0; i < nbVoituriers; i++)
+        for (size_t i = 0; i < NB_PLACES; i++)
         {
-            kill(voituriers[i], SIGUSR2);
+            if (voituriers[i])
+            {
+                kill(voituriers[i], SIGUSR2);
+            }
         }
 
         exit(0);
@@ -63,11 +68,34 @@ static void GererFinVoiturier ( int noSignal )
 {
     if (noSignal == SIGCHLD)
     {
-
+        int status;
+        pid_t pid;
+        while ((pid = waitpid(-1, &status, WNOHANG)) > 0)
+        {
+            // Vérifier que le processus a bien terminé.
+            if (!WIFEXITED(status))
+            {
+                continue;
+            }
+            
+            // Récupérer le numéro de la place libérée.
+            int place = WEXITSTATUS(status);
+            voituriers[place - 1] = 0;
+            
+            // Récupérer les informations sur la voiture qui vient de
+            // sortir à partir de la mémoire partagée.
+            voiture_t voiture;
+            
+            // Afficher les informations de sortie.
+            AfficherSortie(
+                    voiture.usager, voiture.numero, voiture.arrivee,
+                    time(NULL)
+            );
+        }
     }
 } //----- fin de GererFinVoiturier
 
-static void InitialiserBarriereSortie(void)
+static void InitialiserBarriereSortie ( void )
 // Mode d'emploi :
 //
 // Contrat :
@@ -95,14 +123,21 @@ static void InitialiserBarriereSortie(void)
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
 
-void BarriereSortie(void)
+void BarriereSortie ( void )
 // Algorithme :
 //
 {
     InitialiserBarriereSortie();
     for (;;)
     {
-        msg_voiture msg;
+        msg_voiture_t msg;
+        pid_t pidVoiturier;
         msgrcv(boiteSGB, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_SORTIE, 0);
+        pidVoiturier = SortirVoiture(msg.place);
+        if (pidVoiturier > 0)
+        {
+            voituriers[msg.place - 1] = pidVoiturier;
+        }
+        
     }
 } //----- fin de BarriereSortie

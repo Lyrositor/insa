@@ -76,7 +76,7 @@ static void EnvoyerMessage (
 // Algorithme :
 //
 {
-    msg_voiture msg = { mtype, usager, numero, place};
+    msg_voiture_t msg = { mtype, usager, numero, place};
     msgsnd(boite, &msg, sizeof(msg) - sizeof(msg.mtype), 0);
 } //----- fin de EnvoyerMessage
 
