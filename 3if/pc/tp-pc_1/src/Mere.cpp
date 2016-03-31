@@ -4,6 +4,7 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 #include <sys/wait.h>
+#include <sys/shm.h>
 
 #include <Heure.h>
 #include <Outils.h>
@@ -21,6 +22,7 @@ int main ()
     size_t MAX_TACHES = NB_BARRIERES + 2;
     pid_t tachesPid[MAX_TACHES];
     size_t taches = 0;
+    int shmRequeteId;
 
     /* --- Initialisation --- */
     InitialiserApplication(terminal);
@@ -30,6 +32,7 @@ int main ()
         msgget(CLE_BARRIERE_EGB, IPC_CREAT | 0600),
         msgget(CLE_BARRIERE_SGB, IPC_CREAT | 0600)
     };
+    //shmRequeteId = shmget(CLE_LISTE_REQUETE, 8 * sizeof(voiture_t), IPC_CREAT | 0600);
     tachesPid[taches++] = ActiverHeure();
 
     if ((tachesPid[taches++] = fork()) == 0)

@@ -71,6 +71,7 @@ static void GererFinVoiturier ( int noSignal )
         int status;
         int place = WEXITSTATUS(status);
 
+        // Mémoire partagée ici
         AfficherPlace(place, PROF, 1, time(NULL));
 
         --nbVoituriers;
@@ -125,6 +126,7 @@ void BarriereEntree(enum TypeBarriere barriere)
 //
 {
     int boite = InitialiserBarriereEntree(barriere);
+    //void* mem = shmat(shmRequeteId, NULL, 0);
 
     for(;;)
     {
@@ -133,6 +135,8 @@ void BarriereEntree(enum TypeBarriere barriere)
         DessinerVoitureBarriere(barriere, msg.usager);
 
         voituriers[nbVoituriers++] = GarerVoiture(barriere);
+        
+        // Mémoire partagée ici
     }
 
 //    DetruireBarriereEntree();

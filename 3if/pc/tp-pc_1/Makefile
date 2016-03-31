@@ -17,7 +17,7 @@ SRC = BarriereEntree.cpp BarriereSortie.cpp Simulateur.cpp
 MAIN = src/Mere.cpp
 OBJ = $(SRC:%.cpp=$(BUILDDIR)/%.o)
 
-LIBS = -lncurses -ltcl -ltp
+LIBS = -ltp -lncurses -ltcl
 LIBPATH = -Llib/ -L/shares/public/tp/tp-multitache
 INCPATH = -Iinclude/ -I/shares/public/tp/tp-multitache
 

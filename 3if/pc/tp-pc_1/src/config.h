@@ -20,6 +20,8 @@ static const key_t CLE_BARRIERE_ABP = ftok(CHEMIN_IPC, 'A');
 static const key_t CLE_BARRIERE_EGB = ftok(CHEMIN_IPC, 'E');
 static const key_t CLE_BARRIERE_SGB = ftok(CHEMIN_IPC, 'S');
 
+static const key_t CLE_LISTE_REQUETE = ftok(CHEMIN_IPC, 'R');
+
 typedef struct {
     long mtype; // Type de message
     TypeUsager usager; // Type de l'usager
