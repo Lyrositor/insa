@@ -71,6 +71,7 @@ int main ()
                 {
                     msgctl(boites[i], IPC_RMID, NULL);
                 }
+                shmctl(shmid, IPC_RMID, 0);
                 TerminerApplication(true);
                 exit(0);
             }

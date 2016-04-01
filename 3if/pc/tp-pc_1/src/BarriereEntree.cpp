@@ -31,7 +31,8 @@
 //---------------------------------------------------- Variables statiques
 static size_t nbVoituriers;
 static pid_t voituriers[NB_PLACES];
-static void* mem;
+static voiture_t* mem;
+static unsigned int compteurVoitures = 0;
 
 //------------------------------------------------------ Fonctions privées
 //static type nom ( liste de paramètres )
@@ -60,7 +61,7 @@ static void DetruireBarriereEntree(int noSignal)
             kill(voituriers[i], SIGUSR2);
         }
         
-        // Détruire l'attache au segment de mémoire partagé
+        // Détachement du segment de mémoire partagé
         shmdt(mem);
 
         exit(0);
@@ -89,12 +90,12 @@ static void GererFinVoiturier(int noSignal)
             }
             
             int place = WEXITSTATUS(status);
-            voituriers[--nbVoituriers] = 0;
+            --nbVoituriers;
+            voituriers[nbVoituriers] = 0;
             
-            // Mémoire partagée ici
-            voiture_t voiture;
+            voiture_t voiture = mem[nbVoituriers];
             
-            AfficherPlace(place, PROF, 1, time(NULL));
+            AfficherPlace(place, voiture.usager, voiture.numero, voiture.arrivee);
         }
     }
 }
@@ -147,17 +148,26 @@ void BarriereEntree(enum TypeBarriere barriere, int shmid)
 //
 {
     int boite = InitialiserBarriereEntree(barriere);
-    mem = shmat(shmid, NULL, 0);
+    mem = (voiture_t*) shmat(shmid, NULL, 0);
 
     for(;;)
     {
         msg_voiture_t msg;
+        
         msgrcv(boite, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_ENTREE, 0);
         DessinerVoitureBarriere(barriere, msg.usager);
 
-        voituriers[nbVoituriers++] = GarerVoiture(barriere);
+        voituriers[nbVoituriers] = GarerVoiture(barriere);
         
-        // Mémoire partagée ici
+        voiture_t voiture;
+        voiture.usager = msg.usager;
+	    voiture.numero = ++compteurVoitures;
+    	voiture.arrivee = time(NULL);
+        mem[nbVoituriers] = voiture;
+        
+        nbVoituriers++;
+        
+        sleep(1);
     }
 
 //    DetruireBarriereEntree();
