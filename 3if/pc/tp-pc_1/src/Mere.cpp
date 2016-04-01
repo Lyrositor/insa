@@ -22,7 +22,7 @@ int main ()
     size_t MAX_TACHES = NB_BARRIERES + 2;
     pid_t tachesPid[MAX_TACHES];
     size_t taches = 0;
-    int shmRequeteId;
+    int shmid;
 
     /* --- Initialisation --- */
     InitialiserApplication(terminal);
@@ -32,7 +32,7 @@ int main ()
         msgget(CLE_BARRIERE_EGB, IPC_CREAT | 0600),
         msgget(CLE_BARRIERE_SGB, IPC_CREAT | 0600)
     };
-    //shmRequeteId = shmget(CLE_LISTE_REQUETE, 8 * sizeof(voiture_t), IPC_CREAT | 0600);
+    shmid = shmget(CLE_PARKING, 8 * sizeof(voiture_t), IPC_CREAT | 0600);
     tachesPid[taches++] = ActiverHeure();
 
     if ((tachesPid[taches++] = fork()) == 0)
@@ -46,7 +46,7 @@ int main ()
         if ((tachesPid[taches++] = fork()) == 0)
         {
             // Fils - Barrière PBP (Blaise Pascal - Profs)
-            BarriereEntree(PROF_BLAISE_PASCAL);
+            BarriereEntree(PROF_BLAISE_PASCAL, shmid);
         }
         else
         {

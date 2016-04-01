@@ -19,12 +19,8 @@
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //--------------------------------------------------- Interfaces utilisées
-#include <stdlib.h>
-#include <sys/msg.h>
-#include <unistd.h>
-
 #include <Outils.h>
-#include "config.h"
+
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -37,7 +33,7 @@
 // Contrat :
 //
 
-void BarriereEntree(enum TypeBarriere barriere);
+void BarriereEntree(enum TypeBarriere barriere, int shmid);
 // Mode d'emploi :
 // Point d'entrée d'une barrière d'entrèe
 // Contrat :

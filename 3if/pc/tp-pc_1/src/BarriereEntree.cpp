@@ -11,12 +11,17 @@
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include système
+#include <stdlib.h>
+#include <unistd.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <sys/msg.h>
+#include <sys/shm.h>
 #include <time.h>
 
 //------------------------------------------------------ Include personnel
 #include "BarriereEntree.h"
+#include "config.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -26,6 +31,7 @@
 //---------------------------------------------------- Variables statiques
 static size_t nbVoituriers;
 static pid_t voituriers[NB_PLACES];
+static void* mem;
 
 //------------------------------------------------------ Fonctions privées
 //static type nom ( liste de paramètres )
@@ -53,12 +59,15 @@ static void DetruireBarriereEntree(int noSignal)
         {
             kill(voituriers[i], SIGUSR2);
         }
+        
+        // Détruire l'attache au segment de mémoire partagé
+        shmdt(mem);
 
         exit(0);
     }
 } //----- fin de DetruireBarriereEntree
 
-static void GererFinVoiturier ( int noSignal )
+static void GererFinVoiturier(int noSignal)
 // Mode d'emploi :
 //
 // Contrat :
@@ -69,16 +78,28 @@ static void GererFinVoiturier ( int noSignal )
     if(noSignal == SIGCHLD)
     {
         int status;
-        int place = WEXITSTATUS(status);
-
-        // Mémoire partagée ici
-        AfficherPlace(place, PROF, 1, time(NULL));
-
-        --nbVoituriers;
+        pid_t pid;
+        
+        while ((pid = waitpid(-1, &status, WNOHANG)) > 0)
+        {
+            // Vérification de fin du processus
+            if (!WIFEXITED(status))
+            {
+                continue;
+            }
+            
+            int place = WEXITSTATUS(status);
+            voituriers[--nbVoituriers] = 0;
+            
+            // Mémoire partagée ici
+            voiture_t voiture;
+            
+            AfficherPlace(place, PROF, 1, time(NULL));
+        }
     }
 }
 
-static int InitialiserBarriereEntree ( enum TypeBarriere barriere )
+static int InitialiserBarriereEntree(enum TypeBarriere barriere)
 // Mode d'emploi :
 //
 // Contrat :
@@ -121,12 +142,12 @@ static int InitialiserBarriereEntree ( enum TypeBarriere barriere )
 //{
 //} //----- fin de Nom
 
-void BarriereEntree(enum TypeBarriere barriere)
+void BarriereEntree(enum TypeBarriere barriere, int shmid)
 // Algorithme :
 //
 {
     int boite = InitialiserBarriereEntree(barriere);
-    //void* mem = shmat(shmRequeteId, NULL, 0);
+    mem = shmat(shmid, NULL, 0);
 
     for(;;)
     {
