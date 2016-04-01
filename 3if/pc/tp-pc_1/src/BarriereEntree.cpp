@@ -80,27 +80,21 @@ static void GererFinVoiturier(int noSignal)
     {
         int status;
         pid_t pid;
+        int place;
         
-        while ((pid = waitpid(-1, &status, WNOHANG)) > 0)
-        {
-            // Vérification de fin du processus
-            if (!WIFEXITED(status))
-            {
-                continue;
-            }
-            
-            int place = WEXITSTATUS(status);
-            --nbVoituriers;
-            voituriers[nbVoituriers] = 0;
-            
-            voiture_t voiture = mem[nbVoituriers];
-            
-            AfficherPlace(place, voiture.usager, voiture.numero, voiture.arrivee);
-        }
+        pid = wait(&status);
+                
+        place = WEXITSTATUS(status);
+        --nbVoituriers;
+        voituriers[nbVoituriers] = 0;
+        
+        voiture_t voiture = mem[nbVoituriers];
+        
+        AfficherPlace(place, voiture.usager, voiture.numero, voiture.arrivee);
     }
 }
 
-static int InitialiserBarriereEntree(enum TypeBarriere barriere)
+static int InitialiserBarriereEntree(enum TypeBarriere barriere, int shmid)
 // Mode d'emploi :
 //
 // Contrat :
@@ -108,20 +102,24 @@ static int InitialiserBarriereEntree(enum TypeBarriere barriere)
 // Algorithme :
 //
 {
-    // Gérer le signal de destruction de la tâche.
+    // Gérer le signal de destruction de la tâche
     struct sigaction actionDetruire;
     actionDetruire.sa_handler = DetruireBarriereEntree;
     sigemptyset(&actionDetruire.sa_mask);
     actionDetruire.sa_flags = 0;
     sigaction(SIGUSR2, &actionDetruire, NULL);
 
-    // Gérer le signal de fin d'un voiturier.
+    // Gérer le signal de fin d'un voiturier
     struct sigaction actionFinVoiturier;
     actionFinVoiturier.sa_handler = GererFinVoiturier;
     sigemptyset(&actionFinVoiturier.sa_mask);
     actionFinVoiturier.sa_flags = 0;
     sigaction(SIGCHLD, &actionFinVoiturier, NULL);
+    
+    // Attachement au segment de mémoire partagé
+    mem = (voiture_t*) shmat(shmid, NULL, 0);
 
+    // Détermine la boite de message suivant le type de barrière
     switch(barriere)
     {
         case PROF_BLAISE_PASCAL:
@@ -147,9 +145,8 @@ void BarriereEntree(enum TypeBarriere barriere, int shmid)
 // Algorithme :
 //
 {
-    int boite = InitialiserBarriereEntree(barriere);
-    mem = (voiture_t*) shmat(shmid, NULL, 0);
-
+    int boite = InitialiserBarriereEntree(barriere, shmid);
+    
     for(;;)
     {
         msg_voiture_t msg;
@@ -170,6 +167,7 @@ void BarriereEntree(enum TypeBarriere barriere, int shmid)
         sleep(1);
     }
 
-//    DetruireBarriereEntree();
+    // DetruireBarriereEntree();
+    
 } //----- fin de BarriereEntree
 

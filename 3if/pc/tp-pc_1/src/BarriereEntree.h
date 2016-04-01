@@ -37,6 +37,6 @@ void BarriereEntree(enum TypeBarriere barriere, int shmid);
 // Mode d'emploi :
 // Point d'entrée d'une barrière d'entrèe
 // Contrat :
-//
+// (auncun)
 
 #endif // BARRIERE_ENTREE_H
