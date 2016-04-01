@@ -22,7 +22,6 @@ int main ()
     size_t MAX_TACHES = NB_BARRIERES + 2;
     pid_t tachesPid[MAX_TACHES];
     size_t taches = 0;
-    int shmid;
 
     /* --- Initialisation --- */
     InitialiserApplication(terminal);
@@ -32,13 +31,13 @@ int main ()
         msgget(CLE_BARRIERE_EGB, IPC_CREAT | 0600),
         msgget(CLE_BARRIERE_SGB, IPC_CREAT | 0600)
     };
-    shmid = shmget(CLE_PARKING, 8 * sizeof(voiture_t), IPC_CREAT | 0600);
+    int shmid = shmget(CLE_PARKING, 8 * sizeof(voiture_t), IPC_CREAT | 0600);
     tachesPid[taches++] = ActiverHeure();
 
     if ((tachesPid[taches++] = fork()) == 0)
     {
         // Fils - Barrière S (Sortie)
-        BarriereSortie();
+        BarriereSortie(shmid);
     }
     else
     {
@@ -67,6 +66,7 @@ int main ()
                 {
                     kill(tachesPid[--taches], SIGUSR2);
                 }
+                shmctl(shmid, IPC_RMID, NULL);
                 for (size_t i = 0; i < NB_BARRIERES; i++)
                 {
                     msgctl(boites[i], IPC_RMID, NULL);

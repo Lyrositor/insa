@@ -27,7 +27,7 @@
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
 
-void BarriereSortie( void );
+void BarriereSortie( int _shmid );
 // Mode d'emploi :
 // Point d'entrée de la tâche pour la barrière de sortie.
 // Contrat :

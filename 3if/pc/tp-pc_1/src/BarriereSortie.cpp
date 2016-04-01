@@ -31,6 +31,7 @@
 //---------------------------------------------------- Variables statiques
 
 static int boiteSGB;
+static int shmid;
 static pid_t voituriers[NB_PLACES];
 
 //------------------------------------------------------ Fonctions privées
@@ -95,7 +96,7 @@ static void GererFinVoiturier ( int noSignal )
     }
 } //----- fin de GererFinVoiturier
 
-static void InitialiserBarriereSortie ( void )
+static void InitialiserBarriereSortie ( int _shmid )
 // Mode d'emploi :
 //
 // Contrat :
@@ -103,6 +104,8 @@ static void InitialiserBarriereSortie ( void )
 // Algorithme :
 //
 {
+    shmid = _shmid;
+    
     // Gérer le signal de destruction de la tâche.
     struct sigaction actionDetruire;
     actionDetruire.sa_handler = DetruireBarriereSortie;
@@ -123,11 +126,11 @@ static void InitialiserBarriereSortie ( void )
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
 
-void BarriereSortie ( void )
+void BarriereSortie ( int _shmid )
 // Algorithme :
 //
 {
-    InitialiserBarriereSortie();
+    InitialiserBarriereSortie(_shmid);
     for (;;)
     {
         msg_voiture_t msg;
