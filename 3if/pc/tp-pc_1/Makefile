@@ -13,7 +13,7 @@ DEFINITIONS = -DNDEBUG -DMAP
 
 BUILDDIR = bin
 SRCDIR = src
-SRC = BarriereEntree.cpp BarriereSortie.cpp Simulateur.cpp Utils.cpp
+SRC = BarriereEntree.cpp BarriereSortie.cpp Config.cpp Simulateur.cpp Utils.cpp
 MAIN = src/Mere.cpp
 OBJ = $(SRC:%.cpp=$(BUILDDIR)/%.o)
 
@@ -39,6 +39,6 @@ $(BIN): $(OBJ) $(MAIN)
 	$(MK_D)
 	$(CXX) $(CXXFLAGS) $^ $(OUTPUT) $@ $(INCPATH) $(DEFINITIONS) $(LIBPATH) $(LIBS)
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(SRCDIR)/%.h Config.h
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(SRCDIR)/%.h $(SRCDIR)/Config.h
 	$(MK_D)
 	$(MK_MODULE)
