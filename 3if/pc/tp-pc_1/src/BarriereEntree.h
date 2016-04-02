@@ -33,7 +33,7 @@
 // Contrat :
 //
 
-void BarriereEntree(enum TypeBarriere barriere, int shmid);
+void BarriereEntree ( enum TypeBarriere barriere );
 // Mode d'emploi :
 // Point d'entrée d'une barrière d'entrèe
 // Contrat :

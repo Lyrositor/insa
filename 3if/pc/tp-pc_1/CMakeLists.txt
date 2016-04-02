@@ -12,7 +12,7 @@ set(TP-PC1_MAIN src/Mere.cpp)
 set(TP-PC1_SOURCES
         src/BarriereEntree.cpp
         src/BarriereSortie.cpp
-        src/Simulateur.cpp)
+        src/Simulateur.cpp src/Utils.cpp src/Config.cpp)
 
 # Check if the MAP option is set
 if (TP-PC_MAP)

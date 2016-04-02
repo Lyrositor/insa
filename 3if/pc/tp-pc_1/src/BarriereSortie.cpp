@@ -14,6 +14,7 @@
 
 #include <signal.h>
 #include <sys/msg.h>
+#include <sys/shm.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <time.h>
@@ -21,7 +22,8 @@
 //------------------------------------------------------ Include personnel
 
 #include "BarriereSortie.h"
-#include "config.h"
+#include "Config.h"
+#include "Utils.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -30,11 +32,17 @@
 
 //---------------------------------------------------- Variables statiques
 
-static int boiteSGB;
-static int shmid;
+static int semId;
+static int shmId;
 static pid_t voituriers[NB_PLACES];
 
 //------------------------------------------------------ Fonctions privées
+
+static bool operator > (requete_t requete1, requete_t requete2) {
+    return requete1.usager != AUCUN && (requete2.usager == AUCUN ||
+            (requete1.usager == PROF && requete2.usager == AUTRE) ||
+            requete1.arrivee < requete2.arrivee);
+}
 
 static void DetruireBarriereSortie ( int noSignal )
 // Mode d'emploi :
@@ -70,24 +78,46 @@ static void GererFinVoiturier ( int noSignal )
     if (noSignal == SIGCHLD)
     {
         int status;
-        pid_t pid;
-        while ((pid = waitpid(-1, &status, WNOHANG)) > 0)
+        while (waitpid(-1, &status, WNOHANG) > 0)
         {
             // Vérifier que le processus a bien terminé.
             if (!WIFEXITED(status))
             {
                 continue;
             }
-            
+
             // Récupérer le numéro de la place libérée.
             int place = WEXITSTATUS(status);
             voituriers[place - 1] = 0;
-            
+
             // Récupérer les informations sur la voiture qui vient de
             // sortir à partir de la mémoire partagée.
-            voiture_t voiture;
-            
+            memoire_partagee_t * mem = AttacherMemoirePartagee(shmId, semId);
+            voiture_t voiture = mem->places[place - 1];
+            mem->places[place - 1] = PLACE_VIDE;
+
+            // Traiter les requêtes des barrières
+            TypeBarriere barriere = AUCUNE;
+            for (size_t i = 0; i < NB_BARRIERES_ENTREE; i++)
+            {
+                if (barriere == AUCUNE ||
+                        mem->requetes[i] > mem->requetes[barriere - 1])
+                {
+                    barriere = (TypeBarriere) (i + 1);
+                }
+            }
+            if (barriere != AUCUNE)
+            {
+                mem->requetes[barriere - 1] = REQUETE_VIDE;
+                sembuf autoriser = SEM_BARRIERE_AUTORISER;
+                autoriser.sem_num = barriere;
+                semop(semId, &autoriser, 1);
+            }
+
+            DetacherMemoirePartagee(semId, mem);
+
             // Afficher les informations de sortie.
+            Effacer((TypeZone) place);
             AfficherSortie(
                     voiture.usager, voiture.numero, voiture.arrivee,
                     time(NULL)
@@ -96,7 +126,7 @@ static void GererFinVoiturier ( int noSignal )
     }
 } //----- fin de GererFinVoiturier
 
-static void InitialiserBarriereSortie ( int _shmid )
+static int InitialiserBarriereSortie ( enum TypeBarriere barriere )
 // Mode d'emploi :
 //
 // Contrat :
@@ -104,8 +134,9 @@ static void InitialiserBarriereSortie ( int _shmid )
 // Algorithme :
 //
 {
-    shmid = _shmid;
-    
+    semId = semget(CLE_SEMAPHORE, 1, 0600);
+    shmId = shmget(CLE_MEMOIRE_PARTAGEE, sizeof(memoire_partagee_t), 0600);
+
     // Gérer le signal de destruction de la tâche.
     struct sigaction actionDetruire;
     actionDetruire.sa_handler = DetruireBarriereSortie;
@@ -120,27 +151,28 @@ static void InitialiserBarriereSortie ( int _shmid )
     actionFinVoiturier.sa_flags = 0;
     sigaction(SIGCHLD, &actionFinVoiturier, NULL);
 
-    boiteSGB = msgget(CLE_BARRIERE_SGB, 0600);
+    return msgget(CLE_BARRIERES[barriere - 1], 0600);
+
 } //----- fin de InitialiserBarriereSortie
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
 
-void BarriereSortie ( int _shmid )
+void BarriereSortie ( enum TypeBarriere barriere )
 // Algorithme :
 //
 {
-    InitialiserBarriereSortie(_shmid);
+    int fileId = InitialiserBarriereSortie(barriere);
     for (;;)
     {
         msg_voiture_t msg;
         pid_t pidVoiturier;
-        msgrcv(boiteSGB, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_SORTIE, 0);
+        msgrcv(fileId, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_SORTIE, 0);
         pidVoiturier = SortirVoiture(msg.place);
         if (pidVoiturier > 0)
         {
             voituriers[msg.place - 1] = pidVoiturier;
         }
-        
+
     }
 } //----- fin de BarriereSortie

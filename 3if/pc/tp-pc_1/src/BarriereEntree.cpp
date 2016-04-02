@@ -11,17 +11,17 @@
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //-------------------------------------------------------- Include système
-#include <stdlib.h>
-#include <unistd.h>
 #include <signal.h>
-#include <sys/wait.h>
+#include <stdlib.h>
 #include <sys/msg.h>
 #include <sys/shm.h>
+#include <sys/wait.h>
 #include <time.h>
+#include <unistd.h>
 
 //------------------------------------------------------ Include personnel
 #include "BarriereEntree.h"
-#include "config.h"
+#include "Config.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -29,9 +29,10 @@
 //------------------------------------------------------------------ Types
 
 //---------------------------------------------------- Variables statiques
-static size_t nbVoituriers;
+static unsigned int nbVoituriers = 0;
 static pid_t voituriers[NB_PLACES];
-static voiture_t* mem;
+static int semId;
+static int shmId;
 static unsigned int compteurVoitures = 0;
 
 //------------------------------------------------------ Fonctions privées
@@ -45,7 +46,7 @@ static unsigned int compteurVoitures = 0;
 //{
 //} //----- fin de nom
 
-static void DetruireBarriereEntree(int noSignal)
+static void DetruireBarriereEntree ( int noSignal )
 // Mode d'emploi :
 //
 // Contrat :
@@ -55,20 +56,17 @@ static void DetruireBarriereEntree(int noSignal)
 {
     if (noSignal == SIGUSR2)
     {
-        // Tuer tous les voituriers qui tournent encore
+        // Tuer tous les voituriers qui tournent encore.
         for (size_t i = 0; i < nbVoituriers; i++)
         {
             kill(voituriers[i], SIGUSR2);
         }
-        
-        // Détachement du segment de mémoire partagé
-        shmdt(mem);
 
         exit(0);
     }
 } //----- fin de DetruireBarriereEntree
 
-static void GererFinVoiturier(int noSignal)
+static void GererFinVoiturier ( int noSignal )
 // Mode d'emploi :
 //
 // Contrat :
@@ -76,25 +74,29 @@ static void GererFinVoiturier(int noSignal)
 // Algorithme :
 //
 {
-    if(noSignal == SIGCHLD)
+    if (noSignal == SIGCHLD)
     {
         int status;
-        pid_t pid;
-        int place;
-        
-        pid = wait(&status);
-                
-        place = WEXITSTATUS(status);
-        --nbVoituriers;
-        voituriers[nbVoituriers] = 0;
-        
-        voiture_t voiture = mem[nbVoituriers];
-        
-        AfficherPlace(place, voiture.usager, voiture.numero, voiture.arrivee);
+        pid_t pid = wait(&status);
+
+        // Vérifier que le processus a bien terminé.
+        if (!WIFEXITED(status))
+        {
+            return;
+        }
+
+        int place = WEXITSTATUS(status);
+        nbVoituriers--;
+        // TODO: Remplacer le tableau des pid des voituriers par une map
+        // associant chaque pid à une voiture_t ; quand le voiturier termine,
+        // il faut recopier la voiture_t dans la mémoire partagée et la
+        // supprimer de la map.
+
+        //AfficherPlace(place, voiture.usager, voiture.numero, voiture.arrivee);
     }
 }
 
-static int InitialiserBarriereEntree(enum TypeBarriere barriere, int shmid)
+static int InitialiserBarriereEntree ( enum TypeBarriere barriere )
 // Mode d'emploi :
 //
 // Contrat :
@@ -102,6 +104,9 @@ static int InitialiserBarriereEntree(enum TypeBarriere barriere, int shmid)
 // Algorithme :
 //
 {
+    semId = semget(CLE_SEMAPHORE, 1, 0600);
+    shmId = shmget(CLE_MEMOIRE_PARTAGEE, sizeof(memoire_partagee_t), 0600);
+
     // Gérer le signal de destruction de la tâche
     struct sigaction actionDetruire;
     actionDetruire.sa_handler = DetruireBarriereEntree;
@@ -115,22 +120,9 @@ static int InitialiserBarriereEntree(enum TypeBarriere barriere, int shmid)
     sigemptyset(&actionFinVoiturier.sa_mask);
     actionFinVoiturier.sa_flags = 0;
     sigaction(SIGCHLD, &actionFinVoiturier, NULL);
-    
-    // Attachement au segment de mémoire partagé
-    mem = (voiture_t*) shmat(shmid, NULL, 0);
 
     // Détermine la boite de message suivant le type de barrière
-    switch(barriere)
-    {
-        case PROF_BLAISE_PASCAL:
-            return msgget(CLE_BARRIERE_PBP, 0600);
-        case AUTRE_BLAISE_PASCAL:
-            return msgget(CLE_BARRIERE_ABP, 0600);
-        case ENTREE_GASTON_BERGER:
-            return msgget(CLE_BARRIERE_EGB, 0600);
-        default:
-            return 0;
-    }
+    return msgget(CLE_BARRIERES[barriere - 1], 0600);
 } //----- fin de InitialiserBarriereEntree
 
 //////////////////////////////////////////////////////////////////  PUBLIC
@@ -141,33 +133,36 @@ static int InitialiserBarriereEntree(enum TypeBarriere barriere, int shmid)
 //{
 //} //----- fin de Nom
 
-void BarriereEntree(enum TypeBarriere barriere, int shmid)
+void BarriereEntree ( enum TypeBarriere barriere )
 // Algorithme :
 //
 {
-    int boite = InitialiserBarriereEntree(barriere, shmid);
-    
+    int boite = InitialiserBarriereEntree(barriere);
+
     for(;;)
     {
         msg_voiture_t msg;
-        
+
         msgrcv(boite, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_ENTREE, 0);
         DessinerVoitureBarriere(barriere, msg.usager);
 
-        voituriers[nbVoituriers] = GarerVoiture(barriere);
-        
+        // TODO: S'il n'y a pas de place, écrire la requête dans la mémoire
+        // partagée, afficher la requête, enlever un jeton du sémaphore et
+        // attendre qu'il soit remis, puis effacer la requête (de
+        // l'affichage ; la barrière aura déjà enlevé la requête de la
+        // mémoire partagée). Stocker le voiturier dans une map.
+
+        /*voituriers[nbVoituriers] = GarerVoiture(barriere);
+
         voiture_t voiture;
         voiture.usager = msg.usager;
-	    voiture.numero = ++compteurVoitures;
-    	voiture.arrivee = time(NULL);
+        voiture.numero = msg.numero;
+        voiture.arrivee = time(NULL);
         mem[nbVoituriers] = voiture;
-        
-        nbVoituriers++;
-        
+
+        nbVoituriers++;*/
+
         sleep(1);
     }
-
-    // DetruireBarriereEntree();
-    
 } //----- fin de BarriereEntree
 

@@ -19,6 +19,7 @@
 
 /////////////////////////////////////////////////////////////////  INCLUDE
 //--------------------------------------------------- Interfaces utilisées
+#include <Outils.h>
 
 //------------------------------------------------------------- Constantes
 
@@ -27,7 +28,7 @@
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
 
-void BarriereSortie( int _shmid );
+void BarriereSortie ( enum TypeBarriere barriere );
 // Mode d'emploi :
 // Point d'entrée de la tâche pour la barrière de sortie.
 // Contrat :
