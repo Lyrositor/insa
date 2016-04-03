@@ -18,10 +18,12 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
+#include <map>
 
 //------------------------------------------------------ Include personnel
 #include "BarriereEntree.h"
 #include "Config.h"
+#include "Utils.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -30,10 +32,9 @@
 
 //---------------------------------------------------- Variables statiques
 static unsigned int nbVoituriers = 0;
-static pid_t voituriers[NB_PLACES];
+static map<pid_t, voiture_t> voituriers;
 static int semId;
 static int shmId;
-static unsigned int compteurVoitures = 0;
 
 //------------------------------------------------------ Fonctions privées
 //static type nom ( liste de paramètres )
@@ -56,10 +57,17 @@ static void DetruireBarriereEntree ( int noSignal )
 {
     if (noSignal == SIGUSR2)
     {
-        // Tuer tous les voituriers qui tournent encore.
-        for (size_t i = 0; i < nbVoituriers; i++)
+        // Tuer tous les voituriers qui tournent encore
+        map<pid_t, voiture_t>::iterator it;
+        for(it = voituriers.begin(); it != voituriers.end(); it++)
         {
-            kill(voituriers[i], SIGUSR2);
+            kill(it->first, SIGUSR2);
+        }
+        
+        // Attendre que les voituriers aient bien terminé
+        for(it = voituriers.begin(); it != voituriers.end(); it++)
+        {
+            waitpid(it->first, NULL, 0);
         }
 
         exit(0);
@@ -79,20 +87,27 @@ static void GererFinVoiturier ( int noSignal )
         int status;
         pid_t pid = wait(&status);
 
-        // Vérifier que le processus a bien terminé.
-        if (!WIFEXITED(status))
+        /*// Vérifier que le processus a bien terminé
+        while (!WIFEXITED(status))
         {
-            return;
-        }
+        }*/
 
         int place = WEXITSTATUS(status);
-        nbVoituriers--;
+        
         // TODO: Remplacer le tableau des pid des voituriers par une map
         // associant chaque pid à une voiture_t ; quand le voiturier termine,
         // il faut recopier la voiture_t dans la mémoire partagée et la
-        // supprimer de la map.
+        // supprimer de la map
+        
+        voiture_t voiture = voituriers.find(pid)->second;
 
-        //AfficherPlace(place, voiture.usager, voiture.numero, voiture.arrivee);
+        memoire_partagee_t* mem = AttacherMemoirePartagee(shmId, semId); // /!\ BUG -> Ne passe jamais cette ligne
+        mem->places[place - 1] = voiture;
+
+        DetacherMemoirePartagee(semId, mem);
+        voituriers.erase(pid);
+
+        AfficherPlace(place, voiture.usager, voiture.numero, voiture.arrivee);
     }
 }
 
@@ -151,16 +166,57 @@ void BarriereEntree ( enum TypeBarriere barriere )
         // attendre qu'il soit remis, puis effacer la requête (de
         // l'affichage ; la barrière aura déjà enlevé la requête de la
         // mémoire partagée). Stocker le voiturier dans une map.
-
-        /*voituriers[nbVoituriers] = GarerVoiture(barriere);
-
+        
+        /*memoire_partagee_t* mem = AttacherMemoirePartagee(shmId, semId);
+        bool isRequete = true;
+        for(int i = 0; i < NB_PLACES; i++)
+        {
+            if(&mem->places[i] == &PLACE_VIDE)
+            {
+                isRequete = false;
+            }
+        }*/
+        
         voiture_t voiture;
         voiture.usager = msg.usager;
         voiture.numero = msg.numero;
         voiture.arrivee = time(NULL);
-        mem[nbVoituriers] = voiture;
+        
+        /*// Pas de place disponible : requete !
+        if(isRequete == true)
+        {
+            requete_t requete;
+            requete.usager = voiture.usager;
+            requete.arrivee = voiture.arrivee;
+            mem->requetes[barriere] = requete;
+            DetacherMemoirePartagee(semId, mem);
+            
+            sembuf verrouiller = SEM_BARRIERE_RESERVER;
+            AfficherRequete(barriere, msg.usager, time(NULL));
+            while (semop(semId, &verrouiller, 1) < 0);
+            switch(barriere)
+            {
+                case PROF_BLAISE_PASCAL:
+                    Effacer(REQUETE_R1);
+                    break;
+                case AUTRE_BLAISE_PASCAL:
+                    Effacer(REQUETE_R2);
+                    break;
+                case ENTREE_GASTON_BERGER:
+                    Effacer(REQUETE_R3);
+                    break;
+                default:
+                   break;
+            }
+        }
+        else
+        {
+            DetacherMemoirePartagee(semId, mem);
+        }*/
 
-        nbVoituriers++;*/
+        pid_t voiturier = GarerVoiture(barriere);
+        
+        voituriers.insert(pair<pid_t, voiture_t>(voiturier, voiture));
 
         sleep(1);
     }

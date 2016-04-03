@@ -68,7 +68,7 @@ int main ()
         // Père
         if ((tachesPid[taches++] = fork()) == 0)
         {
-            // Fils - Barrière PBP (Blaise Pascal - Profs)
+            // Fils - Barrière Entrée (Blaise Pascal - Profs)
             BarriereEntree(PROF_BLAISE_PASCAL);
         }
         else
@@ -76,7 +76,7 @@ int main ()
             // Père
             if ((tachesPid[taches++] = fork()) == 0)
             {
-                // Fils - Barrière PBP (Blaise Pascal - Profs)
+                // Fils - Barrière Entrée (Blaise Pascal - Autres)
                 BarriereEntree(AUTRE_BLAISE_PASCAL);
             }
             else
@@ -84,7 +84,7 @@ int main ()
                 // Père
                 if ((tachesPid[taches++] = fork()) == 0)
                 {
-                    // Fils - Barrière PBP (Blaise Pascal - Profs)
+                    // Fils - Barrière Entrée (Gaston Berger)
                     BarriereEntree(ENTREE_GASTON_BERGER);
                 }
                 else
