@@ -152,7 +152,7 @@ void BarriereEntree ( enum TypeBarriere barriere )
             requete_t requete;
             requete.usager = voiture.usager;
             requete.arrivee = voiture.arrivee;
-            mem->requetes[barriere] = requete;
+            mem->requetes[barriere - 1] = requete;
             DetacherMemoirePartagee(semId, mem);
             AfficherRequete(barriere, requete.usager, time(NULL));
 
@@ -165,6 +165,7 @@ void BarriereEntree ( enum TypeBarriere barriere )
         DetacherMemoirePartagee(semId, mem);
 
         pid_t voiturier = GarerVoiture(barriere);
+        voiture.arrivee = time(NULL);
         voituriers[voiturier] = voiture;
 
         sleep(TEMPO);

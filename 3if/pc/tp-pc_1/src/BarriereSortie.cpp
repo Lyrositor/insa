@@ -37,8 +37,8 @@ static int shmId;
 static pid_t voituriers[NB_PLACES];
 
 //------------------------------------------------------ Fonctions privées
-
-static bool operator > ( requete_t requete1, requete_t requete2 )
+#include <iostream>
+static bool operator >= ( requete_t requete1, requete_t requete2 )
 // Mode d'emploi :
 //
 // Contrat :
@@ -46,9 +46,28 @@ static bool operator > ( requete_t requete1, requete_t requete2 )
 // Algorithme :
 //
 {
-    return requete1.usager != AUCUN && (requete2.usager == AUCUN ||
-            (requete1.usager == PROF && requete2.usager == AUTRE) ||
-            requete1.arrivee < requete2.arrivee);
+    if (requete1.usager == AUCUN)
+    {
+        return false;
+    }
+    if (requete2.usager == AUCUN)
+    {
+        return true;
+    }
+    if (requete1.usager == PROF && requete2.usager == AUTRE)
+    {
+        return true;
+    }
+    if (requete1.usager == AUTRE && requete2.usager == PROF)
+    {
+        return false;
+    }
+    if (requete1.usager == requete2.usager &&
+            requete1.arrivee <= requete2.arrivee)
+    {
+        return true;
+    }
+    return false;
 } //----- fin de operator >
 
 static void DetruireBarriereSortie ( int noSignal )
@@ -108,9 +127,11 @@ static void GererFinVoiturier ( int noSignal )
             TypeBarriere barriere = AUCUNE;
             for (size_t i = 0; i < NB_BARRIERES_ENTREE; i++)
             {
-                if (barriere == AUCUNE ||
-                        mem->requetes[i] > mem->requetes[barriere - 1])
+                if (mem->requetes[i].usager != AUCUN && (
+                        barriere == AUCUNE ||
+                        mem->requetes[i] >= mem->requetes[barriere - 1]))
                 {
+Afficher(MESSAGE, i);
                     barriere = (TypeBarriere) (i + 1);
                 }
             }
