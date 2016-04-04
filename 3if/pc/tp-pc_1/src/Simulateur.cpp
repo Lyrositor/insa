@@ -109,6 +109,7 @@ void Commande ( char code, unsigned int valeur )
     case 'E':
         DetruireSimulateur();
         break;
+
     case 'p':
     case 'P':
         switch (valeur)
@@ -120,35 +121,33 @@ void Commande ( char code, unsigned int valeur )
                 fileId = ENTREE_GASTON_BERGER - 1;
                 break;
             default:
-                Afficher(MESSAGE, "Erreur : barrière non reconnue");
                 return;
         }
-        EnvoyerMessage(filesId[fileId], MSG_ENTREE, PROF, nbVoiture++, 0);
-        nbVoiture %= MAX_NUM_VOITURE;
+        EnvoyerMessage(filesId[fileId], MSG_ENTREE, PROF, 1 + nbVoiture++ % MAX_NUM_VOITURE, 0);
         break;
+
     case 'a':
     case 'A':
         switch (valeur)
         {
-        case 1:
-            fileId = AUTRE_BLAISE_PASCAL - 1;
-            break;
-        case 2:
-            fileId = ENTREE_GASTON_BERGER - 1;
-            break;
-        default:
-            Afficher(MESSAGE, "Erreur : barrière non reconnue");
-            return;
+            case 1:
+                fileId = AUTRE_BLAISE_PASCAL - 1;
+                break;
+            case 2:
+                fileId = ENTREE_GASTON_BERGER - 1;
+                break;
+            default:
+                return;
         }
-            EnvoyerMessage(filesId[fileId], MSG_ENTREE, AUTRE, nbVoiture++, 0);
-        nbVoiture %= MAX_NUM_VOITURE;
+        EnvoyerMessage(filesId[fileId], MSG_ENTREE, AUTRE, 1 + nbVoiture++ % MAX_NUM_VOITURE, 0);
         break;
+
     case 's':
     case 'S':
         EnvoyerMessage(filesId[SORTIE_GASTON_BERGER - 1], MSG_SORTIE, AUCUN, 0, valeur);
         break;
+
     default:
-        Afficher(MESSAGE, "Erreur : commande non reconnue");
         break;
 	}
 } //----- fin de Commande
