@@ -31,7 +31,6 @@
 //------------------------------------------------------------------ Types
 
 //---------------------------------------------------- Variables statiques
-static unsigned int nbVoituriers = 0;
 static map<pid_t, voiture_t> voituriers;
 static int semId;
 static int shmId;
@@ -169,22 +168,24 @@ void BarriereEntree ( enum TypeBarriere barriere )
         // l'affichage ; la barrière aura déjà enlevé la requête de la
         // mémoire partagée). Stocker le voiturier dans une map.
         
-        /*memoire_partagee_t* mem = AttacherMemoirePartagee(shmId, semId);
+        memoire_partagee_t* mem = AttacherMemoirePartagee(semId, shmId);
         bool isRequete = true;
         for(int i = 0; i < NB_PLACES; i++)
         {
-            if(&mem->places[i] == &PLACE_VIDE)
+            if(mem->places[i].usager == PLACE_VIDE.usager
+                && mem->places[i].numero == PLACE_VIDE.numero
+                && mem->places[i].arrivee == PLACE_VIDE.arrivee) // PLACE_VIDE
             {
                 isRequete = false;
             }
-        }*/
+        }
         
         voiture_t voiture;
         voiture.usager = msg.usager;
         voiture.numero = msg.numero;
         voiture.arrivee = time(NULL);
         
-        /*// Pas de place disponible : requete !
+        // Pas de place disponible : requete !
         if(isRequete == true)
         {
             requete_t requete;
@@ -195,7 +196,7 @@ void BarriereEntree ( enum TypeBarriere barriere )
             
             sembuf verrouiller = SEM_BARRIERE_RESERVER;
             AfficherRequete(barriere, msg.usager, time(NULL));
-            while (semop(semId, &verrouiller, 1) < 0);
+            while(semop(semId, &verrouiller, 1) < 0);
             switch(barriere)
             {
                 case PROF_BLAISE_PASCAL:
@@ -214,13 +215,13 @@ void BarriereEntree ( enum TypeBarriere barriere )
         else
         {
             DetacherMemoirePartagee(semId, mem);
-        }*/
+        }
 
         pid_t voiturier = GarerVoiture(barriere);
         
         voituriers.insert(pair<pid_t, voiture_t>(voiturier, voiture));
 
-        sleep(1);
+        sleep(TEMPO);
     }
 } //----- fin de BarriereEntree
 

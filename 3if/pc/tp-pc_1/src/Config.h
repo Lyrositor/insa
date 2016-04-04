@@ -19,6 +19,7 @@
 const char * const CHEMIN_IPC = "Parking";
 const int MAX_NUM_VOITURE = 999;
 const int DROITS = 0660;
+const int TEMPO = 1;
 
 // Files de messages
 typedef struct {
