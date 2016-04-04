@@ -167,7 +167,10 @@ void BarriereSortie ( enum TypeBarriere barriere )
     {
         msg_voiture_t msg;
         pid_t pidVoiturier;
-        msgrcv(fileId, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_SORTIE, 0);
+        if (msgrcv(fileId, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_SORTIE, 0) < 0)
+        {
+            continue;
+        }
         pidVoiturier = SortirVoiture(msg.place);
         if (pidVoiturier > 0)
         {

@@ -156,7 +156,11 @@ void BarriereEntree ( enum TypeBarriere barriere )
     {
         msg_voiture_t msg;
 
-        msgrcv(boite, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_ENTREE, 0);
+        if (msgrcv(boite, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_ENTREE, 0) < 0)
+        {
+            continue;
+        }
+
         DessinerVoitureBarriere(barriere, msg.usager);
 
         // TODO: S'il n'y a pas de place, écrire la requête dans la mémoire
