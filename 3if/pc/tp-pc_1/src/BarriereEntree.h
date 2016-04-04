@@ -27,16 +27,10 @@
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-// type Nom ( liste de paramètres );
-// Mode d'emploi :
-//
-// Contrat :
-//
-
 void BarriereEntree ( enum TypeBarriere barriere );
 // Mode d'emploi :
 // Point d'entrée d'une barrière d'entrèe
 // Contrat :
-// (auncun)
+// (aucun)
 
 #endif // BARRIERE_ENTREE_H

@@ -1,10 +1,10 @@
-#include <stdlib.h>
-#include <unistd.h>
 #include <signal.h>
+#include <stdlib.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
-#include <sys/wait.h>
 #include <sys/shm.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include <Heure.h>
 #include <Outils.h>
@@ -19,8 +19,11 @@ int main ()
     /* --- Initialisation --- */
 
     // Initialisation de l'application
-    //enum TypeTerminal terminal = XTERM;
+#ifdef AFFICHAGE_XTERM
+    enum TypeTerminal terminal = XTERM;
+#else // AFFICHAGE_XTERM
     enum TypeTerminal terminal = VT220;
+#endif // AFFICHAGE_XTERM
     InitialiserApplication(terminal);
     size_t MAX_TACHES = NB_BARRIERES + 2;
     pid_t tachesPid[MAX_TACHES];
@@ -46,6 +49,7 @@ int main ()
     // requête envoyée
     int shmId = shmget(CLE_MEMOIRE_PARTAGEE, sizeof(memoire_partagee_t), IPC_CREAT | DROITS);
     memoire_partagee_t * mem = (memoire_partagee_t *) shmat(shmId, NULL, 0);
+    mem->placesOccupees = 0;
     for (size_t i = 0; i < NB_PLACES; i++)
     {
         mem->places[i] = PLACE_VIDE;

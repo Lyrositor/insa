@@ -17,9 +17,9 @@
 #include <Outils.h>
 
 const char * const CHEMIN_IPC = "Parking";
-const int MAX_NUM_VOITURE = 999;
-const int DROITS = 0660;
-const int TEMPO = 1;
+const unsigned int DROITS = 0660;
+const unsigned int MAX_NUM_VOITURE = 999;
+const unsigned int TEMPO = 1;
 
 // Files de messages
 typedef struct {
@@ -33,10 +33,12 @@ enum MsgBarriere {
 	MSG_ENTREE = 1,
 	MSG_SORTIE = 2
 };
+
 const key_t CLE_BARRIERES[] = {
 		ftok(CHEMIN_IPC, 'P'), ftok(CHEMIN_IPC, 'A'), ftok(CHEMIN_IPC, 'E'),
 		ftok(CHEMIN_IPC, 'S')
 };
+const unsigned int MSG_TAILLE = sizeof(msg_voiture_t) - sizeof(long);
 
 // Mémoire partagée
 typedef struct {
@@ -51,9 +53,11 @@ typedef struct {
 } requete_t;
 
 typedef struct {
+	unsigned int placesOccupees;
 	voiture_t places[NB_PLACES];
 	requete_t requetes[NB_BARRIERES_ENTREE];
 } memoire_partagee_t;
+
 const key_t CLE_MEMOIRE_PARTAGEE = ftok(CHEMIN_IPC, 'R');
 const voiture_t PLACE_VIDE = {AUCUN, 0, 0};
 const requete_t REQUETE_VIDE = {AUCUN, 0};

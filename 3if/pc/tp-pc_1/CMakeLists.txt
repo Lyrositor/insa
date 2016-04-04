@@ -19,6 +19,12 @@ if (TP-PC_MAP)
     list(APPEND TP-PC1_DEFINITIONS -DMAP)
 endif (TP-PC_MAP)
 
+# Let the user choose the terminal display used
+option(TP-PC1_AFFICHAGE_XTERM "Utiliser le mode xterm d'affichage" OFF)
+if (TP-PC1_AFFICHAGE_XTERM)
+    list(APPEND TP-PC1_DEFINITIONS -DAFFICHAGE_XTERM)
+endif (TP-PC1_AFFICHAGE_XTERM)
+
 # Configure the executable's compilation
 add_executable(${TP-PC1_BIN} ${TP-PC1_MAIN} ${TP-PC1_SOURCES})
 set(TP-PC1_BIN_DIR_FULL ${CMAKE_CURRENT_SOURCE_DIR}/${TP-PC1_BIN_DIR})

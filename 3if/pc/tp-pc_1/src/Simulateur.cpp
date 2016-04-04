@@ -3,7 +3,8 @@
                              -------------------
     début                : 18/03/2016
     copyright            : (C) 2016 par Marc Gagné & Arnaud Favier
-    e-mail               : marc.gagne@insa-lyon.fr, arnaud.favier@insa-lyon.fr
+    e-mail               : marc.gagne@insa-lyon.fr
+                           arnaud.favier@insa-lyon.fr
 *************************************************************************/
 
 //---------- Réalisation de la module <Simulateur> (fichier Simulateur.cpp) ---
@@ -26,15 +27,6 @@ int filesId[NB_BARRIERES];
 static unsigned int nbVoiture;
 
 //------------------------------------------------------ Fonctions privées
-//static type nom ( liste de paramètres )
-// Mode d'emploi :
-//
-// Contrat :
-//
-// Algorithme :
-//
-//{
-//} //----- fin de nom
 
 static void InitialiserSimulateur ( void )
 // Mode d'emploi :
@@ -73,24 +65,19 @@ static void EnvoyerMessage (
 // Algorithme :
 //
 {
-    msg_voiture_t msg = { mtype, usager, numero, place};
-    msgsnd(boite, &msg, sizeof(msg) - sizeof(msg.mtype), 0);
+    msg_voiture_t msg = {mtype, usager, numero, place};
+    msgsnd(boite, &msg, MSG_TAILLE, 0);
 } //----- fin de EnvoyerMessage
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-//type Nom ( liste de paramètres )
-// Algorithme :
-//
-//{
-//} //----- fin de Nom
 
 void Simulateur ( void )
 // Algorithme :
 //
 {
     InitialiserSimulateur();
-    for(;;)
+    for (;;)
     {
         Menu();
     }

@@ -3,7 +3,8 @@
                              -------------------
     début                : 18/03/2016
     copyright            : (C) 2016 par Marc Gagné & Arnaud Favier
-    e-mail               : marc.gagne@insa-lyon.fr, arnaud.favier@insa-lyon.fr
+    e-mail               : marc.gagne@insa-lyon.fr
+                           arnaud.favier@insa-lyon.fr
 *************************************************************************/
 
 //---------- Interface du module <Simulateur> (fichier Simulateur.h) -------

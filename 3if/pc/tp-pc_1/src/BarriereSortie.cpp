@@ -38,11 +38,18 @@ static pid_t voituriers[NB_PLACES];
 
 //------------------------------------------------------ Fonctions privées
 
-static bool operator > (requete_t requete1, requete_t requete2) {
+static bool operator > ( requete_t requete1, requete_t requete2 )
+// Mode d'emploi :
+//
+// Contrat :
+//
+// Algorithme :
+//
+{
     return requete1.usager != AUCUN && (requete2.usager == AUCUN ||
             (requete1.usager == PROF && requete2.usager == AUTRE) ||
             requete1.arrivee < requete2.arrivee);
-}
+} //----- fin de operator >
 
 static void DetruireBarriereSortie ( int noSignal )
 // Mode d'emploi :
@@ -95,6 +102,7 @@ static void GererFinVoiturier ( int noSignal )
             memoire_partagee_t * mem = AttacherMemoirePartagee(semId, shmId);
             voiture_t voiture = mem->places[place - 1];
             mem->places[place - 1] = PLACE_VIDE;
+            mem->placesOccupees--;
 
             // Traiter les requêtes des barrières
             TypeBarriere barriere = AUCUNE;
@@ -108,19 +116,19 @@ static void GererFinVoiturier ( int noSignal )
             }
             if (barriere != AUCUNE)
             {
+                Effacer((TypeZone) (REQUETE_R1 + barriere - 1));
                 mem->requetes[barriere - 1] = REQUETE_VIDE;
                 sembuf autoriser = SEM_BARRIERE_AUTORISER;
                 autoriser.sem_num = barriere;
-                semop(semId, &autoriser, 1);
+                while (semop(semId, &autoriser, 1) < 0);
             }
 
             DetacherMemoirePartagee(semId, mem);
 
             // Afficher les informations de sortie.
-            Effacer((TypeZone) place);
+            Effacer((TypeZone) (ETAT_P1 + place - 1));
             AfficherSortie(
-                    voiture.usager, voiture.numero, voiture.arrivee,
-                    time(NULL)
+                    voiture.usager, voiture.numero, voiture.arrivee, time(NULL)
             );
         }
     }
@@ -167,10 +175,7 @@ void BarriereSortie ( enum TypeBarriere barriere )
     {
         msg_voiture_t msg;
         pid_t pidVoiturier;
-        if (msgrcv(fileId, &msg, sizeof(msg) - sizeof(msg.mtype), MSG_SORTIE, 0) < 0)
-        {
-            continue;
-        }
+        while (msgrcv(fileId, &msg, MSG_TAILLE, MSG_SORTIE, 0) < 0);
         pidVoiturier = SortirVoiture(msg.place);
         if (pidVoiturier > 0)
         {
