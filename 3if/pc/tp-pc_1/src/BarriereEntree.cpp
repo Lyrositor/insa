@@ -119,8 +119,8 @@ static int InitialiserBarriereEntree ( enum TypeBarriere barriere )
 // Algorithme :
 //
 {
-    semId = semget(CLE_SEMAPHORE, 1, 0600);
-    shmId = shmget(CLE_MEMOIRE_PARTAGEE, sizeof(memoire_partagee_t), 0600);
+    semId = semget(CLE_SEMAPHORE, 1, DROITS);
+    shmId = shmget(CLE_MEMOIRE_PARTAGEE, sizeof(memoire_partagee_t), DROITS);
 
     // Gérer le signal de destruction de la tâche
     struct sigaction actionDetruire;
@@ -137,7 +137,7 @@ static int InitialiserBarriereEntree ( enum TypeBarriere barriere )
     sigaction(SIGCHLD, &actionFinVoiturier, NULL);
 
     // Détermine la boite de message suivant le type de barrière
-    return msgget(CLE_BARRIERES[barriere - 1], 0600);
+    return msgget(CLE_BARRIERES[barriere - 1], DROITS);
 } //----- fin de InitialiserBarriereEntree
 
 //////////////////////////////////////////////////////////////////  PUBLIC

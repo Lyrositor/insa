@@ -33,7 +33,7 @@ CLEAN = clean
 $(ALL): $(BIN)
 
 $(CLEAN):
-	$(RM) $(RMFLAGS) $(BUILD) *.o
+	$(RM) $(RMFLAGS) $(BIN) $(BUILDDIR)/*.o
 
 $(BIN): $(OBJ) $(MAIN)
 	$(MK_D)

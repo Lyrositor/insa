@@ -46,7 +46,7 @@ static void InitialiserSimulateur ( void )
 {
     for (size_t i = 0; i < NB_BARRIERES; i++)
     {
-        filesId[i] = msgget(CLE_BARRIERES[i], IPC_CREAT | 0600);
+        filesId[i] = msgget(CLE_BARRIERES[i], IPC_CREAT | DROITS);
     }
     nbVoiture = 0;
 } //----- fin de InitialiserSimulateur

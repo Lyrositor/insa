@@ -16,8 +16,9 @@
 
 #include <Outils.h>
 
-const char * const CHEMIN_IPC = "/Parking";
+const char * const CHEMIN_IPC = "Parking";
 const int MAX_NUM_VOITURE = 1000;
+const int DROITS = 0660;
 
 // Files de messages
 typedef struct {

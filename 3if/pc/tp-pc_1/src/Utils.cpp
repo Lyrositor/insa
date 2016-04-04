@@ -13,5 +13,7 @@ int DetacherMemoirePartagee ( int semId, const memoire_partagee_t * zone )
 {
     shmdt(zone);
     sembuf deverrouiller = SEM_MUTEX_DEVERROUILLER;
-    return semop(semId, &deverrouiller, 1);
+    int s;
+    while ((s = semop(semId, &deverrouiller, 1)) < 0);
+    return s;
 }

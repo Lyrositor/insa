@@ -30,13 +30,13 @@ int main ()
     int filesId[NB_BARRIERES];
     for (size_t i = 0; i < NB_BARRIERES; i++)
     {
-        filesId[i] = msgget(CLE_BARRIERES[i], IPC_CREAT | 0600);
+        filesId[i] = msgget(CLE_BARRIERES[i], IPC_CREAT | DROITS);
     }
 
     // Initialiser le sémaphore du mutex à 1 (car il n'est pas en cours
     // d'utilisation) et les sémaphores des barrières à 0 (car il n'y a aucune
     // requête en cours).
-    int semId = semget(CLE_SEMAPHORE, NUM_SEMAPHORES, IPC_CREAT | 0600);
+    int semId = semget(CLE_SEMAPHORE, NUM_SEMAPHORES, IPC_CREAT | DROITS);
     semctl(semId, SEM_MUTEX, SETVAL, 1);
     semctl(semId, SEM_PBP, SETVAL, 0);
     semctl(semId, SEM_ABP, SETVAL, 0);
@@ -44,7 +44,7 @@ int main ()
 
     // Initialiser la mémoire partagée avec aucune place occupée et aucune
     // requête envoyée
-    int shmId = shmget(CLE_MEMOIRE_PARTAGEE, sizeof(memoire_partagee_t), IPC_CREAT | 0600);
+    int shmId = shmget(CLE_MEMOIRE_PARTAGEE, sizeof(memoire_partagee_t), IPC_CREAT | DROITS);
     memoire_partagee_t * mem = (memoire_partagee_t *) shmat(shmId, NULL, 0);
     for (size_t i = 0; i < NB_PLACES; i++)
     {
