@@ -85,29 +85,27 @@ static void GererFinVoiturier ( int noSignal )
     if (noSignal == SIGCHLD)
     {
         int status;
-        pid_t pid = wait(&status);
-
-        /*// Vérifier que le processus a bien terminé
-        while (!WIFEXITED(status))
+        pid_t pid;
+        while ((pid = waitpid(-1, &status, WNOHANG)) > 0)
         {
-        }*/
-
-        int place = WEXITSTATUS(status);
+            // Vérifier que le processus a bien terminé.
+            if (!WIFEXITED(status))
+            {
+                continue;
+            }
         
-        // TODO: Remplacer le tableau des pid des voituriers par une map
-        // associant chaque pid à une voiture_t ; quand le voiturier termine,
-        // il faut recopier la voiture_t dans la mémoire partagée et la
-        // supprimer de la map
-        
-        voiture_t voiture = voituriers.find(pid)->second;
+            // Récupérer le numéro de la place occupée et trouver la voiture
+            // qui vient de se garer.
+            int place = WEXITSTATUS(status);
+            voiture_t voiture = voituriers.find(pid)->second;
 
-        memoire_partagee_t* mem = AttacherMemoirePartagee(shmId, semId); // /!\ BUG -> Ne passe jamais cette ligne
-        mem->places[place - 1] = voiture;
+            memoire_partagee_t* mem = AttacherMemoirePartagee(semId, shmId);
+            mem->places[place - 1] = voiture;
+            DetacherMemoirePartagee(semId, mem);
+            voituriers.erase(pid);
 
-        DetacherMemoirePartagee(semId, mem);
-        voituriers.erase(pid);
-
-        AfficherPlace(place, voiture.usager, voiture.numero, voiture.arrivee);
+            AfficherPlace(place, voiture.usager, voiture.numero, voiture.arrivee);
+        }
     }
 }
 
@@ -126,14 +124,14 @@ static int InitialiserBarriereEntree ( enum TypeBarriere barriere )
     struct sigaction actionDetruire;
     actionDetruire.sa_handler = DetruireBarriereEntree;
     sigemptyset(&actionDetruire.sa_mask);
-    actionDetruire.sa_flags = 0;
+    actionDetruire.sa_flags = SA_RESTART;
     sigaction(SIGUSR2, &actionDetruire, NULL);
 
     // Gérer le signal de fin d'un voiturier
     struct sigaction actionFinVoiturier;
     actionFinVoiturier.sa_handler = GererFinVoiturier;
     sigemptyset(&actionFinVoiturier.sa_mask);
-    actionFinVoiturier.sa_flags = 0;
+    actionFinVoiturier.sa_flags = SA_RESTART;
     sigaction(SIGCHLD, &actionFinVoiturier, NULL);
 
     // Détermine la boite de message suivant le type de barrière

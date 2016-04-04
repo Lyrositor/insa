@@ -92,7 +92,7 @@ static void GererFinVoiturier ( int noSignal )
 
             // Récupérer les informations sur la voiture qui vient de
             // sortir à partir de la mémoire partagée.
-            memoire_partagee_t * mem = AttacherMemoirePartagee(shmId, semId);
+            memoire_partagee_t * mem = AttacherMemoirePartagee(semId, shmId);
             voiture_t voiture = mem->places[place - 1];
             mem->places[place - 1] = PLACE_VIDE;
 
@@ -141,14 +141,14 @@ static int InitialiserBarriereSortie ( enum TypeBarriere barriere )
     struct sigaction actionDetruire;
     actionDetruire.sa_handler = DetruireBarriereSortie;
     sigemptyset(&actionDetruire.sa_mask);
-    actionDetruire.sa_flags = 0;
+    actionDetruire.sa_flags = SA_RESTART;
     sigaction(SIGUSR2, &actionDetruire, NULL);
 
     // Gérer le signal de fin d'un voiturier.
     struct sigaction actionFinVoiturier;
     actionFinVoiturier.sa_handler = GererFinVoiturier;
     sigemptyset(&actionFinVoiturier.sa_mask);
-    actionFinVoiturier.sa_flags = 0;
+    actionFinVoiturier.sa_flags = SA_RESTART;
     sigaction(SIGCHLD, &actionFinVoiturier, NULL);
 
     return msgget(CLE_BARRIERES[barriere - 1], DROITS);
