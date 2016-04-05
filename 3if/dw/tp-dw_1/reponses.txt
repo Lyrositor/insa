@@ -1,0 +1,17 @@
+Première partie : XML, DTD, XPath, XSLT
+
+Etape 1 : Mise à jour de l'instance [XML, DTD]
+
+Il ne manquait qu'un champ <email> dans la première balise <infos>.
+Etape 2 : Exploration de l'instance [XPath]
+
+1.
+    1. //mise_en_forme_par/auteur
+    2. //paragr[@type='narration']
+    3. //phrase[@langue='fr']
+    4. //paragr/phrase[3]
+    5. (//phrase)[9]
+    6. //phrase[starts-with(text(), 'Je')]
+    7. //paragr[not(@type=preceding::paragr/@type)]/@type
+
+Etape 3 : Mise en forme du corpus Le Petit Prince [XSLT]

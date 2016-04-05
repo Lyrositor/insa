@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE texte SYSTEM "petit_prince_3IF.dtd">
+<?xml-stylesheet type="text/xsl" href="petit_prince_3IF.xsl"?>
+<texte>
+	<entete>
+		<infos>
+			<titre>LePetitPrince</titre>
+			<auteur>Antoine de Saint-Exupéry</auteur>
+			<couverture chemin="images/prince.png"/>
+			<but>Traitement d'un texte franco/hongrois avec XPath / XSLT / XQuery</but>
+			<mise_en_forme_par>
+				<auteur NoBinome="B3353">Marc Gagné</auteur>
+				<auteur NoBinome="B3353">Ulysse Buonomo</auteur>
+			</mise_en_forme_par>
+			<email>gagne.marc@gmail.com</email>
+			<date>05/04/2016</date>
+		</infos>
+		<lien langue="fr">http://wikilivres.info/wiki/Le_Petit_Prince</lien>
+		<lien langue="hu">http://mek.oszk.hu/00300/00384/00384.pdf</lien>
+	</entete>
+	<corps>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">J'ai ainsi vécu seul, sans personne avec qui parler véritablement, jusqu'à une panne dans le désert du Sahara, il y a six ans. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Quelque chose s'était cassé dans mon moteur, et comme je n'avais avec moi ni mécanicien, ni passagers, je me préparai à essayer de réussir, tout seul, une réparation difficile. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">C'était pour moi une question de vie ou de mort. J'avais à peine de l'eau à boire pour huit jours. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Így éltem magányosan, anélkül, hogy igazában bárkivel is szót érthettem volna, míg egyszer, hat esztendővel ezelőtt, kényszerleszállást nem kellett végeznem a Szaharában.  </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Valami eltörött a motoromban. És mivel se gépészem nem volt, se utasom, magamnak kellett nekilátnom, hogy zöld ágra vergődjem valahogyan, és kijavítsam a súlyos hibát.</phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Élet és halál kérdése volt ez számomra.</phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Alig egy hétre való ivóvizem volt.  </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Le premier soir je me suis donc endormi sur le sable à mille milles de toute terre habitée. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">J'étais bien plus isolé qu'un naufragé sur un rideau au milieu de l'océan. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Alors vous imaginez ma surprise, au levé du jour, quand une drôle de petite voix m'a réveillé. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Elle disait: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Ott dőltem álomra az első este a homokon, ezermérföldnyire minden lakott helytől.</phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Elhagyatottabb voltam, mint tutaján a hajótörött az óceán közepén.</phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Elképzelhető hát, mennyire meglepődtem, amikor hajnalban egy fura kis hang ébresztett föl. Azt mondta: </phrase>
+		</paragr>
+		<paragr type="dialogue">
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">S'il vous plaît... dessine-moi un mouton! </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Légy szíves, rajzolj nekem egy bárányt! </phrase>
+			<phrase locuteur="Narrateur" modalite="exclamative" langue="fr">Hein! </phrase>
+			<phrase locuteur="Narrateur" modalite="exclamative" langue="hu">Micsoda?  </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Dessine-moi un mouton... </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Rajzolj nekem egy bárányt...  </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">J'ai sauté sur mes pieds comme si j'avais été frappé par la foudre. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">J'ai bien frotté mes yeux. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">J'ai bien regardé. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Et j'ai vu un petit bonhomme tout à fait extraordinaire qui me considérait gravement. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Voilà le meilleur portrait que, plus tard, j'ai réussi à faire de lui. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Mais mon dessin,bien sùr, est beaucoup moins ravissant que le modèle. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Ce n'est pas de ma faute. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">J'avais été découragé dans ma carrière de peintre par les grandes personnes, à l'age de six ans, et je n'avais rien appris à dessiner, sauf les boas fermés et les boas ouverts. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Fölugrottam, mintha villám csapott volna le mellettem. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Megdörgöltem a szememet, aztán jól kimeresztettem.</phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">És egy apró emberkét láttam, egy teljességgel rendkívüli kis emberkét, amint komoly figyelemmel szemlél.</phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Itt a legjobb kép, amit később csinálnom sikerült róla. Csakhogy az én rajzom kétségkívül sokkal kevésbé elragadó, mint amilyen a mintája volt. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Igaz, nem az én hibámból. Mert ami festői pályafutásomat illeti, attól már hatesztendős koromban elvették a kedvemet a fölnőttek, így aztán nem is tanultam meg rajzolni, kivéve a csukott meg a nyitott óriáskígyókat.  </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Je regardai donc cette apparition avec des yeux tout ronds d'étonnement. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">N'oubliez pas que je me trouvais à mille milles de toute région habitée. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Or mon petit bonhomme ne me semblait ni égaré, ni mort de fatigue, ni mort de faim, ni mort de soif, ni mort de peur. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Il n'avait en rien l'apparence d'un enfant perdu au milieu du désert, à mille milles de toute région habitée. Quand je réussis enfin de parler, je lui dis: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Ámulattól kerek szemmel néztem hát a különös tüneményt. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Ne feledjük el: ezer mérföldre voltam minden lakott vidéktől. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Emberkémen pedig semmi jele nem volt annak, mintha eltévedt volna, vagy halálosan fáradt, halálosan éhes, halálosan szomjas lenne, esetleg halálosan félne. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Egyáltalán nem úgy festett, mint egy szerencsétlen gyerek, aki eltévedt a sivatagban, ezermérföldnyire minden lakott helytől. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Mikor végre szavamra leltem, azt kérdeztem tőle:  </phrase>
+		</paragr>
+		<paragr type="dialogue">
+			<phrase locuteur="Narrateur" modalite="interrogative" langue="fr">Mais qu'est-ce que tu fais là? </phrase>
+			<phrase locuteur="Narrateur" modalite="interrogative" langue="hu">De hát... hogy kerülsz te ide? </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Et il me répéta alors, tout doucement, comme une chose très sérieuse: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu"> Erre szelíden, és mintha valami nagyon komoly dolgot kérne, megismételte:  </phrase>
+		</paragr>
+		<paragr type="dialogue">
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">S'il vous plaît... dessine-moi un mouton... </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Légy szíves, rajzolj nekem egy bárányt...  </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Quand le mystère est trop impressionnant, on n'ose pas désobéir. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Aussi absurde que cela me semblaît à mille milles de tous les endroits habités et en danger de mort, je sortis de ma poche une feuille de papier et un stylographe. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Mais je me rappelai alors que j'avais surtout étudié la géographie, l'histoire, le calcul et la grammaire et je dis au petit bonhomme (avec un peu de mauvaise humeur) que je ne savais pas dessiner. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr"> Il me répondit: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Ha valami nagyon lenyűgözően rejtélyes, az ember nem meri megtenni, hogy ne engedelmeskedjék.  </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Akármilyen képtelenségnek találtam, hogy ezer mérföldre minden lakott helytől és ráadásul halálos veszedelemben: elővettem a zsebemből egy darab papirost meg a töltőtollamat.  </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Hanem akkor eszembe jutott, hogy én főként földrajzot, történelmet, számtant és nyelvtant tanultam, és egy kicsit kedvetlenül közöltem az emberkémmel, hogy nem tudok rajzolni. </phrase>
+		</paragr>
+		<paragr type="dialogue">
+			<phrase locuteur="LePetitPrince" modalite="impérative" langue="fr">Ca ne fait rien. Dessine-moi un mouton. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="impérative" langue="hu">Annyi baj legyen - felelte. - Rajzolj nekem egy bárányt.  </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Comme je n'avais jamais dessiné un mouton je refis, pour lui, un des deux seuls dessins dont j'étais capable. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Celui du boa fermé. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Et je fus stupéfait d'entendre le petit bonhomme me répondre: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Minthogy bárányt soha életemben nem rajzoltam, papírra vetettem neki a két rajz közül, amire egyáltalán képes voltam, az egyiket: a csukott óriáskígyót.</phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">De hogy elképedtem, mikor az emberke azt mondta rá:  </phrase>
+		</paragr>
+		<paragr type="dialogue">
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Non! Non! Je ne veux pas d'un éléphant dans un boa. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Nem! Nem! Nem elefántot akarok óriáskígyóban!  </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Un boa c'est très dangereux, et un éléphant c'est très encombrant. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Az óriáskígyó nagyon veszedelmes, az elefánt meg olyan behemót nagy.  </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Chez moi c'est tout petit.  </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Nálam odahaza minden apró.</phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">J'ai besoin d'un mouton. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Nekem bárányka kell. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="impérative" langue="fr">Dessine-moi un mouton. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="impérative" langue="hu">Rajzolj nekem egy bárányt.  </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Alors j'ai dessiné. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Il regarda attentivement, puis: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Hát erre rajzoltam egyet.  </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Figyelmesen szemügyre vette, aztán:  </phrase>
+		</paragr>
+		<paragr type="dialogue">
+			<phrase locuteur="LePetitPrince" modalite="exclamative" langue="fr">Non! Celui-là est déjà très malade. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="exclamative" langue="hu">Nem! - mondta. - Ez már nagyon beteg.</phrase>
+			<phrase locuteur="LePetitPrince" modalite="impérative" langue="fr">Fais-en un autre. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="impérative" langue="hu">Csinálj egy másikat nekem.  </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Je dessinai: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Mon ami sourit gentiment, avec indulgence: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Rajzoltam egy másikat. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Kis barátom kedvesen, de elnézően mosolygott.  </phrase>
+		</paragr>
+		<paragr type="dialogue">
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Tu vois bien... ce n'est pas un mouton, c'est un bélier. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Jó, jó... Csakhogy ez nem bárány, hanem kos. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Il a des cornes... </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Ennek szarva van.  </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Je refis donc encore mon dessin: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Mais il fut refusé, comme les précédents: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Megint újat rajzoltam.  </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Ez se volt jó neki, akárcsak az előzők.  </phrase>
+		</paragr>
+		<paragr type="dialogue">
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Celui-là est trop vieux. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Nagyon öreg.  </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Je veux un mouton qui vive longtemps. </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Nekem olyan bárány kell, amelyik sokáig él. </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Alors, faute de patience, comme j'avais hate de commencer le démontage de mon moteur, je griffonnai ce dessin-ci. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Et je lançai: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Erre már kifogytam a türelemből. Mielőbb neki akartam kezdeni a motorom szétszerelésének; ráfirkáltam hát a papírra a mellékelt rajzot. </phrase>
+		</paragr>
+		<paragr type="dialogue">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Ca c'est la caisse. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Tessék - mondtam. - Ez itt a ládája. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Le mouton que tu veux est dedans. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Benne van a bárány, amit akarsz.  </phrase>
+		</paragr>
+		<image chemin="images/mouton.png"/>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Mais je fus bien surpris de voir s'illuminer le visage de mon jeune juge: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Nagy meglepetésemre egyszeriben fölragyogott az arca. </phrase>
+		</paragr>
+		<paragr type="dialogue">
+			<phrase locuteur="LePetitPrince" modalite="exclamative" langue="fr">C'est tout à fait comme ça que je le voulais! </phrase>
+			<phrase locuteur="LePetitPrince" modalite="exclamative" langue="hu">Ez az! Éppen így akartam!  </phrase>
+			<phrase locuteur="LePetitPrince" modalite="interrogative" langue="fr">Crois-tu qu'il faille beaucoup d'herbe à ce mouton? </phrase>
+			<phrase locuteur="LePetitPrince" modalite="interrogative" langue="hu">Mit gondolsz, sok fű kell ennek a báránynak?</phrase>
+			<phrase locuteur="Narrateur" modalite="interrogative" langue="fr">Pourquoi? </phrase>
+			<phrase locuteur="Narrateur" modalite="interrogative" langue="hu">Miért?  </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Parce que chez moi c'est tout petit... </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Hát mert nálam odahaza minden olyan kicsi... </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Ca suffira sûrement. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Biztosan elég lesz neki.  </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Je t'ai donné un tout petit mouton. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Egészen kicsi bárány.  </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Il pencha la tête vers le dessin: </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">A rajz fölé hajolt.  </phrase>
+		</paragr>
+		<paragr type="dialogue">
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Pas si petit que ça... </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Nem is olyan kicsi...   </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Tiens! Il s'est endormi... </phrase>
+			<phrase locuteur="LePetitPrince" modalite="declarative" langue="hu">Nézd csak! Elaludt... </phrase>
+		</paragr>
+		<paragr type="narration">
+			<phrase locuteur="Narrateur" modalite="declarative" langue="fr">Et c'est ainsi que je fis la connaissance du petit prince. </phrase>
+			<phrase locuteur="Narrateur" modalite="declarative" langue="hu">Így ismerkedtem meg a kis herceggel.</phrase>
+		</paragr>
+	</corps>
+</texte>
