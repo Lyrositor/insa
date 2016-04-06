@@ -8,13 +8,16 @@
 *************************************************************************/
 
 //------ Interface de la tâche <BarriereEntree> (fichier BarriereEntree.h)
-#if ! defined ( BARRIERE_E_H )
-#define BARRIERE_E_H
+#if ! defined ( BARRIERE_ENTREE_H )
+#define BARRIERE_ENTREE_H
 
 //------------------------------------------------------------------------
 // Rôle de la tâche <BarriereEntree>
 //
-// Barriere Entrée
+// La tâche <BarriereEntree> gère toutes les entrées de voiture au
+// niveau d'une des barrières d'entrée, identifiée par son code
+// <TypeBarriere>. Elle lance notamment les voituriers pour garer les
+// voitures et les fait attendre lorsque le parking est plein.
 //------------------------------------------------------------------------
 
 /////////////////////////////////////////////////////////////////  INCLUDE
@@ -29,8 +32,14 @@
 //---------------------------------------------------- Fonctions publiques
 void BarriereEntree ( enum TypeBarriere barriere );
 // Mode d'emploi :
-// Point d'entrée d'une barrière d'entrèe
+//    <barriere> : l'identifiant de la barrière d'entrée à gèrer
+//    Lance la tâche <BarriereEntree>, qui tournera jusqu'à réception d'un
+//    signal <SIGUSR2>, pour la barrière d'entrée <barriere>.
+//
 // Contrat :
-// (aucun)
+//    - la barrière ne doit pas déjà être gérée par un autre processus
+//    - les mécanismes IPC pour cette barrière doivent déjà avoir été créés
+//    - le comportement est indéterminé en cas de non-respect des contraintes
+//
 
 #endif // BARRIERE_ENTREE_H

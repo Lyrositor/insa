@@ -1,13 +1,13 @@
 /*************************************************************************
-                           Simulateur  -  description
+         Simulateur  -  Simule l'arrivée et la sortie de voitures
                              -------------------
     début                : 18/03/2016
-    copyright            : (C) 2016 par Marc Gagné & Arnaud Favier
-    e-mail               : marc.gagne@insa-lyon.fr
-                           arnaud.favier@insa-lyon.fr
+    copyright            : (C) 2016 par Arnaud Favier & Marc Gagné
+    e-mail               : arnaud.favier@insa-lyon.fr
+                           marc.gagne@insa-lyon.fr
 *************************************************************************/
 
-//---------- Interface du module <Simulateur> (fichier Simulateur.h) -------
+//---------- Interface de la tâche <Simulateur> (fichier Simulateur.h) ---
 #if ! defined ( SIMULATEUR_H )
 #define SIMULATEUR_H
 
@@ -24,28 +24,31 @@
 
 #include <Outils.h>
 #include <Menu.h>
+
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
 
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
-// type Nom ( liste de paramètres );
-// Mode d'emploi :
-//
-// Contrat :
-//
 void Simulateur ( void );
 // Mode d'emploi :
-// Point d'entrée du Simulateur qui appele le menu
-// Contrat :
+//     Lance l'exécution de la tâche <Simulateur>, qui tournera jusqu'à ce
+//     que l'utiliasteur appuie sur 'E'.
 //
-
+// Contrat :
+//     L'interface graphique doit déjà avoir été initialisée.
+//
 
 void Commande ( char code, unsigned int valeur );
 // Mode d'emploi :
-// Voir documentation annexe Menu()
+//    <code> : le code de la commande ('e|E', 'p|P', 'a|A' ou 's|S')
+//    <valeur> : la valeur secondaire pour certaines commandes
+//    Exécute les instructions nécessaires pour la commande lancée.
+//    Voir la documentation de <Menu> pour plus d'informations.
+//
 // Contrat :
-// aucun
+//     Devrait être appelé par <Menu> seulement.
+//
 
 #endif // SIMULATEUR_H

@@ -1,3 +1,16 @@
+/*************************************************************************
+            Mere  -  Gère la tâche mère, première tache lancée
+                             -------------------
+    début                : 18/03/2016
+    copyright            : (C) 2016 par Arnaud Favier & Marc Gagné
+    e-mail               : arnaud.favier@insa-lyon.fr
+                           marc.gagne@insa-lyon.fr
+*************************************************************************/
+
+//---------- Réalisation de la tâche <Mere> (fichier Mere.cpp) -----------
+
+/////////////////////////////////////////////////////////////////  INCLUDE
+//-------------------------------------------------------- Include système
 #include <signal.h>
 #include <stdlib.h>
 #include <sys/ipc.h>
@@ -9,12 +22,31 @@
 #include <Heure.h>
 #include <Outils.h>
 
-#include "Config.h"
+//------------------------------------------------------ Include personnel
 #include "BarriereEntree.h"
 #include "BarriereSortie.h"
+#include "Config.h"
 #include "Simulateur.h"
 
-int main ()
+int main ( void )
+// Mode d'emploi :
+//    Gère la création et la destruction de tous les composantes de
+//    l'application, et tourne tant que le simulateur n'a pas renvoyé.
+//
+// Contrat :
+//    (Aucun)
+//
+// Algorithme :
+//    Initialise les composantes fournies pour le TP, puis crée tous les
+//    mécanismes IPC (sémaphores, files de message et la mémoire partagée).
+//    Chaque tâche est ensuite lancée une par une, le simulateur étant
+//    lancé en dernier pour éviter que l'utilisateur lance des demandes
+//    avant que toute l'application ne soit prête.
+//    La tâche tourne ensuite à l'infini tant que le simulateur ne renvoie
+//    pas, avant de demander la terminaison de chaque tâche en cours puis
+//    la suppression des mécanismes IPC. Finalement, l'affichage est
+//    terminé et l'application termine.
+//
 {
     /* --- Initialisation --- */
 
@@ -94,11 +126,13 @@ int main ()
                 else
                 {
                     // Père
-                    if ((tachesPid[taches++] = fork()) == 0) {
+                    if ((tachesPid[taches++] = fork()) == 0)
+                    {
                         // Fils - Simulateur
                         Simulateur();
                     }
-                    else {
+                    else
+                    {
                         // Père
                         /* --- Moteur --- */
                         waitpid(tachesPid[--taches], NULL, 0);
