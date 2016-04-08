@@ -3,8 +3,7 @@
 
 #include "primes.h"
 
-int main(void)
-{
+int main(void) {
     print_prime_factors(77); // expected result:   77: 7 11
     print_prime_factors(84); // expected result:   84: 2 2 3 7
 

@@ -6,8 +6,7 @@
 
 #define MAX_LINE_LENGTH 256
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     FILE * file;
     char line[256];
     
