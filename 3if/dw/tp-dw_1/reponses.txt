@@ -3,6 +3,7 @@ Première partie : XML, DTD, XPath, XSLT
 Etape 1 : Mise à jour de l'instance [XML, DTD]
 
 Il ne manquait qu'un champ <email> dans la première balise <infos>.
+
 Etape 2 : Exploration de l'instance [XPath]
 
 1.
@@ -15,3 +16,140 @@ Etape 2 : Exploration de l'instance [XPath]
     7. //paragr[not(@type=preceding::paragr/@type)]/@type
 
 Etape 3 : Mise en forme du corpus Le Petit Prince [XSLT]
+
+Deuxième partie : XQuery
+
+1.
+Requête :
+<phrases>
+{
+  for $p in //phrase[@langue='fr']
+  order by $p
+  return $p
+}
+</phrases>
+Réponse :
+<phrases>
+  <phrase locuteur="Narrateur" modalite="declarative" langue="fr">Alors j'ai dessiné.</phrase>
+  <phrase locuteur="Narrateur" modalite="declarative" langue="fr">Alors vous imaginez ma surprise, au levé du jour, quand une drôle de petite voix m'a réveillé.</phrase>
+  ...
+  <phrase locuteur="Narrateur" modalite="declarative" langue="fr">Voilà le meilleur portrait que, plus tard, j'ai réussi à faire de lui.</phrase>
+</phrases>
+2.
+Requête :
+<phrases>
+{
+  for $p in //phrase[@langue='fr' and contains(., 'mouton')]
+  return $p
+}
+</phrases>
+Réponse :
+<phrases>
+  <phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">S'il vous plaît... dessine-moi un mouton!</phrase>
+  <phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Dessine-moi un mouton...</phrase>
+  ...
+  <phrase locuteur="Narrateur" modalite="declarative" langue="fr">Je t'ai donné un tout petit mouton.</phrase>
+</phrases>
+3.
+Requête :
+<paragraphes>
+{
+  for $paragr in //paragr
+  return <paragraphe type="{$paragr/@type}" phrases="{count($paragr/phrase)}">
+    <modalites>
+    {
+      for $m in distinct-values($paragr/phrase/@modalite)
+      return <modalite>{$m}</modalite>
+    }
+    </modalites>
+    <locuteurs>
+    {
+      for $l in distinct-values($paragr/phrase/@locuteur)
+      return <locuteur>{$l}</locuteur>
+    }
+    </locuteurs>
+  </paragraphe>
+}
+</paragraphes>
+Réponse :
+<paragraphes>
+  <paragraphe type="narration" phrases="7">
+    <modalites>
+      <modalite>declarative</modalite>
+    </modalites>
+    <locuteurs>
+      <locuteur>Narrateur</locuteur>
+    </locuteurs>
+  </paragraphe>
+  ...
+</paragraphes>
+4.
+Requête :
+<corps>
+{
+  for $paragr in /texte/corps/paragr
+      return <paragr type="{$paragr/@type}">
+      {
+        for $phrase in $paragr/phrase[@langue='fr']
+        return $phrase
+      }
+      </paragr>
+    }
+</corps>
+Réponse :
+<corps>
+  <paragr type="narration">
+    <phrase locuteur="Narrateur" modalite="declarative" langue="fr">J'ai ainsi vécu seul, sans personne avec qui parler véritablement, jusqu'à une panne dans le désert du Sahara, il y a six ans.</phrase>
+    <phrase locuteur="Narrateur" modalite="declarative" langue="fr">Quelque chose s'était cassé dans mon moteur, et comme je n'avais avec moi ni mécanicien, ni passagers, je me préparai à essayer de réussir, tout seul, une réparation difficile.</phrase>
+    <phrase locuteur="Narrateur" modalite="declarative" langue="fr">C'était pour moi une question de vie ou de mort. J'avais à peine de l'eau à boire pour huit jours.</phrase>
+  </paragr>
+  ...
+</corps>
+5.
+Requête :
+<phrases>
+{
+  for $paragr in /texte/corps/paragr
+  return $paragr/phrase[@langue='fr'][2]
+}
+</phrases>
+Réponse :
+<phrases>
+  <phrase locuteur="Narrateur" modalite="declarative" langue="fr">Quelque chose s'était cassé dans mon moteur, et comme je n'avais avec moi ni mécanicien, ni passagers, je me préparai à essayer de réussir, tout seul, une réparation difficile.</phrase>
+  <phrase locuteur="Narrateur" modalite="declarative" langue="fr">J'étais bien plus isolé qu'un naufragé sur un rideau au milieu de l'océan.</phrase>
+  ...
+</phrases>
+6.
+Requête :
+<phrases>
+{
+  for $phrase in //paragr[@type='dialogue']/phrase[@langue='fr'][@locuteur='Narrateur']
+  return $phrase
+}
+</phrases>
+Réponse :
+<phrases>
+  <phrase locuteur="Narrateur" modalite="exclamative" langue="fr">Hein!</phrase>
+  <phrase locuteur="Narrateur" modalite="interrogative" langue="fr">Mais qu'est-ce que tu fais là?</phrase>
+  <phrase locuteur="Narrateur" modalite="declarative" langue="fr">Ca c'est la caisse.</phrase>
+  <phrase locuteur="Narrateur" modalite="declarative" langue="fr">Le mouton que tu veux est dedans.</phrase>
+  <phrase locuteur="Narrateur" modalite="interrogative" langue="fr">Pourquoi?</phrase>
+  <phrase locuteur="Narrateur" modalite="declarative" langue="fr">Ca suffira sûrement.</phrase>
+  <phrase locuteur="Narrateur" modalite="declarative" langue="fr">Je t'ai donné un tout petit mouton.</phrase>
+</phrases>
+7.
+Requête :
+let $phrases := //phrase[@langue='fr'][@locuteur='LePetitPrince'][contains(., 'mouton')]
+return <phrases nombre="{count($phrases)}">{$phrases}</phrases>
+Réponse :
+<phrases nombre="9">
+  <phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">S'il vous plaît... dessine-moi un mouton!</phrase>
+  <phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Dessine-moi un mouton...</phrase>
+  <phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">S'il vous plaît... dessine-moi un mouton...</phrase>
+  <phrase locuteur="LePetitPrince" modalite="impérative" langue="fr">Ca ne fait rien. Dessine-moi un mouton.</phrase>
+  <phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">J'ai besoin d'un mouton.</phrase>
+  <phrase locuteur="LePetitPrince" modalite="impérative" langue="fr">Dessine-moi un mouton.</phrase>
+  <phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Tu vois bien... ce n'est pas un mouton, c'est un bélier.</phrase>
+  <phrase locuteur="LePetitPrince" modalite="declarative" langue="fr">Je veux un mouton qui vive longtemps.</phrase>
+  <phrase locuteur="LePetitPrince" modalite="interrogative" langue="fr">Crois-tu qu'il faille beaucoup d'herbe à ce mouton?</phrase>
+</phrases>

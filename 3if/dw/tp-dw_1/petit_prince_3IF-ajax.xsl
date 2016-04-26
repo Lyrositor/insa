@@ -1,33 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:output method="html" />
-
+  <xsl:param name="language" />
+  
   <xsl:template match="/">
-    <html>
-      <head>
-        <title>
-          <xsl:value-of select="//infos/titre" /><xsl:text> de </xsl:text><xsl:value-of select="//infos/auteur" />
-        </title>
-      </head>
-      <body style="background-color:white;">
-        <xsl:apply-templates select="//infos" />
-        <xsl:apply-templates select="//corps" />
-      </body>
-    </html>
+    <div style="background-color:white;">
+      <xsl:apply-templates select="//infos" />
+      <xsl:apply-templates select="//corps" />
+    </div>
   </xsl:template>
-
+  
   <xsl:template match="infos/titre">
     <h1 style="text-align:center; color:blue;">
       <xsl:apply-templates />
     </h1>
   </xsl:template>
-
+  
   <xsl:template match="infos/auteur">
     <h2 style="text-align:center; font-style:italic;">
       <xsl:apply-templates />
     </h2>
   </xsl:template>
-
+  
   <xsl:template match="infos">
     <table cellspacing="50" align="center">
       <tbody>
@@ -59,7 +53,7 @@
     </table>
     <hr />
   </xsl:template>
-
+  
   <xsl:template match="infos/couverture">
     <div align="center">
       <img>
@@ -69,7 +63,7 @@
       </img>
     </div>
   </xsl:template>
-
+  
   <xsl:template match="image">
     <div align="center">
       <img>
@@ -79,22 +73,26 @@
       </img>
     </div>
   </xsl:template>
-
+  
   <xsl:template match="paragr">
     <p>
-      <xsl:apply-templates select="phrase[@langue='fr']" />
+      <xsl:if test="$language != 'hu'">
+        <xsl:apply-templates select="phrase[@langue='fr']" />
+      </xsl:if>
       <br />
-      <xsl:apply-templates select="phrase[@langue='hu']" />
+      <xsl:if test="$language != 'fr'">
+        <xsl:apply-templates select="phrase[@langue='hu']" />
+      </xsl:if>
     </p>
   </xsl:template>
-
+  
   <xsl:template match="corps">
     <h3>Début du texte:</h3>
     <xsl:apply-templates />
     <h3>Fin du texte.</h3>
     <hr />
   </xsl:template>
-
+  
   <xsl:template match="phrase[@langue='fr']">
     <xsl:choose>
       <xsl:when test="contains(text(), 'mouton')">
@@ -109,51 +107,57 @@
     </xsl:choose>
     <xsl:text> </xsl:text>
   </xsl:template>
-
+  
   <xsl:template match="phrase[@langue='hu']">
     <span style="color:brown; font-style:italic;">
       <xsl:apply-templates />
     </span>
     <xsl:text> </xsl:text>
   </xsl:template>
-
+  
   <xsl:template match="paragr[@type='dialogue']">
     <table width="90%" align="center">
       <tbody>
         <tr>
-          <td width="45%">
-            <table width="100%" cellpadding="10" border="1">
-              <tbody>
-                <xsl:for-each select="phrase[@langue='fr']">
-                  <tr>
-                    <td width="50">
-                      <img src="images/{@locuteur}.png" />
-                    </td>
-                    <td>
-                      <xsl:apply-templates select="." />
-                    </td>
-                  </tr>
-                </xsl:for-each>
-              </tbody>
-            </table>
-          </td>
-          <td />
-          <td width="45%">
-            <table width="100%" cellpadding="10" border="1">
-              <tbody>
-                <xsl:for-each select="phrase[@langue='hu']">
-                  <tr>
-                    <td width="50">
-                      <img src="images/{@locuteur}.png" />
-                    </td>
-                    <td>
-                      <xsl:apply-templates select="." />
-                    </td>
-                  </tr>
-                </xsl:for-each>
-              </tbody>
-            </table>
-          </td>
+          <xsl:if test="$language !='hu'">
+            <td width="45%">
+              <table width="100%" cellpadding="10" border="1">
+                <tbody>
+                  <xsl:for-each select="phrase[@langue='fr']">
+                    <tr>
+                      <td width="50">
+                        <img src="images/{@locuteur}.png" />
+                      </td>
+                      <td>
+                        <xsl:apply-templates select="." />
+                      </td>
+                    </tr>
+                  </xsl:for-each>
+                </tbody>
+              </table>
+            </td>
+          </xsl:if>
+          <xsl:if test="$language = ''">
+            <td></td>
+          </xsl:if>
+          <xsl:if test="$language != 'fr'">
+            <td width="45%">
+              <table width="100%" cellpadding="10" border="1">
+                <tbody>
+                  <xsl:for-each select="phrase[@langue='hu']">
+                    <tr>
+                      <td width="50">
+                        <img src="images/{@locuteur}.png" />
+                      </td>
+                      <td>
+                        <xsl:apply-templates select="." />
+                      </td>
+                    </tr>
+                  </xsl:for-each>
+                </tbody>
+              </table>
+            </td>
+          </xsl:if>
         </tr>
       </tbody>
     </table>
