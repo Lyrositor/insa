@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<calendar>
+    <mise_en_forme_par>
+        <unCreateur>Ulysse Buonomo</unCreateur>
+        <unCreateur>Marc Gagné</unCreateur>
+        <NoBinome>B33XX</NoBinome>
+    </mise_en_forme_par>
+    <date>01/05/2014</date>
+    <type>TV Shows</type>
+    <version>2.0</version>
+    <timezone>Europe/Paris</timezone>
+    <event uid="22923141397120400">
+        <dtstamp>20140510T234334Z</dtstamp>
+        <dtstart>20140410T020000</dtstart>
+        <dtend>20140410T024500</dtend>
+        <description>After the shocking death of one of their own, Clarke and Finn grow closer as they try to figure out a way to communicate with the Ark. Bellamy must keep the group from turning on one another as life on Earth takes a desperate turn. Meanwhile, Abby risks having herself floated in order to give Raven the chance to stow-away in the escape pod bound for Earth.</description>
+        <title>The 100</title>
+        <summary>The 100 1x04 "Murphy's Law"</summary>
+        <url>http://trakt.tv/show/the-100/season/1/episode/4</url>
+    </event>
+    <event uid="66684121397124000">
+        <dtstamp>20140510T234334Z</dtstamp>
+        <dtstart>20140410T030000</dtstart>
+        <dtend>20140410T033000</dtend>
+        <description>The guys confront an online gamer who's been terrorizing them.</description>
+        <title>Workaholics</title>
+        <summary>Workaholics 4x12 "DeputyDong"</summary>
+        <url>http://trakt.tv/show/workaholics/season/4/episode/12</url>
+    </event>
+    <event uid="55121397203200">
+        <dtstamp>20140510T234334Z</dtstamp>
+        <dtstart>20140411T010000</dtstart>
+        <dtend>20140411T013000</dtend>
+        <description>Subway makes plans to turn Greendale into Subway University; Jeff considers an employment offer; Dean Pelton tells Annie and Abed about the school's first dean.</description>
+        <title>Community</title>
+        <summary>Community 5x12 "Basic Story"</summary>
+        <url>http://trakt.tv/show/community/season/5/episode/12</url>
+    </event>
+    <event uid="347201397203200">
+        <dtstamp>20140510T234334Z</dtstamp>
+        <dtstart>20140411T010000</dtstart>
+        <dtend>20140411T013000</dtend>
+        <description>Sheldon has a personal crisis when he decides string theory is a waste of his time; a double date ends in embarrassment for Howard.</description>
+        <title>The Big Bang Theory</title>
+        <summary>The Big Bang Theory 7x20 "The Relationship Diremption"</summary>
+        <url>http://trakt.tv/show/the-big-bang-theory/season/7/episode/20</url>
+    </event>
+    <event uid="226191397205000">
+        <dtstamp>20140510T234334Z</dtstamp>
+        <dtstart>20140411T013000</dtstart>
+        <dtend>20140411T015000</dtend>
+        <description>In the midst of flu season, a sick Leslie and Andy struggle to book performers for the Unity Concert. Meanwhile, Tom heads to a wine competition in search of a sommelier for his new restaurant, and Ben seeks drunken help from Ron with a personal problem.</description>
+        <title>Parks and Recreation</title>
+        <summary>Parks and Recreation 6x19 "Flu Season 2"</summary>
+        <url>http://trakt.tv/show/parks-and-recreation/season/6/episode/19</url>
+    </event>
+    <event uid="9310191397206800">
+        <dtstamp>20140510T234334Z</dtstamp>
+        <dtstart>20140411T020000</dtstart>
+        <dtend>20140411T030000</dtend>
+        <description>Cristina is nominated for a Harper Avery and although most of her fellow doctors are ecstatic, she won’t let herself get too excited. Bailey continues to work on a young boy without an immune system -- Alex considers making a change, and Derek and Callie work with a machine that can recognize emotions. Meanwhile, Richard gives the residents a pep talk about the exciting projects going on around the hospital.</description>
+        <title>Grey's Anatomy</title>
+        <summary>Grey's Anatomy 10x19 "I'm Winning"</summary>
+        <url>http://trakt.tv/show/greys-anatomy/season/10/episode/19</url>
+    </event>
+    <event uid="96173161397206800">
+        <dtstamp>20140510T234334Z</dtstamp>
+        <dtstart>20140411T020000</dtstart>
+        <dtend>20140411T024500</dtend>
+        <description>Things are anything but business as usual when Harvey and Mike find themselves at odds with a tenacious U.S. Attorney. Scottie and Harvey can’t seem to get on the same page and Mike and Rachel clash over plans for the future.</description>
+        <title>Suits</title>
+        <summary>Suits 3x16 "No Way Out"</summary>
+        <url>http://trakt.tv/show/suits/season/3/episode/16</url>
+    </event>
+    <event uid="164692201397210400">
+        <dtstamp>20140510T234334Z</dtstamp>
+        <dtstart>20140411T030000</dtstart>
+        <dtend>20140411T040000</dtend>
+        <description>A pickpocket dies of anthrax poisoning, putting Holmes and Watson on the trail of the toxin’s source in order to prevent more deaths.</description>
+        <title>Elementary</title>
+        <summary>Elementary 2x20 "No Lack of Void"</summary>
+        <url>http://trakt.tv/show/elementary/season/2/episode/20</url>
+    </event>
+    <event uid="11578291397289600">
+        <dtstamp>20140510T234334Z</dtstamp>
+        <dtstart>20140412T010000</dtstart>
+        <dtend>20140412T020000</dtend>
+        <description>Carrie catches a deadly assassin who has eluded her before, but must put her personal vendetta aside when it’s revealed that the woman has vital information to prevent a terrorist attack on New York City.</description>
+        <title>Unforgettable</title>
+        <summary>Unforgettable 2x09 "Flesh and Blood"</summary>
+        <url>http://trakt.tv/show/unforgettable/season/2/episode/9</url>
+    </event>
+    <event uid="99383181397293200">
+        <dtstamp>20140510T234334Z</dtstamp>
+        <dtstart>20140412T020000</dtstart>
+        <dtend>20140412T024500</dtend>
+        <description>Nick and his mom, Kelly Burkhardt, join forces to protect Adalind's baby. Meanwhile, Prince Viktor activates a deadly stateside asset to find Adalind and her child.</description>
+        <title>Grimm</title>
+        <summary>Grimm 3x18 "The Law of Sacrifice"</summary>
+        <url>http://trakt.tv/show/grimm/season/3/episode/18</url>
+    </event>
+</calendar>

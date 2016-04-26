@@ -1,0 +1,32 @@
+.raw{
+  margin: 20px;
+}
+.btn-group{
+  .center-block()
+}
+.thumbnail-size {
+  width: 96px;
+  padding-right: 10px
+}
+.media-list li {
+  padding: 5px
+}
+.rollover:hover {
+  background: rgba(190, 190, 190, 0.5);
+  border-radius: 5px
+}
+.label {
+  display: inline-block
+}
+.panel-size {
+  min-height: 136px
+}
+/*
+ trying to erase all css from answer 7
+ */
+#answer7 {
+  all: initial;
+  * {
+    all: unset;
+  }
+}
