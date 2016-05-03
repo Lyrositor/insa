@@ -1,10 +1,53 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Collect'IF - Liste des Activités</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Collect'IF &ndash; Liste des Activités</h1>
+        <div id='listeActivites'>
+            <span>chargement en cours...</span>
+        </div>
+
+
+        <script>
+
+            $(function () {
+
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'listeActivite',
+                        //param: '[...]' // etc.
+                    },
+                    dataType: 'json'
+                })
+                        .done(function (data) {
+                            var activites = data.activites;
+                            var contenuHtml = '<ul>';
+                            var i;
+                            for (i = 0; i < activites.length; i++) {
+                                contenuHtml += '<li>' + activites[i] + '</li>';
+                            }
+                            contenuHtml += '</ul>';
+                            $('#listeActivites').html(contenuHtml);
+
+
+                        })
+                        .fail(function (e) {
+                            console.log(e);
+                            $('#listeActivites').html('ERREUR de chargement');
+                        })
+                        .always(function () {
+                            //
+                        });
+
+            });
+
+        </script>
     </body>
 </html>
