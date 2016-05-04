@@ -3,22 +3,40 @@
 main:
     /* initialisation de l'écran */
     call #lcd_init
-    
+
+    JMP ex3
+
+ex2:
     /* emballage des arguments */
     MOV #6, R15
     MOV #7, R14
-    
-    call #mult
-    
+
+    CALL #mult
+
     /* deballage de la valeur de retour de mult
        qu'on re-emballe comme argument pour l'appel suivant */
     MOV R13, R15
-    
-    call #lcd_display_number
+
+    CALL #lcd_display_number
+
+    JMP done
+
+ex3:
+    /* emballage des arguments */
+    MOV #6, &0x0130
+    MOV #7, &0x0138
+
+    /* deballage de la valeur de retour de mult
+       qu'on re-emballe comme argument pour l'appel suivant */
+    MOV &0x013A, R15
+
+    CALL #lcd_display_number
+
+    JMP done
 
 /* infinite loop */
 done:
-    jmp done
+    JMP done
 
 mult:
     MOV #0, R13
