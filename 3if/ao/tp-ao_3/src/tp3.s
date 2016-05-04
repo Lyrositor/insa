@@ -22,5 +22,12 @@ done:
 
 mult:
     MOV #0, R13
-    
-    ret
+    MOV R14, R12
+
+multloop:
+    ADD R15, R13
+    SUB #1, R12
+    JNZ multloop
+
+multdone:
+    RET

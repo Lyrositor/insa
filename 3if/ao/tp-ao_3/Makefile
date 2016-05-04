@@ -1,9 +1,11 @@
-CXX = msp430-gcc
+AS = msp430-as
+C = msp430-gcc
 LN = msp430-gcc
 RM = @rm
 ECHO = @echo
 
-CXXFLAGS = -mmcu=msp430fg4618 -Wall -Werror -O1
+ASFLAGS = -mmcu=msp430fg4618
+CFLAGS = -mmcu=msp430fg4618 -Wall -Werror -O1
 LNFLAGS = -mmcu=msp430fg4618 -mdisable-watchdog
 COMPILEFLAG = -c
 OUTPUT = -o
@@ -14,31 +16,47 @@ DEFINITIONS =
 BUILDDIR = bin
 SRCDIR = src
 SRC = lcd.c
-MAIN = src/tp3.s
-OBJ = $(SRC:%.cpp=$(BUILDDIR)/%.o)
+MAIN = tp3.s
+MAINOBJ = $(MAIN:%.s=$(BUILDDIR)/%.o)
+OBJ = $(SRC:%.c=$(BUILDDIR)/%.o)
 
 LIBS =
 LIBPATH =
 INCPATH =
 
-BIN = $(BUILDDIR)/tp3
+BIN = $(BUILDDIR)/tp3.elf
 MK_D = @mkdir -p $(@D)
-MK_MODULE = $(CXX) $(CXXFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@ $(INCPATH) $(DEFINITIONS) $(LIBPATH) $(LIBS)
+MK_MODULE = $(C) $(CFLAGS) $(COMPILEFLAG) $< $(OUTPUT) $@ $(INCPATH) $(DEFINITIONS) $(LIBPATH) $(LIBS)
 
 ALL = all
 CLEAN = clean
+INSTALL = install
+RUN = run
+DUMP = dump
 
-.PHONY: $(ALL) $(CLEAN)
+.PHONY: $(ALL) $(CLEAN) $(INSTALL) $(RUN) $(DUMP)
 
 $(ALL): $(BIN)
 
 $(CLEAN):
 	$(RM) $(RMFLAGS) $(BIN) $(BUILDDIR)/*.o
 
-$(BIN): $(OBJ) $(MAIN)
-	$(MK_D)
-	$(CXX) $(CXXFLAGS) $^ $(OUTPUT) $@ $(INCPATH) $(DEFINITIONS) $(LIBPATH) $(LIBS)
+$(INSTALL): $(BIN)
+	mspdebug -j -d /dev/ttyUSB0 uif <<< 'prog $(BIN)'
+    
+$(RUN): $(INSTALL)
+	mspdebug -j -d /dev/ttyUSB0 uif <<< 'run'
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(SRCDIR)/%.h $(SRCDIR)/Config.h
+$(DUMP): $(BIN)
+	msp430-objdump -d $(BIN)
+
+$(BIN): $(OBJ) $(MAINOBJ)
+	$(MK_D)
+	$(LN) $(LNFLAGS) $^ $(OUTPUT) $@ $(INCPATH) $(DEFINITIONS) $(LIBPATH) $(LIBS)
+
+$(MAINOBJ): $(SRCDIR)/$(MAIN)
+	$(AS) $(ASFLAGS) $^ $(OUTPUT) $@
+
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c $(SRCDIR)/%.h
 	$(MK_D)
 	$(MK_MODULE)
