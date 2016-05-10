@@ -1,24 +1,65 @@
 <html lang="fr" ng-app="CollectIFAdminApp">
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="../css/lib/angular-material.min.css">
+  <link rel="stylesheet" href="../css/lib/md-data-table.min.css">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <title>Liste des événements - Collect'IF</title>
 </head>
-<body ng-controller="AdminHomeCtrl" ng-cloak>
-  <!--
-    Your HTML content here
-  -->
+<body flex layout="column" ng-controller="AdminHomeCtrl" ng-cloak>
+  <div layout="column" role="main" flex>
+    <md-toolbar class="site-headline">
+      <div layout="row" flex class="fill-height md-toolbar-tools site-headline-tools">
+        <h2 class="md-toolbar-item md-headline">
+          <a href="index.html">Collect'IF</a>
+        </h2>
+        <span flex></span>
+        <div layout="row" class="md-toolbar-item">
+          <md-button class="md-raised md-warn">Déconnexion</md-button>
+        </div>
+      </div>
+    </md-toolbar>
 
-  <!-- Angular Material requires Angular.js Libraries -->
+    <md-content md-scroll-y layout="column" flex>
+      <div id="content" layout-padding flex="noshrink" class="md-body-1">
+        <h3 class="md-display-1">
+          Événements en attente d'un lieu
+        </h3>
+        <md-table-container>
+          <table md-table md-row-select ng-model="selected">
+            <thead md-head>
+              <tr md-row>
+                <th md-column md-order-by="nameToLower"><span>Activité</span></th>
+                <th md-column md-numeric><span>Date</span></th>
+                <th md-column md-numeric>Nombre de participants</th>
+              </tr>
+            </thead>
+            <tbody md-body>
+              <tr md-row md-auto-select>
+                <td md-cell>Curling sur gazon</td>
+                <td md-cell>10/04/2016</td>
+                <td md-cell>1 254 382</td>
+              </tr>
+            </tbody>
+          </table>
+        </md-table-container>
+      </div>
+
+      <div layout="row" flex="noshrink">
+        <div id="footer" class="md-caption">© 2016 Collect'IF. Tous droits réservés.</div>
+      </div>
+    </md-content>
+  </div>
+
   <script src="../js/lib/angular.min.js"></script>
   <script src="../js/lib/angular-animate.min.js"></script>
   <script src="../js/lib/angular-aria.min.js"></script>
   <script src="../js/lib/angular-messages.min.js"></script>
-
-  <!-- Angular Material Library -->
   <script src="../js/lib/angular-material.min.js"></script>
+  <script src="../js/lib/md-data-table.min.js"></script>
 
-  <!-- Your application bootstrap  -->
   <script src="../js/admin.js"></script>
-
 </body>
 </html>

@@ -1,6 +1,6 @@
-var CollectIFAdminApp = angular.module('AdminApp', ['ngMaterial']);
+var CollectIFAdminApp = angular.module('CollectIFAdminApp', ['ngMaterial', 'md.data.table']);
 
-CollectIFAdminApp.controller('AdminHome', ['$scope', '$http',
+CollectIFAdminApp.controller('AdminHomeCtrl', ['$scope', '$http',
     function ($scope, $http) {
-
+      $scope.selected = [];
 }]);
