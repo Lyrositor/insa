@@ -1,0 +1,38 @@
+/* General */
+body {
+  background-color: #f0f0f0;
+}
+
+/* Home */
+#client-container {
+  height: 80%;
+}
+
+#client-titre {
+  vertical-align: middle;
+  margin-left: 15%;
+}
+
+#client-titre1 {
+  margin-top: 0;
+  margin-bottom: 0;
+  text-shadow: 3px 3px 3px #666666;
+}
+
+#client-titre2 {
+  margin-top: 0;
+  font-style: italic;
+}
+
+#client-card {
+  vertical-align: middle;
+  margin-right: 15%;
+}
+
+#client-card-nom-prenom {
+  margin-bottom: 0;
+}
+
+#client-card-adresse-email {
+  margin-top: 0;
+}

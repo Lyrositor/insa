@@ -1,0 +1,60 @@
+<html lang="fr" ng-app="CollectIFClientApp">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/lib/angular-material.min.css">
+  <link rel="stylesheet" href="css/client.css">
+</head>
+<body ng-controller="ClientDemandesController" ng-cloak>
+
+  <div id="client-container" layout="row" layout-xs="column" layout-align="space-around center" layout-margin layout-padding>
+    <div id="client-titre" flex="60">
+      <md-card class="md-whiteframe-10dp">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Historique des demandes</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-actions layout="column" layout-align="center" layout-margin>
+        </md-card-actions>
+      </md-card>
+    </div>
+    <div id="client-card" flex="40" layout-margin layout-padding>
+      <md-card class="md-whiteframe-10dp">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Nouvelle demande</span>
+          </md-card-title-text>
+        </md-card-title>
+        <form method="POST" action="#">
+          <md-card-actions layout="column" layout-align="center" layout-margin>  
+            <md-input-container>
+              <label>Activité</label>
+              <md-select ng-model="user.activite">
+                <md-option value="0">0</md-option>
+                <md-option value="1">1</md-option>
+                <md-option value="2">2</md-option>
+              </md-select>
+            </md-input-container>
+            <md-datepicker ng-model="date" md-placeholder="Enter date"></md-datepicker>
+            <md-button class="md-raised md-primary" type="submit">Faire la demande</md-button>
+          </md-card-actions>
+        </form>
+      </md-card>
+    </div>
+  </div>
+
+  <!-- Angular Material requires Angular.js Libraries -->
+  <script src="js/lib/angular.min.js"></script>
+  <script src="js/lib/angular-animate.min.js"></script>
+  <script src="js/lib/angular-aria.min.js"></script>
+  <script src="js/lib/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="js/lib/angular-material.min.js"></script>
+
+  <!-- Your application bootstrap  -->
+  <script src="js/client.js"></script>
+
+</body>
+</html>

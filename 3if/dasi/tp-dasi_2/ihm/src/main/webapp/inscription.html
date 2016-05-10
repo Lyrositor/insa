@@ -1,0 +1,66 @@
+<html lang="fr" ng-app="CollectIFClientApp">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/lib/angular-material.min.css">
+  <link rel="stylesheet" href="css/client.css">
+</head>
+<body ng-controller="ClientInscriptionController" ng-cloak>
+
+  <div id="client-container" layout="row" layout-xs="column" layout-align="space-around center" layout-margin layout-padding>
+    <div id="client-titre" flex="60">
+      <h1 id="client-titre1" class="md-display-4">Collect'IF</h1>
+      <h2 id="client-titre2" class="md-display-1">Sous-titre charismatique</h2>
+    </div>
+    <div id="client-card" flex="40" layout-margin layout-padding>
+      <md-card class="md-whiteframe-10dp">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Inscription</span>
+          </md-card-title-text>
+        </md-card-title>
+        <form method="POST" action="#">
+          <md-card-actions layout="column" layout-align="center" layout-margin>
+            <div id="client-card-nom-prenom" layout="row" layout-xs="column" layout-margin>
+              <md-input-container class="md-block">
+                <label>Nom</label>
+                <input ng-model="user.nom">
+              </md-input-container>
+              <md-input-container class="md-block">
+                <label>Prénom</label>
+                <input ng-model="user.prenom">
+              </md-input-container>
+            </div>
+            <div id="client-card-adresse-email" layout="column" layout-margin>
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>Adresse</label>
+              <input ng-model="user.email">
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>E-mail</label>
+              <input ng-model="user.email">
+            </md-input-container>
+            <div layout="row" layout-xs="column" layout-align="space-around center" layout-margin>
+              <a href="index.html"><md-button class="md-raised">Annuler</md-button></a>
+              <md-button class="md-raised md-primary" type="submit">Confirmer</md-button>
+            </div>
+          </md-card-actions>
+        </form>
+      </md-card>
+    </div>
+  </div>
+
+  <!-- Angular Material requires Angular.js Libraries -->
+  <script src="js/lib/angular.min.js"></script>
+  <script src="js/lib/angular-animate.min.js"></script>
+  <script src="js/lib/angular-aria.min.js"></script>
+  <script src="js/lib/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="js/lib/angular-material.min.js"></script>
+
+  <!-- Your application bootstrap  -->
+  <script src="js/client.js"></script>
+
+</body>
+</html>

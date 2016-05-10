@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import metier.modele.Activite;
+import metier.modele.Adherent;
 import metier.service.ServiceMetier;
 
 @WebServlet(name = "ActionServlet", urlPatterns = {"/ActionServlet"})
@@ -45,6 +46,16 @@ public class ActionServlet extends HttpServlet {
                     out.println(json);
                 }
                 break;
+            case "authentification":
+                response.setContentType("application/json;charset=UTF-8");
+                try (PrintWriter out = response.getWriter()) {
+                    String email = request.getParameter("email");
+                    Adherent adherent = connecterAdherent(email);
+                    String json = gson.toJson(adherent);
+
+                    out.println(json);
+                }
+                break;
             default:
                 response.sendRedirect(getServletContext().getContextPath());
                 break;
@@ -61,6 +72,18 @@ public class ActionServlet extends HttpServlet {
         System.out.println("IHM - Activite :");
         System.out.println(activites);
         return activites;
+    }
+
+    private static Adherent connecterAdherent(String email) {
+        Adherent adherent = new Adherent();
+
+        try {
+            adherent = ServiceMetier.connecterAdherent(email);
+        } catch (Throwable ex) {
+            Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return adherent;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
