@@ -27,11 +27,11 @@
                     dataType: 'json'
                 })
                         .done(function (data) {
-                            var activites = data.activites;
+                            var activites = data;
                             var contenuHtml = '<ul>';
                             var i;
                             for (i = 0; i < activites.length; i++) {
-                                contenuHtml += '<li>' + activites[i] + '</li>';
+                                contenuHtml += '<li>' + activites[i].denomination + '</li>';
                             }
                             contenuHtml += '</ul>';
                             $('#listeActivites').html(contenuHtml);

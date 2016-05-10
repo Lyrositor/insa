@@ -51,16 +51,16 @@ public class ActionServlet extends HttpServlet {
         }
     }
 
-    private static String listerActivites() {
+    private static List<Activite> listerActivites() {
         List<Activite> activites = null;
         try {
             activites = ServiceMetier.listerActivites();
         } catch (Throwable ex) {
             Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Actvivite :");
+        System.out.println("IHM - Activite :");
         System.out.println(activites);
-        return activites.toString();
+        return activites;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
