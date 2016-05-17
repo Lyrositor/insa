@@ -31,7 +31,7 @@ public class ActionServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("Un appel !" + request.toString());
+        System.out.println(request.toString());
 
         if (request.getParameter("action") == null) {
             response.sendRedirect(getServletContext().getContextPath());
@@ -59,7 +59,30 @@ public class ActionServlet extends HttpServlet {
                     // Si l'adhérent n'a pas été trouvé
                     if (adherent == null) {
                         JsonObject jsonObject = new JsonObject();
-                        jsonObject.addProperty("erreur", "Email inexistante.");
+                        jsonObject.addProperty("erreur", "E-mail inexistante.");
+                        json = jsonObject.toString();
+                    } else {
+                        json = gson.toJson(adherent);
+                    }
+
+                    out.println(json);
+                }
+                break;
+            case "inscription":
+                response.setContentType("application/json;charset=UTF-8");
+                try (PrintWriter out = response.getWriter()) {
+                    String json;
+
+                    String nom = request.getParameter("nom");
+                    String prenom = request.getParameter("prenom");
+                    String adresse = request.getParameter("adresse");
+                    String email = request.getParameter("email");
+
+                    Adherent adherent = inscrireAdherent(nom, prenom, adresse, email);
+                    // Si l'adhérent n'a pas été inscrit
+                    if (adherent == null) {
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("erreur", "Inscription impossible.");
                         json = jsonObject.toString();
                     } else {
                         json = gson.toJson(adherent);
@@ -81,21 +104,26 @@ public class ActionServlet extends HttpServlet {
         } catch (Throwable ex) {
             Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("IHM - Activite :");
-        System.out.println(activites);
         return activites;
     }
 
     private static Adherent connecterAdherent(String email) {
-        System.out.println("connecterAdherent: " + email);
-
         Adherent adherent = null;
         try {
             adherent = ServiceMetier.connecterAdherent(email);
         } catch (Throwable ex) {
             Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return adherent;
+    }
 
+    private static Adherent inscrireAdherent(String nom, String prenom, String adresse, String mail) {
+        Adherent adherent = null;
+        try {
+            adherent = ServiceMetier.inscrireAdherent(nom, prenom, adresse, mail);
+        } catch (Throwable ex) {
+            Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return adherent;
     }
 

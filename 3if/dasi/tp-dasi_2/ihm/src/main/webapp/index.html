@@ -19,12 +19,16 @@
             <span class="md-headline">Identifiez-vous</span>
           </md-card-title-text>
         </md-card-title>
-        <form ng-submit="user.submit()">
+        <form name="authentification" ng-submit="user.submit()">
           <md-card-actions layout="column" layout-align="center" layout-margin>
             <md-input-container class="md-block" flex-gt-sm>
               <label>Adresse e-mail</label>
-              <input ng-model="user.email">
+              <input ng-model="user.email" name="email" required>
+              <div ng-messages="authentification.email.$error">
+                <div ng-message="required">Ce champ est requis.</div>
+              </div>
             </md-input-container>
+            <md-progress-circular id="chargement" md-mode="indeterminate" style="display: none;"></md-progress-circular>
             <div layout="row" layout-xs="column" layout-align="space-around center" layout-margin>
               <md-button class="md-raised" type="submit">Se connecter</md-button>
               <a href="inscription.html"><md-button class="md-raised md-primary">S'inscrire</md-button></a>

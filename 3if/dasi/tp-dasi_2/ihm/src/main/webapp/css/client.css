@@ -1,9 +1,20 @@
-/* General */
+/* --- General --- */
 body {
   background-color: #f0f0f0;
 }
 
-/* Home */
+/* Toast */
+#toast-erreur .md-toast-content {
+    background-color: red;
+    text-align: center;
+}
+
+/* Toast Center (will be included in the next Material version) */
+._md-center {
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+}
+
 #client-container {
   height: 80%;
 }

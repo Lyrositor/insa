@@ -31,9 +31,7 @@
             <md-input-container>
               <label>Activité</label>
               <md-select ng-model="user.activite">
-                <md-option value="0">0</md-option>
-                <md-option value="1">1</md-option>
-                <md-option value="2">2</md-option>
+                <md-option ng-repeat="activite in user.activite" value="{{activite.id}}">{{activite.denomination}}</md-option>
               </md-select>
             </md-input-container>
             <md-datepicker ng-model="date" md-placeholder="Enter date"></md-datepicker>
