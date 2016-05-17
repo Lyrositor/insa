@@ -1,6 +1,7 @@
 package controleur;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -30,6 +31,8 @@ public class ActionServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        System.out.println("Un appel !" + request.toString());
+
         if (request.getParameter("action") == null) {
             response.sendRedirect(getServletContext().getContextPath());
             return;
@@ -49,9 +52,18 @@ public class ActionServlet extends HttpServlet {
             case "authentification":
                 response.setContentType("application/json;charset=UTF-8");
                 try (PrintWriter out = response.getWriter()) {
+                    String json;
+
                     String email = request.getParameter("email");
                     Adherent adherent = connecterAdherent(email);
-                    String json = gson.toJson(adherent);
+                    // Si l'adhérent n'a pas été trouvé
+                    if (adherent == null) {
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("erreur", "Email inexistante.");
+                        json = jsonObject.toString();
+                    } else {
+                        json = gson.toJson(adherent);
+                    }
 
                     out.println(json);
                 }
@@ -75,8 +87,9 @@ public class ActionServlet extends HttpServlet {
     }
 
     private static Adherent connecterAdherent(String email) {
-        Adherent adherent = new Adherent();
+        System.out.println("connecterAdherent: " + email);
 
+        Adherent adherent = null;
         try {
             adherent = ServiceMetier.connecterAdherent(email);
         } catch (Throwable ex) {

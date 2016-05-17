@@ -4,55 +4,52 @@
 var collectIFClientApp = angular.module('CollectIFClientApp', ['ngMaterial', 'ngMessages']);
 
 /* Index Controller */
-collectIFClientApp.controller('ClientIndexController', function ($scope, $http) {
-  /* $http.get('phones/phones.json').success(function(data) {
-    $scope.phones = data;
-  });
-
-  $scope.orderProp = 'age'; */
+collectIFClientApp.controller('ClientIndexController', ['$scope', '$http', '$mdToast', function ($scope, $http, $mdToast) {
+  $scope.user = new Object();
+  $scope.user.email = '';
   
-  var user = this;
-  user.email = '';
+  afficherErreur = function(description) {
+    $mdToast.show(
+      $mdToast.simple()
+        .textContent('Erreur : ' + description)
+        .position($scope.getToastPosition())
+        .hideDelay(10000)
+    );
+    
+    alert('Erreur : ' + description);
+  };
   
-  user.submit = function() {
-    console.log('Submit start');
-    $.ajax({
+  $scope.user.submit = function() {
+    $http({
+      method: 'POST',
       url: './ActionServlet',
-      type: 'POST',
-      data: {
-        action: 'listeActivite',
-        email: user.email
-      },
-      dataType: 'json'
-    })
-      .done(function (data) {
-        console.log(data);
-        var adherent = data;
-        /*var contenuHtml = '<ul>';
-        var i;
-        for (i = 0; i < activites.length; i++) {
-          contenuHtml += '<li>' + activites[i].denomination + '</li>';
+      params: {
+        action: 'authentification',
+        email: $scope.user.email
+      }
+    }).then(function success(response) {
+        console.log(response);
+        var data = response.data;
+        
+        if (data.erreur) {
+          afficherErreur(data.erreur);
+        } else {
+          alert('good');
         }
-        contenuHtml += '</ul>';
-        $('#listeActivites').html(contenuHtml);*/
-      })
-      .fail(function (e) {
-        console.log(e);
-        /*$('#listeActivites').html('ERREUR de chargement');*/
-      })
-      .always(function () {
-        console.log('Submit end');
-        //
-      });
-    };
-});
+    }, function error(response) {
+        console.log(response);
+        afficherErreur('Connexion impossible.');
+    });
+  };
+  
+}]);
 
 /* Inscription Controller */
-collectIFClientApp.controller('ClientInscriptionController', function ($scope, $http) {
+collectIFClientApp.controller('ClientInscriptionController', ['$scope', '$http', function ($scope, $http) {
   
-});
+}]);
 
 /* Demandes Controller */
-collectIFClientApp.controller('ClientDemandesController', function ($scope, $http) {
+collectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', function ($scope, $http) {
   $scope.date = new Date();
-});
+}]);
