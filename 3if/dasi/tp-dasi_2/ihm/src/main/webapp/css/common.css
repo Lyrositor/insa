@@ -22,8 +22,17 @@ md-content {
 
 #footer {
     align-self: flex-end;
-    border-top: solid 1px #D9CEB2;
+    background-color: #D9CEB2;
     padding: 15px 30px;
     text-align: center;
     width: 100%;
+}
+
+.angular-google-map-container {
+    height: 400px;
+}
+
+.md-sub {
+    color: #999;
+    font-style: italic;
 }

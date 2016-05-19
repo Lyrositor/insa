@@ -1,0 +1,90 @@
+<html lang="fr" ng-app="CollectIFClientApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/lib/angular-material.min.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/client.css">
+  <title>Détails de demande - Collect'IF</title>
+</head>
+<body flex layout="column" ng-controller="ClientDetailsCtrl" ng-cloak>
+  <div layout="column" role="main" flex>
+    <md-toolbar class="site-headline">
+      <div layout="row" flex class="fill-height md-toolbar-tools site-headline-tools">
+        <h2 class="md-toolbar-item md-headline">
+          <a href="index.html">Collect'IF</a>
+        </h2>
+
+        <span flex></span>
+
+        <div layout="row" class="md-toolbar-item">
+          <md-button class="md-raised md-warn" ng-show="user">Déconnexion</md-button>
+        </div>
+      </div>
+    </md-toolbar>
+
+    <md-content md-scroll-y layout="column" flex>
+      <div id="content" layout-padding flex="noshrink" class="md-body-1">
+        <h3 class="md-display-1">
+          Détails de demande
+        </h3>
+
+        <div layout="row">
+          <md-card flex="60" layout="column">
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline">{{demande.activite}}</span>
+                <span class="md-subhead">{{demande.personnes}} personnes - {{demande.equipes ? "avec" : "sans"}} équipes</span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+              <p><strong>Date souhaitée :</strong> {{demande.date | date : 'dd/MM/yyyy'}}</p>
+              <div ng-if="demande.evenement">
+                <div ng-if="demande.evenement.adresse">
+                  <p>Événement organisé !</p>
+                  <p><strong>Lieu :</strong></p>
+                  <p style="white-space: pre;">{{demande.evenement.adresse}}</p>
+                </div>
+
+                <div ng-if="!demande.evenement.adresse">
+                  <p><strong>Événement en attente d'un lieu</strong></p>
+                </div>
+              </div>
+
+              <div ng-if="!demande.evenement">
+                <p><strong>Pas encore d'événement planifié</strong></p>
+              </div>
+            </md-card-content>
+          </md-card>
+
+          <md-card flex>
+            <md-card-content>
+              <p style="text-align: center"><em>PAS ENCORE DE LOCALISATION</em></p>
+              <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+            </md-card-content>
+          </md-card>
+        </div>
+
+        <md-button class="md-raised md-primary" ng-click="redirect('demandes.html')"><< Retour</md-button>
+
+      </div>
+
+      <div layout="row" flex="noshrink">
+        <div id="footer" class="md-caption">© 2016 Collect'IF. Tous droits réservés.</div>
+      </div>
+    </md-content>
+  </div>
+
+  <script src="js/lib/lodash.min.js"></script>
+  <script src="js/lib/angular.min.js"></script>
+  <script src="js/lib/angular-aria.min.js"></script>
+  <script src="js/lib/angular-animate.min.js"></script>
+  <script src="js/lib/angular-material.min.js"></script>
+  <script src="js/lib/angular-messages.min.js"></script>
+  <script src='js/lib/angular-simple-logger.min.js'></script>
+  <script src='js/lib/angular-google-maps.min.js'></script>
+
+  <script src="js/common.js"></script>
+  <script src="js/client.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<html lang="fr" ng-app="CollectIFAdminApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/lib/angular-material.min.css">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <title>Liste des événements - Collect'IF</title>
+</head>
+<body flex layout="column" ng-controller="AdminAssignerCtrl" ng-cloak>
+  <div layout="column" role="main" flex>
+    <md-toolbar class="site-headline">
+      <div layout="row" flex class="fill-height md-toolbar-tools site-headline-tools">
+        <h2 class="md-toolbar-item md-headline">
+          <a href="index.html">Collect'IF</a>
+        </h2>
+      </div>
+    </md-toolbar>
+
+<md-content md-scroll-y layout="column" flex>
+      <div id="content" layout-padding flex="noshrink" class="md-body-1">
+        <h3 class="md-display-1">
+          Assigner un lieu
+        </h3>
+
+        <div layout="row">
+          <md-card flex="60" layout="column">
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline">{{demande.activite}}</span>
+                <span class="md-sub"> {{demande.date | date : 'dd/MM/yyyy'}}</span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Lieu</label>
+                <md-select ng-model="lieuChoisi" ng-change="changerCouleur()">
+                  <md-option ng-repeat="lieu in lieux" value="{{$index}}">
+                    {{lieu.nom}}
+                  </md-option>
+                </md-select>
+              </md-input-container>
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+              <md-button ng-click="redirect('index.html')">Annuler</md-button>
+              <md-button ng-click="assignerLieu()">Confirmer</md-button>
+            </md-card-actions>
+          </md-card>
+
+          <md-card flex>
+            <md-card-content>
+              <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                <ui-gmap-markers models="markers" coords="'coordonnees'" icon="'icone'">
+                </ui-gmap-markers>
+              </ui-gmap-google-map>
+            </md-card-content>
+          </md-card>
+        </div>
+
+      </div>
+
+      <div layout="row" flex="noshrink">
+        <div id="footer" class="md-caption">© 2016 Collect'IF. Tous droits réservés.</div>
+      </div>
+    </md-content>
+  </div>
+
+  <script src='../js/lib/lodash.min.js'></script>
+  <script src="../js/lib/angular.min.js"></script>
+  <script src="../js/lib/angular-animate.min.js"></script>
+  <script src="../js/lib/angular-aria.min.js"></script>
+  <script src="../js/lib/angular-material.min.js"></script>
+  <script src='../js/lib/angular-simple-logger.min.js'></script>
+  <script src='../js/lib/angular-google-maps.min.js'></script>
+  <script src="../js/lib/md-data-table.min.js"></script>
+
+  <script src="../js/common.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

@@ -15,10 +15,6 @@
         <h2 class="md-toolbar-item md-headline">
           <a href="index.html">Collect'IF</a>
         </h2>
-        <span flex></span>
-        <div layout="row" class="md-toolbar-item">
-          <md-button class="md-raised md-warn">Déconnexion</md-button>
-        </div>
       </div>
     </md-toolbar>
 
@@ -27,24 +23,27 @@
         <h3 class="md-display-1">
           Événements en attente d'un lieu
         </h3>
+
         <md-table-container>
-          <table md-table md-row-select ng-model="selected">
-            <thead md-head>
+          <table md-table>
+            <thead md-head md-order="requete.order">
               <tr md-row>
-                <th md-column md-order-by="nameToLower"><span>Activité</span></th>
-                <th md-column md-numeric><span>Date</span></th>
+                <th md-column><span>Activité</span></th>
+                <th md-column><span>Date</span></th>
                 <th md-column md-numeric>Nombre de participants</th>
               </tr>
             </thead>
             <tbody md-body>
-              <tr md-row md-auto-select>
-                <td md-cell>Curling sur gazon</td>
-                <td md-cell>10/04/2016</td>
-                <td md-cell>1 254 382</td>
+              <tr md-row ng-repeat="evenement in evenements">
+                <td md-cell>{{evenement.activite}}</td>
+                <td md-cell>{{evenement.date | date : 'dd/MM/yyyy'}}</td>
+                <td md-cell>{{evenement.participants | number}}</td>
+                <td md-cell style="text-align: center; width: 16%;"><md-button class="md-raised md-primary" ng-click="redirect('assigner.html?id=' + evenement.id)">Attribuer</md-button></td>
               </tr>
             </tbody>
           </table>
         </md-table-container>
+
       </div>
 
       <div layout="row" flex="noshrink">
@@ -53,13 +52,16 @@
     </md-content>
   </div>
 
+  <script src='../js/lib/lodash.min.js'></script>
   <script src="../js/lib/angular.min.js"></script>
   <script src="../js/lib/angular-animate.min.js"></script>
   <script src="../js/lib/angular-aria.min.js"></script>
-  <script src="../js/lib/angular-messages.min.js"></script>
   <script src="../js/lib/angular-material.min.js"></script>
+  <script src='../js/lib/angular-simple-logger.min.js'></script>
+  <script src='../js/lib/angular-google-maps.min.js'></script>
   <script src="../js/lib/md-data-table.min.js"></script>
 
+  <script src="../js/common.js"></script>
   <script src="../js/admin.js"></script>
 </body>
 </html>

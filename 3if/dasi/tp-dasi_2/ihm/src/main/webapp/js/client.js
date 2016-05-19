@@ -34,7 +34,7 @@ var collectIFClientApp = angular.module('CollectIFClientApp', ['ngMaterial', 'ng
 collectIFClientApp.controller('ClientIndexController', ['$scope', '$http', '$mdToast', function ($scope, $http, $mdToast) {
   $scope.user = new Object();
   $scope.user.email = '';
-  
+
   $scope.user.submit = function() {
     // Si aucune e-mail n'est entrée
     if ($scope.user.email.length === 0) {
@@ -58,7 +58,7 @@ collectIFClientApp.controller('ClientIndexController', ['$scope', '$http', '$mdT
             // Redirection
             window.location.replace('demandes.html');
           }
-          
+
           chargement(false);
       }, function error(response) {
           console.log(response);
@@ -76,7 +76,7 @@ collectIFClientApp.controller('ClientInscriptionController', ['$scope', '$http',
   $scope.user.prenom = '';
   $scope.user.adresse = '';
   $scope.user.email = '';
-  
+
   $scope.user.submit = function() {
     // Si aucune e-mail n'est entrée
     if ($scope.user.nom.length === 0) {
@@ -124,7 +124,7 @@ collectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
   $scope.date = new Date();
   $scope.user = new Object();
   $scope.user.activite = '';
-  
+
   $http({
         method: 'POST',
         url: './ActionServlet',
@@ -148,4 +148,24 @@ collectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
           afficherErreur($scope, $mdToast, 'Récupération de la liste des activités impossible.');
           chargement(false);
       });
+}]);
+
+CollectIFClientApp.controller('ClientDetailsCtrl', ['$scope', '$http', '$window',
+    function ($scope, $http, $window) {
+        $scope.redirect = function(url) {
+            $window.location.href = url;
+        }
+
+        $scope.demande = {
+            activite: "Tarot",
+            personnes: 5,
+            equipes: false,
+            date: new Date(),
+            evenement: {
+                adresse: null,
+                coordonnees: null
+            }
+        };
+
+        $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
 }]);
