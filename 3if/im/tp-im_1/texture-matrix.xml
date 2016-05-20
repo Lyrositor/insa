@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<scene version="0.5.0">
+	<integrator type="path"/>
+
+	<emitter type="constant"/>
+
+	<shape type="heightfield">
+		<texture type="bitmap">
+			<string name="filename" value="$hfile"/>
+		</texture>
+		<transform name="toWorld">
+			<scale y="-450" x="600" z="500"/>
+		</transform>
+		<float name="scale" value="1"/>
+
+      <bsdf type="twosided">
+         <bsdf type="diffuse">
+            <texture name="reflectance" type="bitmap">
+               <string name="filename" value="$tfile"/>
+            </texture>
+         </bsdf>
+      </bsdf>
+	</shape>
+
+	<sensor type="perspective">
+		<float name="focusDistance" value="5"/>
+		<float name="fov" value="67.9123"/>
+		<string name="fovAxis" value="x"/>
+		<transform name="toWorld">
+         <matrix value="$matrix"/>
+		</transform>
+
+		<sampler type="ldsampler">
+			<integer name="sampleCount" value="32"/>
+		</sampler>
+
+		<film type="ldrfilm">
+			<boolean name="banner" value="false"/>
+			<integer name="height" value="300"/>
+			<string name="pixelFormat" value="rgb"/>
+			<integer name="width" value="512"/>
+
+			<rfilter type="gaussian"/>
+		</film>
+	</sensor>
+</scene>
