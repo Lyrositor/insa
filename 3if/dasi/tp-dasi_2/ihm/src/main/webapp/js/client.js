@@ -28,10 +28,10 @@ var chargement = function(afficher) {
 };
 
 /* Angular Material */
-var collectIFClientApp = angular.module('CollectIFClientApp', ['ngMaterial', 'ngMessages']);
+var CollectIFClientApp = angular.module('CollectIFClientApp', ['ngMaterial', 'ngMessages']);
 
 /* Index Controller */
-collectIFClientApp.controller('ClientIndexController', ['$scope', '$http', '$mdToast', function ($scope, $http, $mdToast) {
+CollectIFClientApp.controller('ClientIndexController', ['$scope', '$http', '$mdToast', function ($scope, $http, $mdToast) {
   $scope.user = new Object();
   $scope.user.email = '';
 
@@ -70,7 +70,7 @@ collectIFClientApp.controller('ClientIndexController', ['$scope', '$http', '$mdT
 }]);
 
 /* Inscription Controller */
-collectIFClientApp.controller('ClientInscriptionController', ['$scope', '$http', '$mdToast', function ($scope, $http, $mdToast) {
+CollectIFClientApp.controller('ClientInscriptionController', ['$scope', '$http', '$mdToast', function ($scope, $http, $mdToast) {
   $scope.user = new Object();
   $scope.user.nom = '';
   $scope.user.prenom = '';
@@ -120,7 +120,7 @@ collectIFClientApp.controller('ClientInscriptionController', ['$scope', '$http',
 }]);
 
 /* Demandes Controller */
-collectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$mdToast', function ($scope, $http, $mdToast) {
+CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$mdToast', function ($scope, $http, $mdToast) {
   $scope.date = new Date();
   $scope.user = new Object();
   $scope.user.activite = '';

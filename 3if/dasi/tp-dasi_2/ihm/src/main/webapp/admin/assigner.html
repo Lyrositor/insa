@@ -27,16 +27,16 @@
           <md-card flex="60" layout="column">
             <md-card-title>
               <md-card-title-text>
-                <span class="md-headline">{{demande.activite}}</span>
-                <span class="md-sub"> {{demande.date | date : 'dd/MM/yyyy'}}</span>
+                <span class="md-headline">{{evenement.activite}}</span>
+                <span class="md-sub"> {{evenement.date | date : 'dd/MM/yyyy'}}</span>
               </md-card-title-text>
             </md-card-title>
             <md-card-content>
               <md-input-container class="md-block" flex-gt-sm>
                 <label>Lieu</label>
                 <md-select ng-model="lieuChoisi" ng-change="changerCouleur()">
-                  <md-option ng-repeat="lieu in lieux" value="{{$index}}">
-                    {{lieu.nom}}
+                  <md-option ng-repeat="(id, denomination) in lieux" value="{{id}}">
+                    {{denomination}}
                   </md-option>
                 </md-select>
               </md-input-container>
