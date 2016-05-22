@@ -18,7 +18,7 @@ import metier.modele.Evenement;
 import metier.modele.Lieu;
 import metier.service.ServiceMetier;
 
-@WebServlet(name="ActionServlet", urlPatterns={"/ActionServlet"})
+@WebServlet(name = "ActionServlet", urlPatterns = {"/ActionServlet"})
 public class ActionServlet extends HttpServlet {
 
     protected List<Activite> activites = null;
@@ -64,6 +64,11 @@ public class ActionServlet extends HttpServlet {
                 break;
 
             case "authentification": {
+                /*// Si l'utilisateur est déjà connecté
+                if (request.getSession().getAttribute("connecte").equals(true)) {
+                    response.sendRedirect("details.html");
+                }*/
+
                 String email = request.getParameter("email");
                 Adherent adherent = connecterAdherent(email);
                 // Si l'adhérent n'a pas été trouvé
@@ -74,6 +79,8 @@ public class ActionServlet extends HttpServlet {
                     json = jsonObject.toString();
                 } else {
                     json = gson.toJson(adherent);
+
+                    request.getSession().setAttribute("connecte", true);
                 }
 
                 out.print(json);
@@ -152,9 +159,11 @@ public class ActionServlet extends HttpServlet {
 
     private Evenement getEvenement(Integer id) {
         try {
-            for (Evenement e : ServiceMetier.listerEvenements())
-                if (e.getId().equals(id))
+            for (Evenement e : ServiceMetier.listerEvenements()) {
+                if (e.getId().equals(id)) {
                     return e;
+                }
+            }
         } catch (Throwable ex) {
             Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -175,18 +184,21 @@ public class ActionServlet extends HttpServlet {
         Evenement evenement = null;
         Lieu lieu = null;
         try {
-            for (Evenement e : ServiceMetier.listerEvenements())
+            for (Evenement e : ServiceMetier.listerEvenements()) {
                 if (e.getId().equals(evenementId)) {
                     evenement = e;
                     break;
                 }
-            for (Lieu l : lieux)
+            }
+            for (Lieu l : lieux) {
                 if (l.getId().equals(lieuId)) {
                     lieu = l;
                     break;
                 }
-            if (lieu == null || evenement == null)
+            }
+            if (lieu == null || evenement == null) {
                 return;
+            }
             ServiceMetier.affecterLieu(evenement, lieu);
         } catch (Throwable ex) {
             Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
