@@ -1,12 +1,11 @@
 <html lang="fr" ng-app="CollectIFClientApp">
 <head>
   <meta charset="UTF-8">
-  <title>Détails - Collect'IF</title>
+  <title>Détails de demande - Collect'IF</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/lib/angular-material.min.css">
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/client.css">
-  <title>Détails de demande - Collect'IF</title>
 </head>
 <body flex layout="column" ng-controller="ClientDetailsCtrl" ng-cloak>
   <div layout="column" role="main" flex>
@@ -26,15 +25,13 @@
 
     <md-content md-scroll-y layout="column" flex>
       <div id="content" layout-padding flex="noshrink" class="md-body-1">
-        <h3 class="md-display-1">
-          Détails de demande
-        </h3>
+        <h3 class="md-display-1">Détails de demande</h3>
 
         <div layout="row">
           <md-card flex="60" layout="column">
             <md-card-title>
               <md-card-title-text>
-                <span class="md-headline">{{demande.activite}}</span>
+                <span class="md-headline">{{demande.activite.denomination}}</span>
                 <span class="md-subhead">{{demande.personnes}} personnes - {{demande.equipes ? "avec" : "sans"}} équipes</span>
               </md-card-title-text>
             </md-card-title>

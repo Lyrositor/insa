@@ -4,64 +4,88 @@
   <title>Demandes - Collect'IF</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/lib/angular-material.min.css">
+  <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/client.css">
 </head>
-<body ng-controller="ClientDemandesController" ng-cloak>
+<body flex layout="column" ng-controller="ClientDemandesController" ng-cloak>
+  <div layout="column" role="main" flex>
+    <md-toolbar class="site-headline">
+      <div layout="row" flex class="fill-height md-toolbar-tools site-headline-tools">
+        <h2 class="md-toolbar-item md-headline">
+          <a href="index.html">Collect'IF</a>
+        </h2>
 
-  <div id="client-container" layout="row" layout-xs="column" layout-align="space-around center" layout-margin layout-padding>
-    <div id="client-titre" flex="60">
-      <md-card class="md-whiteframe-10dp">
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Historique des demandes</span>
-          </md-card-title-text>
-        </md-card-title>
-        <md-card-actions layout="column" layout-align="center" layout-margin>
-            <md-table-container>
-                <table md-table>
-                  <thead md-head md-order="requete.order">
-                    <tr md-row>
-                      <th md-column>Activité</th>
-                      <th md-column>Date</th>
-                      <th md-column>Evenement planifié</th>
-                      <th md-column>Lieu évènement</th>
-                    </tr>
-                  </thead>
-                  <tbody md-body>
-                    <tr md-row ng-repeat="demande in demandes">
-                      <td md-cell>{{evenement.activite}}</td>
-                      <td md-cell>{{evenement.date | date : 'dd/MM/yyyy'}}</td>
-                      <td md-cell>{{evenement.planifie}}</td>
-                      <td md-cell>{{evenement.lieu}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </md-table-container>
-        </md-card-actions>
-      </md-card>
-    </div>
-    <div id="client-card" flex="40" layout-margin layout-padding>
-      <md-card class="md-whiteframe-10dp">
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Nouvelle demande</span>
-          </md-card-title-text>
-        </md-card-title>
-        <form ng-submit="user.submit()">
-          <md-card-actions layout="column" layout-align="center" layout-margin>  
-            <md-input-container>
-              <label>Activité</label>
-              <md-select ng-model="user.activite">
-                <md-option ng-repeat="activite in list.activites" value="{{activite.id}}">{{activite.denomination}}</md-option>
-              </md-select>
-            </md-input-container>
-            <md-datepicker ng-model="user.date" md-placeholder="Enter date"></md-datepicker>
-            <md-progress-circular id="chargement" md-mode="indeterminate" style="display: none;"></md-progress-circular>
-            <md-button class="md-raised md-primary" type="submit">Faire la demande</md-button>
-          </md-card-actions>
-        </form>
-      </md-card>
-    </div>
+        <span flex></span>
+
+        <div layout="row" class="md-toolbar-item">
+          <md-button class="md-raised md-warn" ng-show="user">Déconnexion</md-button>
+        </div>
+      </div>
+    </md-toolbar>
+
+    <md-content md-scroll-y layout="column" flex>
+      <div id="content" layout-padding flex="noshrink" class="md-body-1">
+        <h3 class="md-display-1">Liste des demandes</h3>
+
+        <div layout="row">  
+            <md-card flex="70">
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Historique des demandes</span>
+                </md-card-title-text>
+              </md-card-title>
+              <md-card-actions layout="column" layout-align="center" layout-margin>
+                  <md-table-container>
+                      <table md-table>
+                        <thead md-head md-order="requete.order">
+                          <tr md-row>
+                            <th md-column>Activité</th>
+                            <th md-column>Date</th>
+                            <th md-column>Evenement planifié</th>
+                            <th md-column>Lieu évènement</th>
+                          </tr>
+                        </thead>
+                        <tbody md-body>
+                          <tr md-row ng-repeat="demande in list.demandes">
+                            <td md-cell><a href="details.html?demande={{demande.id}}">{{demande.activite.denomination}}</a></td>
+                            <td md-cell>{{demande.date | date : 'dd/MM/yyyy'}}</td>
+                            <td md-cell>{{demande.planifie}}</td>
+                            <td md-cell>{{demande.lieu}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </md-table-container>
+              </md-card-actions>
+            </md-card>
+
+            <md-card flex="30">
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Nouvelle demande</span>
+                </md-card-title-text>
+              </md-card-title>
+              <form ng-submit="user.submit()">
+                <md-card-actions layout="column" layout-align="center" layout-margin>  
+                  <md-input-container>
+                    <label>Activité</label>
+                    <md-select ng-model="user.activite">
+                      <md-option ng-repeat="activite in list.activites" value="{{activite.id}}">{{activite.denomination}}</md-option>
+                    </md-select>
+                  </md-input-container>
+                  <md-datepicker ng-model="user.date" md-placeholder="Enter date"></md-datepicker>
+                  <md-progress-circular id="chargement" md-mode="indeterminate" style="display: none;"></md-progress-circular>
+                  <md-button class="md-raised md-primary" type="submit">Faire la demande</md-button>
+                </md-card-actions>
+              </form>
+            </md-card>
+         </div>
+      </div>
+
+      <div layout="row" flex="noshrink">
+        <div id="footer" class="md-caption">© 2016 Collect'IF. Tous droits réservés.</div>
+      </div>
+
+    </md-content>
   </div>
 
   <!-- Angular Material requires Angular.js Libraries -->

@@ -124,15 +124,17 @@ CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
   $scope.date = new Date();
   $scope.list = new Object();
   $scope.list.activites = '';
+  $scope.list.demandes = '';
   $scope.user = new Object();
   $scope.user.activite = '';
   $scope.user.date = new Date();
   
+  /* Chargement de la liste des activités */
   $http({
     method: 'POST',
     url: './ActionServlet',
     params: {
-      action: 'listeActivite'
+      action: 'listeActivites'
     }
   }).then(function success(response) {
       console.log(response);
@@ -151,7 +153,31 @@ CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
       afficherErreur($scope, $mdToast, 'Récupération de la liste des activités impossible.');
       chargement(false);
   });
-      
+  
+  /* Chargement de la liste des demandes */
+  $http({
+    method: 'POST',
+    url: './ActionServlet',
+    params: {
+      action: 'listeDemandes'
+    }
+  }).then(function success(response) {
+      console.log(response);
+      var data = response.data;
+
+      if (data.erreur) {
+        afficherErreur($scope, $mdToast, data.erreur);
+      } else {
+        $scope.list.demandes = data;
+      }
+      chargement(false);
+  }, function error(response) {
+      console.log(response);
+      afficherErreur($scope, $mdToast, 'Récupération de la liste des activités impossible.');
+      chargement(false);
+  });
+
+  /* Submit : effectuer une nouvelle demande */
   $scope.user.submit = function() {
     // S'il n' y pas d'activité
     if ($scope.user.activite.length === 0) {
@@ -185,13 +211,37 @@ CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
   };
 }]);
 
-CollectIFClientApp.controller('ClientDetailsCtrl', ['$scope', '$http', '$window',
-    function ($scope, $http, $window) {
+CollectIFClientApp.controller('ClientDetailsCtrl', ['$scope', '$http', '$mdToast', '$window', function ($scope, $http, $mdToast, $window) {
         $scope.redirect = function(url) {
             $window.location.href = url;
-        }
+        };
+        
+        var demande = location.search.split('demande=')[1];
+        
+        $http({
+            method: 'POST',
+            url: './ActionServlet',
+            params: {
+              action: 'getDemande',
+              demande: demande
+            }
+          }).then(function success(response) {
+              console.log(response);
+              var data = response.data;
 
-        $scope.demande = {
+              if (data.erreur) {
+                afficherErreur($scope, $mdToast, data.erreur);
+              } else {
+                  console.log(data);
+                $scope.demande = data;
+              }
+          }, function error(response) {
+              console.log(response);
+              afficherErreur($scope, $mdToast, 'Récupération de la liste des demandes impossible.');
+              chargement(false);
+          });
+        
+        /*$scope.demande = {
             activite: "Tarot",
             personnes: 5,
             equipes: false,
@@ -200,7 +250,7 @@ CollectIFClientApp.controller('ClientDetailsCtrl', ['$scope', '$http', '$window'
                 adresse: null,
                 coordonnees: null
             }
-        };
+        };*/
 
         $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
 }]);

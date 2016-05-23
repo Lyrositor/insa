@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import metier.modele.Activite;
 import metier.modele.Adherent;
+import metier.modele.Demande;
 import metier.modele.Evenement;
 import metier.modele.Lieu;
 import metier.service.ServiceMetier;
@@ -60,7 +61,7 @@ public class ActionServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
 
         switch (request.getParameter("action")) {
-            case "listeActivite": {
+            case "listeActivites": {
                 out.print(gson.toJson(activites));
                 break;
             }
@@ -128,6 +129,24 @@ public class ActionServlet extends HttpServlet {
                 break;
             }
 
+            case "listeDemandes": {
+                Adherent adherent = (Adherent) request.getSession().getAttribute("adherent");
+
+                try {
+                    List<Demande> demandes = ListerDemandes(adherent);
+                    out.print(gson.toJson(demandes));
+
+                    break;
+                } catch (Throwable ex) {
+                    Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("erreur", "Liste des demandes impossible.");
+                out.print(jsonObject.toString());
+                break;
+            }
+
             case "effectuerDemande": {
                 String date = request.getParameter("date");
                 int noActivite = Integer.parseInt(request.getParameter("activite"));
@@ -162,6 +181,29 @@ public class ActionServlet extends HttpServlet {
                 }
 
                 out.print(json);
+                break;
+            }
+
+            case "getDemande": {
+                int demandeId = Integer.parseInt(request.getParameter("demande"));
+                Adherent adherent = (Adherent) request.getSession().getAttribute("adherent");
+
+                Boolean error = true;
+                for (Demande demande : ListerDemandes(adherent)) {
+                    if (demande.getId() == demandeId) {
+                        out.print(gson.toJson(demande));
+                        error = false;
+                        break;
+                    }
+                }
+
+                if (error == true) {
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("erreur", "Demande inexistante.");
+                    out.print(jsonObject.toString());
+                }
+
+                break;
             }
 
             default:
@@ -245,6 +287,15 @@ public class ActionServlet extends HttpServlet {
         } catch (Throwable ex) {
             Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }
+    }
+
+    private List<Demande> ListerDemandes(Adherent adherent) {
+        try {
+            return ServiceMetier.listerDemandes(adherent);
+        } catch (Throwable ex) {
+            Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 
