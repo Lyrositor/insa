@@ -18,7 +18,7 @@
         <span flex></span>
 
         <div layout="row" class="md-toolbar-item">
-          <md-button class="md-raised md-warn" ng-show="user">Déconnexion</md-button>
+          <md-button class="md-raised md-warn" onclick="deconnexion()">Déconnexion</md-button>
         </div>
       </div>
     </md-toolbar>
@@ -27,7 +27,7 @@
       <div id="content" layout-padding flex="noshrink" class="md-body-1">
         <h3 class="md-display-1">Liste des demandes</h3>
 
-        <div layout="row">  
+        <div layout="row">
             <md-card flex="70">
               <md-card-title>
                 <md-card-title-text>
@@ -46,11 +46,11 @@
                           </tr>
                         </thead>
                         <tbody md-body>
-                          <tr md-row ng-repeat="demande in list.demandes">
+                          <tr md-row ng-repeat="demande in list.demandes" layout-padding>
                             <td md-cell><a href="details.html?demande={{demande.id}}">{{demande.activite.denomination}}</a></td>
-                            <td md-cell>{{demande.date | date : 'dd/MM/yyyy'}}</td>
-                            <td md-cell>{{demande.planifie}}</td>
-                            <td md-cell>{{demande.lieu}}</td>
+                            <td md-cell>{{formatDate(demande.date) | date : 'dd/MM/yyyy'}}</td>
+                            <td md-cell>{{demande.evenement.planifie}}</td>
+                            <td md-cell>{{demande.evenement.lieu}}</td>
                           </tr>
                         </tbody>
                       </table>

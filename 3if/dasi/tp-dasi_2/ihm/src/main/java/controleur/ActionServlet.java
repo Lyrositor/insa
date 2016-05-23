@@ -157,12 +157,13 @@ public class ActionServlet extends HttpServlet {
                     for (Activite activite : ServiceMetier.listerActivites()) {
                         if (activite.getId() == noActivite) {
                             activiteSelectionnee = activite;
+                            break;
                         }
                     }
                     if (activiteSelectionnee != null) {
                         Adherent adherent = (Adherent) request.getSession().getAttribute("adherent");
 
-                        error = effectuerDemande(new Date(Long.parseLong(date)), adherent, activiteSelectionnee);
+                        error = !effectuerDemande(new Date(Long.parseLong(date)), adherent, activiteSelectionnee);
                     }
                 } catch (Throwable ex) {
                     Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -174,7 +175,6 @@ public class ActionServlet extends HttpServlet {
                 if (error) {
                     jsonObject.addProperty("erreur", "Demande impossible.");
                     json = jsonObject.toString();
-                    out.print(json);
                 } else {
                     jsonObject.addProperty("succes", "");
                     json = jsonObject.toString();
@@ -203,6 +203,11 @@ public class ActionServlet extends HttpServlet {
                     out.print(jsonObject.toString());
                 }
 
+                break;
+            }
+
+            case "deconnexion": {
+                request.getSession().removeAttribute("adherent");
                 break;
             }
 

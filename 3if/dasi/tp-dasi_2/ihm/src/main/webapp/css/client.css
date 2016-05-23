@@ -1,6 +1,6 @@
 /* --- General --- */
 html,
-body{
+body {
   height: initial;
   background-color: #f0f0f0;
 }
@@ -48,4 +48,12 @@ body{
 
 #client-card-adresse-email {
   margin-top: 0;
+}
+
+[md-table] {
+  width: 100%;
+}
+
+[md-cell] {
+  text-align: center;
 }
