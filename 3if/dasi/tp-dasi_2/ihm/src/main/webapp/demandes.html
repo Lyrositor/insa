@@ -1,6 +1,7 @@
 <html lang="fr" ng-app="CollectIFClientApp">
 <head>
   <meta charset="utf-8">
+  <title>Demandes - Collect'IF</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/lib/angular-material.min.css">
   <link rel="stylesheet" href="css/client.css">
@@ -16,6 +17,26 @@
           </md-card-title-text>
         </md-card-title>
         <md-card-actions layout="column" layout-align="center" layout-margin>
+            <md-table-container>
+                <table md-table>
+                  <thead md-head md-order="requete.order">
+                    <tr md-row>
+                      <th md-column>Activité</th>
+                      <th md-column>Date</th>
+                      <th md-column>Evenement planifié</th>
+                      <th md-column>Lieu évènement</th>
+                    </tr>
+                  </thead>
+                  <tbody md-body>
+                    <tr md-row ng-repeat="demande in demandes">
+                      <td md-cell>{{evenement.activite}}</td>
+                      <td md-cell>{{evenement.date | date : 'dd/MM/yyyy'}}</td>
+                      <td md-cell>{{evenement.planifie}}</td>
+                      <td md-cell>{{evenement.lieu}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </md-table-container>
         </md-card-actions>
       </md-card>
     </div>
@@ -26,15 +47,16 @@
             <span class="md-headline">Nouvelle demande</span>
           </md-card-title-text>
         </md-card-title>
-        <form method="POST" action="#">
+        <form ng-submit="user.submit()">
           <md-card-actions layout="column" layout-align="center" layout-margin>  
             <md-input-container>
               <label>Activité</label>
               <md-select ng-model="user.activite">
-                <md-option ng-repeat="activite in user.activite" value="{{activite.id}}">{{activite.denomination}}</md-option>
+                <md-option ng-repeat="activite in list.activites" value="{{activite.id}}">{{activite.denomination}}</md-option>
               </md-select>
             </md-input-container>
-            <md-datepicker ng-model="date" md-placeholder="Enter date"></md-datepicker>
+            <md-datepicker ng-model="user.date" md-placeholder="Enter date"></md-datepicker>
+            <md-progress-circular id="chargement" md-mode="indeterminate" style="display: none;"></md-progress-circular>
             <md-button class="md-raised md-primary" type="submit">Faire la demande</md-button>
           </md-card-actions>
         </form>

@@ -1,5 +1,7 @@
 /* --- General --- */
-body {
+html,
+body{
+  height: initial;
   background-color: #f0f0f0;
 }
 

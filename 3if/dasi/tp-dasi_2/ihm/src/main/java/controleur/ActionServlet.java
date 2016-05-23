@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,16 +60,12 @@ public class ActionServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
 
         switch (request.getParameter("action")) {
-            case "listeActivite":
+            case "listeActivite": {
                 out.print(gson.toJson(activites));
                 break;
+            }
 
             case "authentification": {
-                /*// Si l'utilisateur est déjà connecté
-                if (request.getSession().getAttribute("connecte").equals(true)) {
-                    response.sendRedirect("details.html");
-                }*/
-
                 String email = request.getParameter("email");
                 Adherent adherent = connecterAdherent(email);
                 // Si l'adhérent n'a pas été trouvé
@@ -80,7 +77,7 @@ public class ActionServlet extends HttpServlet {
                 } else {
                     json = gson.toJson(adherent);
 
-                    request.getSession().setAttribute("connecte", true);
+                    request.getSession().setAttribute("adherent", adherent);
                 }
 
                 out.print(json);
@@ -129,6 +126,42 @@ public class ActionServlet extends HttpServlet {
                 Integer lieuId = Integer.parseInt(request.getParameter("lieu"));
                 affecterLieu(evenementId, lieuId);
                 break;
+            }
+
+            case "effectuerDemande": {
+                String date = request.getParameter("date");
+                int noActivite = Integer.parseInt(request.getParameter("activite"));
+
+                Boolean error = true;
+                try {
+                    Activite activiteSelectionnee = null;
+                    for (Activite activite : ServiceMetier.listerActivites()) {
+                        if (activite.getId() == noActivite) {
+                            activiteSelectionnee = activite;
+                        }
+                    }
+                    if (activiteSelectionnee != null) {
+                        Adherent adherent = (Adherent) request.getSession().getAttribute("adherent");
+
+                        error = effectuerDemande(new Date(Long.parseLong(date)), adherent, activiteSelectionnee);
+                    }
+                } catch (Throwable ex) {
+                    Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    error = true;
+                }
+
+                JsonObject jsonObject = new JsonObject();
+                String json;
+                if (error) {
+                    jsonObject.addProperty("erreur", "Demande impossible.");
+                    json = jsonObject.toString();
+                    out.print(json);
+                } else {
+                    jsonObject.addProperty("succes", "");
+                    json = jsonObject.toString();
+                }
+
+                out.print(json);
             }
 
             default:
@@ -202,6 +235,16 @@ public class ActionServlet extends HttpServlet {
             ServiceMetier.affecterLieu(evenement, lieu);
         } catch (Throwable ex) {
             Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private boolean effectuerDemande(Date date, Adherent adherent, Activite activite) {
+        try {
+            ServiceMetier.creerDemande(date, adherent, activite);
+            return true;
+        } catch (Throwable ex) {
+            Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
 

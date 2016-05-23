@@ -122,32 +122,67 @@ CollectIFClientApp.controller('ClientInscriptionController', ['$scope', '$http',
 /* Demandes Controller */
 CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$mdToast', function ($scope, $http, $mdToast) {
   $scope.date = new Date();
+  $scope.list = new Object();
+  $scope.list.activites = '';
   $scope.user = new Object();
   $scope.user.activite = '';
-
+  $scope.user.date = new Date();
+  
   $http({
-        method: 'POST',
-        url: './ActionServlet',
-        params: {
-          action: 'listeActivite',
-        }
-      }).then(function success(response) {
-          console.log(response);
-          var data = response.data;
+    method: 'POST',
+    url: './ActionServlet',
+    params: {
+      action: 'listeActivite'
+    }
+  }).then(function success(response) {
+      console.log(response);
+      var data = response.data;
 
-          if (data.erreur) {
-            afficherErreur($scope, $mdToast, data.erreur);
-          } else {
-            $scope.user.activite = data.sort(function(a, b) {
-              return  a.denomination.localeCompare(b.denomination);
-            });
-          }
-          chargement(false);
-      }, function error(response) {
-          console.log(response);
-          afficherErreur($scope, $mdToast, 'Récupération de la liste des activités impossible.');
-          chargement(false);
-      });
+      if (data.erreur) {
+        afficherErreur($scope, $mdToast, data.erreur);
+      } else {
+        $scope.list.activites = data.sort(function(a, b) {
+          return  a.denomination.localeCompare(b.denomination);
+        });
+      }
+      chargement(false);
+  }, function error(response) {
+      console.log(response);
+      afficherErreur($scope, $mdToast, 'Récupération de la liste des activités impossible.');
+      chargement(false);
+  });
+      
+  $scope.user.submit = function() {
+    // S'il n' y pas d'activité
+    if ($scope.user.activite.length === 0) {
+      afficherErreur($scope, $mdToast, 'Activité vide.');
+    }
+    
+    $http({
+      method: 'POST',
+      url: './ActionServlet',
+      params: {
+        action: 'effectuerDemande',
+        activite: $scope.user.activite,
+        date: $scope.user.date.valueOf()
+      }
+    }).then(function success(response) {
+        console.log(response);
+        var data = response.data;
+
+        if (data.erreur) {
+          afficherErreur($scope, $mdToast, data.erreur);
+        } else {
+          // Rechargement
+          window.location.replace('demandes.html');
+        }
+        chargement(false);
+    }, function error(response) {
+        console.log(response);
+        afficherErreur($scope, $mdToast, 'Récupération de la liste des demandes impossible.');
+        chargement(false);
+    });
+  };
 }]);
 
 CollectIFClientApp.controller('ClientDetailsCtrl', ['$scope', '$http', '$window',
