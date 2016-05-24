@@ -28,14 +28,14 @@ public class GestionEffectuerDemande implements GestionnaireRequete {
             Activite activite = activites.get(noActivite);
             if (activite != null) {
                 Adherent adherent = (Adherent) requete.getSession().getAttribute("adherent");
-
                 ServiceMetier.creerDemande(new Date(Long.parseLong(date)), adherent, activite);
-                throw new RequeteException("succes", "");
-            }
+            } else
+                throw new Throwable();
         } catch (Throwable t) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, t);
+            throw new RequeteException("erreur", "Demande impossible.");
         }
-        throw new RequeteException("erreur", "Demande impossible.");
+        return true;
     }
 
 }

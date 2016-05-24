@@ -87,8 +87,9 @@ public class ActionServlet extends HttpServlet {
         String json;
         try {
             json = JsonConverter.toJson(gestionnaire.traiterRequete(request));
-        } catch (RequeteException e) {
-            json = JsonConverter.toJsonMessage(e.getStatut(), e.getMessage());
+        } catch (Throwable e) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            json = JsonConverter.toJsonMessage("succes", e.getMessage());
             System.out.println(json);
         }
         response.getWriter().print(json);
