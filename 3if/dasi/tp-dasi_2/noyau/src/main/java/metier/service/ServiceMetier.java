@@ -34,8 +34,11 @@ public class ServiceMetier {
         JpaUtil.creerEntityManager();
         JpaUtil.ouvrirTransaction();
         // L'email est déjà utilisée
-        if (AdherentDao.findByMail(mail) != null) {
-            return null;
+        try {
+            if (AdherentDao.findByMail(mail) != null) {
+                return null;
+            }
+        } catch (Exception e) {
         }
         Adherent adherent = new Adherent(nom, prenom, adresse, mail);
         AdherentDao.create(adherent);

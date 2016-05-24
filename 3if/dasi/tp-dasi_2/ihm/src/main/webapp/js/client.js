@@ -161,7 +161,7 @@ CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
 
       if (data.erreur === 'undefined') {
             afficherErreur($scope, $mdToast, 'Erreur de réception.');
-          } else if (data.erreur) {
+      } else if (data.erreur) {
         afficherErreur($scope, $mdToast, data.erreur);
       } else {
         $scope.list.activites = data.sort(function(a, b) {
