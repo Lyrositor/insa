@@ -16,8 +16,8 @@ public class GestionGetEvenement implements GestionnaireRequete {
             for (Evenement e : ServiceMetier.listerEvenements())
                 if (e.getId().equals(id))
                     return e;
-        } catch (Throwable ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+        } catch (Throwable t) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, t);
         }
         return null;
     }

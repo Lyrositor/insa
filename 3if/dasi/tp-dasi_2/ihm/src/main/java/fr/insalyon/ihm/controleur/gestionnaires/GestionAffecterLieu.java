@@ -36,7 +36,6 @@ public class GestionAffecterLieu implements GestionnaireRequete {
                 return false;
             ServiceMetier.affecterLieu(evenement, lieu);
         } catch (Throwable t) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, t);
             return false;
         }
 

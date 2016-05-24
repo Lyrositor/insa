@@ -1,8 +1,6 @@
 package fr.insalyon.ihm.controleur.gestionnaires;
 
 import fr.insalyon.ihm.controleur.exceptions.RequeteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import metier.modele.Adherent;
 import metier.service.ServiceMetier;
@@ -18,12 +16,10 @@ public class GestionAuthentification implements GestionnaireRequete {
         try {
             adherent = ServiceMetier.connecterAdherent(email);
         } catch (Throwable t) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, t);
-            return null;
+            throw new RequeteException("erreur", "E-mail inexistante");
         }
 
         // Vérifier si l'adhérent existe
-        String json;
         if (adherent == null)
             throw new RequeteException("erreur", "E-mail inexistante");
         requete.getSession().setAttribute("adherent", adherent);

@@ -32,7 +32,6 @@ public class GestionEffectuerDemande implements GestionnaireRequete {
             } else
                 throw new Throwable();
         } catch (Throwable t) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, t);
             throw new RequeteException("erreur", "Demande impossible.");
         }
         return true;
