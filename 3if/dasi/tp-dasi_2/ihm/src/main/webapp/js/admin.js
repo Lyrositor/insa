@@ -25,13 +25,13 @@ CollectIFAdminApp.controller('AdminHomeCtrl', ['$scope', '$http', '$window',
         sendRequest(
                 $http, 'listerEvenementsSansLieu', null,
                 function (data) {
-                    console.log(data);
-                    for (var e in data) {
+                    for (var i in data) {
+                        var e = data[i];
                         $scope.evenements.push({
-                            activite: "Curling sur gazon",
-                            date: new Date(),
-                            id: 1234,
-                            participants: 1254382
+                            activite: e.activite.denomination,
+                            date: e.date,
+                            id: e.id,
+                            participants: e.activite.nbParticipants
                         })
                     }
                 }
@@ -49,8 +49,8 @@ CollectIFAdminApp.controller('AdminAssignerCtrl', [
             sendRequest(
                     $http, 'affecterLieu',
                     {
-                        evenementId: $scope.evenement.id,
-                        lieuId: $scope.lieux[$scope.lieuChoisi].id
+                        evenement: $scope.evenement.id,
+                        lieu: $scope.lieuChoisi
                     }
             );
             $scope.redirect('index.html');
@@ -71,20 +71,19 @@ CollectIFAdminApp.controller('AdminAssignerCtrl', [
         sendRequest(
                 $http, 'getEvenement', {id: evenementId}, function(data) {
                     $scope.evenement = {
-                        activite: data.denomination,
+                        activite: data.activite.denomination,
                         coordonnees: [data.longitude, data.latitude],
                         date: data.date,
                         id: data.id
                     };
-                    $scope.markers.push({
-                            id: -1,
-                            coordonnees: $scope.evenement.coordonnees,
+                    for (var i in data.participants) {
+                        var p = data.participants[i];
+                        $scope.markers.push({
+                            id: -i,
+                            coordonnees: [p.longitude, p.latitude],
                             icone: PIN_URL + '0000FF'
                         });
-                    $scope.map = {
-                        center: $scope.evenement.coordonnees,
-                        zoom: 11
-                    };
+                    }
                 }
         );
         sendRequest(
@@ -100,6 +99,10 @@ CollectIFAdminApp.controller('AdminAssignerCtrl', [
                                 icone: PIN_URL + 'FF0000'
                             });
                         }
+                        $scope.map = {
+                            center: $scope.markers[0].coordonnees,
+                            zoom: 11
+                        };
                     }
         );
 }]);

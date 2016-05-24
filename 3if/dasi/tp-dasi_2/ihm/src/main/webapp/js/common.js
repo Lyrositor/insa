@@ -14,7 +14,6 @@ function sendRequest($http, action, params, success, error) {
         url: SERVER,
         params: params
     }).then(function (response) {
-        //console.log(response);
         if (success)
             success(response.data);
     }, function (response) {
