@@ -63,7 +63,9 @@ CollectIFClientApp.controller('ClientIndexController', ['$scope', '$http', '$mdT
           console.log(response);
           var data = response.data;
 
-          if (data.erreur) {
+          if (data.erreur === 'undefined') {
+            afficherErreur($scope, $mdToast, 'Erreur de réception.');
+          } else if (data.erreur) {
             afficherErreur($scope, $mdToast, data.erreur);
           } else {
             // Redirection
@@ -114,7 +116,9 @@ CollectIFClientApp.controller('ClientInscriptionController', ['$scope', '$http',
           console.log(response);
           var data = response.data;
 
-          if (data.erreur) {
+          if (data.erreur === 'undefined') {
+            afficherErreur($scope, $mdToast, 'Erreur de réception.');
+          } else if (data.erreur) {
             afficherErreur($scope, $mdToast, data.erreur);
           } else {
             // Redirection
@@ -155,7 +159,9 @@ CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
       console.log(response);
       var data = response.data;
 
-      if (data.erreur) {
+      if (data.erreur === 'undefined') {
+            afficherErreur($scope, $mdToast, 'Erreur de réception.');
+          } else if (data.erreur) {
         afficherErreur($scope, $mdToast, data.erreur);
       } else {
         $scope.list.activites = data.sort(function(a, b) {
@@ -181,7 +187,9 @@ CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
           console.log(response);
           var data = response.data;
 
-          if (data.erreur) {
+          if (data.erreur === 'undefined') {
+            afficherErreur($scope, $mdToast, 'Erreur de réception.');
+          } else if (data.erreur) {
             afficherErreur($scope, $mdToast, data.erreur);
           } else {
             data.forEach(function(demande) {
@@ -223,7 +231,9 @@ CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
         console.log(response);
         var data = response.data;
 
-        if (data.erreur) {
+        if (data.erreur === 'undefined') {
+            afficherErreur($scope, $mdToast, 'Erreur de réception.');
+          } else if (data.erreur) {
           afficherErreur($scope, $mdToast, data.erreur);
         } else {
           // Rechargement
@@ -261,10 +271,12 @@ CollectIFClientApp.controller('ClientDetailsCtrl', ['$scope', '$http', '$mdToast
           console.log(response);
           var data = response.data;
 
-          if (data.erreur) {
+          if (data.erreur === 'undefined') {
+            afficherErreur($scope, $mdToast, 'Erreur de réception.');
+          } else if (data.erreur) {
             afficherErreur($scope, $mdToast, data.erreur);
           } else {
-              console.log(data);
+            console.log(data);
             $scope.demande = data;
           }
       }, function error(response) {
@@ -272,17 +284,6 @@ CollectIFClientApp.controller('ClientDetailsCtrl', ['$scope', '$http', '$mdToast
           afficherErreur($scope, $mdToast, 'Récupération de la liste des demandes impossible.');
           chargement(false);
       });
-
-    /*$scope.demande = {
-        activite: "Tarot",
-        personnes: 5,
-        equipes: false,
-        date: new Date(),
-        evenement: {
-            adresse: null,
-            coordonnees: null
-        }
-    };*/
 
     $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
 }]);

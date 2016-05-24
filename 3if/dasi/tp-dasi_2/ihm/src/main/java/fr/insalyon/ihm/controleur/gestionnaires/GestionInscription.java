@@ -26,8 +26,9 @@ public class GestionInscription implements GestionnaireRequete {
         }
 
         // Vérifier si l'adhérent n'a pas été inscrit
-        if (adherent == null)
+        if (adherent == null) {
             throw new RequeteException("erreur", "Inscription impossible");
+        }
         return adherent;
     }
 

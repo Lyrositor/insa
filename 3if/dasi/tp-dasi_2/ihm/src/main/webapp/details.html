@@ -32,7 +32,7 @@
             <md-card-title>
               <md-card-title-text>
                 <span class="md-headline">{{demande.activite.denomination}}</span>
-                <span class="md-subhead">{{demande.personnes ? "" : "0"}} personne{{demande.personnes > 1 ? "s" : ""}} - {{demande.equipes ? "avec" : "sans"}} équipes</span>
+                <span class="md-subhead">{{demande.activite.nbParticipants}} personnes - {{demande.activite.parEquipe ? "avec" : "sans"}} équipes</span>
               </md-card-title-text>
             </md-card-title>
             <md-card-content>
