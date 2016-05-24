@@ -1,7 +1,6 @@
-package controleur;
+package fr.insalyon.ihm.controleur;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import fr.insalyon.ihm.util.JsonConverter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -45,24 +44,23 @@ public class ActionServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(
+            HttpServletRequest request, HttpServletResponse response
+    ) throws ServletException, IOException {
 
-        System.out.println(request.toString());
+        System.out.println(request);
 
         if (request.getParameter("action") == null) {
             response.sendRedirect(getServletContext().getContextPath());
             return;
         }
 
-        Gson gson = new Gson();
-
         PrintWriter out = response.getWriter();
         response.setContentType("application/json;charset=UTF-8");
 
         switch (request.getParameter("action")) {
             case "listeActivites": {
-                out.print(gson.toJson(activites));
+                out.print(JsonConverter.toJson(activites));
                 break;
             }
 
@@ -71,12 +69,10 @@ public class ActionServlet extends HttpServlet {
                 Adherent adherent = connecterAdherent(email);
                 // Si l'adhérent n'a pas été trouvé
                 String json;
-                if (adherent == null) {
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("erreur", "E-mail inexistante.");
-                    json = jsonObject.toString();
-                } else {
-                    json = gson.toJson(adherent);
+                if (adherent == null)
+                    json = JsonConverter.message("erreur", "E-mail inexistante");
+                else {
+                    json = JsonConverter.toJson(adherent);
 
                     request.getSession().setAttribute("adherent", adherent);
                 }
@@ -86,39 +82,38 @@ public class ActionServlet extends HttpServlet {
             }
 
             case "inscription": {
-                String nom = request.getParameter("nom");
-                String prenom = request.getParameter("prenom");
-                String adresse = request.getParameter("adresse");
-                String email = request.getParameter("email");
 
-                Adherent adherent = inscrireAdherent(nom, prenom, adresse, email);
-                // Si l'adhérent n'a pas été inscrit
+                Adherent adherent = inscrireAdherent(
+                        request.getParameter("nom"),
+                        request.getParameter("prenom"),
+                        request.getParameter("adresse"),
+                        request.getParameter("email")
+                );
+
+                // Vérifier si l'adhérent n'a pas été inscrit
                 String json;
-                if (adherent == null) {
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("erreur", "Inscription impossible.");
-                    json = jsonObject.toString();
-                } else {
-                    json = gson.toJson(adherent);
-                }
+                if (adherent == null)
+                    json = JsonConverter.message("erreur", "Inscription impossible");
+                else
+                    json = JsonConverter.toJson(adherent);
 
                 out.print(json);
                 break;
             }
 
             case "listerEvenementsSansLieu": {
-                out.print(gson.toJson(listerEvenementsSansLieu()));
+                out.print(JsonConverter.toJson(listerEvenementsSansLieu()));
                 break;
             }
 
             case "listerLieux": {
-                out.print(gson.toJson(lieux));
+                out.print(JsonConverter.toJson(lieux));
                 break;
             }
 
             case "getEvenement": {
                 Integer id = Integer.parseInt(request.getParameter("id"));
-                out.print(gson.toJson(getEvenement(id)));
+                out.print(JsonConverter.toJson(getEvenement(id)));
                 break;
             }
 
@@ -134,16 +129,13 @@ public class ActionServlet extends HttpServlet {
 
                 try {
                     List<Demande> demandes = ListerDemandes(adherent);
-                    out.print(gson.toJson(demandes));
-
+                    out.print(JsonConverter.toJson(demandes));
                     break;
                 } catch (Throwable ex) {
                     Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("erreur", "Liste des demandes impossible.");
-                out.print(jsonObject.toString());
+                out.print(JsonConverter.message("erreur", "Liste des demandes impossible."));
                 break;
             }
 
@@ -170,15 +162,11 @@ public class ActionServlet extends HttpServlet {
                     error = true;
                 }
 
-                JsonObject jsonObject = new JsonObject();
                 String json;
-                if (error) {
-                    jsonObject.addProperty("erreur", "Demande impossible.");
-                    json = jsonObject.toString();
-                } else {
-                    jsonObject.addProperty("succes", "");
-                    json = jsonObject.toString();
-                }
+                if (error)
+                    json = JsonConverter.message("erreur", "Demande impossible.");
+                else
+                    json = JsonConverter.message("succes", "");
 
                 out.print(json);
                 break;
@@ -191,17 +179,14 @@ public class ActionServlet extends HttpServlet {
                 Boolean error = true;
                 for (Demande demande : ListerDemandes(adherent)) {
                     if (demande.getId() == demandeId) {
-                        out.print(gson.toJson(demande));
+                        out.print(JsonConverter.toJson(demande));
                         error = false;
                         break;
                     }
                 }
 
-                if (error == true) {
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("erreur", "Demande inexistante.");
-                    out.print(jsonObject.toString());
-                }
+                if (error)
+                    out.print(JsonConverter.message("erreur", "Demande inexistante."));
 
                 break;
             }

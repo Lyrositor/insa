@@ -18,7 +18,7 @@ var afficherErreur = function($scope, $mdToast, description) {
 // <md-progress-circular id="chargement" md-mode="indeterminate" style="display: none;"></md-progress-circular>
 var chargement = function(afficher) {
   var iconeChargement = document.getElementById("chargement");
-  if(iconeChargement != null) {
+  if (iconeChargement !== null) {
     if(afficher === true) {
       document.getElementById("chargement").style.display = "block";
     } else {
@@ -143,7 +143,7 @@ CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
     var dateOut = new Date(date);
     return dateOut;
   };
-  
+
   /* Chargement de la liste des activités */
   $http({
     method: 'POST',
@@ -168,7 +168,7 @@ CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
       afficherErreur($scope, $mdToast, 'Récupération de la liste des activités impossible.');
       chargement(false);
   });
-  
+
   /* Chargement de la liste des demandes */
   var listeDemande = function() {
     $http({
@@ -209,7 +209,7 @@ CollectIFClientApp.controller('ClientDemandesController', ['$scope', '$http', '$
       afficherErreur($scope, $mdToast, 'Activité vide.');
       return;
     }
-    
+
     chargement(true);
     $http({
       method: 'POST',
@@ -243,7 +243,7 @@ CollectIFClientApp.controller('ClientDetailsCtrl', ['$scope', '$http', '$mdToast
     var dateOut = new Date(date);
     return dateOut;
   };
-  
+
     $scope.redirect = function(url) {
         $window.location.href = url;
     };

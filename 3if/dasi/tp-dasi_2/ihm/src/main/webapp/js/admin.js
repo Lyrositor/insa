@@ -12,10 +12,10 @@ var CollectIFAdminApp = angular.module(
 ]);
 
 CollectIFAdminApp.controller('AdminHomeCtrl', ['$scope', '$http', '$window',
-    function ($scope, $http, $window) {
+    function($scope, $http, $window) {
         $scope.redirect = function(url) {
             $window.location.href = url;
-        }
+        };
 
         $scope.utilisateur = null;
 
@@ -24,7 +24,7 @@ CollectIFAdminApp.controller('AdminHomeCtrl', ['$scope', '$http', '$window',
         $scope.evenements = [];
         sendRequest(
                 $http, 'listerEvenementsSansLieu', null,
-                function (data) {
+                function(data) {
                     for (var i in data) {
                         var e = data[i];
                         $scope.evenements.push({
@@ -32,7 +32,7 @@ CollectIFAdminApp.controller('AdminHomeCtrl', ['$scope', '$http', '$window',
                             date: e.date,
                             id: e.id,
                             participants: e.activite.nbParticipants
-                        })
+                        });
                     }
                 }
         );
@@ -40,10 +40,10 @@ CollectIFAdminApp.controller('AdminHomeCtrl', ['$scope', '$http', '$window',
 
 CollectIFAdminApp.controller('AdminAssignerCtrl', [
     '$scope', '$http', '$window', '$location',
-    function ($scope, $http, $window, $location) {
+    function($scope, $http, $window, $location) {
         $scope.redirect = function(url) {
             $window.location.href = url;
-        }
+        };
 
         $scope.assignerLieu = function() {
             sendRequest(
@@ -54,11 +54,11 @@ CollectIFAdminApp.controller('AdminAssignerCtrl', [
                     }
             );
             $scope.redirect('index.html');
-        }
+        };
 
         $scope.changerCouleur = function() {
             // Non-fonctionnel
-        }
+        };
 
         $scope.evenement = null;
         $scope.lieuChoisi = null;
@@ -69,7 +69,13 @@ CollectIFAdminApp.controller('AdminAssignerCtrl', [
         var params = getSearchParameters();
         var evenementId = parseInt(params.id);
         sendRequest(
-                $http, 'getEvenement', {id: evenementId}, function(data) {
+                $http, 'getEvenement', { id: evenementId },
+                function(data) {
+                    if (data === null) {
+                        $scope.redirect('index.html');
+                        return;
+                    }
+
                     $scope.evenement = {
                         activite: data.activite.denomination,
                         coordonnees: [data.longitude, data.latitude],
@@ -84,25 +90,27 @@ CollectIFAdminApp.controller('AdminAssignerCtrl', [
                             icone: PIN_URL + '0000FF'
                         });
                     }
-                }
+                },
+                function(data) { $scope.redirect('index.html'); }
         );
         sendRequest(
-                    $http, 'listerLieux', null,
-                    function (data) {
-                        $scope.lieux = {};
-                        for (var i in data) {
-                            var l = data[i];
-                            $scope.lieux[l.id] = l.denomination;
-                            $scope.markers.push({
-                                id: l.id,
-                                coordonnees: [l.longitude, l.latitude],
-                                icone: PIN_URL + 'FF0000'
-                            });
-                        }
-                        $scope.map = {
-                            center: $scope.markers[0].coordonnees,
-                            zoom: 11
-                        };
+                $http, 'listerLieux', null,
+                function(data) {
+                    $scope.lieux = {};
+                    for (var i in data) {
+                        var l = data[i];
+                        $scope.lieux[l.id] = l.denomination;
+                        $scope.markers.push({
+                            id: l.id,
+                            coordonnees: [l.longitude, l.latitude],
+                            icone: PIN_URL + 'FF0000'
+                        });
                     }
+                    $scope.map = {
+                        center: $scope.markers[0].coordonnees,
+                        zoom: 11
+                    };
+                },
+                function(data) { $scope.redirect('index.html'); }
         );
 }]);
