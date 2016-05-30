@@ -10,7 +10,7 @@
 			<string name="filename" value="$hfile"/>
 		</texture>
 		<transform name="toWorld">
-			<scale y="-450" x="600" z="500"/>
+			<scale y="-450" x="600" z="300"/>
 		</transform>
 		<float name="scale" value="1"/>
 
@@ -37,9 +37,9 @@
 
 		<film type="ldrfilm">
 			<boolean name="banner" value="false"/>
-			<integer name="height" value="300"/>
+			<integer name="height" value="1080"/>
 			<string name="pixelFormat" value="rgb"/>
-			<integer name="width" value="512"/>
+			<integer name="width" value="1920"/>
 
 			<rfilter type="gaussian"/>
 		</film>

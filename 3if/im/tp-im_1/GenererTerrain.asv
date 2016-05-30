@@ -1,6 +1,0 @@
-function [terrain] = GenererTerrain(initterrain, nsubdiv, alpha, lambda)
-    if nsubdiv > 0
-        terrain = Subdiviser(initterrain, nsubdiv, alpha, lambda);
-        GenererTerrain(initterrain, nsubdiv, alpha, lambda)
-    end
-end
