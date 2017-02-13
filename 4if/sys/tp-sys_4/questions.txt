@@ -1,0 +1,19 @@
+Question 2
+    .text:      00008000 - 000091ac
+    .bss:       000091ac - 0000920c
+    kmain.c:    000090c4 - 000091ac
+
+Question 3
+    lr pour stocker l'adresse de retour
+    sp pour stocker les variables locales (16 réservé au début, 16 libéré à la fin)
+    r0 pour le renvoi de la valeur
+    r1, r2, r3 pour les opérations intermédiaires
+    The compiler chose to use these registers.
+
+Question 4
+    Decreasing addresses
+    sp here points on the last full address
+
+Question 9
+    Mode système initialement.
+    

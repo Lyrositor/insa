@@ -1,12 +1,7 @@
+#include <stdio.h>
 #include <stdlib.h>
 
-struct MATRIX {
-    int rows;
-    int cols;
-    int *t;
-};
-
-#define M(m, x, y) m.t[x+y*m.cols]
+#include "matrix.h"
 
 struct MATRIX new_matrix(int cols, int rows) {
     struct MATRIX t;
@@ -21,7 +16,7 @@ void print_matrix(struct MATRIX t) {
     for(i = 0; i < t.rows; i++) {
         printf("| ");
         for(j=0; j < t.cols; j++) {
-            printf("%f ", M(t, j, i));
+            printf("%d ", M(t, j, i));
             printf("|\n");
         }
         printf("\n");

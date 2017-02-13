@@ -3,9 +3,14 @@ project(tp-sys_3 C)
 
 # Set project properties
 set(TP-SYS3_BIN_DIR bin)
+set(TP-SYS3_FLAGS -g)
+set(TP-SYS3_SOURCES
+        matrix.c
+        matrix2.c
+        matrix9.c)
 
 # Configure the executable's compilation
-add_executable(tp-sys_3 main.c)
+add_executable(tp-sys_3 main.c ${TP-SYS3_SOURCES})
 set(TP-SYS3_BIN_DIR_FULL ${CMAKE_CURRENT_SOURCE_DIR}/${TP-SYS3_BIN_DIR})
 set_target_properties(tp-sys_3 PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${TP-SYS3_BIN_DIR_FULL}
