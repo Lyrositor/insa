@@ -2,12 +2,16 @@
 
 #include "Automaton.h"
 #include "States.h"
+#include "symbols/expressions/ExprNumber.h"
+#include "symbols/Number.h"
 #include "symbols/expressions/ExprPlus.h"
+#include "symbols/expressions/ExprMult.h"
 
-bool E0::transition(Automaton & automaton, Symbol * symbol){
+bool E0::transition(Automaton & automaton, Symbol * symbol) {
     switch (*symbol) {
         case Symbol::NUMBER:
             automaton.shift(symbol, new E3);
+            break;
         case Symbol::PAROPEN:
             automaton.shift(symbol, new E2);
             break;
@@ -20,7 +24,7 @@ bool E0::transition(Automaton & automaton, Symbol * symbol){
     return false;
 }
 
-bool E1::transition(Automaton & automaton, Symbol * symbol){
+bool E1::transition(Automaton & automaton, Symbol * symbol) {
     switch (*symbol) {
         case Symbol::PLUS:
             automaton.shift(symbol, new E4);
@@ -36,7 +40,7 @@ bool E1::transition(Automaton & automaton, Symbol * symbol){
     return false;
 }
 
-bool E2::transition(Automaton & automaton, Symbol * symbol){
+bool E2::transition(Automaton & automaton, Symbol * symbol) {
     switch (*symbol) {
         case Symbol::NUMBER:
             automaton.shift(symbol, new E3);
@@ -53,14 +57,18 @@ bool E2::transition(Automaton & automaton, Symbol * symbol){
     return false;
 }
 
-bool E3::transition(Automaton & automaton, Symbol * symbol){
+bool E3::transition(Automaton & automaton, Symbol * symbol) {
     switch (*symbol) {
         case Symbol::PLUS:
-            automaton.reduce(1, symbol);
-            break;
         case Symbol::MULT:
-            break;
-        case Symbol::EXPRESSION:
+        case Symbol::PARCLOSE:
+        case Symbol::END:
+            automaton.reduce(
+                    1,
+                    new ExprNumber(
+                            static_cast<Number *>(automaton.pop())->getValue()
+                    )
+            );
             break;
         default:
             throw new std::domain_error("Invalid symbol for E3");
@@ -68,10 +76,11 @@ bool E3::transition(Automaton & automaton, Symbol * symbol){
     return false;
 }
 
-bool E4::transition(Automaton & automaton, Symbol * symbol){
+bool E4::transition(Automaton & automaton, Symbol * symbol) {
     switch (*symbol) {
         case Symbol::NUMBER:
             automaton.shift(symbol, new E3);
+            break;
         case Symbol::PAROPEN:
             automaton.shift(symbol, new E2);
             break;
@@ -84,10 +93,11 @@ bool E4::transition(Automaton & automaton, Symbol * symbol){
     return false;
 }
 
-bool E5::transition(Automaton & automaton, Symbol * symbol){
+bool E5::transition(Automaton & automaton, Symbol * symbol) {
     switch (*symbol) {
         case Symbol::NUMBER:
             automaton.shift(symbol, new E3);
+            break;
         case Symbol::PAROPEN:
             automaton.shift(symbol, new E2);
             break;
@@ -100,7 +110,7 @@ bool E5::transition(Automaton & automaton, Symbol * symbol){
     return false;
 }
 
-bool E6::transition(Automaton & automaton, Symbol * symbol){
+bool E6::transition(Automaton & automaton, Symbol * symbol) {
     switch (*symbol) {
         case Symbol::MULT:
             automaton.shift(symbol, new E5);
@@ -117,34 +127,62 @@ bool E6::transition(Automaton & automaton, Symbol * symbol){
     return false;
 }
 
-bool E7::transition(Automaton & automaton, Symbol * symbol){
+bool E7::transition(Automaton & automaton, Symbol * symbol) {
     switch (*symbol) {
         case Symbol::MULT:
             automaton.shift(symbol, new E5);
             break;
         case Symbol::PLUS:
-            break;
         case Symbol::PARCLOSE:
-            break;
         case Symbol::END:
+        {
+            ExprNumber * left = static_cast<ExprNumber *>(automaton.pop());
+            Symbol * op = automaton.pop();
+            ExprNumber * right = static_cast<ExprNumber *>(automaton.pop());
+            if (*op == Symbol::PLUS)
+            {
+                automaton.reduce(3, new ExprPlus(left, right));
+            }
+            else if (*op == Symbol::MULT)
+            {
+                automaton.reduce(3, new ExprMult(left, right));
+            }
+            else
+            {
+                throw new std::domain_error("Unexpected operator");
+            }
             break;
+        }
         default:
             throw new std::domain_error("Invalid symbol for E7");
-
     }
     return false;
 }
 
-bool E8::transition(Automaton & automaton, Symbol * symbol){
+bool E8::transition(Automaton & automaton, Symbol * symbol) {
     switch (*symbol) {
         case Symbol::MULT:
-            break;
         case Symbol::PLUS:
-            break;
         case Symbol::PARCLOSE:
-            break;
         case Symbol::END:
+        {
+            ExprNumber * left = static_cast<ExprNumber *>(automaton.pop());
+            Symbol * op = automaton.pop();
+            ExprNumber * right = static_cast<ExprNumber *>(automaton.pop());
+            if (*op == Symbol::PLUS)
+            {
+                automaton.reduce(3, new ExprPlus(left, right));
+            }
+            else if (*op == Symbol::MULT)
+            {
+                automaton.reduce(3, new ExprMult(left, right));
+            }
+            else
+            {
+                throw new std::domain_error("Unexpected operator");
+            }
             break;
+        }
         default:
             throw new std::domain_error("Invalid symbol for E8");
 
@@ -152,16 +190,19 @@ bool E8::transition(Automaton & automaton, Symbol * symbol){
     return false;
 }
 
-bool E9::transition(Automaton & automaton, Symbol * symbol){
+bool E9::transition(Automaton & automaton, Symbol * symbol) {
     switch (*symbol) {
         case Symbol::MULT:
-            break;
         case Symbol::PLUS:
-            break;
         case Symbol::PARCLOSE:
-            break;
         case Symbol::END:
+        {
+            automaton.popAndDestroy();
+            Expression * expression = static_cast<Expression *>(automaton.pop());
+            automaton.popAndDestroy();
+            automaton.reduce(3, expression);
             break;
+        }
         default:
             throw new std::domain_error("Invalid symbol for E9");
 

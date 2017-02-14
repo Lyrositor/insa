@@ -3,10 +3,11 @@
 #include "Lexer.h"
 #include "symbols/End.h"
 #include "symbols/Mult.h"
+#include "symbols/Number.h"
 #include "symbols/ParClose.h"
 #include "symbols/ParOpen.h"
 #include "symbols/Plus.h"
-#include "symbols/expressions/Number.h"
+#include "symbols/expressions/ExprNumber.h"
 
 Lexer::Lexer (std::string & expression) : head(0)
 {
@@ -68,7 +69,15 @@ void Lexer::lex (std::string & expression)
     }
     if (!number.empty())
     {
-        symbols.push_back(new Number(atoi(number.c_str())));
+        symbols.push_back(new ExprNumber(atoi(number.c_str())));
     }
     symbols.push_back(new End);
+}
+
+void Lexer::seekBack ()
+{
+    if (head > 0)
+    {
+        head--;
+    }
 }

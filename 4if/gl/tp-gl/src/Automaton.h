@@ -14,6 +14,8 @@ class Automaton
 {
 public:
     int parse (std::string & expression);
+    Symbol * pop ();
+    void popAndDestroy ();
     void reduce (unsigned int n, Symbol * s);
     void shift (Symbol * symbol, State * state);
 

@@ -8,8 +8,19 @@
 int Automaton::parse (std::string & expression)
 {
     lexer = new Lexer(expression);
-    State * state = new E0;
-    state->transition(*this, lexer->getNext());
+    states.push(new E0);
+
+    State * state;
+    Symbol * symbol;
+    do {
+        state = states.top();
+        symbol = lexer->getNext();
+        if (symbol == nullptr)
+        {
+            throw std::runtime_error("Read past end symbol.");
+        }
+    } while (!state->transition(*this, symbol));
+
     if (symbols.size() != 1)
     {
         delete lexer;
@@ -19,7 +30,6 @@ int Automaton::parse (std::string & expression)
             static_cast<Expression *>(symbols.top())->eval()
     );
 
-    delete lexer;
     while (!symbols.empty())
     {
         symbols.pop();
@@ -28,15 +38,28 @@ int Automaton::parse (std::string & expression)
     {
         states.pop();
     }
+    delete lexer;
 
     return evaluation;
+}
+
+Symbol * Automaton::pop ()
+{
+    Symbol * symbol = symbols.top();
+    symbols.pop();
+    return symbol;
+}
+
+void Automaton::popAndDestroy ()
+{
+    delete symbols.top();
+    symbols.pop();
 }
 
 void Automaton::shift (Symbol * symbol, State * state)
 {
     symbols.push(symbol);
     states.push(state);
-    // TODO Consume symbol (head++)
 }
 
 void Automaton::reduce (unsigned int n, Symbol * s)
@@ -46,5 +69,6 @@ void Automaton::reduce (unsigned int n, Symbol * s)
         delete states.top();
         states.pop();
     }
+    lexer->seekBack();
     states.top()->transition(*this, s);
 }

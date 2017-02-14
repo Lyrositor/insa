@@ -17,7 +17,7 @@ set(TP-GL_MAIN src/main.cpp
         src/symbols/expressions/ExprBin.cpp
         src/symbols/expressions/ExprMult.cpp
         src/symbols/expressions/ExprPlus.cpp
-        src/symbols/expressions/Number.cpp
+        src/symbols/expressions/ExprNumber.cpp
 )
 set(TP-GL_SOURCES)
 
