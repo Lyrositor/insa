@@ -16,7 +16,7 @@ public:
     int parse (std::string & expression);
     Symbol * pop ();
     void popAndDestroy ();
-    void reduce (unsigned int n, Symbol * s);
+    void reduce (unsigned int n, Symbol * newSymbol, Symbol * unvisitedSymbol);
     void shift (Symbol * symbol, State * state);
 
 protected:
@@ -26,4 +26,4 @@ protected:
 };
 
 
-#endif // LRPARSER_H
+#endif // AUTOMATON_H

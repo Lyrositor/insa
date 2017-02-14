@@ -7,47 +7,40 @@
 #include "symbols/ParClose.h"
 #include "symbols/ParOpen.h"
 #include "symbols/Plus.h"
-#include "symbols/expressions/ExprNumber.h"
 
-Lexer::Lexer (std::string & expression) : head(0)
+Symbol * Lexer::next ()
 {
-    lex(expression);
-}
-
-Lexer::~Lexer ()
-{
-    for (Symbol * symbol : symbols)
+    if (!buffer.empty())
     {
-        delete symbol;
+        Symbol * symbol = buffer.top();
+        buffer.pop();
+        return symbol;
     }
-}
-
-Symbol * Lexer::getNext ()
-{
-    if (head < symbols.size())
+    if (head > expression.size())
     {
-        return symbols[head++];
+        throw std::out_of_range("Reading past end");
     }
-    return nullptr;
-}
-
-void Lexer::lex (std::string & expression)
-{
-    std::string number;
-    for (char& c : expression)
+    else if (head == expression.size())
     {
-        Symbol * symbol;
-        if (c - '0' >= 0 && '9' - c >= 0)
-        {
-            number += c;
-            continue;
-        }
+        return new End;
+    }
 
-        if (!number.empty())
+    Symbol * symbol;
+    char c = expression[head];
+    if (isdigit(c))
+    {
+        int number = c - '0';
+        head++;
+        while ((c = expression[head]) && isdigit(c))
         {
-            symbols.push_back(new Number(atoi(number.c_str())));
-            number.clear();
+            number *= 10;
+            number += c - '0';
+            head++;
         }
+        symbol = new Number(number);
+    }
+    else
+    {
         switch (c) {
             case '+':
                 symbol = new Plus;
@@ -64,20 +57,13 @@ void Lexer::lex (std::string & expression)
             default:
                 throw std::invalid_argument("Invalid character: " + c);
         }
+        head++;
+    }
 
-        symbols.push_back(symbol);
-    }
-    if (!number.empty())
-    {
-        symbols.push_back(new ExprNumber(atoi(number.c_str())));
-    }
-    symbols.push_back(new End);
+    return symbol;
 }
 
-void Lexer::seekBack ()
+void Lexer::pushSymbol (Symbol * symbol)
 {
-    if (head > 0)
-    {
-        head--;
-    }
+    buffer.push(symbol);
 }

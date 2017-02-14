@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <stack>
 
 #include "Symbol.h"
 
@@ -10,15 +11,14 @@
 class Lexer
 {
 public:
-    Lexer(std::string & expression);
-    ~Lexer();
-    void lex (std::string & expression);
-    Symbol * getNext();
-    void seekBack();
+    Lexer (std::string & expr) : head(0), expression(expr) {};
+    Symbol * next ();
+    void pushSymbol (Symbol * symbol);
 
 protected:
-    std::vector<Symbol *>::size_type head;
-    std::vector<Symbol *> symbols;
+    std::string::size_type head;
+    std::string expression;
+    std::stack<Symbol *> buffer;
 };
 
 

@@ -2,6 +2,8 @@
 
 #include "Automaton.h"
 
+#include <stdexcept>
+
 int main ()
 {
     Automaton * parser = new Automaton();
@@ -22,7 +24,7 @@ int main ()
         {
             int result = parser->parse(input);
             std::cout << "Result: " << result << std::endl;
-        } catch (std::exception & e) {
+        } catch (const std::exception & e) {
             std::cout << "ERROR: " << e.what() << std::endl;
         }
 

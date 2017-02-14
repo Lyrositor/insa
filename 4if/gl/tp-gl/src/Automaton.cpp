@@ -10,16 +10,7 @@ int Automaton::parse (std::string & expression)
     lexer = new Lexer(expression);
     states.push(new E0);
 
-    State * state;
-    Symbol * symbol;
-    do {
-        state = states.top();
-        symbol = lexer->getNext();
-        if (symbol == nullptr)
-        {
-            throw std::runtime_error("Read past end symbol.");
-        }
-    } while (!state->transition(*this, symbol));
+    while (!states.top()->transition(*this, lexer->next()));
 
     if (symbols.size() != 1)
     {
@@ -62,13 +53,13 @@ void Automaton::shift (Symbol * symbol, State * state)
     states.push(state);
 }
 
-void Automaton::reduce (unsigned int n, Symbol * s)
+void Automaton::reduce (unsigned int n, Symbol * newSymbol, Symbol * unvisitedSymbol)
 {
     for (unsigned int i = 0; i < n; i++)
     {
         delete states.top();
         states.pop();
     }
-    lexer->seekBack();
-    states.top()->transition(*this, s);
+    lexer->pushSymbol(unvisitedSymbol);
+    states.top()->transition(*this, newSymbol);
 }

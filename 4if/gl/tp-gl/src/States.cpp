@@ -19,7 +19,7 @@ bool E0::transition(Automaton & automaton, Symbol * symbol) {
             automaton.shift(symbol, new E1);
             break;
         default:
-            throw new std::domain_error("Invalid symbol for E0");
+            throw std::domain_error("Invalid symbol for E0");
     }
     return false;
 }
@@ -35,7 +35,7 @@ bool E1::transition(Automaton & automaton, Symbol * symbol) {
         case Symbol::END:
             return true;
         default:
-            throw new std::domain_error("Invalid symbol for E1");
+            throw std::domain_error("Invalid symbol for E1");
     }
     return false;
 }
@@ -52,7 +52,7 @@ bool E2::transition(Automaton & automaton, Symbol * symbol) {
             automaton.shift(symbol, new E6);
             break;
         default:
-            throw new std::domain_error("Invalid symbol for E2");
+            throw std::domain_error("Invalid symbol for E2");
     }
     return false;
 }
@@ -64,14 +64,13 @@ bool E3::transition(Automaton & automaton, Symbol * symbol) {
         case Symbol::PARCLOSE:
         case Symbol::END:
             automaton.reduce(
-                    1,
-                    new ExprNumber(
+                    1, new ExprNumber(
                             static_cast<Number *>(automaton.pop())->getValue()
-                    )
+                    ), symbol
             );
             break;
         default:
-            throw new std::domain_error("Invalid symbol for E3");
+            throw std::domain_error("Invalid symbol for E3");
     }
     return false;
 }
@@ -88,7 +87,7 @@ bool E4::transition(Automaton & automaton, Symbol * symbol) {
             automaton.shift(symbol, new E7);
             break;
         default:
-            throw new std::domain_error("Invalid symbol for E4");
+            throw std::domain_error("Invalid symbol for E4");
     }
     return false;
 }
@@ -105,7 +104,7 @@ bool E5::transition(Automaton & automaton, Symbol * symbol) {
             automaton.shift(symbol, new E8);
             break;
         default:
-            throw new std::domain_error("Invalid symbol for E5");
+            throw std::domain_error("Invalid symbol for E5");
     }
     return false;
 }
@@ -122,7 +121,7 @@ bool E6::transition(Automaton & automaton, Symbol * symbol) {
             automaton.shift(symbol, new E9);
             break;
         default:
-            throw new std::domain_error("Invalid symbol for E6");
+            throw std::domain_error("Invalid symbol for E6");
     }
     return false;
 }
@@ -141,20 +140,20 @@ bool E7::transition(Automaton & automaton, Symbol * symbol) {
             ExprNumber * right = static_cast<ExprNumber *>(automaton.pop());
             if (*op == Symbol::PLUS)
             {
-                automaton.reduce(3, new ExprPlus(left, right));
+                automaton.reduce(3, new ExprPlus(left, right), symbol);
             }
             else if (*op == Symbol::MULT)
             {
-                automaton.reduce(3, new ExprMult(left, right));
+                automaton.reduce(3, new ExprMult(left, right), symbol);
             }
             else
             {
-                throw new std::domain_error("Unexpected operator");
+                throw std::domain_error("Unexpected operator");
             }
             break;
         }
         default:
-            throw new std::domain_error("Invalid symbol for E7");
+            throw std::domain_error("Invalid symbol for E7");
     }
     return false;
 }
@@ -171,20 +170,22 @@ bool E8::transition(Automaton & automaton, Symbol * symbol) {
             ExprNumber * right = static_cast<ExprNumber *>(automaton.pop());
             if (*op == Symbol::PLUS)
             {
-                automaton.reduce(3, new ExprPlus(left, right));
+                automaton.reduce(3, new ExprPlus(left, right), symbol);
             }
             else if (*op == Symbol::MULT)
             {
-                automaton.reduce(3, new ExprMult(left, right));
+                automaton.reduce(3, new ExprMult(left, right), symbol);
             }
             else
             {
-                throw new std::domain_error("Unexpected operator");
+                delete op;
+                throw std::domain_error("Unexpected operator");
             }
+            delete op;
             break;
         }
         default:
-            throw new std::domain_error("Invalid symbol for E8");
+            throw std::domain_error("Invalid symbol for E8");
 
     }
     return false;
@@ -200,11 +201,11 @@ bool E9::transition(Automaton & automaton, Symbol * symbol) {
             automaton.popAndDestroy();
             Expression * expression = static_cast<Expression *>(automaton.pop());
             automaton.popAndDestroy();
-            automaton.reduce(3, expression);
+            automaton.reduce(3, expression, symbol);
             break;
         }
         default:
-            throw new std::domain_error("Invalid symbol for E9");
+            throw std::domain_error("Invalid symbol for E9");
 
     }
     return false;
