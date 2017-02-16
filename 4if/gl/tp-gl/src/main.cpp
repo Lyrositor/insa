@@ -1,19 +1,25 @@
 #include <iostream>
 
-#include "Automaton.h"
+#include "exceptions.h"
+#include "parser.h"
 
-#include <stdexcept>
-
+/**
+ * Main program entry-point.
+ *
+ * Prompts the user for an expression ad infinitum, until an empty expression
+ * is provided.
+ * @return
+ */
 int main ()
 {
-    Automaton * parser = new Automaton();
+    Parser * parser = new Parser();
 
     for (;;)
     {
         // Read an input expression from stdin
         std::string input;
-        std::cout << "Input expression: " << std::endl;
-        std::cin >> input;
+        std::cout << "> ";
+        getline(std::cin, input);
         if (input.empty())
         {
             break;
@@ -23,11 +29,10 @@ int main ()
         try
         {
             int result = parser->parse(input);
-            std::cout << "Result: " << result << std::endl;
-        } catch (const std::exception & e) {
-            std::cout << "ERROR: " << e.what() << std::endl;
+            std::cout << result << std::endl;
+        } catch (const GlException & e) {
+            std::cerr << "ERROR: " << e.what() << std::endl;
         }
-
     }
 
     delete parser;

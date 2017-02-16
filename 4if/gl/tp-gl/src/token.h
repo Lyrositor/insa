@@ -1,7 +1,7 @@
-#ifndef SYMBOL_H
-#define SYMBOL_H
+#ifndef TOKEN_H
+#define TOKEN_H
 
-class Symbol
+class Token
 {
 public:
     enum Type {
@@ -14,14 +14,12 @@ public:
         PLUS
     };
 
-    Symbol (Type id) : ident(id) {}
-    virtual ~Symbol () {}
-    void print () const;
+    Token (Type id) : ident(id) {}
+    virtual ~Token () {}
     operator int () const { return ident; }
 
 protected:
     Type ident;
 };
 
-
-#endif // SYMBOL_H
+#endif // TOKEN_H
