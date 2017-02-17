@@ -7,7 +7,7 @@
 class GlException : public std::runtime_error
 {
 public:
-    GlException(std::string what) : std::runtime_error(what) {}
+    GlException(std::string w) : std::runtime_error(w) {}
 };
 
 #endif // EXCEPTIONS_H

@@ -28,7 +28,7 @@
 
 # IDE
 **/.idea/
-**/out/    
+**/out/
 *.iml
 
 # MSVC
@@ -52,6 +52,7 @@
 
 # Build directories
 **/build
+cmake-build-debug/
 
 # Backup files
 *~

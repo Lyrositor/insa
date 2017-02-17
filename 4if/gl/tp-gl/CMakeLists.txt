@@ -35,17 +35,3 @@ endif (TP-GL_FLAGS)
 if (TP-GL_INCLUDES)
     include_directories(${TP-GL_INCLUDES})
 endif (TP-GL_INCLUDES)
-
-# Generate a simple makefile for non-CMake compilation
-if (COMMAND create_makefile)
-    create_makefile(${CMAKE_CURRENT_SOURCE_DIR}/Makefile
-            ${TP-GL_BIN}
-            ${TP-GL_BIN_DIR}
-            "${TP-GL_SOURCES}"
-            ${TP-GL_MAIN}
-            "-std=gnu++11;-O3;${TP-GL_FLAGS}"
-            "${TP-GL_DEFINITIONS}"
-            "${TP-GL_INCLUDES}"
-            ""
-            ${CMAKE_CURRENT_SOURCE_DIR})
-endif (COMMAND create_makefile)

@@ -65,7 +65,7 @@ Token * Lexer::next ()
                 token = new ParClose;
                 break;
             default:
-                throw GlException("Invalid character: " + c);
+                throw GlException("Invalid character");
         }
         head++;
     }

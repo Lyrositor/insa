@@ -21,6 +21,11 @@ public:
     State (std::string stateName) : name(stateName) {}
 
     /**
+     * Destructs the state.
+     */
+    virtual ~State() {}
+
+    /**
      * Executes the appropriate transition from this state to the next.
      *
      * @param parser The parser automaton to use for the transition.
